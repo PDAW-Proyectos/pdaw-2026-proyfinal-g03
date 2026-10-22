@@ -1,4 +1,4 @@
-# Página de cuidado personal para usuarios de gimnacio
+# Página de cuidado personal para usuarios de gimnasio
 
 > El eje central es que el miembro del gimnasio pueda llevar progreso de su entrenamiento según el plan elegido. Tambien se ofrece un servicio de gestión básico para los dueños y/o personal del gimnasio.
 
@@ -15,7 +15,8 @@ Proyecto del equipo **03** para *7513 · Proyecto de Desarrollo de Aplicaciones 
 | Reglas de negocio           | 1. Se ofrecen planes preestablecidos para elegir                           |
 |                             | 2. Se evalúa a final de cada día si se cumplieron las metas diarias        |
 |                             | 3. Se postean turnos con su disponibilidad para que el usuario elija       |
-| API externa                 | Nombre, URL de la documentación y uso previsto (TODAVIA A DECIDIR)         |
+| API externa                 | Gemini API, https://ai.google.dev/gemini-api/docs , creación dinámica de   |
+|                             | planes genéricos                                                           |
 
 ## Equipo y roles del sprint actual
 
@@ -50,6 +51,6 @@ npm test
 
 Registrar aquí qué herramientas se usaron, para qué tareas y qué se adoptó de sus propuestas.
 
-| Fecha | Herramienta | Tarea | Qué se adoptó y por qué |
-| ----- | ----------- | ----- | ----------------------- |
-|       |             |       |                         |
+| Fecha    | Herramienta         | Tarea     | Qué se adoptó y por qué                         |
+| -------- | ------------------- | --------- | ----------------------------------------------- |
+| Semana 1 | Lovable y DeepSeek  | Maquetado | Primer estructura para maquetado y estilización |
