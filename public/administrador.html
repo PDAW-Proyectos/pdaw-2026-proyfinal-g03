@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iron Temple</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="./img/pesa.png">
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body class="admin-body">
+    <header class="admin-header">
+        <a class="navbar-brand m-0" href="index.html">
+             <span class="text-green"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-dumbbell preview-icon"><path d="M17.596 12.768a2 2 0 1 0 2.829-2.829l-1.768-1.767a2 2 0 0 0 2.828-2.829l-2.828-2.828a2 2 0 0 0-2.829 2.828l-1.767-1.768a2 2 0 1 0-2.829 2.829z"/><path d="m2.5 21.5 1.4-1.4"/><path d="m20.1 3.9 1.4-1.4"/><path d="M5.343 21.485a2 2 0 1 0 2.829-2.828l1.767 1.768a2 2 0 1 0 2.829-2.829l-6.364-6.364a2 2 0 1 0-2.829 2.829l1.768 1.767a2 2 0 0 0-2.828 2.829z"/><path d="m9.6 14.4 4.8-4.8"/></svg></span>IRON TEMPLE<span class="text-green">.</span>
+        </a>
+        <div class="admin-user-info">
+            <span class="text-green">ADMIN</span>
+            <a href="index.html"><i class="bi bi-box-arrow-right"></i> Salir</a>
+        </div>
+    </header>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 col-lg-2 admin-sidebar">
+                <ul class="admin-nav nav nav-tabs flex-lg-column flex-row flex-wrap" id="adminTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="admin-nav-link nav-link active w-100 text-start" id="alumnos-tab" data-bs-toggle="tab" data-bs-target="#alumnos" type="button" role="tab">
+                            <i class="bi bi-people"></i> Alumnos
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="admin-nav-link nav-link w-100 text-start" id="usuarios-tab" data-bs-toggle="tab" data-bs-target="#usuarios" type="button" role="tab">
+                            <i class="bi bi-person-gear"></i> Usuarios
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="admin-nav-link nav-link w-100 text-start" id="medicos-tab" data-bs-toggle="tab" data-bs-target="#medicos" type="button" role="tab">
+                            <i class="bi bi-heart-pulse"></i> Médicos
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="admin-nav-link nav-link w-100 text-start" id="local-tab" data-bs-toggle="tab" data-bs-target="#local" type="button" role="tab">
+                            <i class="bi bi-shop"></i> Gestión Local
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="admin-nav-link nav-link w-100 text-start" id="planes-tab" data-bs-toggle="tab" data-bs-target="#planes" type="button" role="tab">
+                            <i class="bi bi-credit-card"></i> Planes
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="admin-nav-link nav-link w-100 text-start" id="actividades-tab" data-bs-toggle="tab" data-bs-target="#actividades" type="button" role="tab">
+                            <i class="bi bi-calendar-event"></i> Actividades
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="admin-nav-link nav-link w-100 text-start" id="dietas-tab" data-bs-toggle="tab" data-bs-target="#dietas" type="button" role="tab">
+                            <i class="bi bi-egg-fried"></i> Dietas Generales
+                        </button>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-12 col-lg-10 admin-content-area">
+                <div class="tab-content" id="adminTabsContent">
+
+                    <!-- ================= PESTAÑA ALUMNOS ================= -->
+                    <div class="tab-pane fade show active" id="alumnos" role="tabpanel">
+                        <h2 class="admin-page-title">ALUMNOS</h2>
+                        
+                        <div class="admin-filter-bar">
+                            <button class="admin-btn-filter active">Nombre <i class="bi bi-arrow-down-up"></i></button>
+                            <button class="admin-btn-filter">Vencimiento <i class="bi bi-arrow-down-up"></i></button>
+                            <button class="admin-btn-filter">Estado <i class="bi bi-arrow-down-up"></i></button>
+                        </div>
+
+                        <div class="admin-card">
+                            <div class="admin-card-info">
+                                <h4>Juan Pérez</h4>
+                                <p>Plan Mensual · vence 1/12/2026</p>
+                            </div>
+                            <div class="admin-actions">
+                                <button class="admin-btn-icon">Suspender</button>
+                                <button class="admin-btn-icon"><i class="bi bi-pencil"></i> Editar / plan</button>
+                                <button class="admin-btn-icon">Dieta</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ================= PESTAÑA USUARIOS ================= -->
+                    <div class="tab-pane fade" id="usuarios" role="tabpanel">
+                        <div class="admin-header-action">
+                            <h2 class="admin-page-title m-0">GESTIÓN DE USUARIOS</h2>
+                            <button class="btn btn-green"><i class="bi bi-person-plus"></i> NUEVO USUARIO / ENTRENADOR</button>
+                        </div>
+                        <p class="text-gray mb-4 mt-2">Administrá roles, estados de las cuentas y sumá nuevos profesionales al equipo.</p>
+
+                        <!-- Filtros -->
+                        <div class="admin-filter-bar mt-3 mb-4">
+                            <button class="admin-btn-filter active">Todos</button>
+                            <button class="admin-btn-filter">Alumnos</button>
+                            <button class="admin-btn-filter">Entrenadores</button>
+                            <button class="admin-btn-filter">Suspendidos</button>
+                        </div>
+
+                        <!-- Usuario Alumno -->
+                        <div class="admin-card">
+                            <div class="admin-card-info">
+                                <h4>Juan Pérez <span class="badge bg-secondary text-white ms-2" style="font-size: 12px;">Usuario</span></h4>
+                                <p>juan@email.com · Estado: Activo</p>
+                            </div>
+                            <div class="admin-actions">
+                                <button class="admin-btn-icon text-danger" style="border-color: #ff4444; color: #ff4444 !important;"><i class="bi bi-slash-circle"></i> Suspender</button>
+                                <button class="admin-btn-icon"><i class="bi bi-arrow-repeat"></i> Cambiar Rol</button>
+                            </div>
+                        </div>
+
+                        <!-- Entrenador 1 -->
+                        <div class="admin-card">
+                            <div class="admin-card-info">
+                                <h4>Carlos Gómez <span class="badge ms-2" style="font-size: 12px; background-color: var(--pulso-green) !important; color: var(--pulso-dark);">Entrenador</span></h4>
+                                <p>carlos@pulso.com · Especialidad: Musculación · Estado: Activo</p>
+                            </div>
+                            <div class="admin-actions">
+                                <button class="admin-btn-icon text-danger" style="border-color: #ff4444; color: #ff4444 !important;"><i class="bi bi-slash-circle"></i> Suspender</button>
+                                <button class="admin-btn-icon"><i class="bi bi-arrow-repeat"></i> Cambiar Rol</button>
+                            </div>
+                        </div>
+
+                        <!-- Entrenador 2 -->
+                        <div class="admin-card">
+                            <div class="admin-card-info">
+                                <h4>María Rodríguez <span class="badge ms-2" style="font-size: 12px; background-color: var(--pulso-green) !important; color: var(--pulso-dark);">Entrenadora</span></h4>
+                                <p>maria@pulso.com · Especialidad: Funcional · Estado: Activo</p>
+                            </div>
+                            <div class="admin-actions">
+                                <button class="admin-btn-icon text-danger" style="border-color: #ff4444; color: #ff4444 !important;"><i class="bi bi-slash-circle"></i> Suspender</button>
+                                <button class="admin-btn-icon"><i class="bi bi-arrow-repeat"></i> Cambiar Rol</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Usuario Suspendido -->
+                        <div class="admin-card" style="opacity: 0.6;">
+                            <div class="admin-card-info">
+                                <h4>Pedro Martínez <span class="badge bg-secondary text-white ms-2" style="font-size: 12px;">Usuario</span></h4>
+                                <p>pedro@email.com · Estado: <span class="text-danger">Suspendido</span></p>
+                            </div>
+                            <div class="admin-actions">
+                                <button class="admin-btn-icon text-success" style="border-color: #198754; color: #198754 !important;"><i class="bi bi-check-circle"></i> Habilitar</button>
+                                <button class="admin-btn-icon"><i class="bi bi-arrow-repeat"></i> Cambiar Rol</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ================= PESTAÑA MÉDICOS ================= -->
+                    <div class="tab-pane fade" id="medicos" role="tabpanel">
+                        <div class="admin-header-action">
+                            <h2 class="admin-page-title m-0">MÉDICOS Y TURNOS</h2>
+                            <button class="btn btn-green"><i class="bi bi-plus-lg"></i> NUEVO PROFESIONAL</button>
+                        </div>
+
+                        <div class="admin-card align-items-center mb-4">
+                            <div class="admin-card-info">
+                                <h4 class="fs-6 fw-normal mb-0 text-white">Habilitar Servicio Médico en el local</h4>
+                            </div>
+                            <div class="admin-actions">
+                                <button class="btn btn-green py-2 px-3 fs-6">Activado</button>
+                            </div>
+                        </div>
+
+                        <h4 class="text-white mb-3 mt-4" style="font-size: 1.2rem;">Profesionales en Convenio</h4>
+                        <div class="admin-card">
+                            <div class="admin-card-info">
+                                <h4>Dra. López</h4>
+                                <p>Nutrición · Lunes y Miércoles · 09:00 a 13:00</p>
+                            </div>
+                            <div class="admin-actions">
+                                <button class="admin-btn-icon"><i class="bi bi-calendar-check"></i> Ver Turnos</button>
+                                <button class="admin-btn-icon"><i class="bi bi-pencil"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ================= PESTAÑA GESTIÓN LOCAL ================= -->
+                    <div class="tab-pane fade" id="local" role="tabpanel">
+                        <h2 class="admin-page-title">GESTIÓN LOCAL</h2>
+                        
+                        <div class="admin-card mb-5">
+                            <div class="admin-card-info">
+                                <h4>Estado del Local</h4>
+                                <p>Actualmente el local se encuentra Abierto.</p>
+                            </div>
+                            <div class="admin-actions">
+                                <button class="btn btn-green py-2 px-4" style="font-size: 14px;">CERRAR LOCAL</button>
+                            </div>
+                        </div>
+
+                        <h4 class="text-white mb-3" style="font-size: 1.2rem;">Horarios de Apertura</h4>
+                        <div class="admin-card" style="display: block;">
+                            <div class="admin-input-group mb-0">
+                                <label>Días Hábiles</label>
+                                <div class="admin-input-row">
+                                    <input type="time" class="admin-form-control" value="08:00">
+                                    <span class="text-gray">a</span>
+                                    <input type="time" class="admin-form-control" value="22:00">
+                                    <button class="btn btn-green" style="padding: 12px 30px;">GUARDAR</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="admin-card" style="display: block;">
+                            <div class="admin-input-group mb-0">
+                                <label>Feriados</label>
+                                <div class="admin-input-row">
+                                    <input type="time" class="admin-form-control" value="10:00">
+                                    <span class="text-gray">a</span>
+                                    <input type="time" class="admin-form-control" value="18:00">
+                                    <button class="btn btn-green" style="padding: 12px 30px;">GUARDAR</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ================= PESTAÑA PLANES ================= -->
+                    <div class="tab-pane fade" id="planes" role="tabpanel">
+                        <div class="admin-header-action">
+                            <h2 class="admin-page-title m-0">PLANES Y PRECIOS</h2>
+                            <button class="btn btn-green"><i class="bi bi-plus-lg"></i> NUEVO PLAN</button>
+                        </div>
+
+                        <div class="admin-card">
+                            <div class="admin-card-info">
+                                <h4>Plan Mensual — $25.000</h4>
+                                <p>30 días · Activo</p>
+                            </div>
+                            <div class="admin-actions">
+                                <button class="admin-btn-icon"><i class="bi bi-pencil"></i></button>
+                                <button class="admin-btn-icon"><i class="bi bi-trash"></i></button>
+                            </div>
+                        </div>
+                        
+                        <div class="admin-card">
+                            <div class="admin-card-info">
+                                <h4>Plan Trimestral — $65.000</h4>
+                                <p>90 días · Activo</p>
+                            </div>
+                            <div class="admin-actions">
+                                <button class="admin-btn-icon"><i class="bi bi-pencil"></i></button>
+                                <button class="admin-btn-icon"><i class="bi bi-trash"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ================= PESTAÑA ACTIVIDADES ================= -->
+                    <div class="tab-pane fade" id="actividades" role="tabpanel">
+                        <div class="admin-header-action">
+                            <h2 class="admin-page-title m-0">ACTIVIDADES</h2>
+                            <button class="btn btn-green"><i class="bi bi-plus-lg"></i> NUEVA ACTIVIDAD</button>
+                        </div>
+
+                        <div class="admin-filter-bar mt-3">
+                            <button class="admin-btn-filter active">Todas</button>
+                            <button class="admin-btn-filter">Musculación</button>
+                            <button class="admin-btn-filter">Funcional</button>
+                            <button class="admin-btn-filter">Indoor Cycling</button>
+                        </div>
+
+                        <div class="admin-card">
+                            <div class="admin-card-info">
+                                <h4>Funcional <span class="badge bg-dark border border-secondary text-gray ms-2" style="font-size: 11px;">Lun 18:00</span></h4>
+                                <p>45 min · Cupo 20 · Prof. Carla</p>
+                            </div>
+                            <div class="admin-actions">
+                                <button class="admin-btn-icon"><i class="bi bi-people"></i> Inscriptos</button>
+                                <button class="admin-btn-icon"><i class="bi bi-pencil"></i></button>
+                                <button class="admin-btn-icon"><i class="bi bi-trash"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="admin-card">
+                            <div class="admin-card-info">
+                                <h4>Indoor Cycling <span class="badge bg-dark border border-secondary text-gray ms-2" style="font-size: 11px;">Mar 19:00</span></h4>
+                                <p>45 min · Cupo 15 · Prof. Diego</p>
+                            </div>
+                            <div class="admin-actions">
+                                <button class="admin-btn-icon"><i class="bi bi-people"></i> Inscriptos</button>
+                                <button class="admin-btn-icon"><i class="bi bi-pencil"></i></button>
+                                <button class="admin-btn-icon"><i class="bi bi-trash"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ================= PESTAÑA DIETAS GENERALES ================= -->
+                    <div class="tab-pane fade" id="dietas" role="tabpanel">
+                        <div class="admin-header-action">
+                            <h2 class="admin-page-title m-0">DIETAS GENERALES</h2>
+                            <button class="btn btn-green"><i class="bi bi-plus-lg"></i> NUEVA DIETA</button>
+                        </div>
+                        <p class="text-gray mb-4">Subí planes de alimentación base o recomendaciones para los alumnos.</p>
+
+                        <div class="admin-card">
+                            <div class="admin-card-info">
+                                <h4>Plan Déficit Calórico (Bajar Grasa)</h4>
+                                <p>Objetivo: Pérdida de peso · Creado: 10/10/2026</p>
+                            </div>
+                            <div class="admin-actions">
+                                <button class="admin-btn-icon"><i class="bi bi-pencil"></i> Editar</button>
+                                <button class="admin-btn-icon"><i class="bi bi-trash"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="admin-card">
+                            <div class="admin-card-info">
+                                <h4>Plan Volumen (Ganar Músculo)</h4>
+                                <p>Objetivo: Hipertrofia · Creado: 05/10/2026</p>
+                            </div>
+                            <div class="admin-actions">
+                                <button class="admin-btn-icon"><i class="bi bi-pencil"></i> Editar</button>
+                                <button class="admin-btn-icon"><i class="bi bi-trash"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="admin-card">
+                            <div class="admin-card-info">
+                                <h4>Guía de Alimentación Sin Gluten</h4>
+                                <p>Objetivo: Celíacos · Creado: 01/10/2026</p>
+                            </div>
+                            <div class="admin-actions">
+                                <button class="admin-btn-icon"><i class="bi bi-pencil"></i> Editar</button>
+                                <button class="admin-btn-icon"><i class="bi bi-trash"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

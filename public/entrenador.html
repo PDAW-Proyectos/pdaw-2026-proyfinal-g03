@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iron Temple</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="img/pesa.png">
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body class="trainer-body">
+    <header class="trainer-header">
+        <a class="navbar-brand m-0" href="index.html">
+            <span class="text-green"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-dumbbell preview-icon"><path d="M17.596 12.768a2 2 0 1 0 2.829-2.829l-1.768-1.767a2 2 0 0 0 2.828-2.829l-2.828-2.828a2 2 0 0 0-2.829 2.828l-1.767-1.768a2 2 0 1 0-2.829 2.829z"/><path d="m2.5 21.5 1.4-1.4"/><path d="m20.1 3.9 1.4-1.4"/><path d="M5.343 21.485a2 2 0 1 0 2.829-2.828l1.767 1.768a2 2 0 1 0 2.829-2.829l-6.364-6.364a2 2 0 1 0-2.829 2.829l1.768 1.767a2 2 0 0 0-2.828 2.829z"/><path d="m9.6 14.4 4.8-4.8"/></svg></span> IRON TEMPLE<span class="text-green">.</span>
+            </a>
+        <div class="trainer-user-info">
+            <span class="trainer-name">Hola, <strong>Carlos Gómez (Entrenador)</strong></span>
+            <span class="trainer-separator">|</span>
+            <a href="index.html"><i class="bi bi-box-arrow-right"></i> Salir</a>
+        </div>
+    </header>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 col-lg-2 trainer-sidebar">
+                <ul class="trainer-nav nav nav-tabs flex-lg-column flex-row flex-wrap" id="trainerTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="trainer-nav-link nav-link active w-100 text-start" id="alumnos-tab" data-bs-toggle="tab" data-bs-target="#alumnos" type="button" role="tab">
+                            <i class="bi bi-people"></i> Mis Alumnos
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="trainer-nav-link nav-link w-100 text-start" id="clases-tab" data-bs-toggle="tab" data-bs-target="#clases" type="button" role="tab">
+                            <i class="bi bi-calendar-check"></i> Mis Actividades
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="trainer-nav-link nav-link w-100 text-start" id="rutinas-tab" data-bs-toggle="tab" data-bs-target="#rutinas" type="button" role="tab">
+                            <i class="bi bi-activity"></i> Crear Rutinas
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="trainer-nav-link nav-link w-100 text-start" id="agenda-tab" data-bs-toggle="tab" data-bs-target="#agenda" type="button" role="tab">
+                            <i class="bi bi-calendar-event"></i> Agenda y Turnos
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="trainer-nav-link nav-link w-100 text-start" id="progreso-tab" data-bs-toggle="tab" data-bs-target="#progreso" type="button" role="tab">
+                            <i class="bi bi-graph-up-arrow"></i> Seguimiento Progreso
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="trainer-nav-link nav-link w-100 text-start" id="perfil-tab" data-bs-toggle="tab" data-bs-target="#perfil" type="button" role="tab">
+                            <i class="bi bi-person-circle"></i> Mi Perfil
+                        </button>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Área de Contenido Dinámico -->
+            <div class="col-12 col-lg-10 trainer-content-area">
+                <div class="tab-content" id="trainerTabsContent">
+
+                    <!-- ================= 1. MIS ALUMNOS ================= -->
+                    <div class="tab-pane fade show active" id="alumnos" role="tabpanel">
+                        <h2 class="trainer-page-title">MIS ALUMNOS</h2>
+                        
+                        <!-- Buscador -->
+                        <div class="trainer-card mb-4 py-3 px-4">
+                            <div class="row align-items-center">
+                                <div class="col-md-8">
+                                    <input type="text" class="trainer-form-control w-100" placeholder="Buscar alumno por nombre o DNI...">
+                                </div>
+                                <div class="col-md-4 text-end">
+                                    <button class="btn btn-green w-100 py-2" style="font-size: 14px;"><i class="bi bi-search"></i> BUSCAR</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Listado -->
+                        <div class="row g-4">
+                            <!-- Alumno 1 -->
+                            <div class="col-md-6">
+                                <div class="trainer-card h-100">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <h4 class="text-white mb-1">Juan Pérez</h4>
+                                            <p class="text-gray mb-2" style="font-size: 13px;">Ingreso: 10/01/2026 · <span class="text-green">Activo</span></p>
+                                        </div>
+                                        <span class="badge bg-dark border border-secondary text-white h-100">Ganar masa</span>
+                                    </div>
+                                    <p class="text-gray mb-3" style="font-size: 14px;">Objetivo: Hipertrofia muscular.</p>
+                                    <button class="trainer-btn-icon w-100 py-2"><i class="bi bi-person-badge"></i> Ver Perfil e Historial</button>
+                                </div>
+                            </div>
+                            <!-- Alumno 2 -->
+                            <div class="col-md-6">
+                                <div class="trainer-card h-100">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <h4 class="text-white mb-1">María López</h4>
+                                            <p class="text-gray mb-2" style="font-size: 13px;">Ingreso: 15/02/2026 · <span class="text-green">Activo</span></p>
+                                        </div>
+                                        <span class="badge bg-dark border border-secondary text-white h-100">Bajar grasa</span>
+                                    </div>
+                                    <p class="text-gray mb-3" style="font-size: 14px;">Objetivo: Déficit calórico y resistencia.</p>
+                                    <button class="trainer-btn-icon w-100 py-2"><i class="bi bi-person-badge"></i> Ver Perfil e Historial</button>
+                                </div>
+                            </div>
+                            <!-- Alumno 3 (Inactivo) -->
+                            <div class="col-md-6">
+                                <div class="trainer-card h-100" style="opacity: 0.6;">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <h4 class="text-white mb-1">Pedro Martínez</h4>
+                                            <p class="text-gray mb-2" style="font-size: 13px;">Ingreso: 01/11/2025 · <span class="text-danger">Inactivo</span></p>
+                                        </div>
+                                        <span class="badge bg-dark border border-secondary text-white h-100">Resistencia</span>
+                                    </div>
+                                    <p class="text-gray mb-3" style="font-size: 14px;">Objetivo: Mejorar capacidad aeróbica.</p>
+                                    <button class="trainer-btn-icon w-100 py-2" disabled><i class="bi bi-person-badge"></i> Alumno inactivo</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ================= 2. MIS ACTIVIDADES ================= -->
+                    <div class="tab-pane fade" id="clases" role="tabpanel">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h2 class="trainer-page-title m-0">MIS ACTIVIDADES</h2>
+                            <button class="btn btn-green"><i class="bi bi-plus-lg"></i> NUEVA ACTIVIDAD</button>
+                        </div>
+                        <p class="text-gray mb-4">Gestioná las clases que dictás y revisá los inscriptos.</p>
+
+                        <!-- Filtro -->
+                        <div class="trainer-filter-bar mb-4 d-flex gap-2 flex-wrap">
+                            <button class="trainer-btn-icon active" style="background: #333; color: var(--pulso-green); border-color: #555;">Todas</button>
+                            <button class="trainer-btn-icon">Musculación</button>
+                            <button class="trainer-btn-icon">Funcional</button>
+                            <button class="trainer-btn-icon">Indoor Cycling</button>
+                        </div>
+
+                        <div class="row g-4">
+                            <!-- Tarjeta de Actividad 1 -->
+                            <div class="col-md-6">
+                                <div class="trainer-card h-100">
+                                    <div class="d-flex justify-content-between align-items-start mb-3">
+                                        <div>
+                                            <h4 class="text-white mb-1">Funcional Avanzado</h4>
+                                            <span class="badge bg-success text-dark" style="background-color: var(--pulso-green) !important;">Activa</span>
+                                        </div>
+                                        <button class="trainer-btn-icon" title="Editar"><i class="bi bi-pencil"></i></button>
+                                    </div>
+                                    <ul class="list-unstyled text-gray mb-4" style="font-size: 14px;">
+                                        <li class="mb-2"><i class="bi bi-calendar-event text-green me-2"></i> Lunes y Miércoles</li>
+                                        <li class="mb-2"><i class="bi bi-clock text-green me-2"></i> 18:00 a 19:00 hs</li>
+                                        <li class="mb-2"><i class="bi bi-people text-green me-2"></i> Cupo: 15 personas (12 inscriptos)</li>
+                                    </ul>
+                                    <div class="d-flex gap-2">
+                                        <button class="trainer-btn-icon flex-grow-1 py-2" style="font-size: 13px;"><i class="bi bi-list-ul"></i> Ver Inscriptos</button>
+                                        <button class="trainer-btn-icon py-2 px-3" style="border-color: #ff4444; color: #ff4444 !important;" title="Eliminar"><i class="bi bi-trash"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tarjeta de Actividad 2 -->
+                            <div class="col-md-6">
+                                <div class="trainer-card h-100">
+                                    <div class="d-flex justify-content-between align-items-start mb-3">
+                                        <div>
+                                            <h4 class="text-white mb-1">Indoor Cycling</h4>
+                                            <span class="badge bg-success text-dark" style="background-color: var(--pulso-green) !important;">Activa</span>
+                                        </div>
+                                        <button class="trainer-btn-icon" title="Editar"><i class="bi bi-pencil"></i></button>
+                                    </div>
+                                    <ul class="list-unstyled text-gray mb-4" style="font-size: 14px;">
+                                        <li class="mb-2"><i class="bi bi-calendar-event text-green me-2"></i> Martes y Jueves</li>
+                                        <li class="mb-2"><i class="bi bi-clock text-green me-2"></i> 19:00 a 20:00 hs</li>
+                                        <li class="mb-2"><i class="bi bi-people text-green me-2"></i> Cupo: 20 personas (18 inscriptos)</li>
+                                    </ul>
+                                    <div class="d-flex gap-2">
+                                        <button class="trainer-btn-icon flex-grow-1 py-2" style="font-size: 13px;"><i class="bi bi-list-ul"></i> Ver Inscriptos</button>
+                                        <button class="trainer-btn-icon py-2 px-3" style="border-color: #ff4444; color: #ff4444 !important;" title="Eliminar"><i class="bi bi-trash"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tarjeta de Actividad 3 (Inactiva) -->
+                            <div class="col-md-6">
+                                <div class="trainer-card h-100" style="opacity: 0.6;">
+                                    <div class="d-flex justify-content-between align-items-start mb-3">
+                                        <div>
+                                            <h4 class="text-white mb-1">Stretching / Movilidad</h4>
+                                            <span class="badge bg-secondary text-white">Inactiva</span>
+                                        </div>
+                                        <button class="trainer-btn-icon" title="Editar"><i class="bi bi-pencil"></i></button>
+                                    </div>
+                                    <ul class="list-unstyled text-gray mb-4" style="font-size: 14px;">
+                                        <li class="mb-2"><i class="bi bi-calendar-event text-green me-2"></i> Viernes</li>
+                                        <li class="mb-2"><i class="bi bi-clock text-green me-2"></i> 17:00 a 18:00 hs</li>
+                                        <li class="mb-2"><i class="bi bi-people text-green me-2"></i> Cupo: 10 personas (0 inscriptos)</li>
+                                    </ul>
+                                    <div class="d-flex gap-2">
+                                        <button class="trainer-btn-icon flex-grow-1 py-2" style="font-size: 13px;" disabled>Sin inscriptos</button>
+                                        <button class="trainer-btn-icon py-2 px-3" style="border-color: #ff4444; color: #ff4444 !important;" title="Eliminar"><i class="bi bi-trash"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ================= 3. CREAR Y ASIGNAR RUTINAS ================= -->
+                    <div class="tab-pane fade" id="rutinas" role="tabpanel">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h2 class="trainer-page-title m-0">CREAR RUTINAS</h2>
+                            <button class="btn btn-green"><i class="bi bi-plus-lg"></i> NUEVA RUTINA</button>
+                        </div>
+
+                        <div class="row g-4">
+                            <!-- Constructor de Rutina -->
+                            <div class="col-lg-8">
+                                <div class="trainer-card">
+                                    <h4 class="mb-3 text-white">Editor de Rutina: <span class="text-green">Fuerza - Tren Superior</span></h4>
+                                    
+                                    <!-- Selector de Día -->
+                                    <div class="mb-4">
+                                        <label class="text-gray mb-2" style="font-size: 14px;">Día de la semana</label>
+                                        <select class="trainer-form-control w-100">
+                                            <option>Lunes</option>
+                                            <option>Martes</option>
+                                            <option>Miércoles</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Tabla de Ejercicios -->
+                                    <div class="table-responsive mb-3">
+                                        <table class="table table-dark table-hover align-middle" style="background-color: transparent;">
+                                            <thead style="border-bottom: 1px solid #444;">
+                                                <tr>
+                                                    <th class="text-gray" style="background-color: transparent;">Ejercicio</th>
+                                                    <th class="text-gray text-center" style="background-color: transparent;">Series</th>
+                                                    <th class="text-gray text-center" style="background-color: transparent;">Reps</th>
+                                                    <th class="text-gray text-center" style="background-color: transparent;">Peso (kg)</th>
+                                                    <th class="text-gray text-center" style="background-color: transparent;">Descanso</th>
+                                                    <th style="background-color: transparent;"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td style="background-color: transparent; color: #fff;">Press Banca</td>
+                                                    <td style="background-color: transparent;"><input type="number" class="trainer-form-control text-center p-1" value="4" style="max-width: 60px; margin: 0 auto;"></td>
+                                                    <td style="background-color: transparent;"><input type="number" class="trainer-form-control text-center p-1" value="10" style="max-width: 60px; margin: 0 auto;"></td>
+                                                    <td style="background-color: transparent;"><input type="number" class="trainer-form-control text-center p-1" value="40" style="max-width: 60px; margin: 0 auto;"></td>
+                                                    <td style="background-color: transparent;"><input type="text" class="trainer-form-control text-center p-1" value="90s" style="max-width: 70px; margin: 0 auto;"></td>
+                                                    <td style="background-color: transparent;" class="text-end"><button class="trainer-btn-icon text-danger" style="padding: 5px 10px; border-color: #ff4444; color: #ff4444 !important;"><i class="bi bi-x-lg"></i></button></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="background-color: transparent; color: #fff;">Remo con Barra</td>
+                                                    <td style="background-color: transparent;"><input type="number" class="trainer-form-control text-center p-1" value="3" style="max-width: 60px; margin: 0 auto;"></td>
+                                                    <td style="background-color: transparent;"><input type="number" class="trainer-form-control text-center p-1" value="12" style="max-width: 60px; margin: 0 auto;"></td>
+                                                    <td style="background-color: transparent;"><input type="number" class="trainer-form-control text-center p-1" value="30" style="max-width: 60px; margin: 0 auto;"></td>
+                                                    <td style="background-color: transparent;"><input type="text" class="trainer-form-control text-center p-1" value="60s" style="max-width: 70px; margin: 0 auto;"></td>
+                                                    <td style="background-color: transparent;" class="text-end"><button class="trainer-btn-icon text-danger" style="padding: 5px 10px; border-color: #ff4444; color: #ff4444 !important;"><i class="bi bi-x-lg"></i></button></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    
+                                    <button class="trainer-btn-icon mb-4 w-100 py-2" style="border-style: dashed;"><i class="bi bi-plus-lg"></i> Agregar otro ejercicio</button>
+
+                                    <div class="d-flex gap-3 mt-4">
+                                        <button class="btn btn-green flex-grow-1 py-2" style="font-size: 14px;">GUARDAR RUTINA</button>
+                                        <button class="trainer-btn-icon py-2 px-4" style="font-size: 14px;"><i class="bi bi-files"></i> Plantilla</button>
+                                        <button class="trainer-btn-icon py-2 px-4" style="font-size: 14px;"><i class="bi bi-copy"></i> Duplicar</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Asignación y Opciones -->
+                            <div class="col-lg-4">
+                                <div class="trainer-card mb-4">
+                                    <h4 class="mb-3 text-white">Asignar a Alumnos</h4>
+                                    <select class="trainer-form-control w-100 mb-3" multiple style="height: 120px;">
+                                        <option selected>Juan Pérez</option>
+                                        <option selected>María López</option>
+                                        <option>Pedro Martínez</option>
+                                    </select>
+                                    <button class="btn btn-green w-100 py-2" style="font-size: 14px;">ASIGNAR RUTINA</button>
+                                </div>
+
+                                <div class="trainer-card">
+                                    <h4 class="mb-3 text-white">Historial de Cambios</h4>
+                                    <ul class="list-unstyled text-gray" style="font-size: 13px;">
+                                        <li class="mb-2"><i class="bi bi-clock-history text-green me-2"></i> 21/10/2026 - Rutina creada.</li>
+                                        <li class="mb-2"><i class="bi bi-clock-history text-green me-2"></i> 20/10/2026 - Peso de Press Banca modificado.</li>
+                                        <li><i class="bi bi-clock-history text-green me-2"></i> 15/10/2026 - Asignada a Juan Pérez.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ================= 4. AGENDA Y GESTIÓN DE TURNOS ================= -->
+                    <div class="tab-pane fade" id="agenda" role="tabpanel">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h2 class="trainer-page-title m-0">AGENDA Y TURNOS</h2>
+                            <div class="d-flex gap-2">
+                                <button class="trainer-btn-icon">Hoy</button>
+                                <button class="trainer-btn-icon active" style="background: #333;">Semana</button>
+                                <button class="trainer-btn-icon">Mes</button>
+                            </div>
+                        </div>
+
+                        <div class="trainer-card mb-4">
+                            <h4 class="mb-3 text-white">Turnos Reservados - Hoy</h4>
+                            <div class="table-responsive">
+                                <table class="table table-dark table-hover align-middle" style="background-color: transparent;">
+                                    <thead style="border-bottom: 1px solid #444;">
+                                        <tr>
+                                            <th class="text-gray" style="background-color: transparent;">Hora</th>
+                                            <th class="text-gray" style="background-color: transparent;">Alumno</th>
+                                            <th class="text-gray" style="background-color: transparent;">Tipo</th>
+                                            <th class="text-gray" style="background-color: transparent;">Estado</th>
+                                            <th class="text-gray text-end" style="background-color: transparent;">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td style="background-color: transparent; color: #fff;">09:00 - 10:00</td>
+                                            <td style="background-color: transparent; color: #fff;">Juan Pérez</td>
+                                            <td style="background-color: transparent; color: #fff;">Entrenamiento Personal</td>
+                                            <td style="background-color: transparent;"><span class="badge bg-success text-dark">Confirmado</span></td>
+                                            <td style="background-color: transparent;" class="text-end">
+                                                <button class="trainer-btn-icon me-1" style="padding: 4px 10px; font-size: 12px;"><i class="bi bi-check2-circle"></i> Asistió</button>
+                                                <button class="trainer-btn-icon" style="padding: 4px 10px; font-size: 12px; border-color: #ff4444; color: #ff4444 !important;"><i class="bi bi-x-circle"></i> Cancelar</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="background-color: transparent; color: #fff;">10:00 - 11:00</td>
+                                            <td style="background-color: transparent; color: #fff;">María López</td>
+                                            <td style="background-color: transparent; color: #fff;">Consulta Nutricional</td>
+                                            <td style="background-color: transparent;"><span class="badge bg-warning text-dark">Pendiente</span></td>
+                                            <td style="background-color: transparent;" class="text-end">
+                                                <button class="trainer-btn-icon me-1" style="padding: 4px 10px; font-size: 12px;"><i class="bi bi-check2"></i> Confirmar</button>
+                                                <button class="trainer-btn-icon" style="padding: 4px 10px; font-size: 12px; border-color: #ff4444; color: #ff4444 !important;"><i class="bi bi-x-circle"></i> Cancelar</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ================= 5. SEGUIMIENTO DEL PROGRESO ================= -->
+                    <div class="tab-pane fade" id="progreso" role="tabpanel">
+                        <h2 class="trainer-page-title">SEGUIMIENTO DEL PROGRESO</h2>
+                        
+                        <div class="trainer-card mb-4">
+                            <div class="row align-items-end">
+                                <div class="col-md-4">
+                                    <label class="text-gray mb-2" style="font-size: 14px;">Seleccionar Alumno</label>
+                                    <select class="trainer-form-control w-100">
+                                        <option>Juan Pérez</option>
+                                        <option>María López</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="text-gray mb-2" style="font-size: 14px;">Período</label>
+                                    <select class="trainer-form-control w-100">
+                                        <option>Últimos 30 días</option>
+                                        <option>Últimos 3 meses</option>
+                                        <option>Este año</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <button class="btn btn-green w-100 py-2" style="font-size: 14px; height: 46px;">VER HISTORIAL</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row g-4">
+                            <!-- Gráfico y Métricas -->
+                            <div class="col-lg-8">
+                                <div class="trainer-card h-100">
+                                    <h4 class="text-white mb-4">Evolución de Marcas (Ej: Press Banca)</h4>
+                                    <div class="bg-dark rounded d-flex justify-content-center align-items-center" style="height: 250px; border: 1px dashed #444;">
+                                        <span class="text-gray"><i class="bi bi-graph-up fs-1 mb-2 d-block"></i> Gráfico de Líneas (Evolución del peso levantado)</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Historial de entrenamientos y metas -->
+                            <div class="col-lg-4">
+                                <div class="trainer-card mb-4">
+                                    <h4 class="text-white mb-3">Objetivos y Metas</h4>
+                                    <div class="d-flex justify-content-between mb-2" style="font-size: 14px;">
+                                        <span class="text-gray">Peso Objetivo:</span>
+                                        <span class="text-white">75 kg</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-3" style="font-size: 14px;">
+                                        <span class="text-gray">Peso Actual:</span>
+                                        <span class="text-green">79 kg</span>
+                                    </div>
+                                    <div class="progress" style="height: 8px; background-color: #333;">
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: 60%; background-color: var(--pulso-green) !important;" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+
+                                <div class="trainer-card">
+                                    <h4 class="text-white mb-3">Últimos Entrenamientos</h4>
+                                    <ul class="list-unstyled text-gray" style="font-size: 13px;">
+                                        <li class="mb-2 pb-2 border-bottom border-secondary"><i class="bi bi-check-circle-fill text-green me-2"></i> 20/10 - Rutina Fuerza (Completada)</li>
+                                        <li class="mb-2 pb-2 border-bottom border-secondary"><i class="bi bi-check-circle-fill text-green me-2"></i> 18/10 - Rutina Funcional (Completada)</li>
+                                        <li><i class="bi bi-check-circle-fill text-green me-2"></i> 15/10 - Rutina Fuerza (Completada)</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ================= 6. MI PERFIL ================= -->
+                    <div class="tab-pane fade" id="perfil" role="tabpanel">
+                        <h2 class="trainer-page-title">MI PERFIL</h2>
+                        
+                        <div class="row g-4">
+                            <!-- Datos Personales y Profesionales -->
+                            <div class="col-lg-8">
+                                <div class="trainer-card mb-4">
+                                    <h4 class="mb-4 text-white">Datos del Entrenador</h4>
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="text-gray mb-2" style="font-size: 14px;">Nombre completo</label>
+                                            <input type="text" class="trainer-form-control w-100" value="Carlos Gómez">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="text-gray mb-2" style="font-size: 14px;">Email</label>
+                                            <input type="email" class="trainer-form-control w-100" value="carlos@pulso.com">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="text-gray mb-2" style="font-size: 14px;">Teléfono</label>
+                                            <input type="tel" class="trainer-form-control w-100" value="11 2233-4455">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="text-gray mb-2" style="font-size: 14px;">Especialidad Principal</label>
+                                            <!-- Input con datalist: sugiere opciones pero permite escribir -->
+                                            <input type="text" class="trainer-form-control w-100" list="lista-especialidades" value="Musculación y Hipertrofia" placeholder="Escribí tu especialidad...">
+                                            <datalist id="lista-especialidades">
+                                                <option value="Musculación y Hipertrofia">
+                                                <option value="Funcional y Crossfit">
+                                                <option value="Indoor Cycling">
+                                                <option value="Rehabilitación y Kinesiología">
+                                                <option value="Nutrición Deportiva">
+                                                <option value="Entrenamiento de Fuerza">
+                                                <option value="Yoga y Flexibilidad">
+                                                <option value="Entrenamiento Pre y Post Parto">
+                                            </datalist>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Horario Laboral -->
+                                <div class="trainer-card mb-4">
+                                    <h4 class="mb-4 text-white">Mi Horario Laboral (Turnos Base)</h4>
+                                    <p class="text-gray mb-3" style="font-size: 13px;">Este es el horario general en el que te encontrás en el local.</p>
+                                    
+                                    <div class="row g-3">
+                                        <div class="col-md-4">
+                                            <label class="text-gray mb-2" style="font-size: 14px;">Días de trabajo</label>
+                                            <select class="trainer-form-control w-100">
+                                                <option selected>Lunes a Viernes</option>
+                                                <option>Lunes, Miércoles y Viernes</option>
+                                                <option>Martes y Jueves</option>
+                                                <option>Fines de semana</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="text-gray mb-2" style="font-size: 14px;">Hora de Entrada</label>
+                                            <input type="time" class="trainer-form-control w-100" value="08:00">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="text-gray mb-2" style="font-size: 14px;">Hora de Salida</label>
+                                            <input type="time" class="trainer-form-control w-100" value="16:00">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Gestión de Vacaciones / Bloqueos -->
+                                <div class="trainer-card mb-4">
+                                    <h4 class="mb-4 text-white">Gestión de Vacaciones e Imprevistos</h4>
+                                    <p class="text-gray mb-3" style="font-size: 13px;">Bloqueá tu agenda para que los alumnos no puedan reservar turnos durante este período.</p>
+                                    
+                                    <div class="row g-3">
+                                        <div class="col-md-4">
+                                            <label class="text-gray mb-2" style="font-size: 14px;">Desde</label>
+                                            <input type="date" class="trainer-form-control w-100">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="text-gray mb-2" style="font-size: 14px;">Hasta</label>
+                                            <input type="date" class="trainer-form-control w-100">
+                                        </div>
+                                        <div class="col-md-4 d-flex align-items-end">
+                                            <button class="btn btn-green w-100 py-2" style="font-size: 14px; height: 46px;">BLOQUEAR FECHAS</button>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Ejemplo de bloqueo activo -->
+                                    <div class="mt-4 p-3 rounded d-flex justify-content-between align-items-center" style="background-color: #1e1e1e; border: 1px solid #333;">
+                                        <div>
+                                            <span class="text-white d-block" style="font-size: 14px;">Vacaciones de Verano</span>
+                                            <span class="text-gray" style="font-size: 12px;">15/01/2027 al 30/01/2027</span>
+                                        </div>
+                                        <button class="trainer-btn-icon" style="padding: 5px 10px; font-size: 12px; border-color: #ff4444; color: #ff4444 !important;"><i class="bi bi-x-lg"></i></button>
+                                    </div>
+                                </div>
+
+                                <div class="text-end">
+                                    <button class="btn btn-green py-3 px-5" style="font-size: 15px;">GUARDAR CAMBIOS</button>
+                                </div>
+                            </div>
+
+                            <!-- Columna Derecha: Foto de Perfil -->
+                            <div class="col-lg-4">
+                                <div class="trainer-card text-center">
+                                    <h4 class="mb-4 text-white">Foto de Perfil</h4>
+                                    <div class="mb-4 d-flex justify-content-center">
+                                        <!-- Placeholder para la foto -->
+                                        <div style="width: 150px; height: 150px; border-radius: 50%; background-color: #333; border: 2px dashed #555; display: flex; align-items: center; justify-content: center;">
+                                            <i class="bi bi-camera text-gray fs-1"></i>
+                                        </div>
+                                    </div>
+                                    <button class="trainer-btn-icon w-100 py-2"><i class="bi bi-upload"></i> Subir nueva foto</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
