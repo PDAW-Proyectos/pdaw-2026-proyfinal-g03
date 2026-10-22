@@ -1,7 +1,7 @@
 const Usuario = require('./Usuario');
 const Clase = require('./Clase');
 const Rutina = require('./Rutina');
-const v = require('./validaciones');
+const v = require('../utils/validaciones');
 
 const PERMISOS = new Set(['publicarClase', 'crearRutina']);
 

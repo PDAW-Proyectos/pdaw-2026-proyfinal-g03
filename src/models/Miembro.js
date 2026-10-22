@@ -1,7 +1,7 @@
 const Usuario = require('./Usuario');
 const SeguimientoPlan = require('./SeguimientoPlan');
-const v = require('./validaciones');
-const { OBJETIVOS } = require('./constantes');
+const v = require('../utils/validaciones');
+const { OBJETIVOS } = require('../utils/constantes');
 
 const PERMISOS = new Set(['inscribirseAClase', 'solicitarTurno', 'llevarSeguimiento']);
 

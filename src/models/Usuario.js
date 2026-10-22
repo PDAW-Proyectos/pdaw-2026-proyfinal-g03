@@ -1,5 +1,5 @@
-const v = require('./validaciones');
-const { ErrorValidacion } = require('./errores');
+const v = require('../utils/validaciones');
+const { ErrorValidacion } = require('../utils/errores');
 
 class Usuario {
   constructor({ id = null, nombre, email, passwordHash }) {
