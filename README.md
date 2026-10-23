@@ -44,7 +44,7 @@ npm test
 ## Documentación
 
 - Diagramas y wireframes: [`docs/`](docs/)
-- Acuerdos de trabajo y convenciones: [`CONTRIBUTING.md`](CONTRIBUTING.md)
+- Acuerdos de trabajo y convenciones: [`CONTRIBUTING.md`](docs/Contributing.md)
 - Riesgos: [`docs/riesgos.md`](docs/riesgos.md)
 
 ## Uso de herramientas de IA
