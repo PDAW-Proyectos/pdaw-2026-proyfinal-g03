@@ -1,0 +1,35 @@
+info:
+  name: Untitled
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: ?Crear clase=http://localhost:3000/api/clases
+  headers:
+    - name: x-demo-id
+      value: "2"
+    - name: x-demo-rol
+      value: instructor
+  params:
+    - name: Crear clase
+      value: http://localhost:3000/api/clases
+      type: query
+  body:
+    type: json
+    data: |2-
+         {
+           "titulo": "Yoga",
+           "descripcion": "Clase para principiantes",
+           "fechaHora": "2026-12-05T18:00:00Z",
+           "duracionMin": 60,
+           "cupo": 1
+         }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false
