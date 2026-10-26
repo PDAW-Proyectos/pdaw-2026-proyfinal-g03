@@ -1,65 +1,296 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Demo: planes con Gemini</title>
-  <style>
-    body { font-family: system-ui, sans-serif; max-width: 640px; margin: 2rem auto; padding: 0 1rem; line-height: 1.5; }
-    form { display: grid; gap: .75rem; grid-template-columns: 1fr 1fr; }
-    label { display: grid; gap: .25rem; font-size: .9rem; }
-    input, select { padding: .5rem; font-size: 1rem; }
-    .botones { grid-column: 1 / -1; display: flex; gap: .75rem; flex-wrap: wrap; }
-    button { padding: .6rem 1rem; font-size: 1rem; cursor: pointer; }
-    button:disabled { opacity: .5; cursor: wait; }
-    #estado { min-height: 1.5rem; margin-top: 1rem; }
-    #estado.error { color: #b00020; }
-    #resultado section { margin: 1rem 0; padding: .5rem 1rem; border: 1px solid #8884; border-radius: 8px; }
-    .aviso { font-size: .85rem; opacity: .75; margin-top: 2rem; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iron Temple</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="img/pesa.png">
+    <link rel="stylesheet" href="./css/styles.css">
 </head>
-<body>
-  <h1>Planes de Entrenamiento</h1>
+<body style="padding-top: 76px;">
 
-  <form id="formulario">
-    <label>Edad (años)
-      <input type="number" name="edad" min="14" max="90" required>
-    </label>
-    <label>Peso (kg)
-      <input type="number" name="peso" min="30" max="250" step="0.1" required>
-    </label>
-    <label>Altura (cm)
-      <input type="number" name="altura" min="120" max="230" required>
-    </label>
-    <label>Días por semana
-      <input type="number" name="dias" min="1" max="7" value="3" required>
-    </label>
-    <label>Objetivo
-      <select name="objetivo">
-        <option value="perder_peso">Perder peso</option>
-        <option value="ganar_musculo">Ganar masa muscular</option>
-        <option value="mantener">Mantenerme</option>
-        <option value="resistencia">Mejorar resistencia</option>
-      </select>
-    </label>
-    <label>Nivel
-      <select name="nivel">
-        <option value="principiante">Principiante</option>
-        <option value="intermedio">Intermedio</option>
-        <option value="avanzado">Avanzado</option>
-      </select>
-    </label>
-    <div class="botones">
-      <button type="button" data-tipo="entrenamiento">Generar plan de ejercicios</button>
-      <button type="button" data-tipo="nutricion">Generar plan de nutrición</button>
-    </div>
-  </form>
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <span class="text-green"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-dumbbell preview-icon"><path d="M17.596 12.768a2 2 0 1 0 2.829-2.829l-1.768-1.767a2 2 0 0 0 2.828-2.829l-2.828-2.828a2 2 0 0 0-2.829 2.828l-1.767-1.768a2 2 0 1 0-2.829 2.829z"/><path d="m2.5 21.5 1.4-1.4"/><path d="m20.1 3.9 1.4-1.4"/><path d="M5.343 21.485a2 2 0 1 0 2.829-2.828l1.767 1.768a2 2 0 1 0 2.829-2.829l-6.364-6.364a2 2 0 1 0-2.829 2.829l1.768 1.767a2 2 0 0 0-2.828 2.829z"/><path d="m9.6 14.4 4.8-4.8"/></svg></span> IRON TEMPLE<span class="text-green">.</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="gimnasio.html">El gimnasio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="actividades.html">Actividades</a></li>
+                    <li class="nav-item"><a class="nav-link" href="membresia.html">Membresías</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contacto">Contacto</a></li>
+                </ul>
+                <div class="d-flex gap-3 mt-3 mt-lg-0">
+                    <a href="login.html" class="btn btn-green">INGRESAR ↗</a>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-  <p id="estado" role="status"></p>
-  <div id="resultado"></div>
+    <section class="hero-section">
+        <div class="container hero-content">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="subtitle-line text-green">No es solo entrenar. Es superarte.</div>
+                    <h1 class="hero-title">
+                        TU PRÓXIMA<br>
+                        VERSIÓN<br>
+                        <span class="text-green">EMPIEZA ACÁ.</span>
+                    </h1>
+                    <p class="text-gray mb-4 hero-text">
+                        Un espacio para desafiar tus límites, encontrar tu energía y entrenar a tu manera. El primer paso es tuyo.
+                    </p>
+                    <div class="d-flex flex-column flex-sm-row gap-3 mb-5">
+                        <a href="login.html" class="btn btn-green">QUIERO EMPEZAR ↗</a>
+                        <a href="actividades.html" class="btn btn-outline-custom">EXPLORAR ACTIVIDADES →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="vertical-text d-none d-md-block">MENOS EXCUSAS. MÁS TEMPLO.</div>
+    </section>
 
-  <p class="aviso">Los planes son orientativos. No reemplazan la indicación de un profesional.</p>
+    <section class="stats-section">
+        <div class="container text-center">
+            <div class="row">
+                <div class="col-md-3 stat-item mb-4 mb-md-0">
+                    <div class="stat-number">01<span>.</span></div>
+                    <p class="text-gray">Tu objetivo, nuestro compromiso</p>
+                </div>
+                <div class="col-md-3 stat-item mb-4 mb-md-0">
+                    <div class="stat-number">100%<span>.</span></div>
+                    <p class="text-gray">Energía y actitud</p>
+                </div>
+                <div class="col-md-3 stat-item mb-4 mb-md-0">
+                    <div class="stat-number">3<span>.</span></div>
+                    <p class="text-gray">Formas de entrenar</p>
+                </div>
+                <div class="col-md-3 stat-item">
+                    <div class="stat-number">∞<span>.</span></div>
+                    <p class="text-gray">Ganas de superarte</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  <script type="module" src="/js/app.js"></script>
+    <section class="section-padding">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-end mb-4">
+                <div>
+                    <div class="subtitle-line text-green">Encontrá tu movimiento</div>
+                    <h2 class="display-4 fw-bold">DISTINTAS FORMAS.<br>LA MISMA <span class="text-green">PASIÓN.</span></h2>
+                </div>
+                <a href="actividades.html" class="btn btn-outline-custom d-none d-md-inline-block">VER LOS HORARIOS ↗</a>
+            </div>
+            <div class="row g-3 mt-4">
+                <div class="col-md-4">
+                    <a href="actividades.html" class="activity-card" style="background-image: url('https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=800&auto=format&fit=crop');">
+                        <div class="activity-label">01 / ENTRENAMIENTO</div>
+                        <div>
+                            <h3 class="mb-1 text-white">FUERZA & MUSCULACIÓN</h3>
+                            <p class="mb-0 text-gray fs-14">Construí una versión más fuerte de vos.</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="actividades.html" class="activity-card" style="background-image: url('https://images.unsplash.com/photo-1599058917212-d750089bc07e?q=80&w=800&auto=format&fit=crop');">
+                        <div class="activity-label">02 / ENTRENAMIENTO</div>
+                        <div>
+                            <h3 class="mb-1 text-white">FUNCIONAL</h3>
+                            <p class="mb-0 text-gray fs-14">Más movimiento. Más energía. Más vos.</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="actividades.html" class="activity-card" style="background-image: url('https://images.unsplash.com/photo-1591741535018-d042766c62eb?q=80&w=800&auto=format&fit=crop');">
+                        <div class="activity-label">03 / ENTRENAMIENTO</div>
+                        <div>
+                            <h3 class="mb-1 text-white">INDOOR CYCLING</h3>
+                            <p class="mb-0 text-gray fs-14">Subí el ritmo. Disfrutá el recorrido.</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-5 mb-lg-0 pe-lg-5">
+                    <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=800&auto=format&fit=crop" alt="Entrenamiento" class="img-fluid about-img">
+                </div>
+                <div class="col-lg-6 ps-lg-4">
+                    <div class="subtitle-line text-green">Más que un gimnasio</div>
+                    <h2 class="display-4 fw-bold mb-4">TU ESPACIO.<br>TU GENTE.<br><span class="text-green">TU TEMPLO.</span></h2>
+                    <p class="text-gray mb-4">
+                        No importa de dónde venís, sino a dónde querés llegar. Creemos en el progreso real, en los pequeños logros y en la fuerza de entrenar juntos.
+                    </p>
+                    <ul class="icon-list mt-4">
+                        <li class="mb-3 d-flex align-items-center text-white">
+                            <i class="bi bi-lightning-charge-fill text-green fs-5 me-3"></i> 
+                            <span>Equipamiento para cada desafío</span>
+                        </li>
+                        <li class="mb-3 d-flex align-items-center text-white">
+                            <i class="bi bi-person-badge-fill text-green fs-5 me-3"></i> 
+                            <span>Profesionales que te acompañan</span>
+                        </li>
+                        <li class="mb-3 d-flex align-items-center text-white">
+                            <i class="bi bi-people-fill text-green fs-5 me-3"></i> 
+                            <span>Una comunidad, no una competencia</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="membresias" class="section-padding border-top-custom">
+        <div class="container">
+            <div class="subtitle-line text-green">Elegí tu camino</div>
+            <h2 class="display-4 fw-bold mb-3">UN PLAN PARA <span class="text-green">VOS.</span></h2>
+            <p class="text-gray mb-5">Distintos objetivos. El mismo compromiso con tu bienestar.</p>
+
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="pricing-card">
+                        <h3 class="mb-1">ESENCIAL</h3>
+                        <h4 class="text-white mb-3 fw-bold">$25.000 <span class="text-gray fs-6 fw-normal">/ mes</span></h4>
+                        <p class="text-gray mb-4">Tu punto de partida.</p>
+                        <ul class="pricing-list">
+                            <li>Acceso a sala de musculación</li>
+                            <li>Rutina de entrenamiento inicial</li>
+                            <li>Seguimiento de tus objetivos</li>
+                        </ul>
+                        <a href="membresia.html" class="btn btn-outline-custom w-100 mt-auto">CONOCER EL PLAN ↗</a>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="pricing-card featured">
+                        <div class="featured-badge">EL MÁS COMPLETO</div>
+                        <h3 class="mb-1">FULL</h3>
+                        <h4 class="text-white mb-3 fw-bold">$35.000 <span class="text-gray fs-6 fw-normal">/ mes</span></h4>
+                        <p class="text-gray mb-4">Todas las formas de superarte.</p>
+                        <ul class="pricing-list">
+                            <li>Todo lo del plan Esencial</li>
+                            <li>Todas las clases grupales</li>
+                            <li>Evaluación y seguimiento mensual</li>
+                        </ul>
+                        <a href="membresia.html" class="btn btn-green w-100 mt-auto">CONOCER EL PLAN ↗</a>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="pricing-card">
+                        <h3 class="mb-1">PERSONAL</h3>
+                        <h4 class="text-white mb-3 fw-bold">$45.000 <span class="text-gray fs-6 fw-normal">/ mes</span></h4>
+                        <p class="text-gray mb-4">Un plan tan único como vos.</p>
+                        <ul class="pricing-list">
+                            <li>Todo lo del plan Full</li>
+                            <li>Entrenamiento personalizado</li>
+                            <li>Acompañamiento uno a uno</li>
+                        </ul>
+                        <a href="membresia.html" class="btn btn-outline-custom w-100 mt-auto">CONOCER EL PLAN ↗</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-banner bg-green">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h2 class="display-5 fw-bold mb-2 text-dark">EL MEJOR MOMENTO ES AHORA.</h2>
+                    <p class="text-dark mb-0 fs-5">Dale a tus ganas un lugar para crecer.</p>
+                </div>
+                <div class="col-md-4 text-md-end mt-4 mt-md-0">
+                    <a href="login.html" class="btn btn-dark btn-cta">DÁ EL PRIMER PASO ↗</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contacto" class="py-5 border-top-custom">
+        <div class="container">
+            <div class="subtitle-line text-green">Hablemos</div>
+            <h2 class="display-5 fw-bold mb-3">¿LISTO PARA <span class="text-green">ARRANCAR?</span></h2>
+            <p class="text-gray mb-4">Dejanos tu consulta o acercate al local. Te vamos a estar esperando.</p>
+
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <div class="bg-pulso-card p-4 border border-secondary">
+                        <h5 class="mb-3 text-white">Mandanos un mensaje</h5>
+                        <form>
+                            <div class="row g-2 mb-2">
+                                <div class="col-md-6">
+                                    <label class="text-gray mb-1 fs-13">Nombre completo</label>
+                                    <input type="text" class="form-control form-control-sm user-form-control">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="text-gray mb-1 fs-13">Email</label>
+                                    <input type="email" class="form-control form-control-sm user-form-control">
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="text-gray mb-1 fs-13">Mensaje</label>
+                                <textarea class="form-control form-control-sm user-form-control" rows="3"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-green w-100 py-2 fs-14">ENVIAR MENSAJE ↗</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="bg-pulso-card p-4 h-100 d-flex flex-column justify-content-center border border-secondary">
+                        <div class="mb-3">
+                            <h6 class="text-white mb-1"><i class="bi bi-geo-alt-fill text-green me-2"></i> Dirección</h6>
+                            <p class="text-gray mb-0 fs-14">Av. Corrientes 1234, CABA<br>Buenos Aires, Argentina</p>
+                        </div>
+                        <div class="mb-3">
+                            <h6 class="text-white mb-1"><i class="bi bi-whatsapp text-green me-2"></i> WhatsApp</h6>
+                            <p class="text-gray mb-0 fs-14">+54 11 2345-6789</p>
+                        </div>
+                        <div class="mb-3">
+                            <h6 class="text-white mb-1"><i class="bi bi-envelope-fill text-green me-2"></i> Email</h6>
+                            <p class="text-gray mb-0 fs-14">info@irontemple.com</p>
+                        </div>
+                        <div>
+                            <h6 class="text-white mb-1"><i class="bi bi-clock-fill text-green me-2"></i> Horarios</h6>
+                            <p class="text-gray mb-0 fs-14">Lunes a Viernes: 08:00 a 22:00<br>Sábados y Feriados: 10:00 a 18:00</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <a class="navbar-brand text-white footer-brand" href="index.html">
+                        <span class="text-green"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-dumbbell preview-icon"><path d="M17.596 12.768a2 2 0 1 0 2.829-2.829l-1.768-1.767a2 2 0 0 0 2.828-2.829l-2.828-2.828a2 2 0 0 0-2.829 2.828l-1.767-1.768a2 2 0 1 0-2.829 2.829z"/><path d="m2.5 21.5 1.4-1.4"/><path d="m20.1 3.9 1.4-1.4"/><path d="M5.343 21.485a2 2 0 1 0 2.829-2.828l1.767 1.768a2 2 0 1 0 2.829-2.829l-6.364-6.364a2 2 0 1 0-2.829 2.829l1.768 1.767a2 2 0 0 0-2.828 2.829z"/><path d="m9.6 14.4 4.8-4.8"/></svg></span>IRON TEMPLE<span class="text-green">.</span>
+                    </a>
+                </div>
+                <div class="col-md-4 text-center mb-3 mb-md-0">
+                    Entrená fuerte. Viví mejor.
+                </div>
+                <div class="col-md-4 text-md-end">
+                    © 2026 IRON TEMPLE. Todos los derechos reservados.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
