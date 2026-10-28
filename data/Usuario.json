@@ -1,5 +1,5 @@
 {
-  "ultimoId": 2,
+  "ultimoId": 5,
   "items": [
     {
       "id": 1,
@@ -19,6 +19,14 @@
       "objetivo": "perder_peso",
       "planMembresiaId": null,
       "passwordHash": "$2b$12$7GIyzWRpgqErHRDT6GpEO.HNVMU/WE052bGR7PpS4eG39WM4gpfP2"
+    },
+    {
+      "id": 3,
+      "rol": "instructor",
+      "nombre": "Instructor de prueba",
+      "email": "instructor.prueba@example.com",
+      "especialidad": "Musculación",
+      "passwordHash": "$2b$12$wU7/CkG3TAPpO/nefq2eqOXqCimxLUGCUBEXnwILcWXbNM4Y6VFK2"
     }
   ]
 }
