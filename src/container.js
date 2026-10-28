@@ -5,7 +5,7 @@ const config = require('./config');
 
 // REPOSITORIOS
 const RepositorioClases = require('./repositories/RepositorioClases');
-// const RepositorioUsuarios = require('./repositories/RepositorioUsuarios');
+const RepositorioUsuarios = require('./repositories/RepositorioUsuarios');
 // const RepositorioRutinas = require('./repositories/RepositorioRutinas');
 // const RepositorioSeguimientos = require('./repositories/RepositorioSeguimientos');
 // const RepositorioTurnos = require('./repositories/RepositorioTurnos');
@@ -17,7 +17,7 @@ const ClienteGemini = require('./services/gemini/ClienteGemini');
  
 // SERVICIOS
 const ServicioClases = require('./services/ServicioClases');
-// const ServicioAuth = require('./services/ServicioAuth');
+const ServicioAuth = require('./services/ServicioAuth');
 // const ServicioRutinas = require('./services/ServicioRutinas');
 // const ServicioPlanes = require('./services/ServicioPlanes');
 // const ServicioSeguimientos = require('./services/ServicioSeguimientos');
@@ -27,7 +27,7 @@ const ServicioClases = require('./services/ServicioClases');
  
 const repos = {
   repoClases: new RepositorioClases(),
-  // repoUsuarios: new RepositorioUsuarios(),
+  repoUsuarios: new RepositorioUsuarios(),
   // repoRutinas: new RepositorioRutinas(),
   // repoSeguimientos: new RepositorioSeguimientos(),
   // repoTurnos: new RepositorioTurnos(),
@@ -40,7 +40,7 @@ const clienteGemini = new ClienteGemini(config.gemini);                 // *crea
 // Cada servicio recibe solo los repositorios que necesita
 const servicios = {
   servicioClases: new ServicioClases({ repoClases: repos.repoClases }),
-  // servicioAuth: new ServicioAuth({ repoUsuarios: repos.repoUsuarios }),
+  servicioAuth: new ServicioAuth({ repoUsuarios: repos.repoUsuarios }),
   // servicioRutinas: new ServicioRutinas({ repoRutinas: repos.repoRutinas }),
   // servicioTurnos: new ServicioTurnos({ repoTurnos: repos.repoTurnos }),
   // servicioMembresias: new ServicioMembresias({ repoMembresias: repos.repoMembresias }),
