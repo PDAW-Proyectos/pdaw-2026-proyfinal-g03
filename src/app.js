@@ -8,6 +8,7 @@ const autenticacion = require('./middlewares/autenticacion');
 const manejadorErrores = require('./middlewares/manejadorErrores');
 const rutasAuth = require('./routes/auth');
 const rutasClases = require('./routes/clases');
+const rutasUsuarios = require('./routes/usuarios');
 
 function crearApp({ repoClases, repoUsuarios}) {
   if (!secretoSesion) {
@@ -37,6 +38,7 @@ function crearApp({ repoClases, repoUsuarios}) {
 
   // Desde aquí, las rutas de la API requieren una sesión válida.
   app.use('/api', autenticacion({ repoUsuarios }));
+  app.use('/api/usuarios', rutasUsuarios({ repoUsuarios }));
   app.use('/api/clases', rutasClases({ repoClases }));
 
   app.use((req, res) => res.status(404).json({ error: 'Ruta no encontrada' }));
