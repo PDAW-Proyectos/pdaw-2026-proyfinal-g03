@@ -3,7 +3,7 @@ const { Turno } = require('./Turno');
 const PlanMembresia = require('./PlanMembresia');
 const HorarioGimnasio = require('./HorarioGimnasio');
 
-const PERMISOS = new Set(['publicarTurno', 'gestionarMembresias', 'definirHorarios']);
+const PERMISOS = new Set(['publicarTurno', 'gestionarMembresias', 'definirHorarios','crearUsuario']);
 
 class Administrador extends Usuario {
   get rol() { return 'administrador'; }
