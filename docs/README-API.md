@@ -38,8 +38,8 @@ Los permisos se confirmarán con la autenticación (A IMPLEMENTAR).
 
 | Historia | Quién | Verbo y ruta | Éxito | Errores |
 |---|---|---|---|---|
-| Registrarse | Público | `POST /api/auth/registro` | 201 | 400, 409 (email ya registrado), 415 |
-| Iniciar sesión | Público | `POST /api/auth/login` | 200 | 400, 401, 415 |
+| Registrarse | Todos | `POST /api/auth/registro` | 201 | 400, 409 (email ya registrado), 415 |
+| Iniciar sesión | Todos | `POST /api/auth/login` | 200 | 400, 401, 415 |
 
 #### Clases
 
