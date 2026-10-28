@@ -33,6 +33,13 @@ function opcion(valor, campo, permitidas) {
   return valor;
 }
 
+function lista(valor, campo, { min = 0, max = 100 } = {}) {
+  if (!Array.isArray(valor) || valor.length < min || valor.length > max) {
+    throw new ErrorValidacion(`${campo} debe ser una lista de entre ${min} y ${max} elementos`);
+  }
+  return valor;
+}
+
 function email(valor) {
   const limpio = texto(valor, 'email', { max: 120 }).toLowerCase();
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(limpio)) {
@@ -62,4 +69,4 @@ function fechaHora(valor, campo) {
   return d;
 }
 
-module.exports = { texto, numero, idOpcional, opcion, email, hora, fechaISO, fechaHora };
+module.exports = { texto, numero, idOpcional, opcion, lista, email, hora, fechaISO, fechaHora };

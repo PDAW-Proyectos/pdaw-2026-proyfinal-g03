@@ -20,4 +20,19 @@ class ErrorConflicto extends ErrorApp {
   constructor(mensaje) { super(mensaje, 409); }
 }
 
-module.exports = { ErrorApp, ErrorValidacion, ErrorProhibido, ErrorNoEncontrado, ErrorConflicto };
+// Errores de servicio externo Gemini (el problema no es de quien hizo la solicitud)
+class ErrorLimiteExcedido extends ErrorApp {
+  constructor(mensaje) { super(mensaje, 429); }
+}
+class ErrorServicioExterno extends ErrorApp {
+  constructor(mensaje) { super(mensaje, 502); }
+}
+class ErrorTiempoAgotado extends ErrorApp {
+  constructor(mensaje) { super(mensaje, 504); }
+}
+ 
+module.exports = {
+  ErrorApp, ErrorValidacion, ErrorProhibido, ErrorNoEncontrado, ErrorConflicto,
+  ErrorLimiteExcedido, ErrorServicioExterno, ErrorTiempoAgotado,
+};
+
