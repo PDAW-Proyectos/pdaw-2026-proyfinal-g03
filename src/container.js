@@ -18,6 +18,7 @@ const ClienteGemini = require('./services/gemini/ClienteGemini');
 // SERVICIOS
 const ServicioClases = require('./services/ServicioClases');
 const ServicioAuth = require('./services/ServicioAuth');
+const ServicioUsuarios = require('./services/ServicioUsuarios');
 // const ServicioRutinas = require('./services/ServicioRutinas');
 // const ServicioPlanes = require('./services/ServicioPlanes');
 // const ServicioSeguimientos = require('./services/ServicioSeguimientos');
@@ -41,6 +42,7 @@ const clienteGemini = new ClienteGemini(config.gemini);                 // *crea
 const servicios = {
   servicioClases: new ServicioClases({ repoClases: repos.repoClases }),
   servicioAuth: new ServicioAuth({ repoUsuarios: repos.repoUsuarios }),
+  servicioUsuarios: new ServicioUsuarios({repoUsuarios: repos.repoUsuarios,}),
   // servicioRutinas: new ServicioRutinas({ repoRutinas: repos.repoRutinas }),
   // servicioTurnos: new ServicioTurnos({ repoTurnos: repos.repoTurnos }),
   // servicioMembresias: new ServicioMembresias({ repoMembresias: repos.repoMembresias }),

@@ -4,9 +4,6 @@
 module.exports = {
   puerto: Number(process.env.PORT) || 3000,
   secretoSesion: process.env.SESSION_SECRET,
-};
-
-
   gemini: {
     apiKey: process.env.GEMINI_API_KEY || null,
     modelo: process.env.GEMINI_MODEL || 'gemini-flash-latest',

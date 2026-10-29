@@ -20,17 +20,15 @@ const rutasUsuarios = require('./routes/usuarios');
 // const rutasMembresias = require('./routes/membresias');
 // const rutasHorarios = require('./routes/horarios');
 
-function crearApp({ repoClases, repoUsuarios}) {
+function crearApp({ repos, servicios}) {
+  const app = express();
+
   if (!secretoSesion) {
     throw new Error('Falta configurar SESSION_SECRET en el archivo .env');
   }
   
   app.use(soloJSON);
   app.use(express.json());
-  // Acá va a ir el express-session cuando se implemente el inicio de sesión (clase 08)
-
-  // Rutas publicas: no exigen usuario, por eso van ANTES del middleware de autenticación
-  // app.use('/api/auth', rutasAuth(servicios));
 
   // Todo lo que está debajo de esta linea exige usuario autenticado
   app.use(session({
@@ -46,11 +44,12 @@ function crearApp({ repoClases, repoUsuarios}) {
     },
   }));
  
-  app.use('/api/auth', rutasAuth({ repoUsuarios })); // Estas rutas se registran antes de exigir autenticación global.
+  // Rutas públicas de autenticación
+  app.use('/api/auth', rutasAuth({servicioAuth: servicios.servicioAuth,repoUsuarios: repos.repoUsuarios,}));
 
   // Desde aquí, las rutas de la API requieren una sesión válida.
-  app.use('/api', autenticacion({ repoUsuarios }));
-  app.use('/api/usuarios', rutasUsuarios({ repoUsuarios }));
+  app.use('/api', autenticacion({ repoUsuarios: repos.repoUsuarios }));
+  app.use('/api/usuarios', rutasUsuarios({ repoUsuarios: repos.repoUsuarios }));
   app.use('/api/clases', rutasClases(servicios));
   // app.use('/api/rutinas', rutasRutinas(servicios));
   // app.use('/api/planes-entrenamiento', rutasPlanesEntrenamiento(servicios));

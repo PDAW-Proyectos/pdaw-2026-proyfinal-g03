@@ -1,12 +1,10 @@
 
 const { Router } = require('express');
 
-const ServicioUsuarios = require('../services/servicioUsuarios');
 const { exigirPermiso } = require('../middlewares/permisos');
 
-module.exports = function rutasUsuarios({ repoUsuarios }) {
+module.exports = function rutasUsuarios({ servicioUsuarios  }) {
     const router = Router();
-    const servicioUsuarios = new ServicioUsuarios({ repoUsuarios });
 
     router.post('/miembros',exigirPermiso('crearUsuario'),
         async (req, res, next) => {
