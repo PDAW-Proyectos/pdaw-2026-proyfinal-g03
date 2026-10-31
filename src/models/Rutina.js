@@ -9,7 +9,7 @@ class Rutina {
     this.nivel = v.opcion(nivel, 'nivel', NIVELES);
     this.instructorId = v.numero(instructorId, 'instructorId', { min: 1, entero: true });
     // Composicion: los ejercicios pertenecen a la rutina
-    this.ejercicios = ejercicios.map((e) => (e instanceof Ejercicio ? e : new Ejercicio(e)));
+    this.ejercicios = v.lista(ejercicios, 'ejercicios', { max: 50 }).map((e) => (e instanceof Ejercicio ? e : new Ejercicio(e)));
   }
 
   agregarEjercicio(datos) {

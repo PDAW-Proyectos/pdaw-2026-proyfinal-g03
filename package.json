@@ -7,9 +7,6 @@
     "doc": "docs",
     "test": "tests"
   },
-  
-  "start": "node --env-file=.env src/server.js",
-
   "scripts": {
     "start": "node src/server.js",
     "crear-admin": "node scripts/crearAdministrador.js",

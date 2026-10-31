@@ -6,8 +6,10 @@ const CAMPOS = ['titulo', 'descripcion', 'fechaHora', 'duracionMin', 'cupo'];
 const filtrar = (body = {}) =>
   Object.fromEntries(CAMPOS.filter((c) => c in body).map((c) => [c, body[c]]));
 
+const { conNextTodos } = require('../utils/http');
+
 module.exports = function crearControladorClases(servicio) {
-  return {
+  return conNextTodos({
     // GET /api/clases?instructor=2&page=1&limit=10
     listar: async (req, res) => {
       const { instructor, page, limit } = req.query;
@@ -50,5 +52,5 @@ module.exports = function crearControladorClases(servicio) {
     desinscribir: async (req, res) => {
       res.json(await servicio.desinscribir({ claseId: req.params.id, miembro: req.usuario }));
     },
-  };
+  });
 };

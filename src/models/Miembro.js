@@ -3,7 +3,7 @@ const SeguimientoPlan = require('./SeguimientoPlan');
 const v = require('../utils/validaciones');
 const { OBJETIVOS } = require('../utils/constantes');
 
-const PERMISOS = new Set(['inscribirseAClase', 'solicitarTurno', 'llevarSeguimiento']);
+const PERMISOS = new Set(['inscribirseAClase', 'solicitarTurno', 'llevarSeguimiento', 'generarPlan']);
 
 class Miembro extends Usuario {
   constructor({ peso, altura, edad, objetivo, planMembresiaId = null, ...base }) {
