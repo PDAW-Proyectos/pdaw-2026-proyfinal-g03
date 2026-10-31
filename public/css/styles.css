@@ -33,6 +33,7 @@ h1, h2, h3, h4, h5, h6, .nav-link, .btn {
 .bg-pulso-card { background-color: #161616 !important; }
 .bg-pulso-darker { background-color: #0a0a0a !important; }
 .border-start-green { border-left: 4px solid var(--pulso-green) !important; }
+.border-yellow { border-color: #ffc107 !important; }
 
 /* Botones Compartidos */
 .btn-green {
@@ -186,15 +187,26 @@ footer { background-color: var(--pulso-darker); padding: 40px 0; font-size: 14px
 .footer-brand { font-size: 24px; }
 
 /* =========================================
-   3. PANEL ADMIN (admin.html)
+   3. PANEL ADMIN (dashboard.html)
    ========================================= */
 .admin-body { background-color: var(--pulso-darker); min-height: 100vh; }
-.admin-header { padding: 20px 40px; border-bottom: 1px solid #222; display: flex; justify-content: space-between; align-items: center; }
+.admin-header { padding: 20px 40px; border-bottom: 1px solid #222; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1020; background-color: var(--pulso-darker); }
 .admin-user-info { font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 20px; }
 .admin-user-info a { color: #fff; text-decoration: none; display: flex; align-items: center; gap: 5px; transition: color 0.3s; }
 .admin-user-info a:hover { color: var(--pulso-green); }
 
-.admin-sidebar { padding: 40px 20px; border-right: 1px solid #222; min-height: calc(100vh - 90px); }
+/* Sidebar (Fijo al hacer scroll) */
+.admin-sidebar {
+    padding: 40px 20px;
+    border-right: 1px solid #222;
+    min-height: calc(100vh - 90px);
+    
+    position: sticky;
+    top: 90px;
+    height: calc(100vh - 90px);
+    overflow-y: auto;
+}
+
 .admin-nav { list-style: none; padding: 0; margin: 0; }
 .admin-nav li { margin-bottom: 10px; }
 .admin-nav-link {
@@ -238,20 +250,40 @@ footer { background-color: var(--pulso-darker); padding: 40px 0; font-size: 14px
 .admin-btn-icon.text-warning { border-color: #ffc107 !important; color: #ffc107 !important; }
 
 .admin-filter-bar { display: flex; gap: 10px; margin-bottom: 30px; flex-wrap: wrap; }
-.admin-btn-filter { background-color: transparent; border: 1px solid #333; color: #fff; padding: 8px 16px; font-size: 14px; border-radius: 4px; display: flex; align-items: center; gap: 8px; transition: all 0.3s; }
+.admin-btn-filter { height: 50px;background-color: transparent; border: 1px solid #333; color: #fff; padding: 8px 16px; font-size: 14px; border-radius: 4px; display: flex; align-items: center; gap: 8px; transition: all 0.3s; }
 .admin-btn-filter:hover, .admin-btn-filter.active { background-color: var(--pulso-green); color: var(--pulso-dark); border-color: var(--pulso-green); font-weight: 600; }
-
 .admin-input-group { margin-bottom: 25px; }
 .admin-input-group label { display: block; margin-bottom: 10px; font-size: 15px; font-weight: 600; }
 .admin-input-row { display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
-.admin-form-control { background-color: #0f0f0f; border: 1px solid #333; color: #fff; padding: 12px 15px; border-radius: 4px; width: 100%; max-width: 200px; }
+.admin-form-control { background-color: #0f0f0f; border: 1px solid #333; color: #fff; padding: 12px 16px; border-radius: 4px; width: 100%; max-width: 200px; }
 .admin-form-control:focus { background-color: #0f0f0f; color: #fff; border-color: var(--pulso-green); outline: none; box-shadow: none; }
 
 .custom-switch { width: 3em !important; height: 1.5em !important; cursor: pointer; background-color: #0f0f0f !important; border: 1px solid #444 !important; box-shadow: none !important; background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23666'/%3e%3c/svg%3e") !important; }
 .custom-switch:checked { background-color: var(--pulso-green) !important; border-color: var(--pulso-green) !important; background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23121212'/%3e%3c/svg%3e") !important; }
+.btn-cierre{
+    height: 50px !important;   /* misma altura que .trainer-form-control */
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    line-height: 1 !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    box-sizing: border-box;
+
+}
+.btn-horariohabitual{
+      height: 49px !important;   /* misma altura que .trainer-form-control */
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+    line-height: 1 !important;
+    display: flex;
+    white-space: nowrap;
+    box-sizing: border-box;
+}
 
 /* =========================================
-   4. VISTA USUARIO (usuario.html)
+   4. VISTA USUARIO (dashboard.html)
    ========================================= */
 .user-body { background-color: var(--pulso-darker); min-height: 100vh; }
 .user-header { padding: 20px 40px; border-bottom: 1px solid #222; display: flex; justify-content: space-between; align-items: center; }
@@ -261,14 +293,6 @@ footer { background-color: var(--pulso-darker); padding: 40px 0; font-size: 14px
 .user-name { color: var(--pulso-gray); font-family: 'Inter', sans-serif; text-transform: none; }
 .user-name strong { color: #ffffff; font-weight: 600; }
 .user-separator { color: #444; margin: 0 5px; }
-
-.user-sidebar { padding: 40px 20px; border-right: 1px solid #222; min-height: calc(100vh - 90px); }
-.user-nav { list-style: none; padding: 0; margin: 0; }
-.user-nav li { margin-bottom: 10px; }
-.user-nav-link { display: flex !important; align-items: center; gap: 15px; padding: 15px 20px; color: #a0a0a0 !important; background-color: transparent !important; border: 1px solid transparent !important; text-decoration: none; font-size: 15px; border-radius: 4px; transition: all 0.3s ease; cursor: pointer; font-family: 'Inter', sans-serif; text-transform: none; font-weight: 400 !important; white-space: normal !important; word-wrap: break-word; line-height: 1.2; }
-.user-nav-link:hover { color: #ffffff !important; background-color: rgba(255,255,255,0.05) !important; }
-.user-nav-link.active { background-color: #1e1e1e !important; color: var(--pulso-green) !important; border-color: #1e1e1e !important; font-weight: 700 !important; }
-.user-nav-link i { font-size: 1.1rem; flex-shrink: 0; }
 
 .user-content-area { padding: 40px; }
 .user-page-title { font-size: 3rem; font-weight: 700; margin-bottom: 30px; }
@@ -280,7 +304,7 @@ footer { background-color: var(--pulso-darker); padding: 40px 0; font-size: 14px
 .user-form-control:focus { background-color: #0f0f0f; color: #fff; border-color: var(--pulso-green); outline: none; box-shadow: none; }
 
 /* =========================================
-   5. VISTA ENTRENADOR (entrenador.html)
+   5. VISTA ENTRENADOR (dashboard.html)
    ========================================= */
 .trainer-body { background-color: var(--pulso-darker); min-height: 100vh; }
 .trainer-header { padding: 20px 40px; border-bottom: 1px solid #222; display: flex; justify-content: space-between; align-items: center; }
@@ -291,14 +315,6 @@ footer { background-color: var(--pulso-darker); padding: 40px 0; font-size: 14px
 .trainer-name strong { color: #ffffff; font-weight: 600; }
 .trainer-separator { color: #444; margin: 0 5px; }
 
-.trainer-sidebar { padding: 40px 20px; border-right: 1px solid #222; min-height: calc(100vh - 90px); }
-.trainer-nav { list-style: none; padding: 0; margin: 0; }
-.trainer-nav li { margin-bottom: 10px; }
-.trainer-nav-link { display: flex !important; align-items: center; gap: 15px; padding: 15px 20px; color: #a0a0a0 !important; background-color: transparent !important; border: 1px solid transparent !important; text-decoration: none; font-size: 15px; border-radius: 4px; transition: all 0.3s ease; cursor: pointer; font-family: 'Inter', sans-serif; text-transform: none; font-weight: 400 !important; white-space: normal !important; word-wrap: break-word; line-height: 1.2; }
-.trainer-nav-link:hover { color: #ffffff !important; background-color: rgba(255,255,255,0.05) !important; }
-.trainer-nav-link.active { background-color: #1e1e1e !important; color: var(--pulso-green) !important; border-color: #1e1e1e !important; font-weight: 700 !important; }
-.trainer-nav-link i { font-size: 1.1rem; flex-shrink: 0; }
-
 .trainer-content-area { padding: 40px; }
 .trainer-page-title { font-size: 3rem; font-weight: 700; margin-bottom: 30px; }
 .trainer-card { background-color: #161616; border: 1px solid var(--pulso-border); border-radius: 6px; padding: 25px; margin-bottom: 15px; transition: border-color 0.3s; }
@@ -307,7 +323,28 @@ footer { background-color: var(--pulso-darker); padding: 40px 0; font-size: 14px
 .trainer-btn-icon:hover { background: #333; color: var(--pulso-green); border-color: var(--pulso-green); }
 .trainer-form-control { background-color: #0f0f0f; border: 1px solid #333; color: #fff; padding: 12px 15px; border-radius: 4px; }
 .trainer-form-control:focus { background-color: #0f0f0f; color: #fff; border-color: var(--pulso-green); outline: none; box-shadow: none; }
-
+.btn-crear {
+    height: 50px !important;   /* misma altura que .trainer-form-control */
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    line-height: 1 !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    box-sizing: border-box;
+}
+.btn-filtrar{
+    height: 45px !important;   /* misma altura que .trainer-form-control */
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    line-height: 1 !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    box-sizing: border-box;
+}
 /* =========================================
    6. LOGIN ESPECÍFICO (login.html)
    ========================================= */
@@ -328,7 +365,17 @@ footer { background-color: var(--pulso-darker); padding: 40px 0; font-size: 14px
    7. RESPONSIVE GENERAL
    ========================================= */
 @media (max-width: 991.98px) {
-    .admin-sidebar, .user-sidebar, .trainer-sidebar { border-right: none; border-bottom: 1px solid #222; padding: 20px 10px !important; min-height: auto; }
+    .admin-sidebar, .user-sidebar, .trainer-sidebar { 
+        border-right: none; 
+        border-bottom: 1px solid #222; 
+        padding: 20px 10px !important; 
+        min-height: auto; 
+        
+        /* RESET PARA QUE EL STICKY NO AFECTE EN CELULAR */
+        position: static !important;
+        height: auto !important;
+        overflow-y: visible !important;
+    }
     .admin-nav, .user-nav, .trainer-nav { display: flex; flex-direction: row !important; flex-wrap: wrap !important; justify-content: center; gap: 10px; }
     .admin-nav li, .user-nav li, .trainer-nav li { margin-bottom: 0; width: auto !important; }
     .admin-nav-link, .user-nav-link, .trainer-nav-link { padding: 10px 15px !important; font-size: 14px !important; white-space: nowrap !important; }
@@ -346,4 +393,28 @@ footer { background-color: var(--pulso-darker); padding: 40px 0; font-size: 14px
     .admin-header-action, .user-header-action, .trainer-header-action { flex-direction: column; align-items: flex-start !important; gap: 15px; }
     .admin-header, .user-header, .trainer-header { padding: 20px; }
     .user-name, .trainer-name { font-size: 12px; }
+}
+
+/* =========================================
+   8. ACORDEÓN DE NUTRICIÓN (Fondo oscuro)
+   ========================================= */
+.accordion-button {
+    background-color: #121212 !important;
+    box-shadow: none !important;
+    color: #fff;
+}
+.accordion-button:not(.collapsed) {
+    background-color: #1e1e1e !important;
+    color: var(--pulso-green) !important;
+}
+.accordion-button::after {
+    filter: invert(1);
+}
+.accordion-item {
+    border: 1px solid #333 !important;
+    background-color: #161616 !important;
+}
+.accordion-body {
+    background-color: #161616 !important;
+    color: var(--pulso-gray);
 }

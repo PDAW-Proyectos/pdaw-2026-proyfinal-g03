@@ -13,60 +13,45 @@
     <link rel="stylesheet" href="./css/styles.css">
 </head>
 <body class="login-body">
-
     <div class="container-fluid h-100">
         <div class="row h-100">
-            
             <div class="col-lg-6 d-none d-lg-block login-img-side"></div>
-
             <div class="col-12 col-lg-6 login-form-side">
-                
                 <a href="index.html" class="btn-back-home">
                     <i class="bi bi-arrow-left"></i> Volver al inicio
                 </a>
-
                 <div class="login-form-wrapper">
-                    
                     <div class="text-center mb-5">
                         <a class="navbar-brand fs-2" href="index.html">
                             <span class="text-green"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-dumbbell preview-icon"><path d="M17.596 12.768a2 2 0 1 0 2.829-2.829l-1.768-1.767a2 2 0 0 0 2.828-2.829l-2.828-2.828a2 2 0 0 0-2.829 2.828l-1.767-1.768a2 2 0 1 0-2.829 2.829z"/><path d="m2.5 21.5 1.4-1.4"/><path d="m20.1 3.9 1.4-1.4"/><path d="M5.343 21.485a2 2 0 1 0 2.829-2.828l1.767 1.768a2 2 0 1 0 2.829-2.829l-6.364-6.364a2 2 0 1 0-2.829 2.829l1.768 1.767a2 2 0 0 0-2.828 2.829z"/><path d="m9.6 14.4 4.8-4.8"/></svg></span> IRON TEMPLE<span class="text-green">.</span>
                         </a>
                     </div>
-
                     <div class="text-center mb-4">
                         <h2 class="display-5 fw-bold mb-2">BIENVENIDO.</h2>
                         <p class="text-gray">Ingresá con tu email y DNI para continuar.</p>
                     </div>
-
                     <form id="loginForm">
                         <div class="mb-3">
                             <label for="loginEmail" class="text-white mb-2 fs-14">Correo Electrónico</label>
                             <input type="email" class="form-control login-input" id="loginEmail" placeholder="tucorreo@email.com" required>
                         </div>
-                        
                         <div class="mb-4">
-                            <label for="loginPassword" class="text-white mb-2 fs-14">Contraseña (Tu DNI)</label>
-                            <input type="password" inputmode="numeric" pattern="[0-9]*" class="form-control login-input" id="loginPassword" placeholder="Ej: 35123456" required>
-                            <p class="text-gray mt-2 mb-0 fs-12"><i class="bi bi-lock-fill me-1"></i> Ingresá tu DNI sin puntos.</p>
+                            <label for="loginPassword" class="text-white mb-2 fs-14">Contraseña</label>
+                            <input type="password"  class="form-control login-input" id="loginPassword" required>
+                            <p class="text-gray mt-2 mb-0 fs-12"><i class="bi bi-lock-fill me-1"></i> Ingresá por primera vez con DNI y luego cambie la contraseña</p>
                         </div>
-
                         <button type="submit" class="btn btn-green w-100 py-3 mb-4 fs-16">INGRESAR AL TEMPLO ↗</button>
                     </form>
-
                     <div class="text-center mt-3 p-3 rounded login-aviso-box">
                         <i class="bi bi-shop text-green fs-5 mb-1 d-block"></i>
                         <p class="text-white mb-1 fw-bold fs-13">¿Todavía no tenés cuenta?</p>
                         <p class="text-gray mb-0">El registro se realiza de forma presencial en la recepción del gimnasio.</p>
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Nuestro JS -->
     <script src="./js/app.js"></script>
 </body>
 </html>
