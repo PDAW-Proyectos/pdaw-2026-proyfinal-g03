@@ -1,5 +1,5 @@
 {
-  "ultimoId": 5,
+  "ultimoId": 7,
   "items": [
     {
       "id": 1,
@@ -11,22 +11,22 @@
     {
       "id": 2,
       "rol": "miembro",
-      "nombre": "Miembro de prueba",
-      "email": "miembro.prueba@example.com",
-      "peso": 65,
-      "altura": 170,
-      "edad": 22,
+      "nombre": "usuario 1",
+      "email": "usuario@gimnasio.com",
+      "peso": 64,
+      "altura": 165,
+      "edad": 15,
       "objetivo": "perder_peso",
       "planMembresiaId": null,
-      "passwordHash": "$2b$12$7GIyzWRpgqErHRDT6GpEO.HNVMU/WE052bGR7PpS4eG39WM4gpfP2"
+      "passwordHash": "$2b$12$gjjmloXuBgPy6FE2biZeOeE33K4uueHJdM2.1ZKJE9pYm4.iU/6Iy"
     },
     {
       "id": 3,
       "rol": "instructor",
-      "nombre": "Instructor de prueba",
-      "email": "instructor.prueba@example.com",
-      "especialidad": "Musculación",
-      "passwordHash": "$2b$12$wU7/CkG3TAPpO/nefq2eqOXqCimxLUGCUBEXnwILcWXbNM4Y6VFK2"
+      "nombre": "instructor1",
+      "email": "instructor@gimnasio.com",
+      "especialidad": "musculacion",
+      "passwordHash": "$2b$12$uSmJsiJfIPknNBP2T0H8bOwgeeN9rCC4J8LxfU.GNqf5XS4GY79TC"
     }
   ]
 }
