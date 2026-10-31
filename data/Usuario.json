@@ -1,0 +1,32 @@
+{
+  "ultimoId": 5,
+  "items": [
+    {
+      "id": 1,
+      "rol": "administrador",
+      "nombre": "Administrador",
+      "email": "admin@gimnasio.com",
+      "passwordHash": "$2b$12$vInVediRpPW7S/IyWiBt7OVMCufiTQJicZiz4iHS9RRD6kmxwMJhe"
+    },
+    {
+      "id": 2,
+      "rol": "miembro",
+      "nombre": "Miembro de prueba",
+      "email": "miembro.prueba@example.com",
+      "peso": 65,
+      "altura": 170,
+      "edad": 22,
+      "objetivo": "perder_peso",
+      "planMembresiaId": null,
+      "passwordHash": "$2b$12$7GIyzWRpgqErHRDT6GpEO.HNVMU/WE052bGR7PpS4eG39WM4gpfP2"
+    },
+    {
+      "id": 3,
+      "rol": "instructor",
+      "nombre": "Instructor de prueba",
+      "email": "instructor.prueba@example.com",
+      "especialidad": "Musculación",
+      "passwordHash": "$2b$12$wU7/CkG3TAPpO/nefq2eqOXqCimxLUGCUBEXnwILcWXbNM4Y6VFK2"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "name": "pdaw-2026-proyfinal-g03",
+  "version": "1.0.0",
+  "description": "> El eje central es que el miembro del gimnasio pueda llevar progreso de su entrenamiento según el plan elegido. Tambien se ofrece un servicio de gestión básico para los dueños y/o personal del gimnasio.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "crear-admin": "node scripts/crearAdministrador.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/PDAW-Proyectos/pdaw-2026-proyfinal-g03/issues"
+  },
+  "homepage": "https://github.com/PDAW-Proyectos/pdaw-2026-proyfinal-g03#readme",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "dotenv": "^18.0.9",
+    "express": "^5.3.0",
+    "express-session": "^1.19.0"
+  }
+}
