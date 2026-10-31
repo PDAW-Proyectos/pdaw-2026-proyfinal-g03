@@ -57,6 +57,9 @@ h1, h2, h3, h4, h5, h6, .nav-link, .btn {
 }
 .btn-outline-custom:hover { background-color: #222; color: #fff; border-color: #555; }
 
+#btnCerrarSesion:hover {
+    color: var(--pulso-green);
+}
 /* =========================================
    2. LANDING PAGE (index, gimnasio, actividades, membresia)
    ========================================= */
