@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iron Temple - Mi Panel</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="./img/pesa.png">
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body class="admin-body">
+        <!-- Header Dinámico -->
+    <header class="admin-header">
+        <a class="navbar-brand m-0" href="index.html">
+            <span class="text-green"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-dumbbell preview-icon"><path d="M17.596 12.768a2 2 0 1 0 2.829-2.829l-1.768-1.767a2 2 0 0 0 2.828-2.829l-2.828-2.828a2 2 0 0 0-2.829 2.828l-1.767-1.768a2 2 0 1 0-2.829 2.829z"/><path d="m2.5 21.5 1.4-1.4"/><path d="m20.1 3.9 1.4-1.4"/><path d="M5.343 21.485a2 2 0 1 0 2.829-2.828l1.767 1.768a2 2 0 1 0 2.829-2.829l-6.364-6.364a2 2 0 1 0-2.829 2.829l1.768 1.767a2 2 0 0 0-2.828 2.829z"/><path d="m9.6 14.4 4.8-4.8"/></svg></span> IRON TEMPLE<span class="text-green">.</span>
+        </a>
+        <div class="admin-user-info">
+            <span class="text-green fw-bold" id="nombreUsuarioHeader">Cargando...</span>
+            <button class="btn btn-outline-custom d-lg-none py-1 px-2 ms-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuLateral" aria-controls="menuLateral" style="border-color: #444;">
+                <i class="bi bi-list fs-5"></i>
+            </button>
+            <a href="#" onclick="cerrarSesion(event)"><i class="bi bi-box-arrow-right"></i> Salir</a>
+        </div>
+    </header>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar / Menú Lateral (Responsive y Fijo) -->
+            <div class="col-12 col-lg-2 admin-sidebar">
+                <!-- Contenedor del menú Offcanvas -->
+                <div class="offcanvas-lg offcanvas-start bg-pulso-darker" tabindex="-1" id="menuLateral" aria-labelledby="menuLateralLabel">
+                    <!-- Header del menú (solo celular) -->
+                    <div class="offcanvas-header d-lg-none border-bottom border-secondary">
+                        <h5 class="offcanvas-title text-white" id="menuLateralLabel">Opciones</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" data-bs-target="#menuLateral" aria-label="Close"></button>
+                    </div>
+                    <!-- Contenido del menú -->
+                    <div class="offcanvas-body d-lg-block p-0">
+                        <ul class="admin-nav nav flex-lg-column flex-row flex-wrap" id="mainTabs" role="tablist">
+                         <!-- MENÚ ADMIN -->
+                            <li class="nav-item"><button class="admin-nav-link nav-link active w-100 text-start" onclick="cambiarSeccion('admin-usuarios', this)"><i class="bi bi-people"></i> Usuarios</button></li>
+                            <li class="nav-item"><button class="admin-nav-link nav-link w-100 text-start" onclick="cambiarSeccion('admin-medicos', this)"><i class="bi bi-heart-pulse"></i> Médicos</button></li>
+                            <li class="nav-item"><button class="admin-nav-link nav-link w-100 text-start" onclick="cambiarSeccion('admin-local', this)"><i class="bi bi-shop"></i> Gestión Local</button></li>
+                            <li class="nav-item"><button class="admin-nav-link nav-link w-100 text-start" onclick="cambiarSeccion('admin-planes', this)"><i class="bi bi-credit-card"></i> Planes</button></li>
+                            <li class="nav-item"><button class="admin-nav-link nav-link w-100 text-start" onclick="cambiarSeccion('admin-actividades', this)"><i class="bi bi-calendar-event"></i> Actividades</button></li>
+                            <li class="nav-item"><button class="admin-nav-link nav-link w-100 text-start" onclick="cambiarSeccion('admin-dietas', this)"><i class="bi bi-egg-fried"></i> Dietas Generales</button></li>
+                            <li class="nav-item"><button class="admin-nav-link nav-link w-100 text-start" onclick="cambiarSeccion('admin-perfil', this)"><i class="bi bi-person-circle"></i> Mi Perfil</button></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- Contenido Dinámico -->
+            <div class="col-12 col-lg-10 admin-content-area">            
+                <!-- ==============================================
+                     CONTENIDO DE ADMIN
+                     ============================================== -->
+                <div id="contenido-admin" class="d-none">
+                    <div id="admin-usuarios" class="seccion-contenido">
+                        <div class="admin-header-action">
+                            <h2 class="admin-page-title m-0">GESTIÓN DE USUARIOS</h2>
+                            <button class="btn btn-green"><i class="bi bi-person-plus"></i> NUEVO USUARIO / ALUMNO</button>
+                        </div>
+                        <p class="text-gray mb-4 mt-2">Administrá cuentas, roles, vencimientos y suspensiones.</p>
+                        <div class="row g-3 mb-4 align-items-center">
+                            <div class="col-12 col-xl-12">
+                                <div class="input-group flex-nowrap">
+                                    <span class="input-group-text bg-dark border-secondary text-gray"><i class="bi bi-search"></i></span>
+                                    <input type="text" class="admin-form-control" style="max-width: 100%;" placeholder="Buscar por nombre...">
+                                </div>
+                            </div>
+                            <div class="col-12 col-xl-12">
+                                <div class="admin-filter-bar d-flex flex-wrap gap-2 justify-content-xl-start">
+                                    <button class="admin-btn-filter active">Todos</button>
+                                    <button class="admin-btn-filter">Alumnos</button>
+                                    <button class="admin-btn-filter">Entrenadores</button>
+                                    <button class="admin-btn-filter">Suspendidos</button>
+                                    <button class="admin-btn-filter">Por vencer (10 días)</button>
+                                    <button class="admin-btn-filter">Vencidos</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-column gap-3">
+                            <div class="admin-card">
+                                <div class="admin-card-info">
+                                    <h4>Juan Pérez <span class="badge bg-secondary text-white ms-2 fs-12">Alumno</span></h4>
+                                    <p>DNI: 35.123.456 · juan@email.com</p>
+                                    <p class="text-green mt-1 fs-12"><i class="bi bi-check-circle"></i> Vence: 01/12/2026 (Plan Mensual)</p>
+                                </div>
+                                <div class="admin-actions">
+                                    <button class="admin-btn-icon"><i class="bi bi-pencil"></i> Editar Plan</button>
+                                    <button class="admin-btn-icon"><i class="bi bi-egg-fried"></i> Editar Dieta</button>
+                                    <button class="admin-btn-icon text-danger"><i class="bi bi-slash-circle"></i> Suspender</button>
+                                </div>
+                            </div>
+                            <div class="admin-card border-yellow">
+                                <div class="admin-card-info">
+                                    <h4>María López <span class="badge bg-secondary text-white ms-2 fs-12">Alumno</span></h4>
+                                    <p>DNI: 38.987.654 · maria@email.com</p>
+                                    <p class="text-warning mt-1 fs-12"><i class="bi bi-exclamation-triangle"></i> Vence: 30/10/2026 (Faltan 8 días)</p>
+                                </div>
+                                <div class="admin-actions">
+                                    <button class="btn btn-green py-1 px-3 fs-14"><i class="bi bi-arrow-repeat"></i> RENOVAR SERVICIO</button>
+                                    <button class="admin-btn-icon"><i class="bi bi-pencil"></i> Editar Plan</button>
+                                    <button class="admin-btn-icon text-danger"><i class="bi bi-slash-circle"></i> Suspender</button>
+                                </div>
+                            </div>
+                            <div class="admin-card opacity-50">
+                                <div class="admin-card-info">
+                                    <h4>Pedro Martínez <span class="badge bg-secondary text-white ms-2 fs-12">Alumno</span></h4>
+                                    <p>DNI: 32.111.222 · pedro@email.com</p>
+                                    <p class="text-danger mt-1 fs-12"><i class="bi bi-x-circle"></i> Suspendido automáticamente (Venció: 15/10/2026)</p>
+                                </div>
+                                <div class="admin-actions">
+                                    <button class="btn btn-green py-1 px-3 fs-14"><i class="bi bi-arrow-repeat"></i> RENOVAR Y HABILITAR</button>
+                                    <button class="admin-btn-icon"><i class="bi bi-pencil"></i> Editar Plan</button>
+                                </div>
+                            </div>
+                            <div class="admin-card">
+                                <div class="admin-card-info">
+                                    <h4>Carlos Gómez <span class="badge ms-2 fs-12 badge-green">Entrenador</span></h4>
+                                    <p>DNI: 30.555.666 · carlos@pulso.com</p>
+                                    <p class="text-gray mt-1 fs-12">Especialidad: Musculación</p>
+                                </div>
+                                <div class="admin-actions">
+                                    <button class="admin-btn-icon"><i class="bi bi-person-gear"></i> Cambiar Rol</button>
+                                    <button class="admin-btn-icon text-danger"><i class="bi bi-slash-circle"></i> Suspender</button>
+                                </div>
+                            </div>
+                            <div class="admin-card opacity-50">
+                                <div class="admin-card-info">
+                                    <h4>Lucía Fernández <span class="badge bg-secondary text-white ms-2 fs-12">Alumno</span></h4>
+                                    <p>DNI: 40.222.333 · lucia@email.com</p>
+                                    <p class="text-danger mt-1 fs-12"><i class="bi bi-slash-circle"></i> Suspendido manualmente por admin</p>
+                                </div>
+                                <div class="admin-actions">
+                                    <button class="admin-btn-icon text-success"><i class="bi bi-check-circle"></i> Habilitar</button>
+                                    <button class="admin-btn-icon"><i class="bi bi-pencil"></i> Editar Plan</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="admin-medicos" class="seccion-contenido d-none">
+                        <div class="admin-header-action">
+                            <h2 class="admin-page-title m-0">MÉDICOS Y TURNOS</h2>
+                            <button class="btn btn-green"><i class="bi bi-plus-lg"></i> NUEVO PROFESIONAL</button>
+                        </div>
+                           <div class="admin-card align-items-center mb-5 mt-3 flex-wrap gap-3">
+                            <div class="admin-card-info" style="white-space: normal; min-width: 200px;">
+                                <h4 class="fs-6 fw-normal mb-0 text-white">Convenio Médico en el Gimnasio</h4>
+                                <p class="mb-0 mt-1 fs-13">Activá esta opción si el gimnasio tiene convenio con profesionales de la salud.</p>
+                            </div>
+                            <div class="admin-actions ms-auto">
+                                <div class="form-check form-switch m-0 d-flex align-items-center gap-2">
+                                    <input class="form-check-input custom-switch" type="checkbox" role="switch" id="servicioMedicoSwitch" checked>
+                                    <label class="form-check-label text-white fw-bold fs-14 text-nowrap" for="servicioMedicoSwitch" id="switchLabel">Convenio Activo</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="contenido-medicos">
+                            <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                                <h4 class="text-white m-0 fs-15">Profesionales en Convenio</h4>
+                                <div class="input-group flex-nowrap" style="max-width: 350px; width: 100%;">
+                                    <span class="input-group-text bg-dark border-secondary text-gray"><i class="bi bi-search"></i></span>
+                                    <input type="text" class="admin-form-control" style="max-width: 100%;" placeholder="Buscar por nombre o especialidad...">
+                                </div>
+                            </div>
+                            <div class="admin-card mb-3">
+                                <div class="admin-card-info">
+                                    <div class="d-flex align-items-center gap-2 mb-1">
+                                        <h4 class="mb-0">López, María</h4>
+                                        <span class="badge bg-dark border border-secondary text-gray fs-12">Nutrición</span>
+                                        <span class="badge badge-green fs-12">Activo</span>
+                                    </div>
+                                    <p>Lunes y Miércoles · 09:00 a 13:00 hs · Consultorio 2</p>
+                                </div>
+                                <div class="admin-actions">
+                                    <button class="admin-btn-icon" title="Editar"><i class="bi bi-pencil"></i></button>
+                                    <button class="admin-btn-icon text-warning" title="Suspender"><i class="bi bi-pause-circle"></i></button>
+                                    <button class="admin-btn-icon text-danger" title="Eliminar permanentemente"><i class="bi bi-trash"></i></button>
+                                </div>
+                            </div>
+                            <div class="admin-card mb-5 opacity-50">
+                                <div class="admin-card-info">
+                                    <div class="d-flex align-items-center gap-2 mb-1">
+                                        <h4 class="mb-0">Rossi, Carlos</h4>
+                                        <span class="badge bg-dark border border-secondary text-gray fs-12">Kinesiología</span>
+                                        <span class="badge bg-secondary text-white fs-12">Suspendido</span>
+                                    </div>
+                                    <p>Martes y Jueves · 14:00 a 18:00 hs · Sala de Rehabilitación</p>
+                                </div>
+                                <div class="admin-actions">
+                                    <button class="admin-btn-icon" title="Editar"><i class="bi bi-pencil"></i></button>
+                                    <button class="admin-btn-icon text-success" title="Habilitar"><i class="bi bi-play-circle"></i></button>
+                                    <button class="admin-btn-icon text-danger" title="Eliminar permanentemente"><i class="bi bi-trash"></i></button>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                                <h4 class="text-white m-0 fs-15">Agenda de Turnos</h4>
+                                <div class="d-flex gap-2 align-items-center">
+                                    <select class="admin-form-control py-2" style="width: auto; min-width: 180px;">
+                                        <option selected>López, María</option>
+                                        <option disabled>Rossi, Carlos (Suspendido)</option>
+                                    </select>
+                                    <button class="btn btn-green py-2 px-3 fs-13"><i class="bi bi-calendar-plus"></i> AGENDAR PRESENCIAL</button>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-pulso-card border border-secondary rounded overflow-hidden w-100">
+                                <div class="table-responsive">
+                                    <table class="table table-dark table-hover align-middle mb-0 table-dark-custom w-100">
+                                        <thead style="border-bottom: 1px solid #444;">
+                                            <tr>
+                                                <th class="text-gray py-3 px-4">Fecha / Hora</th>
+                                                <th class="text-gray py-3 px-4">Paciente</th>
+                                                <th class="text-gray py-3 px-4 d-none d-md-table-cell">Contacto</th>
+                                                <th class="text-gray py-3 px-4 d-none d-md-table-cell">Origen</th>
+                                                <th class="text-gray py-3 px-4">Estado</th>
+                                                <th class="text-gray py-3 px-4 text-end">Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="text-white">23/10/2026 - 09:00 hs</td>
+                                                <td class="text-white">Juan Pérez</td>
+                                                <td class="text-gray py-3 px-4 d-none d-md-table-cell">11 2345-6789</td>
+                                                <td class="text-gray py-3 px-4 d-none d-md-table-cell"><span class="badge bg-dark border border-secondary text-gray fs-12"><i class="bi bi-phone"></i> App</span></td>
+                                                <td><span class="badge badge-green">Confirmado</span></td>
+                                                <td class="text-end">
+                                                    <button class="admin-btn-icon me-1 py-1 px-2 fs-12"><i class="bi bi-bell"></i> Recordar</button>
+                                                    <button class="admin-btn-icon text-danger py-1 px-2 fs-12"><i class="bi bi-x-circle"></i> Cancelar</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-white">23/10/2026 - 10:00 hs</td>
+                                                <td class="text-white">Roberto Gómez</td>
+                                                <td class="text-gray py-3 px-4 d-none d-md-table-cell">Sin email</td>
+                                                <td class="text-gray py-3 px-4 d-none d-md-table-cell"><span class="badge bg-dark border border-secondary text-gray fs-12"><i class="bi bi-shop"></i> Presencial</span></td>
+                                                <td><span class="badge badge-warning">Pendiente</span></td>
+                                                <td class="text-end">
+                                                    <button class="admin-btn-icon me-1 py-1 px-2 fs-12 text-green"><i class="bi bi-check2-all"></i> Confirmar</button>
+                                                    <button class="admin-btn-icon text-danger py-1 px-2 fs-12"><i class="bi bi-x-circle"></i> Eliminar</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="admin-local" class="seccion-contenido d-none">
+                        <h2 class="admin-page-title">GESTIÓN LOCAL</h2>
+                        <div class="row g-4 mb-5">
+                            <div class="col-md-6">
+                                <div class="admin-card h-100 flex-column align-items-start">
+                                    <h4 class="text-white mb-2">Estado Actual</h4>
+                                    <div class="d-flex align-items-center gap-2 mb-3">
+                                        <span class="badge badge-green fs-14 py-2 px-3"><i class="bi bi-shop"></i> Local Abierto</span>
+                                    </div>
+                                    <p class="text-gray mb-4 fs-14">El gimnasio está operando con normalidad según los horarios establecidos.</p>
+                                    <button class="btn btn-danger w-100 py-2 mt-auto fs-14"><i class="bi bi-x-circle"></i> CERRAR LOCAL AHORA</button>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="admin-card h-100" style="display: block;">
+                                    <h4 class="text-white mb-2">Programar Cierre por Vacaciones / Imprevistos</h4>
+                                    <p class="text-gray mb-3 fs-13">Bloqueá el acceso físico al local. <strong>Los alumnos podrán seguir entrando a la app para ver sus rutinas.</strong></p>
+                                   
+                                    <div class="row g-2 align-items-end">
+                                        <div class="col-sm-6 col-md-4 ">
+                                            <label class="text-gray mb-1 fs-13">Desde</label>
+                                            <input type="date" class="admin-form-control w-100">
+                                        </div>
+                                        <div class="col-sm-6 col-md-4 ">
+                                            <label class="text-gray mb-1 fs-13">Hasta</label>
+                                            <input type="date" class="admin-form-control w-100">
+                                        </div>
+                                        <div class="col-sm-12 col-md-4 ">
+                                            <button class="btn btn-green w-100 py-2 fs-13 btn-cierre" title="Programar cierre">
+                                                Guardar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <h4 class="text-white mb-3 fs-15">Horarios de Apertura y Cierre</h4>
+                        <div class="admin-card mb-3" style="display: block;">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="text-white m-0"><i class="bi bi-briefcase text-green me-2"></i> Días Hábiles (Lunes a Viernes)</h5>
+                            </div>
+                            <div class="row g-3 align-items-end">
+                                <div class="col-md-4">
+                                    <label class="text-gray mb-2 fs-14">Hora de Apertura</label>
+                                    <input type="time" class="admin-form-control w-100" value="07:00">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="text-gray mb-2 fs-14">Hora de Cierre</label>
+                                    <input type="time" class="admin-form-control w-100" value="22:00">
+                                </div>
+                                <div class="col-md-4 btn-horariohabitual">
+                                    <button class="btn btn-green w-100 py-2 fs-14">GUARDAR HORARIO</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="admin-card mb-3" style="display: block;">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="text-white m-0"><i class="bi bi-sun text-green me-2"></i> Fines de Semana</h5>
+                            </div>
+                            <div class="row g-3 align-items-end">
+                                <div class="col-md-3">
+                                    <label class="text-gray mb-2 fs-14 d-block">Día</label>
+                                    <select class="admin-form-control w-100 p-3">
+                                        <option>Sábado</option>
+                                        <option>Domingo</option>
+                                        <option>Sábado y Domingo</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="text-gray mb-2 fs-14">Hora de Apertura</label>
+                                    <input type="time" class="admin-form-control w-100" value="09:00">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="text-gray mb-2 fs-14">Hora de Cierre</label>
+                                    <input type="time" class="admin-form-control w-100" value="18:00">
+                                </div>
+                                <div class="col-md-3 btn-horariohabitual">
+                                    <button class="btn btn-green w-100 py-2 fs-14 ">GUARDAR</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="admin-card mb-3" style="display: block;">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="text-white m-0"><i class="bi bi-calendar-event text-green me-2"></i> Feriados</h5>
+                            </div>
+                            <div class="row g-3 align-items-end">
+                                <div class="col-md-4">
+                                    <label class="text-gray mb-2 fs-14">Hora de Apertura (Opcional)</label>
+                                    <input type="time" class="admin-form-control w-100" value="10:00">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="text-gray mb-2 fs-14">Hora de Cierre (Opcional)</label>
+                                    <input type="time" class="admin-form-control w-100" value="15:00">
+                                </div>
+                                <div class="col-md-4 btn-horariohabitual">
+                                    <button class="btn btn-green w-100 py-2 fs-14">GUARDAR HORARIO</button>
+                                </div>
+                            </div>
+                            <p class="text-gray mt-2 mb-0 fs-12"><i class="bi bi-info-circle me-1"></i> Si no se carga horario, el local se considera cerrado los feriados.</p>
+                        </div>
+                    </div>
+                    <div id="admin-planes" class="seccion-contenido d-none">
+                        <h2 class="admin-page-title">GESTIÓN DE PLANES</h2>
+                        <div class="row g-4">
+                            <div class="col-12 col-lg-4">
+                                <div class="admin-card h-100" style="display: block;">
+                                    <h4 class="text-white mb-4"><i class="bi bi-plus-circle text-green me-2"></i> Crear Nuevo Plan</h4>
+                                    
+                                    <form>
+                                        <div class="mb-3">
+                                            <label class="text-gray mb-2 fs-14 d-block">Título del Plan</label>
+                                            <input type="text" class="admin-form-control w-100" style="max-width: 100%;" placeholder="Ej: Plan Full">
+                                        </div>
+                                        <div class="row g-3 mb-3">
+                                            <div class="col-12 col-md-6">
+                                                <label class="text-gray mb-2 fs-14 d-block">Cantidad de Días</label>
+                                                <input type="number" class="admin-form-control w-100" style="max-width: 100%;" placeholder="Ej: 30">
+                                            </div>
+                                            <div class="col-12 col-md-6">
+                                                <label class="text-gray mb-2 fs-14 d-block">Precio ($)</label>
+                                                <input type="number" class="admin-form-control w-100" style="max-width: 100%;" placeholder="Ej: 25000">
+                                            </div>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label class="text-gray mb-2 fs-14 d-block">Actividades Permitidas</label>
+                                            <select class="admin-form-control w-100" style="max-width: 100%;">
+                                                <option>Libre (Todas)</option>
+                                                <option>1 actividad</option>
+                                                <option>2 actividades</option>
+                                                <option>Solo Musculación</option>
+                                                <option>Solo Clases Grupales</option>
+                                            </select>
+                                        </div>
+                                        <button type="submit" class="btn btn-green w-100 py-3 fs-15">CREAR PLAN ↗</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="col-lg-8">
+                                <h4 class="text-white mb-3 fs-15">Planes Existentes</h4>
+                                <div class="admin-card mb-3">
+                                    <div class="admin-card-info">
+                                        <div class="d-flex align-items-center gap-2 mb-1">
+                                            <h4 class="mb-0">Plan Mensual Full</h4>
+                                            <span class="badge badge-green fs-12">Activo</span>
+                                        </div>
+                                        <p class="text-green mb-1 fs-15 fw-bold">$25.000</p>
+                                        <p class="mb-0 fs-13">Duración: 30 días · Acceso: Libre (Todas las actividades)</p>
+                                    </div>
+                                    <div class="admin-actions flex-column align-items-end gap-2">
+                                        <div class="d-flex gap-2">
+                                            <button class="admin-btn-icon" title="Editar"><i class="bi bi-pencil"></i></button>
+                                            <button class="admin-btn-icon text-warning" title="Deshabilitar"><i class="bi bi-pause-circle"></i></button>
+                                            <button class="admin-btn-icon text-danger" title="Eliminar permanentemente"><i class="bi bi-trash"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="admin-card mb-3">
+                                    <div class="admin-card-info">
+                                        <div class="d-flex align-items-center gap-2 mb-1">
+                                            <h4 class="mb-0">Plan Trimestral</h4>
+                                            <span class="badge badge-green fs-12">Activo</span>
+                                        </div>
+                                        <p class="text-green mb-1 fs-15 fw-bold">$65.000</p>
+                                        <p class="mb-0 fs-13">Duración: 90 días · Acceso: Libre (Todas las actividades)</p>
+                                    </div>
+                                    <div class="admin-actions flex-column align-items-end gap-2">
+                                        <div class="d-flex gap-2">
+                                            <button class="admin-btn-icon" title="Editar"><i class="bi bi-pencil"></i></button>
+                                            <button class="admin-btn-icon text-warning" title="Deshabilitar"><i class="bi bi-pause-circle"></i></button>
+                                            <button class="admin-btn-icon text-danger" title="Eliminar permanentemente"><i class="bi bi-trash"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="admin-card mb-3 opacity-50">
+                                    <div class="admin-card-info">
+                                        <div class="d-flex align-items-center gap-2 mb-1">
+                                            <h4 class="mb-0">Plan Pase Libre Diario</h4>
+                                            <span class="badge bg-secondary text-white fs-12">Inactivo</span>
+                                        </div>
+                                        <p class="text-gray mb-1 fs-15 fw-bold">$3.500</p>
+                                        <p class="mb-0 fs-13">Duración: 1 día · Acceso: 1 actividad</p>
+                                    </div>
+                                    <div class="admin-actions flex-column align-items-end gap-2">
+                                        <div class="d-flex gap-2">
+                                            <button class="admin-btn-icon" title="Editar"><i class="bi bi-pencil"></i></button>
+                                            <button class="admin-btn-icon text-success" title="Habilitar"><i class="bi bi-play-circle"></i></button>
+                                            <button class="admin-btn-icon text-danger" title="Eliminar permanentemente"><i class="bi bi-trash"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="admin-actividades" class="seccion-contenido d-none">
+                        <div class="admin-header-action">
+                            <h2 class="admin-page-title m-0">GESTIÓN DE ACTIVIDADES</h2>
+                        </div>
+                        <div class="row g-4">
+                            <div class="col-lg-12">
+                                <h4 class="text-white mb-3 fs-15">Actividades Programadas</h4>
+                                    <div class="admin-card mb-4 py-3 px-4">
+                                    <div class="row g-2 align-items-end w-100">
+                                        <div class="col-md-4">
+                                            <input type="text" class="admin-form-control w-100" style="max-width: 100%;" placeholder="Buscar actividad...">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <select class="admin-form-control w-100" style="max-width: 100%;">
+                                                <option selected>Profesor: Todos</option>
+                                                <option>Prof. Carla</option>
+                                                <option>Prof. Diego</option>
+                                                <option>Carlos Gómez</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <select class="admin-form-control w-100" style="max-width: 100%;">
+                                                <option selected>Día: Todos</option>
+                                                <option>Lunes</option>
+                                                <option>Martes</option>
+                                                <option>Miércoles</option>
+                                                <option>Jueves</option>
+                                                <option>Viernes</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button class="btn btn-green w-100 py-2 fs-13" style="height: 46px;">FILTRAR</button>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                <div class="admin-card mb-3">
+                                    <div class="admin-card-info">
+                                        <div class="d-flex align-items-center gap-2 mb-1">
+                                            <h4 class="mb-0">Funcional</h4>
+                                            <span class="badge bg-dark border border-secondary text-gray fs-12">Lunes</span>
+                                            <span class="badge badge-green fs-12">Activa</span>
+                                        </div>
+                                        <p class="mb-0 fs-13">Prof. Carla · 18:00 hs (45 min) · Cupo: 20 (12 inscriptos)</p>
+                                    </div>
+                                    <div class="admin-actions">
+                                        <button class="admin-btn-icon" title="Ver"><i class="bi bi-people"></i></button>
+                                        <button class="admin-btn-icon text-warning" title="Deshabilitar"><i class="bi bi-pause-circle"></i></button>
+                                        <button class="admin-btn-icon text-danger" title="Eliminar permanentemente"><i class="bi bi-trash"></i></button>
+                                    </div>
+                                </div>
+                                <div class="admin-card mb-3">
+                                    <div class="admin-card-info">
+                                        <div class="d-flex align-items-center gap-2 mb-1">
+                                            <h4 class="mb-0">Indoor Cycling</h4>
+                                            <span class="badge bg-dark border border-secondary text-gray fs-12">Martes</span>
+                                            <span class="badge badge-green fs-12">Activa</span>
+                                        </div>
+                                        <p class="mb-0 fs-13">Prof. Diego · 19:00 hs (45 min) · Cupo: 18 (18 inscriptos) <span class="text-danger ms-1 fs-12">● Cupo lleno</span></p>
+                                    </div>
+                                    <div class="admin-actions">
+                                        <button class="admin-btn-icon" title="Ver Inscriptos"><i class="bi bi-people"></i></button>
+                                        <button class="admin-btn-icon text-warning" title="Deshabilitar"><i class="bi bi-pause-circle"></i></button>
+                                        <button class="admin-btn-icon text-danger" title="Eliminar permanentemente"><i class="bi bi-trash"></i></button>
+                                    </div>
+                                </div>
+                                <div class="admin-card mb-3 opacity-50">
+                                    <div class="admin-card-info">
+                                        <div class="d-flex align-items-center gap-2 mb-1">
+                                            <h4 class="mb-0">Stretching</h4>
+                                            <span class="badge bg-dark border border-secondary text-gray fs-12">Viernes</span>
+                                            <span class="badge bg-secondary text-white fs-12">Inactiva</span>
+                                        </div>
+                                        <p class="mb-0 fs-13">Prof. Carla · 17:00 hs (40 min) · Cupo: 10 (0 inscriptos)</p>
+                                    </div>
+                                    <div class="admin-actions">
+                                        <button class="admin-btn-icon" title="Ver Inscriptos"><i class="bi bi-people"></i></button>
+                                        <button class="admin-btn-icon text-success" title="Habilitar"><i class="bi bi-play-circle"></i></button>
+                                        <button class="admin-btn-icon text-danger" title="Eliminar permanentemente"><i class="bi bi-trash"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="admin-dietas" class="seccion-contenido d-none">
+                        <h2 class="admin-page-title">DIETAS GENERALES</h2>
+                           <div class="row g-4">
+                            <div class="col-lg-12">
+                                <h4 class="text-white mb-3 fs-15">Dietas Creadas</h4>
+                                <div class="admin-card mb-3">
+                                    <div class="admin-card-info">
+                                        <div class="d-flex align-items-center gap-2 mb-1">
+                                            <h4 class="mb-0">Plan Déficit Calórico</h4>
+                                            <span class="badge bg-dark border border-secondary text-gray fs-12">Pérdida de peso</span>
+                                        </div>
+                                        <p class="mb-0 fs-13">Creado: 10/10/2026</p>
+                                    </div>
+                                    <div class="admin-actions">
+                                        <button class="admin-btn-icon" title="Editar"><i class="bi bi-pencil"></i></button>
+                                        <button class="admin-btn-icon text-danger" title="Eliminar permanentemente"><i class="bi bi-trash"></i></button>
+                                    </div>
+                                </div>
+                                <div class="admin-card mb-3">
+                                    <div class="admin-card-info">
+                                        <div class="d-flex align-items-center gap-2 mb-1">
+                                            <h4 class="mb-0">Plan Volumen (Ganar Músculo)</h4>
+                                            <span class="badge bg-dark border border-secondary text-gray fs-12">Hipertrofia</span>
+                                        </div>
+                                        <p class="mb-0 fs-13">Creado: 05/10/2026 </p>
+                                    </div>
+                                    <div class="admin-actions">
+                                        <button class="admin-btn-icon" title="Editar"><i class="bi bi-pencil"></i></button>
+                                        <button class="admin-btn-icon text-danger" title="Eliminar permanentemente"><i class="bi bi-trash"></i></button>
+                                    </div>
+                                </div>
+                                <div class="admin-card mb-3">
+                                    <div class="admin-card-info">
+                                        <div class="d-flex align-items-center gap-2 mb-1">
+                                            <h4 class="mb-0">Guía Sin Gluten</h4>
+                                            <span class="badge bg-dark border border-secondary text-gray fs-12">Celíacos</span>
+                                        </div>
+                                        <p class="mb-0 fs-13">Creado: 01/10/2026</p>
+                                    </div>
+                                    <div class="admin-actions">
+                                        <button class="admin-btn-icon" title="Editar"><i class="bi bi-pencil"></i></button>
+                                        <button class="admin-btn-icon text-danger" title="Eliminar permanentemente"><i class="bi bi-trash"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                                        <!-- ADMIN: MI PERFIL -->
+                    <div id="admin-perfil" class="seccion-contenido d-none">
+                        <h2 class="admin-page-title">MI PERFIL</h2>
+                        
+                        <!-- 1. Datos Personales -->
+                        <div class="admin-card mb-4" style="display: block;">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h4 class="mb-0 text-white"><i class="bi bi-person-badge text-green me-2"></i> Datos Personales</h4>
+                                <button class="user-btn-outline py-1 px-3 fs-13" data-bs-toggle="modal" data-bs-target="#modalCambiarPassword">
+                                    <i class="bi bi-key-fill"></i> Cambiar Contraseña
+                                </button>
+                            </div>
+                            <div class="row g-3">
+                                <div class="col-md-3">
+                                    <label class="text-gray mb-2 fs-14 d-block">Nombre completo</label>
+                                    <input type="text" class="user-form-control w-100" value="Admin Principal">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="text-gray mb-2 fs-14 d-block">DNI</label>
+                                    <input type="text" class="user-form-control w-100" value="11111111" disabled style="cursor: not-allowed; opacity: 0.6;">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="text-gray mb-2 fs-14 d-block">Email</label>
+                                    <input type="email" class="user-form-control w-100" value="admin@irontemple.com">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="text-gray mb-2 fs-14 d-block">Teléfono</label>
+                                    <input type="tel" class="user-form-control w-100" value="11 5555-4444">
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-12 text-end">
+                                    <button class="btn btn-green py-2 px-4 fs-14">GUARDAR CAMBIOS</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
