@@ -1,4 +1,3 @@
-
 const { ErrorApp } = require('../utils/errores');
 
 function autenticacion({ repoUsuarios }) {
