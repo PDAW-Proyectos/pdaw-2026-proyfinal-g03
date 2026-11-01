@@ -69,4 +69,14 @@ function fechaHora(valor, campo) {
   return d;
 }
 
-module.exports = { texto, numero, idOpcional, opcion, lista, email, hora, fechaISO, fechaHora };
+function dni(valor) {
+    const limpio = String(valor ?? '').trim();
+
+    if (!/^\d{7,8}$/.test(limpio)) {
+        throw new ErrorValidacion('El DNI debe tener entre 7 y 8 dígitos');
+    }
+
+    return limpio;
+}
+
+module.exports = { texto, numero, dni, idOpcional, opcion, lista, email, hora, fechaISO, fechaHora };

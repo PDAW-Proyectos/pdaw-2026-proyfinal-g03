@@ -1,26 +1,21 @@
-
 require('dotenv').config();
 
 const bcrypt = require('bcryptjs');
 const Administrador = require('../src/models/Administrador');
 const RepositorioUsuarios = require('../src/repositories/RepositorioUsuarios');
 
-console.log('Se está ejecutando crearAdministrador.js');
-
 async function crearAdministrador() {
-    console.log('Entró en crearAdministrador');
   const nombre = process.env.ADMIN_NOMBRE;
   const email = process.env.ADMIN_EMAIL;
   const password = process.env.ADMIN_PASSWORD;
+  const dni = process.env.ADMIN_DNI;
 
-  if (!nombre || !email || !password) {
-    throw new Error(
-      'Configurá ADMIN_NOMBRE, ADMIN_EMAIL y ADMIN_PASSWORD en .env'
-    );
+  if (!nombre || !email || !password || !dni) {
+    throw new Error('Configurá ADMIN_NOMBRE, ADMIN_EMAIL, ADMIN_PASSWORD y ADMIN_DNI en .env');
   }
 
-  if (password.length < 12) {
-    throw new Error('La contraseña inicial debe tener al menos 12 caracteres');
+  if (password.length < 8) {
+    throw new Error('La contraseña inicial debe tener al menos 8 caracteres');
   }
 
   const repoUsuarios = new RepositorioUsuarios();
@@ -35,14 +30,13 @@ async function crearAdministrador() {
   const passwordHash = await bcrypt.hash(password, 12);
 
   const administrador = new Administrador({
+    dni,
     nombre,
     email,
     passwordHash,
   });
 
   await repoUsuarios.agregar(administrador);
-
-  console.log('Administrador inicial creado correctamente.');
 }
 
 crearAdministrador().catch((error) => {
