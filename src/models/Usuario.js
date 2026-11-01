@@ -2,12 +2,16 @@ const v = require('../utils/validaciones');
 const { ErrorValidacion } = require('../utils/errores');
 
 class Usuario {
-  constructor({ id = null, nombre, email, passwordHash }) {
-    if (new.target === Usuario) throw new TypeError('Usuario es abstracta');
-    this.id = id; // lo asigna el repositorio al agregar
+  constructor({ id = null, dni, nombre, email, passwordHash }) {
+    if (new.target === Usuario) {
+      throw new TypeError('Usuario es abstracta');
+    }
+
+    this.id = id ?? v.dni(dni);
+
     this.nombre = v.texto(nombre, 'nombre', { max: 80 });
     this.email = v.email(email);
-    this.passwordHash = v.texto(passwordHash, 'passwordHash'); // nunca la contraseña en texto plano
+    this.passwordHash = v.texto(passwordHash, 'passwordHash');
   }
 
   // metodos abstractos (getters): cada subclase responde por si misma
@@ -42,7 +46,7 @@ class Usuario {
       ['miembro', require('./Miembro')],            // require diferido: evita la dependencia circular Usuario <-> subclases
       ['instructor', require('./Instructor')],
       ['administrador', require('./Administrador')],
-    ]); 
+    ]);
     const Subclase = roles.get(data?.rol);
     if (!Subclase) throw new ErrorValidacion(`Rol desconocido: ${data?.rol}`);
     return new Subclase(data);

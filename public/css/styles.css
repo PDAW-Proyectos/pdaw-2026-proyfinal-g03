@@ -57,6 +57,9 @@ h1, h2, h3, h4, h5, h6, .nav-link, .btn {
 }
 .btn-outline-custom:hover { background-color: #222; color: #fff; border-color: #555; }
 
+#btnCerrarSesion:hover {
+    color: var(--pulso-green);
+}
 /* =========================================
    2. LANDING PAGE (index, gimnasio, actividades, membresia)
    ========================================= */
@@ -417,4 +420,123 @@ footer { background-color: var(--pulso-darker); padding: 40px 0; font-size: 14px
 .accordion-body {
     background-color: #161616 !important;
     color: var(--pulso-gray);
+}
+
+/* =========================================
+   MODAL - REGISTRO DE USUARIOS
+   ========================================= */
+
+#modalRegistroUsuario .modal-content {
+    background-color: #111;
+    color: #e5e5e5;
+    border: 1px solid #292929;
+    border-radius: 6px;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.6);
+}
+
+/* Encabezado */
+#modalRegistroUsuario .modal-header {
+    background-color: #151515;
+    border-bottom: 1px solid #292929;
+    padding: 20px 24px;
+}
+
+#modalRegistroUsuario .modal-title {
+    color: #f2f2f2;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Botón para cerrar */
+#modalRegistroUsuario .btn-close {
+    filter: invert(1);
+    opacity: 0.7;
+}
+
+#modalRegistroUsuario .btn-close:hover {
+    opacity: 1;
+}
+
+/* Cuerpo */
+#modalRegistroUsuario .modal-body {
+    padding: 24px;
+}
+
+/* Etiquetas */
+#modalRegistroUsuario .form-label {
+    color: #bdbdbd;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+/* Campos */
+#modalRegistroUsuario .form-control,
+#modalRegistroUsuario .form-select {
+    background-color: #1b1b1b;
+    color: #f2f2f2;
+    border: 1px solid #383838;
+    border-radius: 4px;
+    padding: 10px 12px;
+}
+
+/* Placeholder */
+#modalRegistroUsuario .form-control::placeholder {
+    color: #777;
+}
+
+/* Al seleccionar un campo */
+#modalRegistroUsuario .form-control:focus,
+#modalRegistroUsuario .form-select:focus {
+    background-color: #1b1b1b;
+    color: #fff;
+    border-color: #8bbd20;
+    box-shadow: 0 0 0 0.2rem rgba(139, 189, 32, 0.2);
+}
+
+/* Opciones del selector */
+#modalRegistroUsuario .form-select option {
+    background-color: #1b1b1b;
+    color: #f2f2f2;
+}
+
+/* Pie del modal */
+#modalRegistroUsuario .modal-footer {
+    background-color: #151515;
+    border-top: 1px solid #292929;
+    padding: 16px 24px;
+}
+
+/* Botón cerrar */
+#modalRegistroUsuario .btn-secondary {
+    background-color: #292929;
+    border-color: #383838;
+    color: #ccc;
+}
+
+#modalRegistroUsuario .btn-secondary:hover {
+    background-color: #383838;
+    color: #fff;
+}
+
+/* Botón registrar */
+#modalRegistroUsuario .btn-primary {
+    background-color: #8bbd20;
+    border-color: #8bbd20;
+    color: #111;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+#modalRegistroUsuario .btn-primary:hover {
+    background-color: #a1d52d;
+    border-color: #a1d52d;
+}
+
+/* Mensajes de error */
+#modalRegistroUsuario .alert-danger {
+    background-color: #351b1b;
+    border-color: #702c2c;
+    color: #ffaaaa;
 }

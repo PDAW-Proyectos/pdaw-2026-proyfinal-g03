@@ -1,4 +1,3 @@
-
 const { Router } = require('express');
 
 const { exigirPermiso } = require('../middlewares/permisos');

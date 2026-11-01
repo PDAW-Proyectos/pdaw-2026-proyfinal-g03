@@ -1,32 +1,32 @@
 {
-  "ultimoId": 5,
+  "ultimoId": 0,
   "items": [
     {
-      "id": 1,
+      "id": "12345678",
       "rol": "administrador",
       "nombre": "Administrador",
       "email": "admin@gimnasio.com",
-      "passwordHash": "$2b$12$vInVediRpPW7S/IyWiBt7OVMCufiTQJicZiz4iHS9RRD6kmxwMJhe"
+      "passwordHash": "$2b$12$Hv5rq/x/qzP6k7vJ0bhJZucDG1Q3cVEUjYcf6gJ6jftd9bIWeWFrm"
     },
     {
-      "id": 2,
+      "id": "11112222",
       "rol": "miembro",
-      "nombre": "Miembro de prueba",
-      "email": "miembro.prueba@example.com",
-      "peso": 65,
-      "altura": 170,
-      "edad": 22,
+      "nombre": "Avigail",
+      "email": "avi@avi.com",
+      "peso": 55,
+      "altura": 167,
+      "edad": 23,
       "objetivo": "perder_peso",
-      "planMembresiaId": null,
-      "passwordHash": "$2b$12$7GIyzWRpgqErHRDT6GpEO.HNVMU/WE052bGR7PpS4eG39WM4gpfP2"
+      "planMembresiaId": 1,
+      "passwordHash": "$2b$12$0JsXpjnTASrabyANOtCLaOp7eEV3di098D4r4xW5mEudKF2gQlhLS"
     },
     {
-      "id": 3,
+      "id": "22221111",
       "rol": "instructor",
-      "nombre": "Instructor de prueba",
-      "email": "instructor.prueba@example.com",
-      "especialidad": "Musculación",
-      "passwordHash": "$2b$12$wU7/CkG3TAPpO/nefq2eqOXqCimxLUGCUBEXnwILcWXbNM4Y6VFK2"
+      "nombre": "mate",
+      "email": "mate@mate.com",
+      "especialidad": "crossfit",
+      "passwordHash": "$2b$12$b2GqFeFGR0l/p7ximD2zcuqR3YlOYzFnFZXdiPbJf2DxFK7GG7rHu"
     }
   ]
 }

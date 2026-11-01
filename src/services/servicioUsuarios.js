@@ -1,60 +1,46 @@
-
 const bcrypt = require('bcryptjs');
 
 const Miembro = require('../models/Miembro');
 const Instructor = require('../models/Instructor');
-const {ErrorValidacion,ErrorNoEncontrado,ErrorConflicto} = require('../utils/errores');
+const {ErrorConflicto } = require('../utils/errores');
+const v = require('../utils/validaciones');
 
 class ServicioUsuarios {
-  constructor({ repoUsuarios }) {
-    this.repoUsuarios = repoUsuarios;
-  }
+    constructor({ repoUsuarios }) {
+        this.repoUsuarios = repoUsuarios;
+    }
+
+    async _crearUsuario(Entidad, datos) {
+        const { dni, nombre, email, rol, passwordHash, ...datosEspecificos } = datos;
+
+        const dniValidado = v.dni(dni);
+        const emailValidado = v.email(email);
+
+        const usuarios = await this.repoUsuarios.listar();
+
+        if (usuarios.some(usuario => usuario.id === dniValidado)) {
+            throw new ErrorConflicto('Ya existe un usuario con ese DNI');
+        }
+
+        if (usuarios.some(usuario => usuario.email === emailValidado)) {
+            throw new ErrorConflicto('Ya existe un usuario con ese email');
+        }
+
+        const passwordHashNuevo = await bcrypt.hash(dniValidado, 12);// La contraseña inicial es el DNI.
+
+        const usuario = new Entidad({ ...datosEspecificos, dni: dniValidado, nombre, email: emailValidado, passwordHash: passwordHashNuevo });
+
+        await this.repoUsuarios.agregar(usuario);
+        return usuario;
+    }
 
     async crearMiembro(datos) {
-        const { nombre, email, password, ...datosMiembro } = datos;
-
-        if (typeof password !== 'string' || password.length < 8) {
-            throw new ErrorValidacion('La contraseña debe tener al menos 8 caracteres');
-        }
-
-        try {
-            await this.repoUsuarios.obtenerPorEmail(email);
-        } catch (error) {
-            if (!(error instanceof ErrorNoEncontrado)) {
-                throw error;   
-            }
-
-            const passwordHash = await bcrypt.hash(password, 12);
-            const miembro = new Miembro({...datosMiembro,nombre,email,passwordHash});
-            
-            await this.repoUsuarios.agregar(miembro);
-            return miembro;
-        }
-        throw new ErrorConflicto('Ya existe un usuario con ese email');
+        return this._crearUsuario(Miembro, datos);
     }
-  
+
     async crearInstructor(datos) {
-        const { nombre, email, password, ...datosInstructor } = datos;
-
-        if (typeof password !== 'string' || password.length < 8) {
-            throw new ErrorValidacion('La contraseña debe tener al menos 8 caracteres');
-        }
-
-        try {
-            await this.repoUsuarios.obtenerPorEmail(email);
-        } catch (error) {
-            if (!(error instanceof ErrorNoEncontrado)) {
-                throw error;
-            }
-            const passwordHash = await bcrypt.hash(password, 12);
-            const instructor = new Instructor({...datosInstructor,nombre,email, passwordHash});
-
-            await this.repoUsuarios.agregar(instructor);
-            return instructor;
-        }
-        throw new ErrorConflicto('Ya existe un usuario con ese email');
+        return this._crearUsuario(Instructor, datos);
     }
-
 }
 
 module.exports = ServicioUsuarios;

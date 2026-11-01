@@ -1,0 +1,12 @@
+{
+  "ultimoId": 1,
+  "items": [
+    {
+      "id": 1,
+      "nombre": "Plan mensual",
+      "precioMensual": 15000,
+      "descripcion": "Acceso a las instalaciones durante un mes",
+      "activo": true
+    }
+  ]
+}

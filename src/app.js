@@ -2,6 +2,7 @@
 // aca NO se crean servicios: llegan ya armados desde container.js
 // cada recurso suma solo dos líneas: su require y su app.use
 
+const path = require('path');
 const express = require('express');
 const session = require('express-session');
 const soloJSON = require('./middlewares/soloJSON');
@@ -26,9 +27,12 @@ function crearApp({ repos, servicios}) {
     throw new Error('Falta configurar SESSION_SECRET en el archivo .env');
   }
 
+  // Para servir el frontend con sus archivos estáticos (HTML, CSS, JS) desde la carpeta public
+  app.use(express.static(path.join(__dirname, '..', 'public')));
+
   app.use(soloJSON);
   app.use(express.json());
-  
+
   // Todo lo que está debajo de esta línea exige usuario autenticado
   app.use(session({
     name: 'connect.sid',
@@ -42,9 +46,6 @@ function crearApp({ repos, servicios}) {
       maxAge: 60 * 60 * 1000,
     },
   }));
-
-  // Para servir el frontend con sus archivos estáticos (HTML, CSS, JS) desde la carpeta public
-  // app.use(express.static(path.join(__dirname, 'public')));
 
   // Rutas públicas de autenticación
   app.use('/api/auth', rutasAuth({servicioAuth: servicios.servicioAuth,repoUsuarios: repos.repoUsuarios,}));

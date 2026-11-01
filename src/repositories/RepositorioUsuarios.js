@@ -5,8 +5,8 @@ const { ErrorNoEncontrado } = require('../utils/errores')
 
 class RepositorioUsuarios extends RepositorioJSON {
   constructor({ rutaArchivo } = {}) {
-    super({ Entidad: Usuario, rutaArchivo })
-  }
+        super({Entidad: Usuario,rutaArchivo,validarId: v.dni, generarId: null});
+    }
 
   async obtenerPorEmail(email) {
     const emailValidado = v.email(email)

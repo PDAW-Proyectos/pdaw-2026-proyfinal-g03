@@ -6,17 +6,21 @@ const v = require('../utils/validaciones');
 const { ErrorValidacion, ErrorConflicto, ErrorNoEncontrado } = require('../utils/errores');
 
 class RepositorioJSON extends EventEmitter {
+  #validarId;
+  #generarId;
   #Entidad;
   #cargado = false;
   #cola = Promise.resolve();
 
-  constructor({ Entidad, rutaArchivo } = {}) {
+  constructor({ Entidad, rutaArchivo, validarId = id => v.numero(id, 'id', { min: 1, entero: true }), generarId = ultimoId => ultimoId + 1 } = {}) {
     super();
     if (typeof Entidad !== 'function' || typeof Entidad.fromJSON !== 'function') {
       throw new TypeError('Entidad debe ser una clase con el método estático fromJSON');
     }
 
     this.#Entidad = Entidad;
+    this.#validarId = validarId;
+    this.#generarId = generarId;
     this.rutaArchivo = rutaArchivo || path.join(__dirname, '..', '..', 'data', `${Entidad.name}.json`);
     this.items = [];
     this.ultimoId = 0;
@@ -56,15 +60,16 @@ class RepositorioJSON extends EventEmitter {
     }
 
     const items = datos.items.map((item) => this.#Entidad.fromJSON(item));
-    const ids = items.map((item) => v.numero(item.id, 'id', { min: 1, entero: true }));
+    const ids = items.map(item => this.#validarId(item.id));
     if (new Set(ids).size !== ids.length) {
       throw new ErrorValidacion(`El archivo del repositorio "${this.rutaArchivo}" contiene IDs duplicados`);
     }
 
-    const ultimoId = datos.ultimoId === undefined
-      ? Math.max(0, ...ids)
-      : v.numero(datos.ultimoId, 'ultimoId', { min: 0, entero: true });
-    if (ids.some((id) => id > ultimoId)) {
+    const ultimoId = this.#generarId
+      ? (datos.ultimoId === undefined
+        ? Math.max(0, ...ids)
+        : v.numero(datos.ultimoId, 'ultimoId', { min: 0, entero: true })) : 0;
+    if (this.#generarId && ids.some(id => id > ultimoId)) {
       throw new ErrorValidacion(`ultimoId no puede ser menor que un ID almacenado en "${this.rutaArchivo}"`);
     }
 
@@ -112,7 +117,7 @@ class RepositorioJSON extends EventEmitter {
   obtenerPorId(id) {
     return this.#enCola(async () => {
       await this.#asegurarCargado();
-      const idValidado = v.numero(id, 'id', { min: 1, entero: true });
+      const idValidado = this.#validarId(id);
       const entidad = this.items.find((item) => item.id === idValidado);
       if (!entidad) throw new ErrorNoEncontrado(`${this.#Entidad.name} con ID ${idValidado} no encontrado`);
       return entidad;
@@ -125,16 +130,25 @@ class RepositorioJSON extends EventEmitter {
       this.#validarEntidad(entidad);
 
       const idAnterior = entidad.id;
-      const id = idAnterior === null || idAnterior === undefined
-        ? this.ultimoId + 1
-        : v.numero(idAnterior, 'id', { min: 1, entero: true });
+      let id;
+      if (idAnterior === null || idAnterior === undefined) {
+        if (!this.#generarId) {
+          throw new ErrorValidacion('La entidad debe tener un ID');
+        }
+
+        id = this.#generarId(this.ultimoId);
+      } else {
+        id = this.#validarId(idAnterior);
+      }
       if (this.items.some((item) => item.id === id)) {
         throw new ErrorConflicto(`${this.#Entidad.name} con ID ${id} ya existe`);
       }
 
       entidad.id = id;
       const items = [...this.items, entidad];
-      const ultimoId = Math.max(this.ultimoId, id);
+      const ultimoId = this.#generarId
+        ? Math.max(this.ultimoId, id)
+        : 0;
       try {
         await this.#escribir(items, ultimoId);
       } catch (error) {
@@ -153,7 +167,7 @@ class RepositorioJSON extends EventEmitter {
     return this.#enCola(async () => {
       await this.#asegurarCargado();
       this.#validarEntidad(entidad);
-      const id = v.numero(entidad.id, 'id', { min: 1, entero: true });
+      const id = this.#validarId(entidad.id);
       const indice = this.items.findIndex((item) => item.id === id);
       if (indice === -1) throw new ErrorNoEncontrado(`${this.#Entidad.name} con ID ${id} no encontrado`);
 
@@ -169,7 +183,7 @@ class RepositorioJSON extends EventEmitter {
   eliminar(id) {
     return this.#enCola(async () => {
       await this.#asegurarCargado();
-      const idValidado = v.numero(id, 'id', { min: 1, entero: true });
+      const idValidado = this.#validarId(id);
       const entidad = this.items.find((item) => item.id === idValidado);
       if (!entidad) throw new ErrorNoEncontrado(`${this.#Entidad.name} con ID ${idValidado} no encontrado`);
 

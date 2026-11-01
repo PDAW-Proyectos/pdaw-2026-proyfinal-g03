@@ -1,7 +1,5 @@
-
 const bcrypt = require('bcryptjs');
 const { ErrorApp } = require('../utils/errores');
-
 class ServicioAuth {
   constructor({ repoUsuarios }) {
     this.repoUsuarios = repoUsuarios;

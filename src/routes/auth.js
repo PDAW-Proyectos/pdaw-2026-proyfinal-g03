@@ -1,8 +1,6 @@
-
 const { Router } = require('express');
 const autenticacion = require('../middlewares/autenticacion');
 const crearAuthController = require('../controllers/authController');
-
 
 module.exports = function rutasAuth({ servicioAuth, repoUsuarios }) {
   const router = Router();
