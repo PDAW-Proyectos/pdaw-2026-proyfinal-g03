@@ -1,4 +1,5 @@
 import { verificarSesion, cerrarSesion } from '../auth.js';
+import { inicializarRegistroUsuarios } from './registroUsuarios.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
     try {
@@ -43,6 +44,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 console.error('Error al cerrar sesión:', error);
             }
         });
+
+        inicializarRegistroUsuarios();
 
     } catch (error) {
         console.error('Error al inicializar el panel:', error);
