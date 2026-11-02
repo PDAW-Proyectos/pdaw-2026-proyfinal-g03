@@ -1,0 +1,15 @@
+meta {
+  name: No ver el seguimiento de otro miembro
+  type: http
+  seq: 17
+}
+
+get {
+  url: {{baseUrl}}/api/seguimientos/{{seguimientoId}}
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 403
+}

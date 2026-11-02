@@ -1,0 +1,32 @@
+meta {
+  name: Crear instructor de prueba
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/api/usuarios/instructores
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "dni": "{{instructorDni}}",
+    "nombre": "Instructor de prueba",
+    "email": "{{instructorEmail}}",
+    "especialidad": "Fuerza"
+  }
+}
+
+assert {
+  res.status: in [201, 409]
+}
+
+docs {
+  Solo el **administrador** crea usuarios (permiso `crearUsuario`).
+
+  El **DNI** (7 u 8 dígitos) es el id del usuario y su **contraseña inicial**: no se manda `password`.
+
+  Responde 201 la primera vez y 409 si el DNI o el email ya existen, así la colección se puede correr varias veces. Estos usuarios los usan las demás carpetas.
+}

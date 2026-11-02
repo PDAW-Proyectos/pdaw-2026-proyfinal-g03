@@ -1,0 +1,32 @@
+meta {
+  name: Login como administrador
+  type: http
+  seq: 16
+}
+
+post {
+  url: {{baseUrl}}/api/auth/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "{{adminEmail}}",
+    "password": "{{adminPassword}}"
+  }
+}
+
+script:post-response {
+  bru.setVar("adminId", res.body.usuario.id);
+}
+
+assert {
+  res.status: eq 200
+}
+
+docs {
+  Inicia sesión como **administrador** (variables `adminEmail` y `adminPassword`).
+
+  La API usa cookie de sesión: queda guardada y se envía sola en las requests siguientes. Iniciar sesión con otro usuario **reemplaza** la sesión anterior.
+}

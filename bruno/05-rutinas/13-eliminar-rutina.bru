@@ -1,0 +1,15 @@
+meta {
+  name: Eliminar rutina
+  type: http
+  seq: 13
+}
+
+delete {
+  url: {{baseUrl}}/api/rutinas/{{rutinaId}}
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 204
+}

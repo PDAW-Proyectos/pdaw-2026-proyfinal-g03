@@ -1,0 +1,19 @@
+meta {
+  name: No ver el turno de otro miembro
+  type: http
+  seq: 14
+}
+
+get {
+  url: {{baseUrl}}/api/turnos/{{turnoId}}
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 403
+}
+
+docs {
+  Un turno reservado solo lo ve quien lo reservó o un administrador.
+}

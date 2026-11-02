@@ -1,0 +1,32 @@
+meta {
+  name: Crear membresía
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/membresias
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "nombre": "Plan Full",
+    "precioMensual": 30000,
+    "descripcion": "Acceso total al gimnasio"
+  }
+}
+
+script:post-response {
+  bru.setVar("membresiaId", res.body.id);
+}
+
+assert {
+  res.status: eq 201
+  res.body.activo: eq true
+}
+
+docs {
+  **Administrador** (permiso `gestionarMembresias`). Si no se manda `activo`, queda en `true`.
+}

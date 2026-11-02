@@ -8,7 +8,10 @@ class ErrorApp extends Error {
   }
 }
 class ErrorValidacion extends ErrorApp {
-  constructor(mensaje) { super(mensaje, 400); }
+  constructor(mensaje, campo = null) {
+    super(mensaje, 400);
+    this.campo = campo;
+  }
 }
 class ErrorProhibido extends ErrorApp {
   constructor(mensaje) { super(mensaje, 403); }

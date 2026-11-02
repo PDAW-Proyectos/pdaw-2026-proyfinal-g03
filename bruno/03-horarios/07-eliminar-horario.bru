@@ -1,0 +1,15 @@
+meta {
+  name: Eliminar horario
+  type: http
+  seq: 7
+}
+
+delete {
+  url: {{baseUrl}}/api/horarios/{{horarioId}}
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 204
+}

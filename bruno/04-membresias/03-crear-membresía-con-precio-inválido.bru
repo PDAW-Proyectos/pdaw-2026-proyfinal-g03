@@ -1,0 +1,23 @@
+meta {
+  name: Crear membresía con precio inválido
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/api/membresias
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "nombre": "Plan roto",
+    "precioMensual": -5
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.body.errores[0].campo: eq precioMensual
+}

@@ -1,0 +1,32 @@
+meta {
+  name: Iniciar seguimiento
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{baseUrl}}/api/seguimientos
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "planEntrenamientoId": "{{planEntrenamientoId}}",
+    "planNutricionalId": "{{planNutricionalId}}"
+  }
+}
+
+script:post-response {
+  bru.setVar("seguimientoId", res.body.id);
+}
+
+assert {
+  res.status: eq 201
+  res.body.estado: eq activo
+  res.body.miembroId: eq "{{miembroId}}"
+}
+
+docs {
+  **Miembro** (permiso `llevarSeguimiento`). Usa los planes generados en la carpeta *planes IA* (hay que correrla antes). El plan tiene que existir y ser del miembro.
+}

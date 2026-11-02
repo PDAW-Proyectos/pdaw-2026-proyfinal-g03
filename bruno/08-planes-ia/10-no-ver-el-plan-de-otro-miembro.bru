@@ -1,0 +1,19 @@
+meta {
+  name: No ver el plan de otro miembro
+  type: http
+  seq: 10
+}
+
+get {
+  url: {{baseUrl}}/api/planes-entrenamiento/{{planEntrenamientoId}}
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 403
+}
+
+docs {
+  Los planes generados son datos personales: solo los lee su dueño.
+}

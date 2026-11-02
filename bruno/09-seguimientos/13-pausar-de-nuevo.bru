@@ -1,0 +1,15 @@
+meta {
+  name: Pausar de nuevo
+  type: http
+  seq: 13
+}
+
+post {
+  url: {{baseUrl}}/api/seguimientos/{{seguimientoId}}/pausar
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 409
+}

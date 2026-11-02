@@ -1,0 +1,21 @@
+meta {
+  name: Listar mis seguimientos
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/api/seguimientos?page=1&limit=10
+  body: none
+  auth: none
+}
+
+params:query {
+  page: 1
+  limit: 10
+}
+
+assert {
+  res.status: eq 200
+  res.body.total: gte 1
+}

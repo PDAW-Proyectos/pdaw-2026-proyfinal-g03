@@ -1,0 +1,20 @@
+meta {
+  name: Inscribirse a la clase
+  type: http
+  seq: 14
+}
+
+post {
+  url: {{baseUrl}}/api/clases/{{claseId}}/inscribir
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+  res.body.cuposDisponibles: eq 19
+}
+
+docs {
+  **Miembro** (permiso `inscribirseAClase`). Descuenta un cupo.
+}

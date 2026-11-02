@@ -1,9 +1,0 @@
-name: local
-variables:
-  - name: baseUrl
-    value: http://localhost:3000
-  - name: adminEmail
-    value: admin@gym.com
-  - secret: true
-    name: adminPassword
-    description: ""

@@ -1,0 +1,28 @@
+meta {
+  name: Crear rutina con ejercicios inválidos
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/api/rutinas
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "nombre": "Rutina rota",
+    "nivel": "principiante",
+    "ejercicios": "hola"
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.body.errores[0].campo: eq ejercicios
+}
+
+docs {
+  `ejercicios` debe ser una lista: 400 (no 500).
+}

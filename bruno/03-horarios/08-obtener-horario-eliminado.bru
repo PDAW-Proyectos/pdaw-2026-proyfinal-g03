@@ -1,0 +1,19 @@
+meta {
+  name: Obtener horario eliminado
+  type: http
+  seq: 8
+}
+
+get {
+  url: {{baseUrl}}/api/horarios/{{horarioId}}
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 404
+}
+
+docs {
+  Un id que no existe devuelve 404.
+}

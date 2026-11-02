@@ -1,0 +1,16 @@
+meta {
+  name: Pausar seguimiento
+  type: http
+  seq: 11
+}
+
+post {
+  url: {{baseUrl}}/api/seguimientos/{{seguimientoId}}/pausar
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+  res.body.estado: eq pausado
+}

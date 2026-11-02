@@ -1,0 +1,29 @@
+meta {
+  name: Crear horario inválido
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/api/horarios
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "dia": "lunes",
+    "apertura": "23:00",
+    "cierre": "22:00"
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.body.error: isDefined
+  res.body.errores: isUndefined
+}
+
+docs {
+  La apertura no puede ser posterior al cierre: 400. Es una regla que involucra dos campos, así que la respuesta trae solo `error`, sin lista `errores`.
+}

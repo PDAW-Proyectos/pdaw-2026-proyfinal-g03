@@ -1,0 +1,22 @@
+meta {
+  name: Registrar progreso inválido
+  type: http
+  seq: 10
+}
+
+post {
+  url: {{baseUrl}}/api/seguimientos/{{seguimientoId}}/registros
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "pesoActual": 5
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.body.errores[0].campo: eq pesoActual
+}

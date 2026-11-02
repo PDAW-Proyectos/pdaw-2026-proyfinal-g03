@@ -1,0 +1,37 @@
+meta {
+  name: Publicar turno
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/api/turnos
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "tipo": "nutricionista",
+    "fecha": "{{fechaTurno}}",
+    "hora": "10:00"
+  }
+}
+
+script:pre-request {
+  const d = new Date(Date.now() + 30 * 24 * 3600 * 1000);
+  bru.setVar("fechaTurno", d.toISOString().slice(0, 10));
+}
+
+script:post-response {
+  bru.setVar("turnoId", res.body.id);
+}
+
+assert {
+  res.status: eq 201
+  res.body.disponible: eq true
+}
+
+docs {
+  **Administrador** (permiso `publicarTurno`). `tipo`: `nutricionista` o `chequeo_medico`. Nace libre (sin miembro). El script previo calcula una fecha dentro de 30 días.
+}

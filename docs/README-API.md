@@ -6,14 +6,16 @@ Base: `/api`. Todas las respuestas son JSON (salvo `204`, que no tiene cuerpo)
 { "data": [ ], "page": 1, "limit": 10, "total": 14 }
 ```
 
-- **Formato único de error.** `errores` aparece solo en los `400` de validación: (A REVISAR)
+- **Formato único de error.** Todo error es un JSON con `error` (mensaje legible). Los `400` de validación de un campo suman `errores` con el campo inválido:
 
 ```json
 {
-  "error": "Datos inválidos",
-  "errores": [ { "campo": "cupo", "mensaje": "Debe ser un entero entre 1 y 200" } ]
+  "error": "cupo debe ser un número entero entre 1 y 200",
+  "errores": [ { "campo": "cupo", "mensaje": "cupo debe ser un número entero entre 1 y 200" } ]
 }
 ```
+
+`errores` aparece solo en los `400` de validación y trae el primer campo inválido encontrado. Los errores de regla que involucran varios campos (por ejemplo, apertura posterior al cierre), el JSON mal formado y el resto de los códigos (401, 403, 404, 409, etc.) traen solo `error`.
 
 ### Códigos de estado usados
 
@@ -38,7 +40,6 @@ Los permisos se confirmarán con la autenticación (A IMPLEMENTAR).
 
 | Historia | Quién | Verbo y ruta | Éxito | Errores |
 |---|---|---|---|---|
-| Registrarse | Todos | `POST /api/auth/registro` | 201 | 400, 409 (email ya registrado), 415 |
 | Iniciar sesión | Todos | `POST /api/auth/login` | 200 | 400, 401, 415 |
 
 #### Clases
@@ -79,7 +80,6 @@ Los permisos se confirmarán con la autenticación (A IMPLEMENTAR).
 | Ver mis seguimientos | Miembro | `GET /api/seguimientos?page=1&limit=10` | 200 `{data, page, limit, total}` | 400 |
 | Ver un seguimiento | Miembro (dueño) | `GET /api/seguimientos/:id` | 200 | 403, 404 |
 | Cargar progreso | Miembro (dueño) | `POST /api/seguimientos/:id/registros` | 201 | 400, 403, 404, 409 (seguimiento pausado o finalizado), 415 |
-| Ver historial | Miembro (dueño) | `GET /api/seguimientos/:id/registros` | 200 | 403, 404 |
 | Pausar, reanudar o finalizar | Miembro (dueño) | `POST /api/seguimientos/:id/pausar` (o `/reanudar`, `/finalizar`) | 200 | 403, 404, 409 (transición no permitida) |
 
 #### Turnos

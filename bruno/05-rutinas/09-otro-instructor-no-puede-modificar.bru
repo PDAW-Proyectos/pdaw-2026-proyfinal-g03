@@ -1,0 +1,39 @@
+meta {
+  name: Otro instructor no puede modificar
+  type: http
+  seq: 9
+}
+
+put {
+  url: {{baseUrl}}/api/rutinas/{{rutinaId}}
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "nombre": "Robada",
+    "nivel": "avanzado",
+    "ejercicios": [
+      {
+        "nombre": "Sentadilla",
+        "series": 3,
+        "repeticiones": 10
+      },
+      {
+        "nombre": "Press de banca",
+        "series": 4,
+        "repeticiones": 8,
+        "descansoSeg": 90
+      }
+    ]
+  }
+}
+
+assert {
+  res.status: eq 403
+}
+
+docs {
+  Solo el instructor dueño modifica o borra su rutina: 403.
+}
