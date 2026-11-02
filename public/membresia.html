@@ -51,7 +51,9 @@
         </div>
     </section>
     <section class="section-padding">
-        <div class="container">
+        <!-- comento todo esto para no perder como se veian las tarjetas hardcodeadas ya que ahora son renderizadas y la que ya aparece en "planMembresia.json" es incompleta-->
+         
+        <!-- <div class="container">
             <div class="row g-4 justify-content-center">
                 <div class="col-lg-4 col-md-6">
                     <div class="pricing-card h-100">
@@ -100,6 +102,11 @@
                     </div>
                 </div>
 
+            </div>
+        </div> -->
+        <div class="container">
+            <div class="row g-4 justify-content-center" id="membresias-lista" aria-live="polite" aria-busy="true">
+                <p class="text-gray">Cargando membresías...</p>
             </div>
         </div>
     </section>
