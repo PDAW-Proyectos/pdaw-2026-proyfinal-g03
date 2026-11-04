@@ -233,7 +233,7 @@ function cambiarPassword(e) {
 
     user.dni = dniNuevo;
     alert("¡DNI actualizado! Usá el nuevo para entrar.");
-    bootstrap.Modal.getInstance(document.getElementById('modalCambiarPassword')).hide();
+    window.bootstrap.Modal.getInstance(document.getElementById('modalCambiarPassword')).hide();
     document.getElementById('formCambiarPassword').reset();
 }
 
@@ -293,7 +293,7 @@ function abrirModalReceta(obj, dia, comida) {
     document.getElementById('modalGrasas').textContent = c.grasa;
     document.getElementById('modalIngredientes').innerHTML = c.ingredientes.map(i => `<li><i class="bi bi-dot text-green"></i> ${i}</li>`).join('');
     document.getElementById('modalPreparacion').innerHTML = c.preparacion.map(p => `<li class="mb-2">${p}</li>`).join('');
-    new bootstrap.Modal(document.getElementById('modalReceta')).show();
+    new window.bootstrap.Modal(document.getElementById('modalReceta')).show();
 }
 
 function buscarRecetas() {
