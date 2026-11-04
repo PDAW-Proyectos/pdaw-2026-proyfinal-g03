@@ -24,5 +24,14 @@ export default defineConfig([
         ...globals.browser, // Le enseña qué es 'document', 'window', etc.
       },
     },
-  }
+  },
+  {
+    // Los tests usan las funciones globales de Jest.
+    files: ["tests/**/*.test.js"],
+    languageOptions: {
+      globals: {
+        ...globals.jest,
+      },
+    },
+  },
 ]);
