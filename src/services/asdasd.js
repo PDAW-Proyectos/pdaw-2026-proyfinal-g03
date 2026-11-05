@@ -1,3 +1,5 @@
+// renombrar a servicioUsuarios.js, git no trackeaba los cambios de mayúsculas/minúsculas
+
 const bcrypt = require('bcryptjs');
 
 const Miembro = require('../models/Miembro');
