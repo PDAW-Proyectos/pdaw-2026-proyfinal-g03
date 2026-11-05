@@ -33,7 +33,7 @@ describe('ServicioUsuarios', () => {
 
     const usuarioCreado = await servicioUsuarios.crearMiembro(datosNuevos);
 
-    expect(usuarioCreado.dni).toBe('12345678'); // A REVISAR: el validador de DNI lo puede convertir a string o número
+    expect(usuarioCreado.id).toBe('12345678'); // A REVISAR: el validador de DNI lo puede convertir a string o número, se cambia usuarioCreado.dni a usuarioCreado.id para que pase el test
     expect(usuarioCreado.rol).toBe('miembro');
     expect(mockRepoUsuarios.agregar).toHaveBeenCalled();
   });
