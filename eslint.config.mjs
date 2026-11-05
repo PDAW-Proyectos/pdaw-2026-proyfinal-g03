@@ -27,7 +27,7 @@ export default defineConfig([
   },
   {
     // Los tests usan las funciones globales de Jest.
-    files: ["tests/**/*.test.js"],
+    files: ["**/*.test.js", "**/__tests__/**/*.js"],
     languageOptions: {
       globals: {
         ...globals.jest,

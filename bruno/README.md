@@ -1,6 +1,6 @@
 # Gimnasio API — colección de Bruno
 
-Pruebas y documentación de la API. Cada carpeta es un recurso y cada request explica en su pestaña **Docs** qué hace, qué permiso pide y qué campos acepta. (A COMPLETAR)
+Pruebas y documentación de la API, en archivos de texto versionables con Git. Cada carpeta es un recurso y cada request explica en su pestaña **Docs** qué hace, qué permiso pide y qué campos acepta.
 
 ## Cómo abrirla
 
