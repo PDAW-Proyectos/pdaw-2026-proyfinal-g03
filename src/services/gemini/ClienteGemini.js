@@ -15,7 +15,7 @@ class ClienteGemini {
     this.apiKey = apiKey;
     this.modelo = modelo;
     this.timeoutMs = timeoutMs;
-    this.fetchFn = fetchFn;
+    this.fetchFn = fetchFn; // usar esto para el mockapp (para poder testear sin red ni clave) y lo de container.js (para poder testear con un fetch real)
     this.logger = logger;
   }
 
