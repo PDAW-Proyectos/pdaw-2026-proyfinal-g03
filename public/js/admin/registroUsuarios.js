@@ -346,7 +346,7 @@ export function inicializarRegistroUsuarios() {
 
     formularioRegistroUsuario(modalElemento);
     mostrarDatosPersonales();
-    const modal = new bootstrap.Modal(modalElemento);
+    const modal = new window.bootstrap.Modal(modalElemento);
     nuevoUsuarioBtn.addEventListener('click', () => { modal.show(); });
 
     const siguiente = document.getElementById('siguienteRegistro');
