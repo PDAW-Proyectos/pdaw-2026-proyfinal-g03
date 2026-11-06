@@ -3,35 +3,59 @@ import globals from "globals";
 import { defineConfig } from "eslint/config";
 
 export default defineConfig([
+  { ignores: ["node_modules/", "coverage/", "data/"] },
   js.configs.recommended,
+  // reglas del equipo (clase 16 pags 5 y 6)
+  // para backend y scripts (con CommonJS + Node):
   {
+    files: ["src/**/*.js", "scripts/**/*.js"], // aplica solo a estos archivos (por conflictos con CommonJS y ESM)
     languageOptions: {
+      sourceType: "commonjs",
       globals: {
         ...globals.node,
       },
     },
     rules: {
-      // Se usa "unused vars" para que las variables sin usar sean solo advertencias
-      // y que ignore los argumentos de las funciones (como 'next')
-      "no-unused-vars": ["warn", { argsIgnorePattern: "^_" }]
+      "eqeqeq": ["error", "always"],                          // exige ===
+      "prefer-const": "error",                                // exige const si no se reasigna
+      "no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],// variables sin usar (con warning)
+      "complexity": ["warn", 10],                             // complejidad ciclomática máxima 10  
+      "max-depth": ["warn", 3],                               // profundidad máxima de anidamiento 3
+      "max-params": ["warn", 4],                              // maximo 4 parámetros por funcion
     }
   },
+
+  // reglas para el frontend (con ES Modules + avegador)
   {
-    // Configuración específica para los archivos del frontend (navegador)
     files: ["public/js/**/*.js"],
     languageOptions: {
+      sourceType: "module", // para permitir import/export
       globals: {
-        ...globals.browser, // Le enseña qué es 'document', 'window', etc.
+        ...globals.browser,
       },
     },
+    rules: {
+      "eqeqeq": ["error", "always"],
+      "prefer-const": "error",
+      "no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
+    }
   },
+
+  // reglas para los tests con Jest (con CommonJS + Node + Jest)
+  // usan las funciones globales de Jest
   {
-    // Los tests usan las funciones globales de Jest.
     files: ["**/*.test.js", "**/__tests__/**/*.js"],
     languageOptions: {
+      sourceType: "commonjs",
       globals: {
+        ...globals.node,
         ...globals.jest,
       },
     },
-  },
+    rules: {
+      "eqeqeq": ["error", "always"],
+      "prefer-const": "error",
+      "no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
+    }
+  }
 ]);
