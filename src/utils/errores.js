@@ -11,6 +11,7 @@ class ErrorValidacion extends ErrorApp {
   constructor(mensaje, campo = null) {
     super(mensaje, 400);
     this.campo = campo;
+    if (campo) this.details = [{ campo, mensaje }];
   }
 }
 class ErrorProhibido extends ErrorApp {
@@ -38,4 +39,3 @@ module.exports = {
   ErrorApp, ErrorValidacion, ErrorProhibido, ErrorNoEncontrado, ErrorConflicto,
   ErrorLimiteExcedido, ErrorServicioExterno, ErrorTiempoAgotado,
 };
-
