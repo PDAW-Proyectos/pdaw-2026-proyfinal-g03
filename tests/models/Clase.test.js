@@ -22,18 +22,26 @@ describe('Modelo Clase', () => {
 
   test('Debe inscribir a un miembro y restar cupo', () => {
     const clase = new Clase({
-      titulo: 'Crossfit', instructorId: 1, fechaHora: fechaISO, duracionMin: 45, cupo: 2,
+      titulo: 'Crossfit',
+      instructorId: 1,
+      fechaHora: fechaISO,
+      duracionMin: 45,
+      cupo: 2,
     });
 
     clase.inscribir(10);
-    
+
     expect(clase.estaInscripto(10)).toBe(true);
     expect(clase.cuposDisponibles).toBe(1);
   });
 
   test('No debe permitir inscribir a un miembro dos veces', () => {
     const clase = new Clase({
-      titulo: 'Crossfit', instructorId: 1, fechaHora: fechaISO, duracionMin: 45, cupo: 5,
+      titulo: 'Crossfit',
+      instructorId: 1,
+      fechaHora: fechaISO,
+      duracionMin: 45,
+      cupo: 5,
     });
 
     clase.inscribir(10);
@@ -43,7 +51,11 @@ describe('Modelo Clase', () => {
 
   test('No debe permitir inscribir si no hay cupos', () => {
     const clase = new Clase({
-      titulo: 'Zumba', instructorId: 1, fechaHora: fechaISO, duracionMin: 60, cupo: 1,
+      titulo: 'Zumba',
+      instructorId: 1,
+      fechaHora: fechaISO,
+      duracionMin: 60,
+      cupo: 1,
     });
 
     clase.inscribir(10); // llena el cupo (1)
@@ -56,7 +68,11 @@ describe('Modelo Clase', () => {
     fechaPasada.setDate(fechaPasada.getDate() - 1);
 
     const clase = new Clase({
-      titulo: 'Spinning', instructorId: 1, fechaHora: fechaPasada.toISOString(), duracionMin: 45, cupo: 5,
+      titulo: 'Spinning',
+      instructorId: 1,
+      fechaHora: fechaPasada.toISOString(),
+      duracionMin: 45,
+      cupo: 5,
     });
 
     expect(() => clase.inscribir(10)).toThrow(/La clase ya comenzó/i);

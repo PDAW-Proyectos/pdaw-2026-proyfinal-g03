@@ -9,7 +9,13 @@ function requestContext(logger) {
     res.set('X-Request-Id', req.id);
     const start = Date.now();
     res.on('finish', () =>
-      logger.info('solicitud', { requestId: req.id, method: req.method, url: req.originalUrl, status: res.statusCode, ms: Date.now() - start }),
+      logger.info('solicitud', {
+        requestId: req.id,
+        method: req.method,
+        url: req.originalUrl,
+        status: res.statusCode,
+        ms: Date.now() - start,
+      }),
     );
     next();
   };

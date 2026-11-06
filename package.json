@@ -11,7 +11,9 @@
     "start": "node src/server.js",
     "crear-admin": "node scripts/crearAdministrador.js",
     "lint": "eslint .",
-    "test": "jest"
+    "test": "jest",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "repository": {
     "type": "git"
@@ -34,6 +36,7 @@
     "@eslint/js": "^10.0.1",
     "eslint": "^10.14.0",
     "globals": "^17.14.0",
-    "jest": "^30.5.2"
+    "jest": "^30.5.2",
+    "prettier": "^3.9.10"
   }
 }

@@ -14,7 +14,7 @@ describe('ServicioUsuarios', () => {
       agregar: jest.fn(),
     };
     servicioUsuarios = new ServicioUsuarios({ repoUsuarios: mockRepoUsuarios });
-    
+
     // se simula que bcrypt encripta rápido
     bcrypt.hash.mockResolvedValue('hash_simulado');
   });
@@ -28,7 +28,10 @@ describe('ServicioUsuarios', () => {
       dni: '12345678',
       nombre: 'Juan Perez',
       email: 'juan@test.com',
-      peso: 80, altura: 180, edad: 30, objetivo: 'ganar_musculo'
+      peso: 80,
+      altura: 180,
+      edad: 30,
+      objetivo: 'ganar_musculo',
     };
 
     const usuarioCreado = await servicioUsuarios.crearMiembro(datosNuevos);
@@ -44,11 +47,17 @@ describe('ServicioUsuarios', () => {
     mockRepoUsuarios.listar.mockResolvedValue([usuarioExistente]);
 
     const datosNuevos = {
-      dni: '12345678', nombre: 'Juan', email: 'juan@test.com', 
-      peso: 80, altura: 180, edad: 30, objetivo: 'ganar_musculo'
+      dni: '12345678',
+      nombre: 'Juan',
+      email: 'juan@test.com',
+      peso: 80,
+      altura: 180,
+      edad: 30,
+      objetivo: 'ganar_musculo',
     };
 
-    await expect(servicioUsuarios.crearMiembro(datosNuevos))
-      .rejects.toThrow(new ErrorConflicto('Ya existe un usuario con ese DNI'));
+    await expect(servicioUsuarios.crearMiembro(datosNuevos)).rejects.toThrow(
+      new ErrorConflicto('Ya existe un usuario con ese DNI'),
+    );
   });
 });

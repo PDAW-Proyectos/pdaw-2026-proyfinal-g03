@@ -7,8 +7,13 @@ class SeguimientoPlan {
   #registros;
 
   constructor({
-    id = null, miembroId, planEntrenamientoId = null, planNutricionalId = null,
-    fechaInicio = new Date(), estado = 'activo', registros = [],
+    id = null,
+    miembroId,
+    planEntrenamientoId = null,
+    planNutricionalId = null,
+    fechaInicio = new Date(),
+    estado = 'activo',
+    registros = [],
   }) {
     this.id = id;
     this.miembroId = v.numero(miembroId, 'miembroId', { min: 1, entero: true });
@@ -20,7 +25,9 @@ class SeguimientoPlan {
     this.fechaInicio = v.fechaHora(fechaInicio, 'fechaInicio');
     this.estado = v.opcion(estado, 'estado', ESTADOS_SEGUIMIENTO);
     // Composicion: los registros no existen sin el seguimiento
-    this.#registros = registros.map((r) => (r instanceof RegistroProgreso ? r : new RegistroProgreso(r)));
+    this.#registros = registros.map((r) =>
+      r instanceof RegistroProgreso ? r : new RegistroProgreso(r),
+    );
   }
 
   get registros() {
@@ -28,7 +35,8 @@ class SeguimientoPlan {
   }
 
   registrarProgreso(datos) {
-    if (this.estado !== 'activo') throw new ErrorConflicto(`No se puede registrar progreso en un seguimiento ${this.estado}`);
+    if (this.estado !== 'activo')
+      throw new ErrorConflicto(`No se puede registrar progreso en un seguimiento ${this.estado}`);
     const registro = datos instanceof RegistroProgreso ? datos : new RegistroProgreso(datos);
     this.#registros.push(registro);
     return registro;

@@ -3,7 +3,7 @@ const { TurnoChequeoMedico, TurnoNutricionista } = require('../../src/models/Tur
 describe('Modelo Turno', () => {
   test('Debe crear un turno de chequeo médico correctamente', () => {
     const turno = new TurnoChequeoMedico({ fecha: '2026-11-10', hora: '14:30' });
-    
+
     expect(turno.tipo).toBe('chequeo_medico');
     expect(turno.duracionMin).toBe(30);
     expect(turno.disponible).toBe(true);

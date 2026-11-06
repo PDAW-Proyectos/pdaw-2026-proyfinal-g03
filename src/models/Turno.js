@@ -13,8 +13,12 @@ class Turno {
     this.#miembroId = v.idOpcional(miembroId, 'miembroId');
   }
 
-  get tipo() { throw new Error('Sin implementar'); }
-  get duracionMin() { throw new Error('Sin implementar'); }
+  get tipo() {
+    throw new Error('Sin implementar');
+  }
+  get duracionMin() {
+    throw new Error('Sin implementar');
+  }
 
   get miembroId() {
     return this.#miembroId;
@@ -34,7 +38,8 @@ class Turno {
   // Solo quien reserva puede cancelar
   cancelar(miembroId) {
     if (this.disponible) throw new ErrorConflicto('El turno no está reservado');
-    if (Number(miembroId) !== this.#miembroId) throw new ErrorProhibido('Solo quien reservó puede cancelar el turno');
+    if (Number(miembroId) !== this.#miembroId)
+      throw new ErrorProhibido('Solo quien reservó puede cancelar el turno');
     this.#miembroId = null;
   }
 
@@ -59,13 +64,21 @@ class Turno {
 }
 
 class TurnoChequeoMedico extends Turno {
-  get tipo() { return 'chequeo_medico'; }
-  get duracionMin() { return 30; }
+  get tipo() {
+    return 'chequeo_medico';
+  }
+  get duracionMin() {
+    return 30;
+  }
 }
 
 class TurnoNutricionista extends Turno {
-  get tipo() { return 'nutricionista'; }
-  get duracionMin() { return 45; }
+  get tipo() {
+    return 'nutricionista';
+  }
+  get duracionMin() {
+    return 45;
+  }
 }
 
 const TIPOS = new Map([

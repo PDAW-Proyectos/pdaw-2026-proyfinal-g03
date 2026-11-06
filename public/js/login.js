@@ -6,16 +6,16 @@ const loginForm = document.getElementById('loginForm');
 const mensajeError = document.getElementById('loginError');
 
 loginForm.addEventListener('submit', async (event) => {
-    event.preventDefault();
+  event.preventDefault();
 
-    const email = inputEmail.value;
-    const password = inputPassword.value;
+  const email = inputEmail.value;
+  const password = inputPassword.value;
 
-    mensajeError.textContent = '';
+  mensajeError.textContent = '';
 
-    try {
-        await iniciarSesion(email, password);
-    } catch (error) {
-        mensajeError.textContent = error.message;
-    }
+  try {
+    await iniciarSesion(email, password);
+  } catch (error) {
+    mensajeError.textContent = error.message;
+  }
 });

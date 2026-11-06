@@ -11,9 +11,10 @@ class ServicioClases {
   }
 
   async listar({ instructor, page, limit } = {}) {
-    const clases = instructor === undefined
-      ? await this.repoClases.listar()
-      : await this.repoClases.listarPorInstructor(instructor);
+    const clases =
+      instructor === undefined
+        ? await this.repoClases.listar()
+        : await this.repoClases.listarPorInstructor(instructor);
     return paginar(clases, { page, limit });
   }
 
@@ -23,7 +24,7 @@ class ServicioClases {
 
   async publicar({ instructor, datos }) {
     const clase = instructor.publicarClase(datos); // el modelo valida
-    return this.repoClases.agregar(clase);         // asigna el id
+    return this.repoClases.agregar(clase); // asigna el id
   }
 
   // PUT: reemplaza la clase completa. Se conservan el id, el dueño y los inscriptos.
@@ -58,7 +59,8 @@ class ServicioClases {
   // Regla segun rol: solo el instructor dueño modifica o borra su clase
   async #claseDelInstructor(claseId, instructor) {
     const clase = await this.repoClases.obtenerPorId(claseId);
-    if (clase.instructorId !== instructor.id) throw new ErrorProhibido('La clase es de otro instructor');
+    if (clase.instructorId !== instructor.id)
+      throw new ErrorProhibido('La clase es de otro instructor');
     return clase;
   }
 }

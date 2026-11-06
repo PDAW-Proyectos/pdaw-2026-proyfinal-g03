@@ -28,7 +28,10 @@ module.exports = function crearControladorTurnos(servicio) {
 
     // POST /api/turnos
     publicar: async (req, res) => {
-      const turno = await servicio.publicar({ administrador: req.usuario, datos: filtrar(req.body, CAMPOS) });
+      const turno = await servicio.publicar({
+        administrador: req.usuario,
+        datos: filtrar(req.body, CAMPOS),
+      });
       res.status(201).location(`/api/turnos/${turno.id}`).json(turno);
     },
 

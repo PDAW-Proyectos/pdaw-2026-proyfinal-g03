@@ -11,7 +11,7 @@ Pruebas y documentación de la API, en archivos de texto versionables con Git. C
    - `adminEmail`: el email del administrador que tengas cargado.
    - `adminPassword`: variable **secreta**, completala vos (no se guarda en el repo). Es la contraseña de ese administrador, que por defecto es su DNI.
 
-Los usuarios de prueba (instructores y miembros) con sus emails y DNI están definidos en la propia colección (`collection.bru`, *Collection Settings → Vars*), no hace falta cargarlos en el entorno.
+Los usuarios de prueba (instructores y miembros) con sus emails y DNI están definidos en la propia colección (`collection.bru`, _Collection Settings → Vars_), no hace falta cargarlos en el entorno.
 
 ## Antes de correr
 
@@ -30,7 +30,9 @@ Todo error es un JSON con `error` (mensaje legible). Los `400` de validación de
 ```json
 {
   "error": "duracionMin debe ser un número entero entre 15 y 240",
-  "errores": [ { "campo": "duracionMin", "mensaje": "duracionMin debe ser un número entero entre 15 y 240" } ]
+  "errores": [
+    { "campo": "duracionMin", "mensaje": "duracionMin debe ser un número entero entre 15 y 240" }
+  ]
 }
 ```
 
@@ -46,7 +48,7 @@ Todo error es un JSON con `error` (mensaje legible). Los `400` de validación de
 
 La API usa cookie de sesión y Bruno la guarda y envía sola. Hay **una sesión por vez**: iniciar sesión con otro usuario reemplaza la anterior. Por eso cada carpeta empieza con su propio `Login como ...` y vuelve a loguearse cuando cambia de rol. Podés correr cada carpeta por separado.
 
-Los ids que se necesitan entre requests (`horarioId`, `claseId`, `turnoId`, etc.) se guardan solos con un script *Post Response*.
+Los ids que se necesitan entre requests (`horarioId`, `claseId`, `turnoId`, etc.) se guardan solos con un script _Post Response_.
 
 ## Correr todo desde la terminal
 
@@ -66,14 +68,14 @@ Los datos se guardan en archivos JSON, así que algunas pruebas dejan registros 
 
 Todo (salvo el login) exige sesión. Los listados devuelven `{ data, total, page, limit }`. Todas las rutas cuelgan de `/api/<recurso>`.
 
-| Recurso | Endpoints | Permiso (rol) |
-|---|---|---|
-| auth | `POST /api/auth/login`, `POST /api/auth/logout`, `GET /api/auth/me` | público / sesión |
-| usuarios | `POST /api/usuarios/miembros`, `POST /api/usuarios/instructores` (body: `dni`, `nombre`, `email` + datos del rol) | `crearUsuario` (administrador) |
-| horarios | `GET /`, `GET /:id` · `POST /`, `PUT /:id`, `DELETE /:id` | lectura: todos · escritura: `definirHorarios` (administrador) |
-| membresias | `GET /`, `GET /:id` · `POST /`, `PUT /:id`, `DELETE /:id` | lectura: todos · escritura: `gestionarMembresias` (administrador) |
-| rutinas | `GET /`, `GET /:id` · `POST /`, `PUT /:id`, `DELETE /:id` | lectura: todos · escritura: `crearRutina` (instructor dueño) |
-| clases | `GET /`, `GET /:id` · `POST /`, `PUT /:id`, `DELETE /:id` · `POST /:id/inscribir`, `POST /:id/desinscribir` | escritura: `publicarClase` (instructor dueño) · inscripción: `inscribirseAClase` (miembro) |
-| turnos | `GET /`, `GET /mios`, `GET /:id` · `POST /`, `DELETE /:id` · `POST /:id/reservar`, `POST /:id/cancelar` | `publicarTurno` (administrador) · `solicitarTurno` (miembro) |
-| planes-entrenamiento / planes-nutricionales | `POST /generar`, `GET /:id` | `generarPlan` (miembro); cada plan solo lo lee su dueño |
-| seguimientos | `GET /`, `GET /:id`, `POST /`, `POST /:id/registros`, `POST /:id/pausar`, `/reanudar`, `/finalizar` | `llevarSeguimiento` (miembro dueño) |
+| Recurso                                     | Endpoints                                                                                                         | Permiso (rol)                                                                              |
+| ------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| auth                                        | `POST /api/auth/login`, `POST /api/auth/logout`, `GET /api/auth/me`                                               | público / sesión                                                                           |
+| usuarios                                    | `POST /api/usuarios/miembros`, `POST /api/usuarios/instructores` (body: `dni`, `nombre`, `email` + datos del rol) | `crearUsuario` (administrador)                                                             |
+| horarios                                    | `GET /`, `GET /:id` · `POST /`, `PUT /:id`, `DELETE /:id`                                                         | lectura: todos · escritura: `definirHorarios` (administrador)                              |
+| membresias                                  | `GET /`, `GET /:id` · `POST /`, `PUT /:id`, `DELETE /:id`                                                         | lectura: todos · escritura: `gestionarMembresias` (administrador)                          |
+| rutinas                                     | `GET /`, `GET /:id` · `POST /`, `PUT /:id`, `DELETE /:id`                                                         | lectura: todos · escritura: `crearRutina` (instructor dueño)                               |
+| clases                                      | `GET /`, `GET /:id` · `POST /`, `PUT /:id`, `DELETE /:id` · `POST /:id/inscribir`, `POST /:id/desinscribir`       | escritura: `publicarClase` (instructor dueño) · inscripción: `inscribirseAClase` (miembro) |
+| turnos                                      | `GET /`, `GET /mios`, `GET /:id` · `POST /`, `DELETE /:id` · `POST /:id/reservar`, `POST /:id/cancelar`           | `publicarTurno` (administrador) · `solicitarTurno` (miembro)                               |
+| planes-entrenamiento / planes-nutricionales | `POST /generar`, `GET /:id`                                                                                       | `generarPlan` (miembro); cada plan solo lo lee su dueño                                    |
+| seguimientos                                | `GET /`, `GET /:id`, `POST /`, `POST /:id/registros`, `POST /:id/pausar`, `/reanudar`, `/finalizar`               | `llevarSeguimiento` (miembro dueño)                                                        |

@@ -1,10 +1,10 @@
-const Rutina = require('../models/Rutina')
-const RepositorioJSON = require('./RepositorioJSON')
+const Rutina = require('../models/Rutina');
+const RepositorioJSON = require('./RepositorioJSON');
 
 class RepositorioRutinas extends RepositorioJSON {
   constructor({ rutaArchivo } = {}) {
-    super({ Entidad: Rutina, rutaArchivo })
+    super({ Entidad: Rutina, rutaArchivo });
   }
 }
 
-module.exports = RepositorioRutinas
+module.exports = RepositorioRutinas;

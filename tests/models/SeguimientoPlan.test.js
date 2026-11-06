@@ -20,7 +20,7 @@ describe('Modelo SeguimientoPlan', () => {
 
   test('Debe calcular el porcentaje completado correctamente', () => {
     const seg = new SeguimientoPlan(datosBase);
-    
+
     // se registran 2 progresos completados y 1 no completado
     seg.registrarProgreso({ completado: true });
     seg.registrarProgreso({ completado: true });

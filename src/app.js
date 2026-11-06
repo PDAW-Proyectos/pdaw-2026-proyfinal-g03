@@ -22,7 +22,12 @@ const rutasTurnos = require('./routes/turnos');
 const rutasMembresias = require('./routes/membresias');
 const rutasHorarios = require('./routes/horarios');
 
-function crearApp({ repos, servicios, logger = createLogger(), env = process.env.NODE_ENV || 'development' }) {
+function crearApp({
+  repos,
+  servicios,
+  logger = createLogger(),
+  env = process.env.NODE_ENV || 'development',
+}) {
   const app = express();
 
   if (!secretoSesion) {
@@ -38,21 +43,26 @@ function crearApp({ repos, servicios, logger = createLogger(), env = process.env
   app.use(express.json({ limit: '100kb' })); // límite de tamaño del cuerpo, clase 13
 
   // Todo lo que está debajo de esta línea exige usuario autenticado
-  app.use(session({
-    name: 'connect.sid',
-    secret: secretoSesion,
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      httpOnly: true,
-      sameSite: 'lax',
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: 60 * 60 * 1000,
-    },
-  }));
+  app.use(
+    session({
+      name: 'connect.sid',
+      secret: secretoSesion,
+      resave: false,
+      saveUninitialized: false,
+      cookie: {
+        httpOnly: true,
+        sameSite: 'lax',
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: 60 * 60 * 1000,
+      },
+    }),
+  );
 
   // Rutas públicas de autenticación
-  app.use('/api/auth', rutasAuth({servicioAuth: servicios.servicioAuth,repoUsuarios: repos.repoUsuarios,}));
+  app.use(
+    '/api/auth',
+    rutasAuth({ servicioAuth: servicios.servicioAuth, repoUsuarios: repos.repoUsuarios }),
+  );
 
   // Desde aquí, las rutas de la API requieren una sesión válida.
   app.use('/api', autenticacion({ repoUsuarios: repos.repoUsuarios }));
