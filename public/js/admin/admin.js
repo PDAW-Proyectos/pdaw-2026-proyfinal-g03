@@ -1,5 +1,6 @@
 import { verificarSesion, cerrarSesion } from '../auth.js';
 import { inicializarRegistroUsuarios } from './registroUsuarios.js';
+import { inicializarRenderizadoAdmin } from './renderizado.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
     try {
@@ -12,6 +13,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (nombreUsuario) {
             nombreUsuario.textContent = usuario.nombre;
         }
+
+        inicializarRenderizadoAdmin(usuario);
 
         const botonesMenu = document.querySelectorAll('.admin-nav-link');
 
