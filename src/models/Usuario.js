@@ -15,8 +15,12 @@ class Usuario {
   }
 
   // metodos abstractos (getters): cada subclase responde por si misma
-  get rol() { throw new Error('Sin implementar'); }
-  get permisos() { throw new Error('Sin implementar'); }
+  get rol() {
+    throw new Error('Sin implementar');
+  }
+  get permisos() {
+    throw new Error('Sin implementar');
+  }
 
   // Acciones que puede hacer la clase Usuario - A REVISAR
   // Los permisos los define cada subclase en su propio archivo, puede() solo los consulta
@@ -43,7 +47,7 @@ class Usuario {
   // Fabrica: los datos persistidos son objetos planos, cada rol decide qué subclase reconstruir
   static fromJSON(data) {
     const roles = new Map([
-      ['miembro', require('./Miembro')],            // require diferido: evita la dependencia circular Usuario <-> subclases
+      ['miembro', require('./Miembro')], // require diferido: evita la dependencia circular Usuario <-> subclases
       ['instructor', require('./Instructor')],
       ['administrador', require('./Administrador')],
     ]);

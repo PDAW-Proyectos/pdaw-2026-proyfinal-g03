@@ -16,7 +16,10 @@ function numero(valor, campo, { min = -Infinity, max = Infinity, entero = false 
   }
   const n = Number(valor);
   if (!Number.isFinite(n) || n < min || n > max || (entero && !Number.isInteger(n))) {
-    throw new ErrorValidacion(`${campo} debe ser un número${entero ? ' entero' : ''} entre ${min} y ${max}`, campo);
+    throw new ErrorValidacion(
+      `${campo} debe ser un número${entero ? ' entero' : ''} entre ${min} y ${max}`,
+      campo,
+    );
   }
   return n;
 }
@@ -35,7 +38,10 @@ function opcion(valor, campo, permitidas) {
 
 function lista(valor, campo, { min = 0, max = 100 } = {}) {
   if (!Array.isArray(valor) || valor.length < min || valor.length > max) {
-    throw new ErrorValidacion(`${campo} debe ser una lista de entre ${min} y ${max} elementos`, campo);
+    throw new ErrorValidacion(
+      `${campo} debe ser una lista de entre ${min} y ${max} elementos`,
+      campo,
+    );
   }
   return valor;
 }
@@ -65,18 +71,30 @@ function fechaISO(valor, campo) {
 
 function fechaHora(valor, campo) {
   const d = valor instanceof Date ? valor : new Date(valor);
-  if (Number.isNaN(d.getTime())) throw new ErrorValidacion(`${campo} no es una fecha válida`, campo);
+  if (Number.isNaN(d.getTime()))
+    throw new ErrorValidacion(`${campo} no es una fecha válida`, campo);
   return d;
 }
 
 function dni(valor) {
-    const limpio = String(valor ?? '').trim();
+  const limpio = String(valor ?? '').trim();
 
-    if (!/^\d{7,8}$/.test(limpio)) {
-        throw new ErrorValidacion('El DNI debe tener entre 7 y 8 dígitos', dni);
-    }
+  if (!/^\d{7,8}$/.test(limpio)) {
+    throw new ErrorValidacion('El DNI debe tener entre 7 y 8 dígitos', dni);
+  }
 
-    return limpio;
+  return limpio;
 }
 
-module.exports = { texto, numero, dni, idOpcional, opcion, lista, email, hora, fechaISO, fechaHora };
+module.exports = {
+  texto,
+  numero,
+  dni,
+  idOpcional,
+  opcion,
+  lista,
+  email,
+  hora,
+  fechaISO,
+  fechaHora,
+};

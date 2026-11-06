@@ -12,7 +12,12 @@ class RepositorioJSON extends EventEmitter {
   #cargado = false;
   #cola = Promise.resolve();
 
-  constructor({ Entidad, rutaArchivo, validarId = id => v.numero(id, 'id', { min: 1, entero: true }), generarId = ultimoId => ultimoId + 1 } = {}) {
+  constructor({
+    Entidad,
+    rutaArchivo,
+    validarId = (id) => v.numero(id, 'id', { min: 1, entero: true }),
+    generarId = (ultimoId) => ultimoId + 1,
+  } = {}) {
     super();
     if (typeof Entidad !== 'function' || typeof Entidad.fromJSON !== 'function') {
       throw new TypeError('Entidad debe ser una clase con el método estático fromJSON');
@@ -21,7 +26,8 @@ class RepositorioJSON extends EventEmitter {
     this.#Entidad = Entidad;
     this.#validarId = validarId;
     this.#generarId = generarId;
-    this.rutaArchivo = rutaArchivo || path.join(__dirname, '..', '..', 'data', `${Entidad.name}.json`);
+    this.rutaArchivo =
+      rutaArchivo || path.join(__dirname, '..', '..', 'data', `${Entidad.name}.json`);
     this.items = [];
     this.ultimoId = 0;
   }
@@ -52,25 +58,35 @@ class RepositorioJSON extends EventEmitter {
     try {
       datos = JSON.parse(contenido);
     } catch (error) {
-      throw new Error(`No se pudo interpretar el archivo del repositorio "${this.rutaArchivo}": ${error.message}`, { cause: error });
+      throw new Error(
+        `No se pudo interpretar el archivo del repositorio "${this.rutaArchivo}": ${error.message}`,
+        { cause: error },
+      );
     }
 
     if (!datos || !Array.isArray(datos.items)) {
-      throw new ErrorValidacion(`El archivo del repositorio "${this.rutaArchivo}" debe contener un arreglo "items"`);
+      throw new ErrorValidacion(
+        `El archivo del repositorio "${this.rutaArchivo}" debe contener un arreglo "items"`,
+      );
     }
 
     const items = datos.items.map((item) => this.#Entidad.fromJSON(item));
-    const ids = items.map(item => this.#validarId(item.id));
+    const ids = items.map((item) => this.#validarId(item.id));
     if (new Set(ids).size !== ids.length) {
-      throw new ErrorValidacion(`El archivo del repositorio "${this.rutaArchivo}" contiene IDs duplicados`);
+      throw new ErrorValidacion(
+        `El archivo del repositorio "${this.rutaArchivo}" contiene IDs duplicados`,
+      );
     }
 
     const ultimoId = this.#generarId
-      ? (datos.ultimoId === undefined
+      ? datos.ultimoId === undefined
         ? Math.max(0, ...ids)
-        : v.numero(datos.ultimoId, 'ultimoId', { min: 0, entero: true })) : 0;
-    if (this.#generarId && ids.some(id => id > ultimoId)) {
-      throw new ErrorValidacion(`ultimoId no puede ser menor que un ID almacenado en "${this.rutaArchivo}"`);
+        : v.numero(datos.ultimoId, 'ultimoId', { min: 0, entero: true })
+      : 0;
+    if (this.#generarId && ids.some((id) => id > ultimoId)) {
+      throw new ErrorValidacion(
+        `ultimoId no puede ser menor que un ID almacenado en "${this.rutaArchivo}"`,
+      );
     }
 
     this.items = items;
@@ -84,22 +100,30 @@ class RepositorioJSON extends EventEmitter {
     const directorio = path.dirname(this.rutaArchivo);
     await fs.mkdir(directorio, { recursive: true });
     const temporal = `${this.rutaArchivo}.${process.pid}.${randomUUID()}.tmp`;
-    const contenido = JSON.stringify({
-      ultimoId,
-      items: items.map((item) => (
-        typeof item.toStorage === 'function' ? item.toStorage() : item.toJSON()
-      )),
-    }, null, 2);
+    const contenido = JSON.stringify(
+      {
+        ultimoId,
+        items: items.map((item) =>
+          typeof item.toStorage === 'function' ? item.toStorage() : item.toJSON(),
+        ),
+      },
+      null,
+      2,
+    );
 
     await fs.writeFile(temporal, contenido, 'utf8');
     await fs.rename(temporal, this.rutaArchivo);
   }
 
   #validarEntidad(entidad) {
-    if (!(entidad instanceof this.#Entidad)
-      || typeof entidad.toJSON !== 'function'
-      || !Object.hasOwn(entidad, 'id')) {
-      throw new ErrorValidacion(`La entidad debe ser una instancia de ${this.#Entidad.name} con id y toJSON()`);
+    if (
+      !(entidad instanceof this.#Entidad) ||
+      typeof entidad.toJSON !== 'function' ||
+      !Object.hasOwn(entidad, 'id')
+    ) {
+      throw new ErrorValidacion(
+        `La entidad debe ser una instancia de ${this.#Entidad.name} con id y toJSON()`,
+      );
     }
   }
 
@@ -119,7 +143,8 @@ class RepositorioJSON extends EventEmitter {
       await this.#asegurarCargado();
       const idValidado = this.#validarId(id);
       const entidad = this.items.find((item) => item.id === idValidado);
-      if (!entidad) throw new ErrorNoEncontrado(`${this.#Entidad.name} con ID ${idValidado} no encontrado`);
+      if (!entidad)
+        throw new ErrorNoEncontrado(`${this.#Entidad.name} con ID ${idValidado} no encontrado`);
       return entidad;
     });
   }
@@ -146,9 +171,7 @@ class RepositorioJSON extends EventEmitter {
 
       entidad.id = id;
       const items = [...this.items, entidad];
-      const ultimoId = this.#generarId
-        ? Math.max(this.ultimoId, id)
-        : 0;
+      const ultimoId = this.#generarId ? Math.max(this.ultimoId, id) : 0;
       try {
         await this.#escribir(items, ultimoId);
       } catch (error) {
@@ -169,7 +192,8 @@ class RepositorioJSON extends EventEmitter {
       this.#validarEntidad(entidad);
       const id = this.#validarId(entidad.id);
       const indice = this.items.findIndex((item) => item.id === id);
-      if (indice === -1) throw new ErrorNoEncontrado(`${this.#Entidad.name} con ID ${id} no encontrado`);
+      if (indice === -1)
+        throw new ErrorNoEncontrado(`${this.#Entidad.name} con ID ${id} no encontrado`);
 
       const items = [...this.items];
       items[indice] = entidad;
@@ -185,7 +209,8 @@ class RepositorioJSON extends EventEmitter {
       await this.#asegurarCargado();
       const idValidado = this.#validarId(id);
       const entidad = this.items.find((item) => item.id === idValidado);
-      if (!entidad) throw new ErrorNoEncontrado(`${this.#Entidad.name} con ID ${idValidado} no encontrado`);
+      if (!entidad)
+        throw new ErrorNoEncontrado(`${this.#Entidad.name} con ID ${idValidado} no encontrado`);
 
       const items = this.items.filter((item) => item.id !== idValidado);
       await this.#escribir(items, this.ultimoId);

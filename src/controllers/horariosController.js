@@ -20,13 +20,18 @@ module.exports = function crearControladorHorarios(servicio) {
 
     // POST /api/horarios
     crear: async (req, res) => {
-      const horario = await servicio.crear({ administrador: req.usuario, datos: filtrar(req.body, CAMPOS) });
+      const horario = await servicio.crear({
+        administrador: req.usuario,
+        datos: filtrar(req.body, CAMPOS),
+      });
       res.status(201).location(`/api/horarios/${horario.id}`).json(horario);
     },
 
     // PUT /api/horarios/:id
     modificar: async (req, res) => {
-      res.json(await servicio.modificar({ horarioId: req.params.id, datos: filtrar(req.body, CAMPOS) }));
+      res.json(
+        await servicio.modificar({ horarioId: req.params.id, datos: filtrar(req.body, CAMPOS) }),
+      );
     },
 
     // DELETE /api/horarios/:id

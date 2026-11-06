@@ -25,11 +25,11 @@
 
 Una historia está terminada cuando:
 
--  Cumple todos sus criterios de aceptación.
--  El código fue revisado y aprobado en un pull request por otra persona.
--  Las pruebas automatizadas pasan (localmente y en integración continua).
--  Está integrada en `main` sin romper funcionalidades existentes.
--  La documentación (README, API) está actualizada si corresponde.
+- Cumple todos sus criterios de aceptación.
+- El código fue revisado y aprobado en un pull request por otra persona.
+- Las pruebas automatizadas pasan (localmente y en integración continua).
+- Está integrada en `main` sin romper funcionalidades existentes.
+- La documentación (README, API) está actualizada si corresponde.
 
 ## Revisión de código
 

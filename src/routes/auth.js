@@ -17,7 +17,7 @@ module.exports = function rutasAuth({ servicioAuth, repoUsuarios }) {
 
   // GET /api/auth/me
   // Devuelve los datos públicos del usuario autenticado.
-  router.get('/me',autenticacion({ repoUsuarios }),controller.me);
+  router.get('/me', autenticacion({ repoUsuarios }), controller.me);
 
   return router;
 };

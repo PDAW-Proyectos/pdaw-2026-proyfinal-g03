@@ -12,19 +12,27 @@ module.exports = function crearControladorPlanes(servicio) {
   return conNextTodos({
     // POST /api/planes-entrenamiento/generar
     generarEntrenamiento: async (req, res) => {
-      const plan = await servicio.generarEntrenamiento({ miembro: req.usuario, ...filtrar(req.body) });
+      const plan = await servicio.generarEntrenamiento({
+        miembro: req.usuario,
+        ...filtrar(req.body),
+      });
       res.status(201).location(`/api/planes-entrenamiento/${plan.id}`).json(plan);
     },
 
     // POST /api/planes-nutricionales/generar
     generarNutricional: async (req, res) => {
-      const plan = await servicio.generarNutricional({ miembro: req.usuario, ...filtrar(req.body) });
+      const plan = await servicio.generarNutricional({
+        miembro: req.usuario,
+        ...filtrar(req.body),
+      });
       res.status(201).location(`/api/planes-nutricionales/${plan.id}`).json(plan);
     },
 
     // GET /api/planes-entrenamiento/:id
     obtenerEntrenamiento: async (req, res) => {
-      res.json(await servicio.obtenerEntrenamiento({ planId: req.params.id, miembro: req.usuario }));
+      res.json(
+        await servicio.obtenerEntrenamiento({ planId: req.params.id, miembro: req.usuario }),
+      );
     },
 
     // GET /api/planes-nutricionales/:id

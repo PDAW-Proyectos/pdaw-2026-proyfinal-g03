@@ -5,8 +5,18 @@ const { ErrorValidacion } = require('../utils/errores');
 
 class PlanEntrenamiento {
   constructor({
-    id = null, miembroId = null, nombre, descripcion = '', objetivo, nivel, duracionSemanas,
-    dias = [], recomendaciones = [], origen = 'gimnasio', idExterno = null, creadoEn = new Date(),
+    id = null,
+    miembroId = null,
+    nombre,
+    descripcion = '',
+    objetivo,
+    nivel,
+    duracionSemanas,
+    dias = [],
+    recomendaciones = [],
+    origen = 'gimnasio',
+    idExterno = null,
+    creadoEn = new Date(),
   }) {
     this.id = id;
     this.origen = v.opcion(origen, 'origen', ORIGENES_PLAN);
@@ -19,15 +29,21 @@ class PlanEntrenamiento {
     this.descripcion = v.texto(descripcion, 'descripcion', { min: 0, max: 1000 });
     this.objetivo = v.opcion(objetivo, 'objetivo', OBJETIVOS);
     this.nivel = v.opcion(nivel, 'nivel', NIVELES);
-    this.duracionSemanas = v.numero(duracionSemanas, 'duracionSemanas', { min: 1, max: 104, entero: true });
+    this.duracionSemanas = v.numero(duracionSemanas, 'duracionSemanas', {
+      min: 1,
+      max: 104,
+      entero: true,
+    });
     // composición: cada día tiene sus ejercicios, se reutiliza la clase Ejercicio
     this.dias = v.lista(dias, 'dias', { min: this.origen === 'ia' ? 1 : 0, max: 7 }).map((d) => ({
       dia: v.texto(d?.dia, 'dia', { max: 40 }),
       enfoque: v.texto(d?.enfoque, 'enfoque', { max: 100 }),
-      ejercicios: v.lista(d?.ejercicios, 'ejercicios', { min: 1, max: 12 })
+      ejercicios: v
+        .lista(d?.ejercicios, 'ejercicios', { min: 1, max: 12 })
         .map((e) => (e instanceof Ejercicio ? e : new Ejercicio(e))),
     }));
-    this.recomendaciones = v.lista(recomendaciones, 'recomendaciones', { max: 10 })
+    this.recomendaciones = v
+      .lista(recomendaciones, 'recomendaciones', { max: 10 })
       .map((r) => v.texto(r, 'recomendación', { max: 300 }));
     this.idExterno = idExterno === null ? null : v.texto(idExterno, 'idExterno', { max: 100 });
     this.creadoEn = v.fechaHora(creadoEn, 'creadoEn');

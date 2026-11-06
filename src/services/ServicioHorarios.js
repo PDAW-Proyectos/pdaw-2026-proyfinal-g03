@@ -19,7 +19,7 @@ class ServicioHorarios {
 
   async crear({ administrador, datos }) {
     const horario = administrador.definirHorarios(datos); // el modelo valida
-    return this.repoHorarios.agregar(horario);            // asigna el id
+    return this.repoHorarios.agregar(horario); // asigna el id
   }
 
   // PUT: reemplaza el horario completo, se conserva el id

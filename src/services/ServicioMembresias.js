@@ -18,7 +18,7 @@ class ServicioMembresias {
 
   async crear({ administrador, datos }) {
     const plan = administrador.gestionarPlanMembresia(datos); // el modelo valida
-    return this.repoMembresias.agregar(plan);                 // asigna el id
+    return this.repoMembresias.agregar(plan); // asigna el id
   }
 
   // PUT: reemplaza el plan completo, se conserva el id

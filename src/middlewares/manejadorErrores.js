@@ -24,12 +24,14 @@ module.exports = manejadorErrores;
 */
 const { ErrorApp, ErrorNoEncontrado, ErrorValidacion } = require('../utils/errores');
 
-const notFound = (req, res, next) => next(new ErrorNoEncontrado(`La ruta ${req.method} ${req.path}`));
+const notFound = (req, res, next) =>
+  next(new ErrorNoEncontrado(`La ruta ${req.method} ${req.path}`));
 
 // Errores de librerías traducidos a errores propios.
 function normalize(err) {
   if (err instanceof ErrorApp) return err;
-  if (err.type === 'entity.parse.failed') return new ErrorValidacion('El cuerpo no es JSON válido', 'body');
+  if (err.type === 'entity.parse.failed')
+    return new ErrorValidacion('El cuerpo no es JSON válido', 'body');
   return null; // error de programación: no se conoce
 }
 
@@ -39,19 +41,25 @@ function manejadorErrores(logger, { exposeStack = false } = {}) {
     if (res.headersSent) return next(err);
     const known = normalize(err);
     const status = known?.status ?? 500;
-    if (status >= 500) logger.error(err.message, { requestId: req.id, stack: err.stack, cause: err.cause?.message });
+    if (status >= 500)
+      logger.error(err.message, { requestId: req.id, stack: err.stack, cause: err.cause?.message });
     else logger.warn(known.message, { requestId: req.id, status });
 
-    res.status(status).type('application/problem+json').json({
-      type: 'about:blank',
-      title: known?.title ?? 'Error interno',
-      status,
-      detail: known?.message ?? 'Ocurrió un error inesperado. Si persiste, informe el código de solicitud.',
-      instance: req.originalUrl,
-      requestId: req.id,
-      ...(known?.details && { errores: known.details }),
-      ...(exposeStack && !known && { stack: err.stack }), // solo en desarrollo
-    });
+    res
+      .status(status)
+      .type('application/problem+json')
+      .json({
+        type: 'about:blank',
+        title: known?.title ?? 'Error interno',
+        status,
+        detail:
+          known?.message ??
+          'Ocurrió un error inesperado. Si persiste, informe el código de solicitud.',
+        instance: req.originalUrl,
+        requestId: req.id,
+        ...(known?.details && { errores: known.details }),
+        ...(exposeStack && !known && { stack: err.stack }), // solo en desarrollo
+      });
   };
 }
 

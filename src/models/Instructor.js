@@ -11,8 +11,12 @@ class Instructor extends Usuario {
     this.especialidad = v.texto(especialidad, 'especialidad', { max: 80 });
   }
 
-  get rol() { return 'instructor'; }
-  get permisos() { return PERMISOS; }
+  get rol() {
+    return 'instructor';
+  }
+  get permisos() {
+    return PERMISOS;
+  }
 
   mostrarResumen() {
     return `${super.mostrarResumen()} - ${this.especialidad}`;

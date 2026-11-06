@@ -10,9 +10,7 @@
       "duracionMin": 60,
       "cupo": 1,
       "cuposDisponibles": 0,
-      "inscriptosIds": [
-        5
-      ]
+      "inscriptosIds": [5]
     }
   ]
 }

@@ -3,11 +3,20 @@ const { Turno } = require('./Turno');
 const PlanMembresia = require('./PlanMembresia');
 const HorarioGimnasio = require('./HorarioGimnasio');
 
-const PERMISOS = new Set(['publicarTurno', 'gestionarMembresias', 'definirHorarios','crearUsuario']);
+const PERMISOS = new Set([
+  'publicarTurno',
+  'gestionarMembresias',
+  'definirHorarios',
+  'crearUsuario',
+]);
 
 class Administrador extends Usuario {
-  get rol() { return 'administrador'; }
-  get permisos() { return PERMISOS; }
+  get rol() {
+    return 'administrador';
+  }
+  get permisos() {
+    return PERMISOS;
+  }
 
   publicarTurno(datos) {
     return Turno.fromJSON(datos);

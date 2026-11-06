@@ -3,7 +3,12 @@ const SeguimientoPlan = require('./SeguimientoPlan');
 const v = require('../utils/validaciones');
 const { OBJETIVOS } = require('../utils/constantes');
 
-const PERMISOS = new Set(['inscribirseAClase', 'solicitarTurno', 'llevarSeguimiento', 'generarPlan']);
+const PERMISOS = new Set([
+  'inscribirseAClase',
+  'solicitarTurno',
+  'llevarSeguimiento',
+  'generarPlan',
+]);
 
 class Miembro extends Usuario {
   constructor({ peso, altura, edad, objetivo, planMembresiaId = null, ...base }) {
@@ -15,8 +20,12 @@ class Miembro extends Usuario {
     this.planMembresiaId = v.idOpcional(planMembresiaId, 'planMembresiaId');
   }
 
-  get rol() { return 'miembro'; }
-  get permisos() { return PERMISOS; }
+  get rol() {
+    return 'miembro';
+  }
+  get permisos() {
+    return PERMISOS;
+  }
 
   // Las reglas viven en Clase/Turno, el miembro solo delega
   inscribirseAClase(clase) {

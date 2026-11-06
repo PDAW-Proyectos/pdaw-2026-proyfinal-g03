@@ -11,7 +11,12 @@ const { ESQUEMA_ENTRENAMIENTO, ESQUEMA_NUTRICION } = require('./gemini/esquemas'
 const DURACION_PLAN_SEMANAS = 4;
 
 class ServicioPlanes {
-  constructor({ clienteGemini, repoPlanesEntrenamiento, repoPlanesNutricionales, logger = console }) {
+  constructor({
+    clienteGemini,
+    repoPlanesEntrenamiento,
+    repoPlanesNutricionales,
+    logger = console,
+  }) {
     this.clienteGemini = clienteGemini;
     this.repoPlanesEntrenamiento = repoPlanesEntrenamiento;
     this.repoPlanesNutricionales = repoPlanesNutricionales;
@@ -26,17 +31,20 @@ class ServicioPlanes {
       esquema: ESQUEMA_ENTRENAMIENTO,
     });
     // estos datos se copian campo por campo, lo que Gemini agregue de más (como id, miembroId u origen) se ignora
-    const plan = this.#construirDesdeIA(() => new PlanEntrenamiento({
-      miembroId: miembro.id,
-      nombre: datos.nombre,
-      descripcion: datos.descripcion,
-      objetivo: miembro.objetivo,
-      nivel: opciones.nivel,
-      duracionSemanas: DURACION_PLAN_SEMANAS,
-      dias: datos.dias,
-      recomendaciones: datos.recomendaciones,
-      origen: 'ia',
-    }));
+    const plan = this.#construirDesdeIA(
+      () =>
+        new PlanEntrenamiento({
+          miembroId: miembro.id,
+          nombre: datos.nombre,
+          descripcion: datos.descripcion,
+          objetivo: miembro.objetivo,
+          nivel: opciones.nivel,
+          duracionSemanas: DURACION_PLAN_SEMANAS,
+          dias: datos.dias,
+          recomendaciones: datos.recomendaciones,
+          origen: 'ia',
+        }),
+    );
     return this.repoPlanesEntrenamiento.agregar(plan);
   }
 
@@ -47,16 +55,19 @@ class ServicioPlanes {
       pedido: pedidoNutricion(miembro, opciones),
       esquema: ESQUEMA_NUTRICION,
     });
-    const plan = this.#construirDesdeIA(() => new PlanNutricional({
-      miembroId: miembro.id,
-      nombre: datos.nombre,
-      descripcion: datos.descripcion,
-      objetivo: miembro.objetivo,
-      caloriasDiarias: datos.caloriasDiarias,
-      comidas: datos.comidas,
-      recomendaciones: datos.recomendaciones,
-      origen: 'ia',
-    }));
+    const plan = this.#construirDesdeIA(
+      () =>
+        new PlanNutricional({
+          miembroId: miembro.id,
+          nombre: datos.nombre,
+          descripcion: datos.descripcion,
+          objetivo: miembro.objetivo,
+          caloriasDiarias: datos.caloriasDiarias,
+          comidas: datos.comidas,
+          recomendaciones: datos.recomendaciones,
+          origen: 'ia',
+        }),
+    );
     return this.repoPlanesNutricionales.agregar(plan);
   }
 

@@ -19,10 +19,7 @@ class ServicioAuth {
       throw error;
     }
 
-    const coincide = await bcrypt.compare(
-      String(password ?? ''),
-      usuario.passwordHash
-    );
+    const coincide = await bcrypt.compare(String(password ?? ''), usuario.passwordHash);
 
     if (!coincide) {
       throw new ErrorApp('Email o contraseña incorrectos', 401);
