@@ -91,34 +91,8 @@
                 </div>
                 <a href="actividades.html" class="btn btn-outline-custom d-none d-md-inline-block">VER LOS HORARIOS ↗</a>
             </div>
-            <div class="row g-3 mt-4">
-                <div class="col-md-4">
-                    <a href="actividades.html" class="activity-card" style="background-image: url('https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=800&auto=format&fit=crop');">
-                        <div class="activity-label">01 / ENTRENAMIENTO</div>
-                        <div>
-                            <h3 class="mb-1 text-white">FUERZA & MUSCULACIÓN</h3>
-                            <p class="mb-0 text-gray fs-14">Construí una versión más fuerte de vos.</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-md-4">
-                    <a href="actividades.html" class="activity-card" style="background-image: url('https://images.unsplash.com/photo-1599058917212-d750089bc07e?q=80&w=800&auto=format&fit=crop');">
-                        <div class="activity-label">02 / ENTRENAMIENTO</div>
-                        <div>
-                            <h3 class="mb-1 text-white">FUNCIONAL</h3>
-                            <p class="mb-0 text-gray fs-14">Más movimiento. Más energía. Más vos.</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-md-4">
-                    <a href="actividades.html" class="activity-card" style="background-image: url('https://images.unsplash.com/photo-1591741535018-d042766c62eb?q=80&w=800&auto=format&fit=crop');">
-                        <div class="activity-label">03 / ENTRENAMIENTO</div>
-                        <div>
-                            <h3 class="mb-1 text-white">INDOOR CYCLING</h3>
-                            <p class="mb-0 text-gray fs-14">Subí el ritmo. Disfrutá el recorrido.</p>
-                        </div>
-                    </a>
-                </div>
+            <div class="row g-3 mt-4" id="actividades-destacadas" aria-live="polite" aria-busy="true">
+                <p class="text-gray">Cargando actividades...</p>
             </div>
         </div>
     </section>
@@ -160,47 +134,8 @@
             <h2 class="display-4 fw-bold mb-3">UN PLAN PARA <span class="text-green">VOS.</span></h2>
             <p class="text-gray mb-5">Distintos objetivos. El mismo compromiso con tu bienestar.</p>
 
-            <div class="row g-4">
-                <div class="col-lg-4">
-                    <div class="pricing-card">
-                        <h3 class="mb-1">ESENCIAL</h3>
-                        <h4 class="text-white mb-3 fw-bold">$25.000 <span class="text-gray fs-6 fw-normal">/ mes</span></h4>
-                        <p class="text-gray mb-4">Tu punto de partida.</p>
-                        <ul class="pricing-list">
-                            <li>Acceso a sala de musculación</li>
-                            <li>Rutina de entrenamiento inicial</li>
-                            <li>Seguimiento de tus objetivos</li>
-                        </ul>
-                        <a href="membresia.html" class="btn btn-outline-custom w-100 mt-auto">CONOCER EL PLAN ↗</a>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="pricing-card featured">
-                        <div class="featured-badge">EL MÁS COMPLETO</div>
-                        <h3 class="mb-1">FULL</h3>
-                        <h4 class="text-white mb-3 fw-bold">$35.000 <span class="text-gray fs-6 fw-normal">/ mes</span></h4>
-                        <p class="text-gray mb-4">Todas las formas de superarte.</p>
-                        <ul class="pricing-list">
-                            <li>Todo lo del plan Esencial</li>
-                            <li>Todas las clases grupales</li>
-                            <li>Evaluación y seguimiento mensual</li>
-                        </ul>
-                        <a href="membresia.html" class="btn btn-green w-100 mt-auto">CONOCER EL PLAN ↗</a>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="pricing-card">
-                        <h3 class="mb-1">PERSONAL</h3>
-                        <h4 class="text-white mb-3 fw-bold">$45.000 <span class="text-gray fs-6 fw-normal">/ mes</span></h4>
-                        <p class="text-gray mb-4">Un plan tan único como vos.</p>
-                        <ul class="pricing-list">
-                            <li>Todo lo del plan Full</li>
-                            <li>Entrenamiento personalizado</li>
-                            <li>Acompañamiento uno a uno</li>
-                        </ul>
-                        <a href="membresia.html" class="btn btn-outline-custom w-100 mt-auto">CONOCER EL PLAN ↗</a>
-                    </div>
-                </div>
+            <div class="row g-4" id="membresias-inicio" aria-live="polite" aria-busy="true">
+                <p class="text-gray">Cargando membresías...</p>
             </div>
         </div>
     </section>
@@ -265,7 +200,7 @@
                         </div>
                         <div>
                             <h6 class="text-white mb-1"><i class="bi bi-clock-fill text-green me-2"></i> Horarios</h6>
-                            <p class="text-gray mb-0 fs-14">Lunes a Viernes: 08:00 a 22:00<br>Sábados y Feriados: 10:00 a 18:00</p>
+                            <div id="horarios-inicio" class="text-gray mb-0 fs-14" aria-live="polite" aria-busy="true">Cargando horarios...</div>
                         </div>
                     </div>
                 </div>
@@ -291,5 +226,6 @@
         </div>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./js/inicio.js"></script>
 </body>
 </html>
