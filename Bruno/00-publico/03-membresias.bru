@@ -1,0 +1,32 @@
+meta {
+  name: 03 - Listar membresías (público)
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/publico/membresias
+  body: none
+  auth: none
+}
+
+docs {
+  # Listar membresías (público)
+  
+  Devuelve **solo los planes activos** con los campos públicos: `id`, `nombre`, `precioMensual`, `descripcion`.
+  
+  No expone el campo `activo` (porque todos los que se muestran son activos) ni datos internos.
+  
+  ## Verificaciones
+  - Status 200.
+  - La respuesta tiene `data` (array).
+  - Cada membresía tiene los campos públicos y **no** tiene el campo `activo`.
+}
+
+assert {
+  res.status: eq 200
+  res.body.data: isArray
+  res.body.data[0].nombre: isString
+  res.body.data[0].precioMensual: isNumber
+  res.body.data[0].activo: isUndefined
+}

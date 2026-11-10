@@ -1,0 +1,30 @@
+meta {
+  name: 02 - Listar horarios (público)
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/publico/horarios?limit=10
+  body: none
+  auth: none
+}
+
+docs {
+  # Listar horarios (público)
+  
+  Devuelve los horarios de apertura del gimnasio. Como son datos públicos, se devuelven completos (`id`, `dia`, `apertura`, `cierre`).
+  
+  ## Verificaciones
+  - Status 200.
+  - La respuesta tiene `data` (array).
+  - Cada horario tiene los campos esperados.
+}
+
+assert {
+  res.status: eq 200
+  res.body.data: isArray
+  res.body.data[0].dia: isString
+  res.body.data[0].apertura: isString
+  res.body.data[0].cierre: isString
+}

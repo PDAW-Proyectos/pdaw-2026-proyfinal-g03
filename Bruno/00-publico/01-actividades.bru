@@ -1,0 +1,40 @@
+meta {
+  name: 01 - Listar actividades (público)
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/publico/actividades?limit=5
+  body: none
+  auth: none
+}
+
+docs {
+  # Listar actividades (público)
+  
+  Devuelve las clases publicadas con solo los campos públicos: `id`, `titulo`, `descripcion`, `fechaHora`, `duracionMin`.
+  
+  No expone `instructorId`, `inscriptosIds` ni `cuposDisponibles`.
+  
+  ## Verificaciones
+  - Status 200.
+  - La respuesta tiene `data` (array).
+  - Cada actividad tiene los campos públicos y **no** tiene los privados.
+}
+
+assert {
+  res.status: eq 200
+  res.body.data: isArray
+  res.body.data[0].titulo: isString
+  res.body.data[0].fechaHora: isString
+  res.body.data[0].instructorId: isUndefined
+  res.body.data[0].inscriptosIds: isUndefined
+}
+
+script:post-response {
+  // Guardamos el id de la primera actividad por si se necesita en otro request
+  if (res.body.data && res.body.data.length > 0) {
+    bru.setVar('publicActividadId', res.body.data[0].id);
+  }
+}
