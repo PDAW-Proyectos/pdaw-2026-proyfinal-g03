@@ -1,0 +1,31 @@
+meta {
+  name: Miembro no puede crear usuarios
+  type: http
+  seq: 10
+}
+
+post {
+  url: {{baseUrl}}/api/usuarios/miembros
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "dni": "39888776",
+    "nombre": "X",
+    "email": "x@gym.com",
+    "peso": 70,
+    "altura": 170,
+    "edad": 30,
+    "objetivo": "mantener"
+  }
+}
+
+assert {
+  res.status: eq 403
+}
+
+docs {
+  Con sesión de miembro, falta el permiso `crearUsuario`: 403.
+}

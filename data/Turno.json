@@ -1,0 +1,32 @@
+{
+  "ultimoId": 3,
+  "items": [
+    {
+      "id": 1,
+      "tipo": "chequeo_medico",
+      "fecha": "2026-11-13",
+      "hora": "16:02",
+      "duracionMin": 30,
+      "disponible": true,
+      "miembroId": null
+    },
+    {
+      "id": 2,
+      "tipo": "nutricionista",
+      "fecha": "2026-11-18",
+      "hora": "09:59",
+      "duracionMin": 45,
+      "disponible": true,
+      "miembroId": null
+    },
+    {
+      "id": 3,
+      "tipo": "chequeo_medico",
+      "fecha": "2026-11-09",
+      "hora": "10:00",
+      "duracionMin": 30,
+      "disponible": false,
+      "miembroId": 30000004
+    }
+  ]
+}

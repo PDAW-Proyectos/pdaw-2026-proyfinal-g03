@@ -59,7 +59,7 @@ class ServicioClases {
   // Regla segun rol: solo el instructor dueño modifica o borra su clase
   async #claseDelInstructor(claseId, instructor) {
     const clase = await this.repoClases.obtenerPorId(claseId);
-    if (clase.instructorId !== instructor.id)
+    if (String(clase.instructorId) !== String(instructor.id))
       throw new ErrorProhibido('La clase es de otro instructor');
     return clase;
   }

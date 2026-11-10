@@ -1,5 +1,5 @@
 {
-  "ultimoId": 1,
+  "ultimoId": 3,
   "items": [
     {
       "id": 1,
@@ -7,6 +7,20 @@
       "precioMensual": 15000,
       "descripcion": "Acceso a las instalaciones durante un mes",
       "activo": true
+    },
+    {
+      "id": 2,
+      "nombre": "Prueba",
+      "precioMensual": 30000,
+      "descripcion": "Podes saltar :)",
+      "activo": true
+    },
+    {
+      "id": 3,
+      "nombre": "Otra Prueba",
+      "precioMensual": 26000,
+      "descripcion": "Podes correr :O",
+      "activo": false
     }
   ]
 }

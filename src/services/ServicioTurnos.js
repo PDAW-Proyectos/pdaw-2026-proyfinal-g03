@@ -22,7 +22,11 @@ class ServicioTurnos {
   async obtener({ turnoId, usuario }) {
     const turno = await this.repoTurnos.obtenerPorId(turnoId);
     const administra = usuario.puede('publicarTurno');
-    if (!turno.disponible && !administra && turno.miembroId !== usuario.id) {
+    if (
+      !turno.disponible &&
+      !administra &&
+      String(turno.miembroId) !== String(usuario.id)
+    ) {
       throw new ErrorProhibido('El turno pertenece a otro miembro');
     }
     return turno;

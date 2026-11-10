@@ -1,0 +1,27 @@
+meta {
+  name: Miembro no puede crear horarios
+  type: http
+  seq: 10
+}
+
+post {
+  url: {{baseUrl}}/api/horarios
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "dia": "martes",
+    "apertura": "08:00",
+    "cierre": "22:00"
+  }
+}
+
+assert {
+  res.status: eq 403
+}
+
+docs {
+  Falta el permiso `definirHorarios`: 403.
+}

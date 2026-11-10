@@ -1,0 +1,15 @@
+meta {
+  name: Desinscribirse sin estar inscripto
+  type: http
+  seq: 17
+}
+
+post {
+  url: {{baseUrl}}/api/clases/{{claseId}}/desinscribir
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 404
+}

@@ -1,0 +1,16 @@
+meta {
+  name: Obtener clase
+  type: http
+  seq: 8
+}
+
+get {
+  url: {{baseUrl}}/api/clases/{{claseId}}
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+  res.body.id: eq {{claseId}}
+}

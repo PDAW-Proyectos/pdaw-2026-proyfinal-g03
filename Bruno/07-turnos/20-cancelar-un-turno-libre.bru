@@ -1,0 +1,15 @@
+meta {
+  name: Cancelar un turno libre
+  type: http
+  seq: 20
+}
+
+post {
+  url: {{baseUrl}}/api/turnos/{{turnoId}}/cancelar
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 409
+}

@@ -1,0 +1,15 @@
+meta {
+  name: Reservar un turno ya reservado
+  type: http
+  seq: 13
+}
+
+post {
+  url: {{baseUrl}}/api/turnos/{{turnoId}}/reservar
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 409
+}

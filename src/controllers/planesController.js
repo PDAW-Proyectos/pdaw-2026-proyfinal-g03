@@ -28,6 +28,18 @@ module.exports = function crearControladorPlanes(servicio) {
       res.status(201).location(`/api/planes-nutricionales/${plan.id}`).json(plan);
     },
 
+    // GET /api/planes-entrenamiento/mios
+    listarEntrenamientos: async (req, res) => {
+      const { page, limit } = req.query;
+      res.json(await servicio.listarEntrenamientos({ miembro: req.usuario, page, limit }));
+    },
+
+    // GET /api/planes-nutricionales/mios
+    listarNutricionales: async (req, res) => {
+      const { page, limit } = req.query;
+      res.json(await servicio.listarNutricionales({ miembro: req.usuario, page, limit }));
+    },
+
     // GET /api/planes-entrenamiento/:id
     obtenerEntrenamiento: async (req, res) => {
       res.json(

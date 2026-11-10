@@ -347,7 +347,9 @@ export function inicializarRegistroUsuarios() {
   });
 
   const siguiente = document.getElementById('siguienteRegistro');
-  siguiente.addEventListener('click', async () => {
+  siguiente.addEventListener('click', async (event) => {
+    event.preventDefault();
+
     const formulario = document.getElementById('formRegistroUsuario');
     const mensaje = document.getElementById('mensajeRegistro');
 
@@ -363,7 +365,10 @@ export function inicializarRegistroUsuarios() {
       formulario.reportValidity();
       return;
     }
-    guardarDatosPaso();
+
+    const guardadoOk = guardarDatosPaso();
+    if (!guardadoOk) return;
+
     if (pasoActual === 1) {
       pasoActual = 2;
       if (datosUsuario.rol === 'miembro') {
@@ -382,7 +387,6 @@ export function inicializarRegistroUsuarios() {
     if (pasoActual === 2 && datosUsuario.rol === 'miembro') {
       pasoActual = 3;
       await mostrarMembresias();
-
       siguiente.textContent = 'Registrar';
       return;
     }
@@ -456,8 +460,12 @@ function guardarDatosPaso() {
   if (pasoActual === 3) {
     const select = document.getElementById('planMembresiaId');
     if (!select) {
-      throw new Error('No hay una membresía disponible para seleccionar');
+      const mensaje = document.getElementById('mensajeRegistro');
+      mensaje.textContent = 'No hay una membresía disponible para seleccionar.';
+      return false;
     }
     datosUsuario.planMembresiaId = select.value;
   }
+
+  return true;
 }

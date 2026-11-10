@@ -1,0 +1,19 @@
+meta {
+  name: Inscribirse dos veces
+  type: http
+  seq: 15
+}
+
+post {
+  url: {{baseUrl}}/api/clases/{{claseId}}/inscribir
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 409
+}
+
+docs {
+  Ya inscripto: 409.
+}

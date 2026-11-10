@@ -32,6 +32,7 @@ export default defineConfig([
       sourceType: 'module', // para permitir import/export
       globals: {
         ...globals.browser,
+        bootstrap: 'readonly', // se agrega la configuracion en ESLint para que no marque error al usar bootstrap en el frontend
       },
     },
     rules: {

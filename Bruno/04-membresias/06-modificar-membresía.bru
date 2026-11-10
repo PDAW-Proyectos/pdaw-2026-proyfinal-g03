@@ -1,0 +1,29 @@
+meta {
+  name: Modificar membresía
+  type: http
+  seq: 6
+}
+
+put {
+  url: {{baseUrl}}/api/membresias/{{membresiaId}}
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "nombre": "Plan Full Plus",
+    "precioMensual": 35000,
+    "descripcion": "Acceso total + clases",
+    "activo": true
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.precioMensual: eq 35000
+}
+
+docs {
+  PUT reemplaza el plan completo.
+}

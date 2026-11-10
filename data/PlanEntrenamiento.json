@@ -1,0 +1,133 @@
+{
+  "ultimoId": 1,
+  "items": [
+    {
+      "id": 1,
+      "miembroId": 30000004,
+      "nombre": "Plan de Hipertrofia Nivel Intermedio de 3 Dias",
+      "descripcion": "Rutina general y sencilla enfocada en la ganancia de masa muscular para 3 dias a la semana.",
+      "objetivo": "ganar_musculo",
+      "nivel": "intermedio",
+      "duracionSemanas": 4,
+      "dias": [
+        {
+          "dia": "Dia 1",
+          "enfoque": "Pecho y Triceps",
+          "ejercicios": [
+            {
+              "nombre": "Press de banca plano",
+              "series": 4,
+              "repeticiones": 10,
+              "descansoSeg": 90
+            },
+            {
+              "nombre": "Press inclinado con mancuernas",
+              "series": 3,
+              "repeticiones": 12,
+              "descansoSeg": 60
+            },
+            {
+              "nombre": "Aperturas en polea",
+              "series": 3,
+              "repeticiones": 12,
+              "descansoSeg": 60
+            },
+            {
+              "nombre": "Extensiones de triceps en polea",
+              "series": 3,
+              "repeticiones": 12,
+              "descansoSeg": 60
+            },
+            {
+              "nombre": "Fondos en paralelas",
+              "series": 3,
+              "repeticiones": 10,
+              "descansoSeg": 90
+            }
+          ]
+        },
+        {
+          "dia": "Dia 2",
+          "enfoque": "Espalda y Biceps",
+          "ejercicios": [
+            {
+              "nombre": "Dominadas o Jalones al pecho",
+              "series": 4,
+              "repeticiones": 10,
+              "descansoSeg": 90
+            },
+            {
+              "nombre": "Remo con barra",
+              "series": 3,
+              "repeticiones": 10,
+              "descansoSeg": 90
+            },
+            {
+              "nombre": "Remo en polea baja",
+              "series": 3,
+              "repeticiones": 12,
+              "descansoSeg": 60
+            },
+            {
+              "nombre": "Curl de bicep con barra",
+              "series": 3,
+              "repeticiones": 12,
+              "descansoSeg": 60
+            },
+            {
+              "nombre": "Curl martillo con mancuernas",
+              "series": 3,
+              "repeticiones": 12,
+              "descansoSeg": 60
+            }
+          ]
+        },
+        {
+          "dia": "Dia 3",
+          "enfoque": "Piernas y Hombros",
+          "ejercicios": [
+            {
+              "nombre": "Sentadilla libre",
+              "series": 4,
+              "repeticiones": 8,
+              "descansoSeg": 120
+            },
+            {
+              "nombre": "Prensa de piernas",
+              "series": 3,
+              "repeticiones": 12,
+              "descansoSeg": 90
+            },
+            {
+              "nombre": "Curl de femoral acostado",
+              "series": 3,
+              "repeticiones": 12,
+              "descansoSeg": 60
+            },
+            {
+              "nombre": "Press militar con mancuernas",
+              "series": 3,
+              "repeticiones": 10,
+              "descansoSeg": 90
+            },
+            {
+              "nombre": "Elevaciones laterales",
+              "series": 3,
+              "repeticiones": 15,
+              "descansoSeg": 60
+            }
+          ]
+        }
+      ],
+      "recomendaciones": [
+        "Se sugiere consultar con el medico o el nutricionista del gimnasio antes de empezar.",
+        "Mantente bien hidratado durante tus entrenamientos.",
+        "Duerme de 7 a 8 horas diarias para una correcta recuperacion muscular.",
+        "Realiza un calentamiento previo antes de iniciar cada sesion."
+      ],
+      "origen": "ia",
+      "idExterno": null,
+      "creadoEn": "2026-11-09T21:37:16.705Z"
+    }
+  ]
+}

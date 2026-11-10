@@ -1,0 +1,21 @@
+meta {
+  name: Iniciar seguimiento con plan inexistente
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/api/seguimientos
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "planEntrenamientoId": 99999
+  }
+}
+
+assert {
+  res.status: eq 404
+}

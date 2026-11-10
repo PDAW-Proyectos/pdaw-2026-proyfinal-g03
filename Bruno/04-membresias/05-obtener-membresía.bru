@@ -1,0 +1,16 @@
+meta {
+  name: Obtener membresía
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/api/membresias/{{membresiaId}}
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+  res.body.id: eq {{membresiaId}}
+}

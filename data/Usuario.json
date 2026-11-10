@@ -67,6 +67,18 @@
       "email": "instructor2.prueba@gym.com",
       "especialidad": "Yoga",
       "passwordHash": "$2b$12$fGsNkS04.5em8sOJ7q2JhuHCx2B.TcJM6missaCEjJ2jLXDTQ.RFG"
+    },
+    {
+      "id": "96385274",
+      "rol": "miembro",
+      "nombre": "Prueba",
+      "email": "prueba@gmail.com",
+      "peso": 49,
+      "altura": 169,
+      "edad": 30,
+      "objetivo": "ganar_musculo",
+      "planMembresiaId": 2,
+      "passwordHash": "$2b$12$xOgQI/3bN.s5XoTItAWJGOXqWrQpb0cS.vtCHSjUrn5SAo/DuiiPu"
     }
   ]
 }

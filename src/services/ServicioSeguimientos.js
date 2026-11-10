@@ -54,7 +54,7 @@ class ServicioSeguimientos {
   // regla de propiedad: un seguimiento solo lo maneja su dueño
   async #seguimientoDelMiembro(seguimientoId, miembro) {
     const seguimiento = await this.repoSeguimientos.obtenerPorId(seguimientoId);
-    if (seguimiento.miembroId !== miembro.id)
+    if (String(seguimiento.miembroId) !== String(miembro.id))
       throw new ErrorProhibido('El seguimiento pertenece a otro miembro');
     return seguimiento;
   }
@@ -63,7 +63,7 @@ class ServicioSeguimientos {
   async #verificarPlan(repo, planId, miembro) {
     if (planId === null) return;
     const plan = await repo.obtenerPorId(planId);
-    if (plan.miembroId !== null && plan.miembroId !== miembro.id) {
+    if (plan.miembroId !== null && String(plan.miembroId) !== String(miembro.id)) {
       throw new ErrorProhibido('El plan pertenece a otro miembro');
     }
   }

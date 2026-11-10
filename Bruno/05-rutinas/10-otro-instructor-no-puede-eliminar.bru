@@ -1,0 +1,15 @@
+meta {
+  name: Otro instructor no puede eliminar
+  type: http
+  seq: 10
+}
+
+delete {
+  url: {{baseUrl}}/api/rutinas/{{rutinaId}}
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 403
+}

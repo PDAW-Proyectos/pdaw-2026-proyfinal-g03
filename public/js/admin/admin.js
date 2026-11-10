@@ -1,5 +1,13 @@
 import { verificarSesion, cerrarSesion } from '../auth.js';
 import { inicializarRegistroUsuarios } from './registroUsuarios.js';
+import { inicializarRenderizadoAdmin } from './renderizado.js';
+import {
+  inicializarGestionTurnos,
+  inicializarGestionHorarios,
+  inicializarEliminarTurnos,
+  inicializarEliminarHorarios,
+} from './gestion.js';
+import { inicializarGestionPlanes } from './gestionPlanes.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   try {
@@ -12,6 +20,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (nombreUsuario) {
       nombreUsuario.textContent = usuario.nombre;
     }
+
+    inicializarRenderizadoAdmin(usuario);
 
     const botonesMenu = document.querySelectorAll('.admin-nav-link');
 
@@ -36,7 +46,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const botonCerrarSesion = document.getElementById('btnCerrarSesion');
 
-    botonCerrarSesion?.addEventListener('click', async () => {
+    botonCerrarSesion?.addEventListener('click', async (event) => {
       event.preventDefault();
       try {
         await cerrarSesion();
@@ -46,6 +56,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     inicializarRegistroUsuarios();
+    inicializarGestionTurnos();
+    inicializarGestionHorarios();
+    inicializarEliminarTurnos();
+    inicializarEliminarHorarios();
+    inicializarGestionPlanes();
   } catch (error) {
     console.error('Error al inicializar el panel:', error);
   }

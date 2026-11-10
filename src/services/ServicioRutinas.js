@@ -37,7 +37,7 @@ class ServicioRutinas {
   // Regla según el rol: solo el instructor dueño modifica o borra su rutina
   async #rutinaDelInstructor(rutinaId, instructor) {
     const rutina = await this.repoRutinas.obtenerPorId(rutinaId);
-    if (rutina.instructorId !== instructor.id)
+    if (String(rutina.instructorId) !== String(instructor.id))
       throw new ErrorProhibido('La rutina es de otro instructor');
     return rutina;
   }

@@ -1,0 +1,26 @@
+meta {
+  name: Listar horarios
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/horarios?page=1&limit=10
+  body: none
+  auth: none
+}
+
+params:query {
+  page: 1
+  limit: 10
+}
+
+assert {
+  res.status: eq 200
+  res.body.total: gte 1
+  res.body.data: isArray
+}
+
+docs {
+  Cualquier usuario con sesión. Respuesta paginada: `data`, `total`, `page`, `limit`.
+}

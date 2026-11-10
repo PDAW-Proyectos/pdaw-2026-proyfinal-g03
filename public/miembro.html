@@ -167,26 +167,42 @@
         <div class="col-12 col-lg-10 admin-content-area">
           <div id="user-historial" class="seccion-contenido">
             <h2 class="user-page-title">HISTORIAL</h2>
+            <!-- sección a modificar -->
+            <div
+              class="alert bg-pulso-darker border border-secondary text-gray mb-4 fs-13 d-flex align-items-center"
+            >
+              <i class="bi bi-info-circle text-green me-2 fs-5"></i>
+              <span
+                >El historial de progreso estará disponible próximamente. Los datos que ves a
+                continuación son de ejemplo.</span
+              >
+            </div>
             <div class="row g-4 mb-4">
               <div class="col-md-4">
                 <div class="user-card text-center">
                   <p class="text-gray mb-2 fs-14">IMC</p>
                   <h3 class="text-white mb-0">23.5</h3>
-                  <span class="text-green fs-12">Peso normal</span>
+                  <span class="badge bg-dark border border-secondary text-gray fs-12 mt-2"
+                    >Ejemplo</span
+                  >
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="user-card text-center">
                   <p class="text-gray mb-2 fs-14">Meta</p>
                   <h3 class="text-white mb-0">70 kg</h3>
-                  <span class="text-gray fs-12">Faltan 5 kg</span>
+                  <span class="badge bg-dark border border-secondary text-gray fs-12 mt-2"
+                    >Ejemplo</span
+                  >
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="user-card text-center">
                   <p class="text-gray mb-2 fs-14">Valor Actual</p>
                   <h3 class="text-white mb-0">75 kg</h3>
-                  <span class="text-gray fs-12">Registrado hoy</span>
+                  <span class="badge bg-dark border border-secondary text-gray fs-12 mt-2"
+                    >Ejemplo</span
+                  >
                 </div>
               </div>
             </div>
@@ -213,17 +229,42 @@
           </div>
           <div id="user-progreso" class="seccion-contenido d-none">
             <h2 class="user-page-title">MI PROGRESO</h2>
+
+            <!-- seccion a modificar -->
+            <div
+              class="alert bg-pulso-darker border border-secondary text-gray mb-4 fs-13 d-flex align-items-center"
+            >
+              <i class="bi bi-info-circle text-green me-2 fs-5"></i>
+              <span
+                >El registro de peso y la evolución estarán disponibles próximamente. Los datos que
+                ves a continuación son de ejemplo.</span
+              >
+            </div>
+
             <p class="text-gray mb-4">
               Registrá tu peso actual para llevar un seguimiento de tu evolución.
             </p>
             <div class="user-card mb-5">
               <div class="row g-3 align-items-end">
                 <div class="col-md-6">
-                  <label class="text-gray mb-2 fs-14">Peso actual (kg)</label>
-                  <input type="number" class="user-form-control w-100" placeholder="Ej: 75.5" />
+                  <label class="text-gray mb-2 fs-14" for="inputPesoActual">Peso actual (kg)</label>
+                  <!-- disabled -->
+                  <input
+                    type="number"
+                    id="inputPesoActual"
+                    class="user-form-control w-100"
+                    placeholder="Ej: 75.5"
+                    disabled
+                  />
                 </div>
                 <div class="col-md-6">
-                  <button class="btn btn-green w-100 py-2 fs-14" style="height: 48px">
+                  <!-- disabled -->
+                  <button
+                    class="btn btn-green w-100 py-2 fs-14"
+                    id="btnRegistrarPeso"
+                    style="height: 48px"
+                    disabled
+                  >
                     REGISTRAR PESO
                   </button>
                 </div>
@@ -236,7 +277,10 @@
               en la pestaña de "Historial".
             </p>
 
-            <h3 class="text-white mb-3 fs-15">TUS REGISTROS</h3>
+            <h3 class="text-white mb-3 fs-15 d-flex align-items-center gap-2">
+              TUS REGISTROS
+              <span class="badge bg-dark border border-secondary text-gray fs-12">Ejemplo</span>
+            </h3>
             <div class="table-responsive user-card p-0 overflow-hidden">
               <table class="table table-dark table-hover mb-0 table-dark-custom">
                 <thead class="border-bottom border-secondary">
@@ -269,38 +313,82 @@
 
           <div id="user-rutinas" class="seccion-contenido d-none">
             <h2 class="user-page-title">TUS RUTINAS</h2>
+
             <div class="row g-4">
-              <div class="col-md-6">
-                <div class="user-card h-100">
-                  <h4 class="mb-3">
-                    <i class="bi bi-play-circle text-green me-2"></i> Rutina del día
+              <div class="col-lg-8">
+                <p class="text-gray mb-4">
+                  Generá un plan de entrenamiento personalizado con inteligencia artificial.
+                  Contanos tu nivel y cuántos días querés entrenar.
+                </p>
+                <p class="text-gray mb-4">
+                  Ante cualquier duda, podés consultar con nuestros entrenadores para ajustar tu
+                  rutina a tus necesidades.
+                </p>
+
+                <div class="user-card mb-5">
+                  <h4 class="mb-3 text-white">
+                    <i class="bi bi-magic text-green me-2"></i> Generar nuevo plan
                   </h4>
-                  <p class="text-gray fs-14">Entrenamiento de Fuerza - Tren Superior</p>
-                  <ul class="list-unstyled mt-3 text-white fs-14">
-                    <li class="mb-2">
-                      <i class="bi bi-check2-circle text-green me-2"></i> Press de banca - 4x10
-                    </li>
-                    <li class="mb-2">
-                      <i class="bi bi-check2-circle text-green me-2"></i> Remo con barra - 3x12
-                    </li>
-                    <li class="mb-2">
-                      <i class="bi bi-check2-circle text-green me-2"></i> Vuelos laterales - 3x15
-                    </li>
-                  </ul>
-                  <button class="btn btn-green w-100 mt-4 py-2 fs-14">
-                    COMENZAR ENTRENAMIENTO
-                  </button>
+                  <form id="formGenerarPlan">
+                    <div class="row g-3 align-items-end">
+                      <div class="col-md-6">
+                        <label class="text-gray mb-2 fs-14" for="planNivel">Tu nivel</label>
+                        <select class="user-form-control w-100" id="planNivel" required>
+                          <option value="">Seleccionar...</option>
+                          <option value="principiante">Principiante</option>
+                          <option value="intermedio">Intermedio</option>
+                          <option value="avanzado">Avanzado</option>
+                        </select>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="text-gray mb-2 fs-14" for="planDias">Días por semana</label>
+                        <select class="user-form-control w-100" id="planDias" required>
+                          <option value="">Seleccionar...</option>
+                          <option value="2">2 días</option>
+                          <option value="3">3 días</option>
+                          <option value="4">4 días</option>
+                          <option value="5">5 días</option>
+                          <option value="6">6 días</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="mt-3">
+                      <button
+                        type="submit"
+                        class="btn btn-green w-100 py-2 fs-14"
+                        id="btnGenerarPlan"
+                      >
+                        GENERAR PLAN CON IA
+                      </button>
+                    </div>
+                    <div id="mensajePlanIA" class="text-danger fs-14 mt-2 text-center"></div>
+                  </form>
+                </div>
+
+                <div id="contenedorPlanEntrenamiento">
+                  <div class="user-card text-center py-5">
+                    <i class="bi bi-activity text-gray fs-1 mb-3 d-block"></i>
+                    <h5 class="text-white mb-2">Todavía no tenés un plan generado</h5>
+                    <p class="text-gray mb-0 fs-14">
+                      Usá el formulario de arriba para crear tu primera rutina personalizada.
+                    </p>
+                  </div>
                 </div>
               </div>
-              <div class="col-md-6">
-                <div class="user-card h-100">
-                  <h4 class="mb-3">
-                    <i class="bi bi-pencil-square text-green me-2"></i> Edición personal
-                  </h4>
+
+              <div class="col-lg-4">
+                <div class="user-card h-100 d-flex flex-column justify-content-center text-center">
+                  <i class="bi bi-tools text-green fs-1 mb-3 d-block"></i>
+                  <h4 class="text-white mb-2 fs-5">Edición personal</h4>
                   <p class="text-gray mb-4 fs-14">
-                    Agregá tus propios ejercicios o modificá los pesos de tu rutina base.
+                    Próximamente vas a poder agregar tus propios ejercicios y modificar los pesos de
+                    tu rutina base.
                   </p>
-                  <button class="user-btn-outline w-100 py-2">AGREGAR EJERCICIO EXTRA</button>
+                  <span
+                    class="badge bg-dark border border-secondary text-gray py-2 px-3 fs-12 align-self-center"
+                  >
+                    FUNCIONALIDAD EN DESARROLLO
+                  </span>
                 </div>
               </div>
             </div>
@@ -313,319 +401,104 @@
               personalizado.
             </p>
             <h3 class="text-white mb-3 fs-15">Actividades Disponibles</h3>
-            <div class="row g-4 mb-5">
-              <div class="col-md-4">
-                <div class="user-card h-100 d-flex flex-column">
-                  <img
-                    src="https://images.unsplash.com/photo-1599058917212-d750089bc07e?q=80&w=600&auto=format&fit=crop"
-                    alt="Funcional"
-                    class="w-100 rounded mb-3"
-                    style="height: 150px; object-fit: cover"
-                  />
-                  <h4 class="fs-5 mb-2 text-white">Funcional</h4>
-                  <p class="text-gray mb-3 fs-13">
-                    <i class="bi bi-calendar-event me-2 text-green"></i> Lunes y Miércoles · 18:00
-                    hs
-                  </p>
-                  <p class="text-gray mb-4 fs-13">
-                    <i class="bi bi-person-badge me-2 text-green"></i> Prof. Carla
-                  </p>
-                  <div class="mt-auto">
-                    <span
-                      class="badge bg-dark border border-secondary text-gray mb-2 d-block w-100 py-1"
-                      >Cupo disponible: 3 lugares</span
-                    >
-                    <button class="btn btn-green w-100 py-2 fs-14">RESERVAR LUGAR</button>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="user-card h-100 d-flex flex-column">
-                  <img
-                    src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=600&auto=format&fit=crop"
-                    alt="Indoor Cycling"
-                    class="w-100 rounded mb-3"
-                    style="height: 150px; object-fit: cover"
-                  />
-                  <h4 class="fs-5 mb-2 text-white">Indoor Cycling</h4>
-                  <p class="text-gray mb-3 fs-13">
-                    <i class="bi bi-calendar-event me-2 text-green"></i> Martes y Jueves · 19:00 hs
-                  </p>
-                  <p class="text-gray mb-4 fs-13">
-                    <i class="bi bi-person-badge me-2 text-green"></i> Prof. Diego
-                  </p>
-                  <div class="mt-auto">
-                    <span
-                      class="badge bg-dark border border-secondary text-gray mb-2 d-block w-100 py-1"
-                      >Cupo disponible: 5 lugares</span
-                    >
-                    <button class="btn btn-green w-100 py-2 fs-14">RESERVAR LUGAR</button>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="user-card h-100 d-flex flex-column">
-                  <img
-                    src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=600&auto=format&fit=crop"
-                    alt="Musculación"
-                    class="w-100 rounded mb-3"
-                    style="height: 150px; object-fit: cover"
-                  />
-                  <h4 class="fs-5 mb-2 text-white">Fuerza & Musculación</h4>
-                  <p class="text-gray mb-3 fs-13">
-                    <i class="bi bi-calendar-event me-2 text-green"></i> Lunes a Viernes · 08:00 a
-                    22:00 hs
-                  </p>
-                  <p class="text-gray mb-4 fs-13">
-                    <i class="bi bi-person-badge me-2 text-green"></i> Libre
-                  </p>
-                  <div class="mt-auto">
-                    <span
-                      class="badge bg-dark border border-secondary text-gray mb-2 d-block w-100 py-1"
-                      >Acceso libre</span
-                    >
-                    <button class="btn btn-green w-100 py-2 fs-14">RESERVAR LUGAR</button>
-                  </div>
-                </div>
+            <div class="row g-4 mb-5" id="contenedorReservas">
+              <div class="user-card text-center py-4">
+                <p class="text-gray mb-0">Cargando actividades...</p>
               </div>
             </div>
           </div>
           <div id="user-nutricion" class="seccion-contenido d-none">
             <h2 class="user-page-title">NUTRICIÓN</h2>
-            <!-- Contenedor Dinámico para la Dieta Asignada -->
-            <div id="contenedorDieta" class="mb-5">
-              <!-- El JS va a insertar acá la tarjeta de la dieta -->
-            </div>
-            <div class="d-flex gap-2 mb-4 flex-wrap">
-              <button
-                class="btn btn-green py-2 px-4 fs-14"
-                id="btn-todas-recetas"
-                onclick="cambiarVistaRecetas('todas')"
-              >
-                Todas las Recetas
-              </button>
-              <button
-                class="user-btn-outline py-2 px-4 fs-14"
-                id="btn-mis-recetas"
-                onclick="cambiarVistaRecetas('destacadas')"
-              >
-                <i class="bi bi-star-fill text-warning me-2"></i> Mis Destacadas
-              </button>
-            </div>
-            <h3 class="text-white mb-3 fs-15">RECETAS SUGERIDAS</h3>
-            <div class="user-card mb-5 px-4 py-3">
-              <div class="row g-3 align-items-end">
-                <div class="col-md-4">
-                  <label class="text-gray mb-2 fs-13">Buscar por ingrediente</label>
-                  <div class="input-group flex-nowrap w-100">
-                    <span class="input-group-text bg-dark border-secondary text-gray"
-                      ><i class="bi bi-search"></i
-                    ></span>
-                    <input
-                      type="text"
-                      class="user-form-control"
-                      style="max-width: 100%; width: 100%"
-                      placeholder="Ej: Pollo, Quin..."
-                      id="inputBuscarIngrediente"
-                    />
+
+            <div class="row g-4 align-items-start">
+              <div class="col-lg-8">
+                <p class="text-gray mb-4">
+                  Generá un plan nutricional personalizado con inteligencia artificial. Contanos tu
+                  nivel y cuántos días querés cubrir.
+                </p>
+
+                <div class="user-card mb-5">
+                  <h4 class="mb-3 text-white">
+                    <i class="bi bi-magic text-green me-2"></i> Generar nuevo plan
+                  </h4>
+                  <form id="formGenerarPlanNutricional">
+                    <div class="row g-3 align-items-end">
+                      <div class="col-md-6">
+                        <label class="text-gray mb-2 fs-14" for="nutricionNivel">Tu nivel</label>
+                        <select class="user-form-control w-100" id="nutricionNivel" required>
+                          <option value="">Seleccionar...</option>
+                          <option value="principiante">Principiante</option>
+                          <option value="intermedio">Intermedio</option>
+                          <option value="avanzado">Avanzado</option>
+                        </select>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="text-gray mb-2 fs-14" for="nutricionDias"
+                          >Días de la semana</label
+                        >
+                        <select class="user-form-control w-100" id="nutricionDias" required>
+                          <option value="">Seleccionar...</option>
+                          <option value="2">2 días</option>
+                          <option value="3">3 días</option>
+                          <option value="4">4 días</option>
+                          <option value="5">5 días</option>
+                          <option value="6">6 días</option>
+                          <option value="7">7 días</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="mt-3">
+                      <button
+                        type="submit"
+                        class="btn btn-green w-100 py-2 fs-14"
+                        id="btnGenerarPlanNutricional"
+                      >
+                        GENERAR PLAN CON IA
+                      </button>
+                    </div>
+                    <div
+                      id="mensajePlanNutricional"
+                      class="text-danger fs-14 mt-2 text-center"
+                    ></div>
+                  </form>
+                </div>
+
+                <div id="contenedorPlanNutricional">
+                  <div class="user-card text-center py-5">
+                    <i class="bi bi-apple text-gray fs-1 mb-3 d-block"></i>
+                    <h5 class="text-white mb-2">Todavía no tenés un plan nutricional</h5>
+                    <p class="text-gray mb-0 fs-14">
+                      Usá el formulario de arriba para crear tu primer plan personalizado.
+                    </p>
                   </div>
                 </div>
-                <div class="col-md-3">
-                  <label class="text-gray mb-2 fs-13">Calorías</label>
-                  <select class="user-form-control w-100" style="max-width: 100%">
-                    <option selected>Todas</option>
-                    <option>< 300 kcal</option>
-                    <option>300 - 500 kcal</option>
-                    <option>> 500 kcal</option>
-                  </select>
-                </div>
-                <div class="col-md-3">
-                  <label class="text-gray mb-2 fs-13">Objetivo</label>
-                  <select class="user-form-control w-100" style="max-width: 100%">
-                    <option selected>Todos</option>
-                    <option>Déficit</option>
-                    <option>Volumen</option>
-                    <option>Mantenimiento</option>
-                  </select>
-                </div>
-                <div class="col-md-2">
-                  <button
-                    class="btn btn-green w-100 py-2 fs-13"
-                    style="height: 46px; max-width: 100%"
-                    onclick="buscarRecetas()"
+              </div>
+              <div class="col-lg-4">
+                <div class="user-card h-100 text-center">
+                  <i class="bi bi-search text-green fs-1 mb-3 d-block"></i>
+                  <h4 class="text-white mb-2 fs-5">Buscador de recetas</h4>
+                  <p class="text-gray mb-4 fs-14">
+                    Próximamente vas a poder buscar recetas por ingrediente, filtrar por calorías y
+                    guardar tus favoritas.
+                  </p>
+                  <span
+                    class="badge bg-dark border border-secondary text-gray py-2 px-3 fs-12 align-self-center"
                   >
-                    BUSCAR
-                  </button>
+                    FUNCIONALIDAD EN DESARROLLO
+                  </span>
                 </div>
               </div>
-            </div>
-            <!-- Contenedor donde se inyectan las tarjetas de recetas -->
-            <div class="row g-4" id="contenedorRecetas">
-              <!-- Las recetas se cargan por JS -->
             </div>
           </div>
           <div id="user-turnos" class="seccion-contenido d-none">
             <h2 class="user-page-title">TURNOS MÉDICOS</h2>
             <p class="text-gray mb-4">
               Reservá un turno con los profesionales que tienen convenio con el gimnasio.
-              <strong>Cupo limitado: 5 turnos por día por profesional.</strong>
             </p>
-            <h3 class="text-white mb-3 fs-15">Profesionales Disponibles</h3>
-            <div class="row g-4 mb-5">
-              <div class="col-lg-6">
-                <div class="user-card h-100">
-                  <div
-                    class="d-flex align-items-center gap-3 mb-3 pb-3 border-bottom border-secondary"
-                  >
-                    <div
-                      style="
-                        width: 60px;
-                        height: 60px;
-                        border-radius: 50%;
-                        background-color: #333;
-                        border: 2px solid var(--pulso-green);
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        flex-shrink: 0;
-                      "
-                    >
-                      <i class="bi bi-person text-green fs-4"></i>
-                    </div>
-                    <div>
-                      <h4 class="text-white mb-1">Dra. María López</h4>
-                      <span class="badge bg-dark border border-secondary text-gray fs-12"
-                        >Nutrición</span
-                      >
-                    </div>
-                  </div>
-                  <p class="text-gray mb-2 fs-14">
-                    <i class="bi bi-calendar-event text-green me-2"></i> Lunes y Miércoles · 09:00 a
-                    13:00 hs · Consultorio 2
-                  </p>
-                  <label class="text-white mt-3 mb-2 fw-bold fs-14"
-                    >Próximos turnos disponibles para el Lunes 28/10:</label
-                  >
-                  <div class="d-flex flex-wrap gap-2">
-                    <button
-                      class="btn btn-outline-custom py-1 px-3 fs-13"
-                      style="border-color: var(--pulso-green); color: var(--pulso-green)"
-                    >
-                      09:00 hs
-                    </button>
-                    <button
-                      class="btn btn-outline-custom py-1 px-3 fs-13"
-                      style="border-color: var(--pulso-green); color: var(--pulso-green)"
-                    >
-                      09:30 hs
-                    </button>
-                    <button
-                      class="btn btn-outline-custom py-1 px-3 fs-13"
-                      style="border-color: #444; color: #666; text-decoration: line-through"
-                      disabled
-                      title="Turno ocupado"
-                    >
-                      10:00 hs
-                    </button>
-                    <button
-                      class="btn btn-outline-custom py-1 px-3 fs-13"
-                      style="border-color: var(--pulso-green); color: var(--pulso-green)"
-                    >
-                      10:30 hs
-                    </button>
-                    <button
-                      class="btn btn-outline-custom py-1 px-3 fs-13"
-                      style="border-color: var(--pulso-green); color: var(--pulso-green)"
-                    >
-                      11:00 hs
-                    </button>
-                  </div>
-                  <p class="text-gray mt-2 mb-0 fs-12">
-                    <i class="bi bi-info-circle me-1"></i> Quedan 4 turnos disponibles para este
-                    día.
-                  </p>
-                </div>
+            <div id="contenedorTurnos">
+              <div class="user-card text-center py-4">
+                <p class="text-gray mb-0">Cargando turnos...</p>
               </div>
-              <div class="col-lg-6">
-                <div class="user-card h-100">
-                  <div
-                    class="d-flex align-items-center gap-3 mb-3 pb-3 border-bottom border-secondary"
-                  >
-                    <div
-                      style="
-                        width: 60px;
-                        height: 60px;
-                        border-radius: 50%;
-                        background-color: #333;
-                        border: 2px solid var(--pulso-green);
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        flex-shrink: 0;
-                      "
-                    >
-                      <i class="bi bi-person text-green fs-4"></i>
-                    </div>
-                    <div>
-                      <h4 class="text-white mb-1">Dr. Carlos Rossi</h4>
-                      <span class="badge bg-dark border border-secondary text-gray fs-12"
-                        >Kinesiología</span
-                      >
-                    </div>
-                  </div>
-                  <p class="text-gray mb-2 fs-14">
-                    <i class="bi bi-calendar-event text-green me-2"></i> Martes y Jueves · 14:00 a
-                    18:00 hs · Sala de Rehabilitación
-                  </p>
-                  <label class="text-white mt-3 mb-2 fw-bold fs-14"
-                    >Próximos turnos disponibles para el Martes 29/10:</label
-                  >
-                  <div class="d-flex flex-wrap gap-2">
-                    <button
-                      class="btn btn-outline-custom py-1 px-3 fs-13"
-                      style="border-color: var(--pulso-green); color: var(--pulso-green)"
-                    >
-                      14:00 hs
-                    </button>
-                    <button
-                      class="btn btn-outline-custom py-1 px-3 fs-13"
-                      style="border-color: var(--pulso-green); color: var(--pulso-green)"
-                    >
-                      14:45 hs
-                    </button>
-                    <button
-                      class="btn btn-outline-custom py-1 px-3 fs-13"
-                      style="border-color: var(--pulso-green); color: var(--pulso-green)"
-                    >
-                      15:30 hs
-                    </button>
-                    <button
-                      class="btn btn-outline-custom py-1 px-3 fs-13"
-                      style="border-color: var(--pulso-green); color: var(--pulso-green)"
-                    >
-                      16:15 hs
-                    </button>
-                    <button
-                      class="btn btn-outline-custom py-1 px-3 fs-13"
-                      style="border-color: var(--pulso-green); color: var(--pulso-green)"
-                    >
-                      17:00 hs
-                    </button>
-                  </div>
-                  <p class="text-gray mt-2 mb-0 fs-12">
-                    <i class="bi bi-info-circle me-1"></i> Quedan 5 turnos disponibles para este
-                    día.
-                  </p>
-                </div>
-              </div>
-            </div>
-            <h3 class="text-white mb-3 fs-15">Mis Turnos Reservados</h3>
-            <div class="user-card text-center py-5">
-              <i class="bi bi-calendar-x text-gray fs-1 mb-3 d-block"></i>
-              <h5 class="text-white mb-2">No tenés turnos reservados</h5>
-              <p class="text-gray mb-0 fs-14">
-                Cuando reserves un turno con un profesional, aparecerá en esta sección.
-              </p>
             </div>
           </div>
           <div id="user-notificaciones" class="seccion-contenido d-none">
@@ -730,46 +603,69 @@
               </div>
               <div class="row g-3">
                 <div class="col-md-3">
-                  <label class="text-gray mb-2 fs-14 d-block">Nombre completo</label>
-                  <input type="text" class="user-form-control w-100" value="Juan Pérez" />
+                  <label class="text-gray mb-2 fs-14 d-block" for="perfil-nombre"
+                    >Nombre completo</label
+                  >
+                  <input type="text" id="perfil-nombre" class="user-form-control w-100" readonly />
                 </div>
                 <div class="col-md-3">
-                  <label class="text-gray mb-2 fs-14 d-block">DNI</label>
-                  <input type="text" class="user-form-control w-100" value="22222222" />
+                  <label class="text-gray mb-2 fs-14 d-block" for="perfil-dni">DNI</label>
+                  <input
+                    type="text"
+                    id="perfil-dni"
+                    class="user-form-control w-100"
+                    disabled
+                    style="cursor: not-allowed; opacity: 0.6"
+                  />
                 </div>
                 <div class="col-md-3">
-                  <label class="text-gray mb-2 fs-14 d-block">Email</label>
-                  <input type="email" class="user-form-control w-100" value="juan@email.com" />
+                  <label class="text-gray mb-2 fs-14 d-block" for="perfil-email">Email</label>
+                  <input type="email" id="perfil-email" class="user-form-control w-100" readonly />
                 </div>
                 <div class="col-md-3">
-                  <label class="text-gray mb-2 fs-14 d-block">Teléfono</label>
-                  <input type="tel" class="user-form-control w-100" value="11 2345-6789" />
+                  <label class="text-gray mb-2 fs-14 d-block" for="perfil-telefono">Teléfono</label>
+                  <input type="tel" id="perfil-telefono" class="user-form-control w-100" readonly />
                 </div>
               </div>
             </div>
             <!-- Datos Físicos Base -->
             <div class="user-card mb-4">
               <h4 class="mb-4">Datos Físicos Base</h4>
-              <!-- Fila 1: Altura y Peso Inicial -->
               <div class="row g-3 mb-3">
                 <div class="col-md-6">
-                  <label class="text-gray mb-2 fs-14">Altura (cm)</label>
-                  <input type="number" class="user-form-control w-100" value="175" />
+                  <label class="text-gray mb-2 fs-14" for="perfil-altura">Altura (cm)</label>
+                  <input
+                    type="number"
+                    id="perfil-altura"
+                    class="user-form-control w-100"
+                    readonly
+                  />
                 </div>
                 <div class="col-md-6">
-                  <label class="text-gray mb-2 fs-14">Peso Inicial (kg)</label>
-                  <input type="number" class="user-form-control w-100" value="82" />
+                  <label class="text-gray mb-2 fs-14" for="perfil-peso-inicial"
+                    >Peso Inicial (kg)</label
+                  >
+                  <input
+                    type="number"
+                    id="perfil-peso-inicial"
+                    class="user-form-control w-100"
+                    readonly
+                  />
                 </div>
               </div>
-              <!-- Fila 2: Peso Meta y Objetivo -->
               <div class="row g-3">
                 <div class="col-md-6">
-                  <label class="text-gray mb-2 fs-14">Peso Meta (kg)</label>
-                  <input type="number" class="user-form-control w-100" value="70" />
+                  <label class="text-gray mb-2 fs-14" for="perfil-peso-meta">Peso Meta (kg)</label>
+                  <input
+                    type="number"
+                    id="perfil-peso-meta"
+                    class="user-form-control w-100"
+                    readonly
+                  />
                 </div>
                 <div class="col-md-6">
-                  <label class="text-gray mb-2 fs-14">Mi Objetivo</label>
-                  <select class="user-form-control w-100" id="selectObjetivo">
+                  <label class="text-gray mb-2 fs-14" for="selectObjetivo">Mi Objetivo</label>
+                  <select class="user-form-control w-100" id="selectObjetivo" disabled>
                     <option value="deficit">Déficit Calórico (Bajar Grasa)</option>
                     <option value="volumen">Volumen (Ganar Músculo)</option>
                     <option value="mantenimiento">Mantenimiento (Mantener Peso)</option>
@@ -777,16 +673,16 @@
                   </select>
                 </div>
               </div>
-              <div class="row mt-4">
-                <div class="col-12 text-end">
-                  <button class="btn btn-green py-2 px-4 fs-14" onclick="guardarObjetivo()">
-                    ACTUALIZAR DATOS
-                  </button>
-                </div>
+              <!-- se saca el btn por ahora-->
+              <div
+                class="alert bg-pulso-darker border border-secondary text-gray mt-4 mb-0 fs-13 d-flex align-items-center"
+              >
+                <i class="bi bi-info-circle text-green me-2 fs-5"></i>
+                <span>La edición de datos físicos y objetivo estará disponible próximamente.</span>
               </div>
             </div>
 
-            <!-- Tu Plan Actual -->
+            <!-- Tu Plan Actual (se desabilitan los botones por ahora)-->
             <div class="user-card mb-4" style="border-color: var(--pulso-green)">
               <div class="d-flex justify-content-between align-items-start mb-3">
                 <div>
@@ -799,20 +695,31 @@
                 </div>
                 <span class="badge badge-green fs-12">Activo</span>
               </div>
-              <div class="d-flex gap-2">
-                <button class="btn btn-green py-2 px-4 fs-14">CAMBIAR PLAN</button>
-                <button class="user-btn-outline text-danger border-danger fs-14">
+              <div class="d-flex gap-2 mb-3">
+                <button class="btn btn-green py-2 px-4 fs-14" disabled>CAMBIAR PLAN</button>
+                <button class="user-btn-outline text-danger border-danger fs-14" disabled>
                   DAR DE BAJA
                 </button>
               </div>
+              <p class="text-gray fs-13 mb-0">
+                <i class="bi bi-info-circle me-1"></i>
+                La gestión de planes estará disponible próximamente. Por ahora, contactá a recepción
+                para cambiar o cancelar tu plan.
+              </p>
             </div>
-            <!-- Eliminar Cuenta -->
+            <!-- Eliminar Cuenta (se desabilita el btn por ahora) -->
             <div class="user-card">
               <h4 class="mb-2">Eliminar cuenta</h4>
               <p class="text-gray mb-4 fs-14">
                 Esta acción cierra tu sesión y desvincula tu acceso permanentemente.
               </p>
-              <button class="user-btn-outline"><i class="bi bi-trash"></i> ELIMINAR CUENTA</button>
+              <button class="user-btn-outline" disabled>
+                <i class="bi bi-trash"></i> ELIMINAR CUENTA
+              </button>
+              <p class="text-gray fs-13 mt-3 mb-0">
+                <i class="bi bi-info-circle me-1"></i>
+                La eliminación de cuenta estará disponible próximamente.
+              </p>
             </div>
           </div>
         </div>

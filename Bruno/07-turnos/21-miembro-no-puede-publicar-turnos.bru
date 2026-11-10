@@ -1,0 +1,23 @@
+meta {
+  name: Miembro no puede publicar turnos
+  type: http
+  seq: 21
+}
+
+post {
+  url: {{baseUrl}}/api/turnos
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "tipo": "nutricionista",
+    "fecha": "{{fechaTurno}}",
+    "hora": "10:00"
+  }
+}
+
+assert {
+  res.status: eq 403
+}

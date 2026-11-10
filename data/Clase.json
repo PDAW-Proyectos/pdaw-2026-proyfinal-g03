@@ -8,8 +8,8 @@
       "instructorId": 2,
       "fechaHora": "2026-12-05T18:00:00.000Z",
       "duracionMin": 60,
-      "cupo": 1,
-      "cuposDisponibles": 0,
+      "cupo": 10,
+      "cuposDisponibles": 9,
       "inscriptosIds": [5]
     }
   ]

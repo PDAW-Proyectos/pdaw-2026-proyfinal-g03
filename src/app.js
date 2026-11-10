@@ -21,6 +21,7 @@ const rutasSeguimientos = require('./routes/seguimientos');
 const rutasTurnos = require('./routes/turnos');
 const rutasMembresias = require('./routes/membresias');
 const rutasHorarios = require('./routes/horarios');
+const rutasCatalogoPublico = require('./routes/catalogoPublico');
 
 function crearApp({
   repos,
@@ -63,6 +64,7 @@ function crearApp({
     '/api/auth',
     rutasAuth({ servicioAuth: servicios.servicioAuth, repoUsuarios: repos.repoUsuarios }),
   );
+  app.use('/api/publico', rutasCatalogoPublico(servicios));
 
   // Desde aquí, las rutas de la API requieren una sesión válida.
   app.use('/api', autenticacion({ repoUsuarios: repos.repoUsuarios }));

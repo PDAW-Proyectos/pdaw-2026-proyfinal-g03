@@ -1,0 +1,16 @@
+meta {
+  name: Cancelar mi turno
+  type: http
+  seq: 19
+}
+
+post {
+  url: {{baseUrl}}/api/turnos/{{turnoId}}/cancelar
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+  res.body.disponible: eq true
+}

@@ -1,0 +1,33 @@
+meta {
+  name: Datos inválidos
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{baseUrl}}/api/usuarios/miembros
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "dni": "123",
+    "nombre": "Sin datos",
+    "email": "no-es-un-email",
+    "peso": 70,
+    "altura": 170,
+    "edad": 30,
+    "objetivo": "volar"
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.body.errores: isArray
+  res.body.errores[0].campo: eq dni
+}
+
+docs {
+  DNI de menos de 7 dígitos, email mal formado y objetivo inexistente. La validación responde 400 con el mensaje en `error` y, en `errores`, el **primer** campo inválido que encontró (acá `dni`).
+}

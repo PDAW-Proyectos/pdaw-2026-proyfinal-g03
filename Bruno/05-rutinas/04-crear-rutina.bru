@@ -1,0 +1,44 @@
+meta {
+  name: Crear rutina
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/api/rutinas
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "nombre": "Fuerza A",
+    "nivel": "principiante",
+    "ejercicios": [
+      {
+        "nombre": "Sentadilla",
+        "series": 3,
+        "repeticiones": 10
+      },
+      {
+        "nombre": "Press de banca",
+        "series": 4,
+        "repeticiones": 8,
+        "descansoSeg": 90
+      }
+    ]
+  }
+}
+
+script:post-response {
+  bru.setVar("rutinaId", res.body.id);
+}
+
+assert {
+  res.status: eq 201
+  res.body.instructorId: eq "{{instructorId}}"
+}
+
+docs {
+  **Instructor** (permiso `crearRutina`). El `instructorId` sale de la sesión, no del body. `descansoSeg` es opcional (por defecto 60).
+}

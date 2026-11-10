@@ -1,5 +1,5 @@
 import { verificarSesion, cerrarSesion } from '../auth.js';
-
+import { inicializarRenderizadoInstructor } from './renderizado-intructor.js';
 document.addEventListener('DOMContentLoaded', async () => {
   try {
     const usuario = await verificarSesion();
@@ -43,6 +43,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error('Error al cerrar sesión:', error);
       }
     });
+    inicializarRenderizadoInstructor(usuario);
   } catch (error) {
     console.error('Error al inicializar el panel:', error);
   }

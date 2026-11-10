@@ -9,6 +9,7 @@ module.exports = function rutasPlanesEntrenamiento({ servicioPlanes }) {
   const router = Router();
 
   router.post('/generar', exigirPermiso('generarPlan'), controlador.generarEntrenamiento);
+  router.get('/mios', exigirPermiso('generarPlan'), controlador.listarEntrenamientos);
   router.get('/:id', controlador.obtenerEntrenamiento);
 
   return router;

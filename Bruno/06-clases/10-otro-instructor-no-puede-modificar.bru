@@ -1,0 +1,28 @@
+meta {
+  name: Otro instructor no puede modificar
+  type: http
+  seq: 10
+}
+
+put {
+  url: {{baseUrl}}/api/clases/{{claseId}}
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "titulo": "Robada",
+    "fechaHora": "{{fechaClase}}",
+    "duracionMin": 60,
+    "cupo": 10
+  }
+}
+
+assert {
+  res.status: eq 403
+}
+
+docs {
+  Solo el instructor dueño modifica o borra su clase: 403.
+}
