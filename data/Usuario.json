@@ -27,6 +27,58 @@
       "email": "mate@mate.com",
       "especialidad": "crossfit",
       "passwordHash": "$2b$12$b2GqFeFGR0l/p7ximD2zcuqR3YlOYzFnFZXdiPbJf2DxFK7GG7rHu"
+    },
+    {
+      "id": "30000003",
+      "rol": "miembro",
+      "nombre": "Miembro de prueba",
+      "email": "miembro.prueba@gym.com",
+      "peso": 70,
+      "altura": 170,
+      "edad": 30,
+      "objetivo": "mantener",
+      "planMembresiaId": null,
+      "passwordHash": "$2b$12$r6S298ZcJBQaKV5AGOXofOL.XcBZZ0B1H7fR3jq4mo952G7TYzgye"
+    },
+    {
+      "id": "30000004",
+      "rol": "miembro",
+      "nombre": "Miembro 2 de prueba",
+      "email": "miembro2.prueba@gym.com",
+      "peso": 80,
+      "altura": 180,
+      "edad": 28,
+      "objetivo": "ganar_musculo",
+      "planMembresiaId": null,
+      "passwordHash": "$2b$12$smphz4bpQ7sX24jI1ryrYeWA6nQk9w/Sub8WzUg64BOMDZWWLIAAa"
+    },
+    {
+      "id": "30000001",
+      "rol": "instructor",
+      "nombre": "Instructor de prueba",
+      "email": "instructor.prueba@gym.com",
+      "especialidad": "Fuerza",
+      "passwordHash": "$2b$12$Y0qfmcWkYnmmkFgID8NdLOLT7bcm5qXVjT6MkDMOYbgLJ.qsntsA."
+    },
+    {
+      "id": "30000002",
+      "rol": "instructor",
+      "nombre": "Instructor 2 de prueba",
+      "email": "instructor2.prueba@gym.com",
+      "especialidad": "Yoga",
+      "passwordHash": "$2b$12$fGsNkS04.5em8sOJ7q2JhuHCx2B.TcJM6missaCEjJ2jLXDTQ.RFG"
+    },
+    {
+      "id": "96385274",
+      "rol": "miembro",
+      "nombre": "Prueba",
+      "email": "prueba@gmail.com",
+      "peso": 49,
+      "altura": 169,
+      "edad": 30,
+      "objetivo": "ganar_musculo",
+      "planMembresiaId": 2,
+      "passwordHash": "$2b$12$xOgQI/3bN.s5XoTItAWJGOXqWrQpb0cS.vtCHSjUrn5SAo/DuiiPu"
     }
   ]
 }

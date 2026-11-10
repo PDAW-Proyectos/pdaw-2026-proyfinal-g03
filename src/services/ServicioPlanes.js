@@ -7,6 +7,7 @@ const { NIVELES } = require('../utils/constantes');
 const { ErrorServicioExterno, ErrorProhibido } = require('../utils/errores');
 const { INSTRUCCION_SISTEMA, pedidoEntrenamiento, pedidoNutricion } = require('./gemini/prompts');
 const { ESQUEMA_ENTRENAMIENTO, ESQUEMA_NUTRICION } = require('./gemini/esquemas');
+const paginar = require('../utils/paginar');
 
 const DURACION_PLAN_SEMANAS = 4;
 
@@ -93,9 +94,23 @@ class ServicioPlanes {
 
   // regla de propiedad segun rol: un plan de un miembro solo lo lee su dueño (los planes del gimnasio son públicos)
   #verificarDueno(plan, miembro) {
-    if (plan.miembroId !== null && plan.miembroId !== miembro.id) {
+    if (plan.miembroId !== null && String(plan.miembroId) !== String(miembro.id)) {
       throw new ErrorProhibido('El plan pertenece a otro miembro');
     }
+  }
+
+  async listarEntrenamientos({ miembro, page, limit } = {}) {
+    const planes = await this.repoPlanesEntrenamiento.listar();
+    const filtrados = planes.filter((p) => String(p.miembroId) === String(miembro.id));
+    return paginar(filtrados, { page, limit });
+  }
+
+  async listarNutricionales({ miembro, page, limit } = {}) {
+    const planes = await this.repoPlanesNutricionales.listar();
+    const filtrados = planes
+      .filter((p) => String(p.miembroId) === String(miembro.id))
+      .sort((a, b) => new Date(b.creadoEn) - new Date(a.creadoEn));
+    return paginar(filtrados, { page, limit });
   }
 }
 

@@ -1,189 +1,475 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Iron Temple - Mi Panel</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
-    <link rel="icon" href="./img/pesa.png">
-    <link rel="stylesheet" href="./css/styles.css">
-</head>
-<body data-rol="administrador" class="admin-body">
-        <!-- Header Dinámico -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Oswald:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="./img/pesa.png" />
+    <link rel="stylesheet" href="./css/styles.css" />
+  </head>
+  <body data-rol="administrador" class="admin-body">
+    <!-- Header Dinámico -->
     <header class="admin-header">
-        <a class="navbar-brand m-0" href="index.html">
-            <span class="text-green"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-dumbbell preview-icon"><path d="M17.596 12.768a2 2 0 1 0 2.829-2.829l-1.768-1.767a2 2 0 0 0 2.828-2.829l-2.828-2.828a2 2 0 0 0-2.829 2.828l-1.767-1.768a2 2 0 1 0-2.829 2.829z"/><path d="m2.5 21.5 1.4-1.4"/><path d="m20.1 3.9 1.4-1.4"/><path d="M5.343 21.485a2 2 0 1 0 2.829-2.828l1.767 1.768a2 2 0 1 0 2.829-2.829l-6.364-6.364a2 2 0 1 0-2.829 2.829l1.768 1.767a2 2 0 0 0-2.828 2.829z"/><path d="m9.6 14.4 4.8-4.8"/></svg></span> IRON TEMPLE<span class="text-green">.</span>
-        </a>
-        <div class="admin-user-info">
-            <span class="text-green fw-bold" id="nombreUsuarioHeader">Cargando...</span>
-            <button class="btn btn-outline-custom d-lg-none py-1 px-2 ms-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuLateral" aria-controls="menuLateral" style="border-color: #444;">
-                <i class="bi bi-list fs-5"></i>
-            </button>
-            <a id="btnCerrarSesion"><i class="bi bi-box-arrow-right"></i> Salir</a>
-        </div>
+      <a class="navbar-brand m-0" href="index.html">
+        <span class="text-green"
+          ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="lucide lucide-dumbbell preview-icon"
+          >
+            <path
+              d="M17.596 12.768a2 2 0 1 0 2.829-2.829l-1.768-1.767a2 2 0 0 0 2.828-2.829l-2.828-2.828a2 2 0 0 0-2.829 2.828l-1.767-1.768a2 2 0 1 0-2.829 2.829z"
+            />
+            <path d="m2.5 21.5 1.4-1.4" />
+            <path d="m20.1 3.9 1.4-1.4" />
+            <path
+              d="M5.343 21.485a2 2 0 1 0 2.829-2.828l1.767 1.768a2 2 0 1 0 2.829-2.829l-6.364-6.364a2 2 0 1 0-2.829 2.829l1.768 1.767a2 2 0 0 0-2.828 2.829z"
+            />
+            <path d="m9.6 14.4 4.8-4.8" /></svg
+        ></span>
+        IRON TEMPLE<span class="text-green">.</span>
+      </a>
+      <div class="admin-user-info">
+        <span class="text-green fw-bold" id="nombreUsuarioHeader">Cargando...</span>
+        <button
+          class="btn btn-outline-custom d-lg-none py-1 px-2 ms-2"
+          type="button"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#menuLateral"
+          aria-controls="menuLateral"
+          style="border-color: #444"
+        >
+          <i class="bi bi-list fs-5"></i>
+        </button>
+        <a id="btnCerrarSesion"><i class="bi bi-box-arrow-right"></i> Salir</a>
+      </div>
     </header>
     <div class="container-fluid">
-        <div class="row">
-            <!-- Sidebar / Menú Lateral (Responsive y Fijo) -->
-            <div class="col-12 col-lg-2 admin-sidebar">
-                <!-- Contenedor del menú Offcanvas -->
-                <div class="offcanvas-lg offcanvas-start bg-pulso-darker" tabindex="-1" id="menuLateral" aria-labelledby="menuLateralLabel">
-                    <!-- Header del menú (solo celular) -->
-                    <div class="offcanvas-header d-lg-none border-bottom border-secondary">
-                        <h5 class="offcanvas-title text-white" id="menuLateralLabel">Opciones</h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" data-bs-target="#menuLateral" aria-label="Close"></button>
-                    </div>
-                    <!-- Contenido del menú -->
-                    <div class="offcanvas-body d-lg-block p-0">
-                        <ul class="admin-nav nav flex-lg-column flex-row flex-wrap" id="mainTabs" role="tablist">
-                         <!-- MENÚ ADMIN -->
-                            <li class="nav-item"><button class="admin-nav-link nav-link active w-100 text-start" data-seccion="admin-usuarios"><i class="bi bi-people"></i> Usuarios</button></li>
-                            <li class="nav-item"><button class="admin-nav-link nav-link w-100 text-start" data-seccion="admin-medicos"><i class="bi bi-heart-pulse"></i> Disponibilidad médica</button></li>
-                            <li class="nav-item"><button class="admin-nav-link nav-link w-100 text-start" data-seccion="admin-local"><i class="bi bi-shop"></i> Gestión Local</button></li>
-                            <li class="nav-item"><button class="admin-nav-link nav-link w-100 text-start" data-seccion="admin-planes"><i class="bi bi-credit-card"></i> Planes</button></li>
-                            <li class="nav-item"><button class="admin-nav-link nav-link w-100 text-start" data-seccion="admin-actividades"><i class="bi bi-calendar-event"></i> Actividades</button></li>
-                            <li class="nav-item"><button class="admin-nav-link nav-link w-100 text-start" data-seccion="admin-dietas"><i class="bi bi-egg-fried"></i> Dietas Generales</button></li>
-                            <li class="nav-item"><button class="admin-nav-link nav-link w-100 text-start" data-seccion="admin-perfil"><i class="bi bi-person-circle"></i> Mi Perfil</button></li>
-                        </ul>
-                    </div>
-                </div>
+      <div class="row">
+        <!-- Sidebar / Menú Lateral (Responsive y Fijo) -->
+        <div class="col-12 col-lg-2 admin-sidebar">
+          <!-- Contenedor del menú Offcanvas -->
+          <div
+            class="offcanvas-lg offcanvas-start bg-pulso-darker"
+            tabindex="-1"
+            id="menuLateral"
+            aria-labelledby="menuLateralLabel"
+          >
+            <!-- Header del menú (solo celular) -->
+            <div class="offcanvas-header d-lg-none border-bottom border-secondary">
+              <h5 class="offcanvas-title text-white" id="menuLateralLabel">Opciones</h5>
+              <button
+                type="button"
+                class="btn-close btn-close-white"
+                data-bs-dismiss="offcanvas"
+                data-bs-target="#menuLateral"
+                aria-label="Close"
+              ></button>
             </div>
-            <!-- Contenido Dinámico -->
-            <div class="col-12 col-lg-10 admin-content-area">            
-                <!-- ==============================================
+            <!-- Contenido del menú -->
+            <div class="offcanvas-body d-lg-block p-0">
+              <ul
+                class="admin-nav nav flex-lg-column flex-row flex-wrap"
+                id="mainTabs"
+                role="tablist"
+              >
+                <!-- MENÚ ADMIN -->
+                <li class="nav-item">
+                  <button
+                    class="admin-nav-link nav-link active w-100 text-start"
+                    data-seccion="admin-usuarios"
+                  >
+                    <i class="bi bi-people"></i> Usuarios
+                  </button>
+                </li>
+                <li class="nav-item">
+                  <button
+                    class="admin-nav-link nav-link w-100 text-start"
+                    data-seccion="admin-medicos"
+                  >
+                    <i class="bi bi-heart-pulse"></i> Disponibilidad médica
+                  </button>
+                </li>
+                <li class="nav-item">
+                  <button
+                    class="admin-nav-link nav-link w-100 text-start"
+                    data-seccion="admin-local"
+                  >
+                    <i class="bi bi-shop"></i> Gestión Local
+                  </button>
+                </li>
+                <li class="nav-item">
+                  <button
+                    class="admin-nav-link nav-link w-100 text-start"
+                    data-seccion="admin-planes"
+                  >
+                    <i class="bi bi-credit-card"></i> Planes
+                  </button>
+                </li>
+                <li class="nav-item">
+                  <button
+                    class="admin-nav-link nav-link w-100 text-start"
+                    data-seccion="admin-actividades"
+                  >
+                    <i class="bi bi-calendar-event"></i> Actividades
+                  </button>
+                </li>
+                <li class="nav-item">
+                  <button
+                    class="admin-nav-link nav-link w-100 text-start"
+                    data-seccion="admin-dietas"
+                  >
+                    <i class="bi bi-egg-fried"></i> Dietas Generales
+                  </button>
+                </li>
+                <li class="nav-item">
+                  <button
+                    class="admin-nav-link nav-link w-100 text-start"
+                    data-seccion="admin-perfil"
+                  >
+                    <i class="bi bi-person-circle"></i> Mi Perfil
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <!-- Contenido Dinámico -->
+        <div class="col-12 col-lg-10 admin-content-area">
+          <!-- ==============================================
                      CONTENIDO DE ADMIN
                      ============================================== -->
-                    <div id="admin-usuarios" class="seccion-contenido">
-                        <div class="admin-header-action">
-                            <h2 class="admin-page-title m-0">GESTIÓN DE USUARIOS</h2>
-                            <button class="btn btn-green"><i class="bi bi-person-plus"></i> NUEVO USUARIO / ALUMNO</button>
-                        </div>
-                        <p class="text-gray mb-4 mt-2">Administrá cuentas, roles, vencimientos y suspensiones.</p>
-                        <div id="admin-usuarios-lista" class="admin-card text-gray" aria-live="polite">
-                            Sin miembros cargados
-                        </div>
-                    </div>
-                    <div id="admin-medicos" class="seccion-contenido d-none">
-                        <h2 class="admin-page-title">DISPONIBILIDAD MÉDICA</h2>
-                        <p class="text-gray mb-4">Turnos disponibles para chequeos médicos y nutrición.</p>
-                        <p id="admin-turnos-resumen" class="text-gray mb-3" aria-live="polite">Cargando resumen...</p>
-                        <div id="admin-turnos-disponibles" class="d-flex flex-column gap-3" aria-live="polite" aria-busy="true">
-                            <div class="admin-card">Cargando disponibilidad...</div>
-                        </div>
-                    </div>
-                    <div id="admin-local" class="seccion-contenido d-none">
-                        <h2 class="admin-page-title">GESTIÓN LOCAL</h2>
-                        <div class="admin-card text-gray mb-5"></div>
-                        <h4 class="text-white mb-3 fs-15">Horarios de Apertura y Cierre</h4>
-                        <p id="admin-horarios-resumen" class="text-gray mb-3" aria-live="polite">Cargando resumen...</p>
-                        <div id="admin-horarios-lista" class="d-flex flex-column gap-3" aria-live="polite" aria-busy="true">
-                            <div class="admin-card">Cargando horarios...</div>
-                        </div>
-                    </div>
-                    <div id="admin-planes" class="seccion-contenido d-none">
-                        <h2 class="admin-page-title">GESTIÓN DE PLANES</h2>
-                        <div class="row g-4">
-                            <div class="col-12 col-lg-4">
-                                <div class="admin-card h-100" style="display: block;">
-                                    <h4 class="text-white mb-4"><i class="bi bi-plus-circle text-green me-2"></i> Crear Nuevo Plan</h4>
-                                    
-                                    <form>
-                                        <div class="mb-3">
-                                            <label class="text-gray mb-2 fs-14 d-block">Título del Plan</label>
-                                            <input type="text" class="admin-form-control w-100" style="max-width: 100%;" placeholder="Ej: Plan Full">
-                                        </div>
-                                        <div class="row g-3 mb-3">
-                                            <div class="col-12 col-md-6">
-                                                <label class="text-gray mb-2 fs-14 d-block">Cantidad de Días</label>
-                                                <input type="number" class="admin-form-control w-100" style="max-width: 100%;" placeholder="Ej: 30">
-                                            </div>
-                                            <div class="col-12 col-md-6">
-                                                <label class="text-gray mb-2 fs-14 d-block">Precio ($)</label>
-                                                <input type="number" class="admin-form-control w-100" style="max-width: 100%;" placeholder="Ej: 25000">
-                                            </div>
-                                        </div>
-                                        <div class="mb-4">
-                                            <label class="text-gray mb-2 fs-14 d-block">Actividades Permitidas</label>
-                                            <select class="admin-form-control w-100" style="max-width: 100%;">
-                                                <option>Libre (Todas)</option>
-                                                <option>1 actividad</option>
-                                                <option>2 actividades</option>
-                                                <option>Solo Musculación</option>
-                                                <option>Solo Clases Grupales</option>
-                                            </select>
-                                        </div>
-                                        <button type="submit" class="btn btn-green w-100 py-3 fs-15">CREAR PLAN ↗</button>
-                                    </form>
-                                </div>
-                            </div>
-                            <div class="col-lg-8">
-                                <h4 class="text-white mb-3 fs-15">Planes Existentes</h4>
-                                <p id="admin-membresias-resumen" class="text-gray mb-3" aria-live="polite">Cargando resumen...</p>
-                                <div id="admin-membresias-lista" class="d-flex flex-column gap-3" aria-live="polite" aria-busy="true">
-                                    <div class="admin-card">Cargando planes...</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="admin-actividades" class="seccion-contenido d-none">
-                        <div class="admin-header-action">
-                            <h2 class="admin-page-title m-0">GESTIÓN DE ACTIVIDADES</h2>
-                        </div>
-                        <div class="row g-4">
-                            <div class="col-lg-12">
-                                <h4 class="text-white mb-3 fs-15">Actividades Programadas</h4>
-                                <p id="admin-clases-resumen" class="text-gray mb-3" aria-live="polite">Cargando resumen...</p>
-                                <div id="admin-clases-lista" class="d-flex flex-column gap-3" aria-live="polite" aria-busy="true">
-                                    <div class="admin-card">Cargando actividades...</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="admin-dietas" class="seccion-contenido d-none">
-                        <h2 class="admin-page-title">DIETAS GENERALES</h2>
-                           <div class="row g-4">
-                            <div class="col-lg-12">
-                                <h4 class="text-white mb-3 fs-15">Dietas Creadas</h4>
-                                <div id="admin-dietas-lista" class="admin-card text-gray" aria-live="polite"></div>
-                            </div>
-                        </div>
-                    </div> 
-                    <div id="admin-perfil" class="seccion-contenido d-none">
-                        <h2 class="admin-page-title">MI PERFIL</h2>
-                        
-                        <!-- 1. Datos Personales -->
-                        <div class="admin-card mb-4" style="display: block;">
-                            <div class="d-flex justify-content-between align-items-center mb-4">
-                                <h4 class="mb-0 text-white"><i class="bi bi-person-badge text-green me-2"></i> Datos Personales</h4>
-                            </div>
-                            <div class="row g-3">
-                                <div class="col-md-3">
-                                    <label class="text-gray mb-2 fs-14 d-block">Nombre completo</label>
-                                    <input id="perfil-nombre" type="text" class="user-form-control w-100" readonly>
-                                </div>
-                                <div class="col-md-3">
-                                    <label class="text-gray mb-2 fs-14 d-block">DNI</label>
-                                    <input id="perfil-dni" type="text" class="user-form-control w-100" disabled style="cursor: not-allowed; opacity: 0.6;">
-                                </div>
-                                <div class="col-md-3">
-                                    <label class="text-gray mb-2 fs-14 d-block">Email</label>
-                                    <input id="perfil-email" type="email" class="user-form-control w-100" readonly>
-                                </div>
-                                <div class="col-md-3">
-                                    <label class="text-gray mb-2 fs-14 d-block">Teléfono</label>
-                                    <input id="perfil-telefono" type="tel" class="user-form-control w-100" value="No registrado" readonly>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+          <div id="admin-usuarios" class="seccion-contenido">
+            <div class="admin-header-action">
+              <h2 class="admin-page-title m-0">GESTIÓN DE USUARIOS</h2>
+              <button class="btn btn-green" id="nuevoUsuario">
+                <i class="bi bi-person-plus"></i> NUEVO USUARIO / ALUMNO
+              </button>
             </div>
+            <p class="text-gray mb-4 mt-2">
+              Administrá cuentas, roles, vencimientos y suspensiones.
+            </p>
+            <div id="admin-usuarios-lista" class="admin-card text-gray" aria-live="polite">
+              Sin miembros cargados
+            </div>
+          </div>
+          <div id="admin-medicos" class="seccion-contenido d-none">
+            <div class="admin-header-action d-flex justify-content-between align-items-center mb-4">
+              <h2 class="admin-page-title m-0">DISPONIBILIDAD MÉDICA</h2>
+              <button class="btn btn-green" id="btnNuevoTurno">
+                <i class="bi bi-plus-lg"></i> PUBLICAR TURNO
+              </button>
+            </div>
+            <p class="text-gray mb-4">Turnos disponibles para chequeos médicos y nutrición.</p>
+            <p id="admin-turnos-resumen" class="text-gray mb-3" aria-live="polite">
+              Cargando resumen...
+            </p>
+            <div
+              id="admin-turnos-disponibles"
+              class="d-flex flex-column gap-3"
+              aria-live="polite"
+              aria-busy="true"
+            >
+              <div class="admin-card">Cargando disponibilidad...</div>
+            </div>
+          </div>
+          <div id="admin-local" class="seccion-contenido d-none">
+            <div class="admin-header-action d-flex justify-content-between align-items-center mb-4">
+              <h2 class="admin-page-title m-0">GESTIÓN LOCAL</h2>
+              <button class="btn btn-green" id="btnNuevoHorario">
+                <i class="bi bi-plus-lg"></i> AGREGAR HORARIO
+              </button>
+            </div>
+            <div class="admin-card text-gray mb-5"></div>
+            <h4 class="text-white mb-3 fs-15">Horarios de Apertura y Cierre</h4>
+            <p id="admin-horarios-resumen" class="text-gray mb-3" aria-live="polite">
+              Cargando resumen...
+            </p>
+            <div
+              id="admin-horarios-lista"
+              class="d-flex flex-column gap-3"
+              aria-live="polite"
+              aria-busy="true"
+            >
+              <div class="admin-card">Cargando horarios...</div>
+            </div>
+          </div>
+          <div id="admin-planes" class="seccion-contenido d-none">
+            <h2 class="admin-page-title">GESTIÓN DE PLANES</h2>
+            <div class="row g-4">
+              <div class="col-12 col-lg-4">
+                <div class="admin-card h-100" style="display: block">
+                  <h4 class="text-white mb-4">
+                    <i class="bi bi-plus-circle text-green me-2"></i> Crear Nuevo Plan
+                  </h4>
+
+                  <form id="formNuevoPlan">
+                    <div class="mb-3">
+                      <label class="text-gray mb-2 fs-14 d-block" for="planNombre"
+                        >Título del Plan</label
+                      >
+                      <input
+                        type="text"
+                        class="admin-form-control w-100"
+                        style="max-width: 100%"
+                        id="planNombre"
+                        placeholder="Ej: Plan Full"
+                        required
+                      />
+                    </div>
+                    <div class="row g-3 mb-3">
+                      <div class="col-12 col-md-6">
+                        <label class="text-gray mb-2 fs-14 d-block" for="planPrecio"
+                          >Precio ($)</label
+                        >
+                        <input
+                          type="number"
+                          class="admin-form-control w-100"
+                          style="max-width: 100%"
+                          id="planPrecio"
+                          placeholder="Ej: 25000"
+                          required
+                          min="0"
+                        />
+                      </div>
+                      <div class="col-12 col-md-6">
+                        <label class="text-gray mb-2 fs-14 d-block" for="planDescripcion"
+                          >Descripción</label
+                        >
+                        <input
+                          type="text"
+                          class="admin-form-control w-100"
+                          style="max-width: 100%"
+                          id="planDescripcion"
+                          placeholder="Ej: Acceso libre a musculación"
+                        />
+                      </div>
+                    </div>
+                    <div class="mb-4 form-check">
+                      <input type="checkbox" class="form-check-input" id="planActivo" checked />
+                      <label class="form-check-label text-gray fs-14" for="planActivo">
+                        Plan activo (visible para los usuarios)
+                      </label>
+                    </div>
+                    <button type="submit" class="btn btn-green w-100 py-3 fs-15">
+                      CREAR PLAN ↗
+                    </button>
+                    <div id="mensajePlan" class="text-danger fs-14 mt-2 text-center"></div>
+                  </form>
+                </div>
+              </div>
+              <div class="col-lg-8">
+                <h4 class="text-white mb-3 fs-15">Planes Existentes</h4>
+                <p id="admin-membresias-resumen" class="text-gray mb-3" aria-live="polite">
+                  Cargando resumen...
+                </p>
+                <div
+                  id="admin-membresias-lista"
+                  class="d-flex flex-column gap-3"
+                  aria-live="polite"
+                  aria-busy="true"
+                >
+                  <div class="admin-card">Cargando planes...</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="admin-actividades" class="seccion-contenido d-none">
+            <div class="admin-header-action">
+              <h2 class="admin-page-title m-0">GESTIÓN DE ACTIVIDADES</h2>
+            </div>
+            <div class="row g-4">
+              <div class="col-lg-12">
+                <h4 class="text-white mb-3 fs-15">Actividades Programadas</h4>
+                <p id="admin-clases-resumen" class="text-gray mb-3" aria-live="polite">
+                  Cargando resumen...
+                </p>
+                <div
+                  id="admin-clases-lista"
+                  class="d-flex flex-column gap-3"
+                  aria-live="polite"
+                  aria-busy="true"
+                >
+                  <div class="admin-card">Cargando actividades...</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="admin-dietas" class="seccion-contenido d-none">
+            <h2 class="admin-page-title">DIETAS GENERALES</h2>
+            <div class="row g-4">
+              <div class="col-lg-12">
+                <h4 class="text-white mb-3 fs-15">Dietas Creadas</h4>
+                <div id="admin-dietas-lista" class="admin-card text-gray" aria-live="polite"></div>
+              </div>
+            </div>
+          </div>
+          <div id="admin-perfil" class="seccion-contenido d-none">
+            <h2 class="admin-page-title">MI PERFIL</h2>
+
+            <!-- 1. Datos Personales -->
+            <div class="admin-card mb-4" style="display: block">
+              <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="mb-0 text-white">
+                  <i class="bi bi-person-badge text-green me-2"></i> Datos Personales
+                </h4>
+              </div>
+              <div class="row g-3">
+                <div class="col-md-3">
+                  <label class="text-gray mb-2 fs-14 d-block">Nombre completo</label>
+                  <input id="perfil-nombre" type="text" class="user-form-control w-100" readonly />
+                </div>
+                <div class="col-md-3">
+                  <label class="text-gray mb-2 fs-14 d-block">DNI</label>
+                  <input
+                    id="perfil-dni"
+                    type="text"
+                    class="user-form-control w-100"
+                    disabled
+                    style="cursor: not-allowed; opacity: 0.6"
+                  />
+                </div>
+                <div class="col-md-3">
+                  <label class="text-gray mb-2 fs-14 d-block">Email</label>
+                  <input id="perfil-email" type="email" class="user-form-control w-100" readonly />
+                </div>
+                <div class="col-md-3">
+                  <label class="text-gray mb-2 fs-14 d-block">Teléfono</label>
+                  <input
+                    id="perfil-telefono"
+                    type="tel"
+                    class="user-form-control w-100"
+                    value="No registrado"
+                    readonly
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
+
+    <!-- modal para Registrar Usuario, se llena dinamicamente desde registroUsuarios.js -->
+    <div class="modal fade" id="modalRegistroUsuario" tabindex="-1" aria-hidden="true"></div>
+
+    <!-- modal para Nuevo Turno -->
+    <div class="modal fade" id="modalTurno" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Publicar Nuevo Turno</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Cerrar"
+            ></button>
+          </div>
+          <form id="formTurno">
+            <div class="modal-body">
+              <div class="mb-3">
+                <label for="turnoTipo" class="form-label">Tipo de turno</label>
+                <select class="form-select" id="turnoTipo" required>
+                  <option value="">Seleccionar tipo...</option>
+                  <option value="chequeo_medico">Chequeo Médico (30 min)</option>
+                  <option value="nutricionista">Nutricionista (45 min)</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="turnoFecha" class="form-label">Fecha</label>
+                <input type="date" class="form-control" id="turnoFecha" required />
+              </div>
+              <div class="mb-3">
+                <label for="turnoHora" class="form-label">Hora</label>
+                <input type="time" class="form-control" id="turnoHora" required />
+              </div>
+              <div id="mensajeTurno" class="text-danger fs-14 mt-2"></div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                Cancelar
+              </button>
+              <button type="submit" class="btn btn-green">Publicar Turno</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- modal para Nuevo Horario -->
+    <div class="modal fade" id="modalHorario" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Agregar Horario de Apertura</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Cerrar"
+            ></button>
+          </div>
+          <form id="formHorario">
+            <div class="modal-body">
+              <div class="mb-3">
+                <label for="horarioDia" class="form-label">Día</label>
+                <select class="form-select" id="horarioDia" required>
+                  <option value="">Seleccionar día...</option>
+                  <option value="lunes">Lunes</option>
+                  <option value="martes">Martes</option>
+                  <option value="miercoles">Miércoles</option>
+                  <option value="jueves">Jueves</option>
+                  <option value="viernes">Viernes</option>
+                  <option value="sabado">Sábado</option>
+                  <option value="domingo">Domingo</option>
+                </select>
+              </div>
+              <div class="row g-3">
+                <div class="col-6">
+                  <label for="horarioApertura" class="form-label">Apertura</label>
+                  <input type="time" class="form-control" id="horarioApertura" required />
+                </div>
+                <div class="col-6">
+                  <label for="horarioCierre" class="form-label">Cierre</label>
+                  <input type="time" class="form-control" id="horarioCierre" required />
+                </div>
+              </div>
+              <div id="mensajeHorario" class="text-danger fs-14 mt-2"></div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                Cancelar
+              </button>
+              <button type="submit" class="btn btn-green">Guardar Horario</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script type="module" src="js/admin/admin.js"></script>
-</body>
+  </body>
 </html>

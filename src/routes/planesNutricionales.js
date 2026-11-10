@@ -9,6 +9,7 @@ module.exports = function rutasPlanesNutricionales({ servicioPlanes }) {
   const router = Router();
 
   router.post('/generar', exigirPermiso('generarPlan'), controlador.generarNutricional);
+  router.get('/mios', exigirPermiso('generarPlan'), controlador.listarNutricionales);
   router.get('/:id', controlador.obtenerNutricional);
 
   return router;

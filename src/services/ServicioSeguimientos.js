@@ -20,7 +20,11 @@ class ServicioSeguimientos {
 
   async iniciar({ miembro, datos }) {
     const seguimiento = miembro.iniciarSeguimiento(datos); // el modelo valida al menos un plan
-    await this.#verificarPlan(this.repoPlanesEntrenamiento, seguimiento.planEntrenamientoId, miembro);
+    await this.#verificarPlan(
+      this.repoPlanesEntrenamiento,
+      seguimiento.planEntrenamientoId,
+      miembro,
+    );
     await this.#verificarPlan(this.repoPlanesNutricionales, seguimiento.planNutricionalId, miembro);
     return this.repoSeguimientos.agregar(seguimiento);
   }
@@ -31,9 +35,15 @@ class ServicioSeguimientos {
     return this.repoSeguimientos.actualizar(seguimiento);
   }
 
-  pausar(args) { return this.#cambiarEstado(args, (s) => s.pausar()); }
-  reanudar(args) { return this.#cambiarEstado(args, (s) => s.reanudar()); }
-  finalizar(args) { return this.#cambiarEstado(args, (s) => s.finalizar()); }
+  pausar(args) {
+    return this.#cambiarEstado(args, (s) => s.pausar());
+  }
+  reanudar(args) {
+    return this.#cambiarEstado(args, (s) => s.reanudar());
+  }
+  finalizar(args) {
+    return this.#cambiarEstado(args, (s) => s.finalizar());
+  }
 
   async #cambiarEstado({ seguimientoId, miembro }, transicion) {
     const seguimiento = await this.#seguimientoDelMiembro(seguimientoId, miembro);
@@ -44,7 +54,8 @@ class ServicioSeguimientos {
   // regla de propiedad: un seguimiento solo lo maneja su dueño
   async #seguimientoDelMiembro(seguimientoId, miembro) {
     const seguimiento = await this.repoSeguimientos.obtenerPorId(seguimientoId);
-    if (seguimiento.miembroId !== miembro.id) throw new ErrorProhibido('El seguimiento pertenece a otro miembro');
+    if (String(seguimiento.miembroId) !== String(miembro.id))
+      throw new ErrorProhibido('El seguimiento pertenece a otro miembro');
     return seguimiento;
   }
 
@@ -52,7 +63,7 @@ class ServicioSeguimientos {
   async #verificarPlan(repo, planId, miembro) {
     if (planId === null) return;
     const plan = await repo.obtenerPorId(planId);
-    if (plan.miembroId !== null && plan.miembroId !== miembro.id) {
+    if (plan.miembroId !== null && String(plan.miembroId) !== String(miembro.id)) {
       throw new ErrorProhibido('El plan pertenece a otro miembro');
     }
   }

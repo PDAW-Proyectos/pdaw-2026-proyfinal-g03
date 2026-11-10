@@ -19,7 +19,7 @@ class ServicioRutinas {
 
   async crear({ instructor, datos }) {
     const rutina = instructor.crearRutina(datos); // el modelo valida y asocia al instructor
-    return this.repoRutinas.agregar(rutina);      // asigna el id
+    return this.repoRutinas.agregar(rutina); // asigna el id
   }
 
   // PUT: reemplaza la rutina completa, se conservan el id y el dueño
@@ -37,7 +37,8 @@ class ServicioRutinas {
   // Regla según el rol: solo el instructor dueño modifica o borra su rutina
   async #rutinaDelInstructor(rutinaId, instructor) {
     const rutina = await this.repoRutinas.obtenerPorId(rutinaId);
-    if (rutina.instructorId !== instructor.id) throw new ErrorProhibido('La rutina es de otro instructor');
+    if (String(rutina.instructorId) !== String(instructor.id))
+      throw new ErrorProhibido('La rutina es de otro instructor');
     return rutina;
   }
 }

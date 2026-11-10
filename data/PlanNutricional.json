@@ -1,0 +1,43 @@
+{
+  "ultimoId": 1,
+  "items": [
+    {
+      "id": 1,
+      "miembroId": 30000004,
+      "nombre": "Plan General para Ganar Masa Muscular",
+      "objetivo": "ganar_musculo",
+      "caloriasDiarias": 2800,
+      "descripcion": "Un plan nutricional sencillo y equilibrado para apoyar tus entrenamientos de hipertrofia de nivel intermedio.",
+      "comidas": [
+        {
+          "momento": "Desayuno",
+          "ejemplo": "Avena con leche, un banano y una porción de frutos secos."
+        },
+        {
+          "momento": "Media Mañana",
+          "ejemplo": "Pan integral con queso fresco y un huevo duro."
+        },
+        {
+          "momento": "Almuerzo",
+          "ejemplo": "Pechuga de pollo a la plancha, arroz blanco, ensalada fresca y una fruta."
+        },
+        {
+          "momento": "Merienda",
+          "ejemplo": "Yogur natural con un poco de granola y trozos de manzana."
+        },
+        {
+          "momento": "Cena",
+          "ejemplo": "Filete de pescado o carne magra con puré de papas y verduras cocidas."
+        }
+      ],
+      "recomendaciones": [
+        "Mantente bien hidratado bebiendo agua durante todo el día.",
+        "Duerme entre 7 y 8 horas diarias para favorecer la recuperación muscular.",
+        "Te sugerimos consultar con el médico o el nutricionista del gimnasio antes de empezar cualquier plan nuevo."
+      ],
+      "origen": "ia",
+      "idExterno": null,
+      "creadoEn": "2026-11-09T22:54:24.827Z"
+    }
+  ]
+}
