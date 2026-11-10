@@ -1,0 +1,16 @@
+meta {
+  name: 00 publico
+  seq: 0
+}
+
+docs {
+  # Catálogo público
+  
+  Estas rutas **no requieren sesión** y devuelven datos de solo lectura para las páginas públicas (inicio, actividades, membresías).
+  
+  Se montan antes del middleware de autenticación, así que no hace falta hacer login para probarlas.
+  
+  - `GET /api/publico/actividades`
+  - `GET /api/publico/horarios`
+  - `GET /api/publico/membresias`
+}
