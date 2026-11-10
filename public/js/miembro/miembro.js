@@ -47,11 +47,11 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     });
 
+    /* A MODIFICAR
     //Registrar Peso
     const btnRegistrarPeso = document.getElementById('btnRegistrarPeso');
     const inputPeso = document.getElementById('inputPesoActual');
 
-    /* A MODIFICAR
     btnRegistrarPeso?.addEventListener('click', async () => {
       const peso = Number(inputPeso.value);
 

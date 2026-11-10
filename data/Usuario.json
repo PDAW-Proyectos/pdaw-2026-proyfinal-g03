@@ -79,6 +79,18 @@
       "objetivo": "ganar_musculo",
       "planMembresiaId": 2,
       "passwordHash": "$2b$12$xOgQI/3bN.s5XoTItAWJGOXqWrQpb0cS.vtCHSjUrn5SAo/DuiiPu"
+    },
+    {
+      "id": "88888888",
+      "rol": "miembro",
+      "nombre": "Albin",
+      "email": "albin@gmail.com",
+      "peso": 30,
+      "altura": 150,
+      "edad": 17,
+      "objetivo": "resistencia",
+      "planMembresiaId": 1,
+      "passwordHash": "$2b$12$5.wKytUF5JyweknoZWzA2en9uCfaD8S0/VBkZsijDogQqumtOBWAq"
     }
   ]
 }

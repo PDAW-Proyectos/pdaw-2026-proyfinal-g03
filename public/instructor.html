@@ -113,7 +113,6 @@
           <div id="trainer-clases" class="seccion-contenido">
             <div class="d-flex justify-content-between align-items-center mb-4">
               <h2 class="trainer-page-title m-0">MIS ACTIVIDADES</h2>
-              <button class="btn btn-green"><i class="bi bi-plus-lg"></i> NUEVA ACTIVIDAD</button>
             </div>
             <p class="text-gray mb-4">
               Gestioná las clases que dictás. Podés crear actividades con fecha única o recurrentes.
@@ -123,49 +122,74 @@
               <h5 class="text-white mb-3">
                 <i class="bi bi-calendar-plus text-green me-2"></i> Creación Rápida
               </h5>
-              <div class="row g-3 align-items-end">
-                <div class="col-md-3">
-                  <label class="text-gray mb-2 fs-13 d-block">Nombre</label>
-                  <input
-                    type="text"
-                    class="trainer-form-control w-100"
-                    placeholder="Ej: Funcional"
-                  />
+              <form id="formCrearClase">
+                <div class="row g-3 align-items-end">
+                  <div class="col-md-3">
+                    <label class="text-gray mb-2 fs-13 d-block" for="claseTitulo">Nombre</label>
+                    <input
+                      type="text"
+                      id="claseTitulo"
+                      class="trainer-form-control w-100"
+                      placeholder="Ej: Funcional"
+                      required
+                    />
+                  </div>
+                  <div class="col-md-3">
+                    <label class="text-gray mb-2 fs-13 d-block" for="claseFecha">Fecha Única</label>
+                    <input
+                      type="date"
+                      id="claseFecha"
+                      class="trainer-form-control w-100"
+                      required
+                    />
+                  </div>
+                  <div class="col-md-2">
+                    <label class="text-gray mb-2 fs-13 d-block" for="claseHora">Horario</label>
+                    <input
+                      type="time"
+                      id="claseHora"
+                      class="trainer-form-control w-100"
+                      value="18:00"
+                      required
+                    />
+                  </div>
+                  <div class="col-md-2">
+                    <label class="text-gray mb-2 fs-13 d-block" for="claseCupo">Cupo</label>
+                    <input
+                      type="number"
+                      id="claseCupo"
+                      class="trainer-form-control w-100"
+                      placeholder="20"
+                      min="1"
+                      required
+                    />
+                  </div>
+                  <div class="col-md-auto">
+                    <button type="submit" class="btn btn-green fs-14 fw-bold px-4">
+                      CREAR ACTIVIDAD
+                    </button>
+                  </div>
                 </div>
-                <div class="col-md-3">
-                  <label class="text-gray mb-2 fs-13 d-block">Fecha Única</label>
-                  <input type="date" class="trainer-form-control w-100" />
-                </div>
-                <div class="col-md-2">
-                  <label class="text-gray mb-2 fs-13 d-block">Horario</label>
-                  <input type="time" class="trainer-form-control w-100" value="18:00" />
-                </div>
-                <div class="col-md-2">
-                  <label class="text-gray mb-2 fs-13 d-block">Cupo</label>
-                  <input type="number" class="trainer-form-control w-100" placeholder="20" />
-                </div>
-                <div class="col-md-auto">
-                  <button class="btn btn-green fs-14 fw-bold px-4 btn-crear">
-                    CREAR ACTIVIDAD
-                  </button>
-                </div>
-              </div>
+                <div id="mensajeCrearClase" class="text-danger fs-14 mt-2"></div>
+              </form>
               <div class="mt-3 text-gray fs-12">
-                <i class="bi bi-info-circle me-1"></i> Para actividades recurrentes (ej: todos los
-                lunes), usá el botón "Nueva Actividad".
+                <i class="bi bi-tools me-1"></i> Actualmente solo se pueden crear actividades con
+                fecha única. Las actividades recurrentes estarán disponibles próximamente.
               </div>
             </div>
 
-            <div class="row g-2 mb-4">
+            <!-- funcionalidad de filtrado a implementar -->
+            <div class="row g-2 mb-4 opacity-50 position-relative">
               <div class="col-md-4">
                 <input
                   type="text"
                   class="trainer-form-control w-100"
                   placeholder="Buscar por nombre..."
+                  disabled
                 />
               </div>
               <div class="col-md-3">
-                <select class="trainer-form-control w-100">
+                <select class="trainer-form-control w-100" disabled>
                   <option selected>Día: Todos</option>
                   <option>Lunes</option>
                   <option>Martes</option>
@@ -176,7 +200,7 @@
                 </select>
               </div>
               <div class="col-md-3">
-                <select class="trainer-form-control w-100">
+                <select class="trainer-form-control w-100" disabled>
                   <option selected>Estado: Todos</option>
                   <option>Activas</option>
                   <option>Inactivas</option>
@@ -184,7 +208,20 @@
                 </select>
               </div>
               <div class="col-md-2">
-                <button class="btn btn-green w-100 py-2 fs-13 btn-filtrar">FILTRAR</button>
+                <button class="btn btn-green w-100 py-2 fs-13" disabled>FILTRAR</button>
+              </div>
+
+              <!-- funcionalidad a implementar -->
+              <div
+                class="position-absolute top-50 start-50 translate-middle w-100 text-center"
+                style="pointer-events: none"
+              >
+                <span
+                  class="badge bg-dark border border-secondary text-gray py-2 px-3 fs-12 shadow"
+                >
+                  <i class="bi bi-tools text-green me-2"></i> La búsqueda y filtros avanzados estará
+                  disponible próximamente.
+                </span>
               </div>
             </div>
             <p id="instructor-actividades-resumen" class="text-gray mb-3 fs-14"></p>
@@ -198,42 +235,53 @@
                 <h4 class="mb-0 text-white">
                   <i class="bi bi-person-badge text-green me-2"></i> Datos Personales
                 </h4>
-                <button
-                  class="user-btn-outline py-1 px-3 fs-13"
-                  data-bs-toggle="modal"
-                  data-bs-target="#modalCambiarPassword"
-                >
-                  <i class="bi bi-key-fill"></i> Cambiar Contraseña
+                <!-- btn deshabilitado, funcionalidad a implementar -->
+                <button class="user-btn-outline py-1 px-3 fs-13" disabled>
+                  <i class="bi bi-key-fill"></i> Cambiar Contraseña (Próximamente)
                 </button>
               </div>
               <div class="row g-3">
                 <div class="col-md-3">
-                  <label class="text-gray mb-2 fs-14 d-block">Nombre completo</label>
-                  <input type="text" id="perfil-nombre" class="user-form-control w-100" />
+                  <label class="text-gray mb-2 fs-14 d-block" for="perfil-nombre"
+                    >Nombre completo</label
+                  >
+                  <input type="text" id="perfil-nombre" class="user-form-control w-100" readonly />
                 </div>
                 <div class="col-md-3">
-                  <label class="text-gray mb-2 fs-14 d-block">DNI</label>
-                  <input type="text" id="perfil-dni" class="user-form-control w-100" />
+                  <label class="text-gray mb-2 fs-14 d-block" for="perfil-dni">DNI</label>
+                  <input
+                    type="text"
+                    id="perfil-dni"
+                    class="user-form-control w-100"
+                    readonly
+                    disabled
+                    style="cursor: not-allowed; opacity: 0.6"
+                  />
                 </div>
                 <div class="col-md-3">
-                  <label class="text-gray mb-2 fs-14 d-block">Email</label>
-                  <input type="email" id="perfil-email" class="user-form-control w-100" />
+                  <label class="text-gray mb-2 fs-14 d-block" for="perfil-email">Email</label>
+                  <input type="email" id="perfil-email" class="user-form-control w-100" readonly />
                 </div>
                 <div class="col-md-3">
-                  <label class="text-gray mb-2 fs-14 d-block">Teléfono</label>
-                  <input type="tel" id="perfil-telefono" class="user-form-control w-100" />
+                  <label class="text-gray mb-2 fs-14 d-block" for="perfil-telefono">Teléfono</label>
+                  <input type="tel" id="perfil-telefono" class="user-form-control w-100" readonly />
                 </div>
               </div>
+              <p class="text-gray fs-13 mt-3 mb-0">
+                <i class="bi bi-tools me-1"></i> La edición de datos personales estará disponible
+                próximamente. Por ahora, contactá a administración para realizar cambios.
+              </p>
             </div>
 
+            <!-- seccion de Horario Base deshabilitado -->
             <div class="admin-card mb-4" style="display: block">
               <h4 class="mb-4 text-white">
                 <i class="bi bi-clock-history text-green me-2"></i> Horario Base
               </h4>
-              <div class="row g-3">
+              <div class="row g-3 opacity-50">
                 <div class="col-md-4">
                   <label class="text-gray mb-2 fs-14">Días de trabajo</label>
-                  <select id="perfil-dias-trabajo" class="admin-form-control w-100">
+                  <select id="perfil-dias-trabajo" class="admin-form-control w-100" disabled>
                     <option selected>Lunes a Viernes</option>
                     <option>Lunes, Miércoles y Viernes</option>
                     <option>Martes y Jueves</option>
@@ -243,15 +291,32 @@
                 </div>
                 <div class="col-md-4">
                   <label class="text-gray mb-2 fs-14">Horario de Entrada</label>
-                  <input type="time" id="perfil-horario-entrada" class="admin-form-control w-100" />
+                  <input
+                    type="time"
+                    id="perfil-horario-entrada"
+                    class="admin-form-control w-100"
+                    disabled
+                  />
                 </div>
                 <div class="col-md-4">
                   <label class="text-gray mb-2 fs-14">Horario de Salida</label>
-                  <input type="time" id="perfil-horario-salida" class="admin-form-control w-100" />
+                  <input
+                    type="time"
+                    id="perfil-horario-salida"
+                    class="admin-form-control w-100"
+                    disabled
+                  />
                 </div>
+              </div>
+              <div
+                class="alert bg-pulso-darker border border-secondary text-gray mt-4 mb-0 fs-13 d-flex align-items-center"
+              >
+                <i class="bi bi-tools text-green me-2 fs-5"></i>
+                <span>La configuración del horario base estará disponible próximamente.</span>
               </div>
             </div>
 
+            <!-- 3. Vacaciones e Imprevistos (Deshabilitado) -->
             <div class="admin-card mb-4" style="display: block">
               <h4 class="mb-4 text-white">
                 <i class="bi bi-calendar-x text-green me-2"></i> Gestión de Vacaciones e Imprevistos
@@ -260,29 +325,111 @@
                 Bloqueá tu agenda. Tus clases y horarios quedarán suspendidos automáticamente por
                 ese período.
               </p>
-              <div class="row g-3 align-items-end">
+              <div class="row g-3 align-items-end opacity-50">
                 <div class="col-md-4">
                   <label class="text-gray mb-2 fs-14">Inicio del Imprevisto</label>
-                  <input type="date" class="admin-form-control w-100" />
+                  <input type="date" class="admin-form-control w-100" disabled />
                 </div>
                 <div class="col-md-4">
                   <label class="text-gray mb-2 fs-14">Fin del Imprevisto</label>
-                  <input type="date" class="admin-form-control w-100" />
+                  <input type="date" class="admin-form-control w-100" disabled />
                 </div>
                 <div class="col-md-4">
-                  <button class="btn btn-green w-100 py-2 fs-14" style="height: 46px">
+                  <button class="btn btn-green w-100 py-2 fs-14" style="height: 46px" disabled>
                     BLOQUEAR FECHAS
                   </button>
                 </div>
               </div>
+
+              <div
+                class="alert bg-pulso-darker border border-secondary text-gray mt-4 mb-3 fs-13 d-flex align-items-center"
+              >
+                <i class="bi bi-tools text-green me-2 fs-5"></i>
+                <span>La gestión de bloqueos de agenda estará disponible próximamente.</span>
+              </div>
+
               <h5 class="text-white fs-14 mt-4 mb-3">Bloqueos Activos</h5>
-              <p id="instructor-bloqueos-resumen" class="text-gray fs-13 mb-3"></p>
-              <div id="instructor-bloqueos-lista"></div>
+              <p id="instructor-bloqueos-resumen" class="text-gray fs-13 mb-3">0 bloqueos</p>
+              <div id="instructor-bloqueos-lista">
+                <div class="trainer-card text-gray">No tenés bloqueos activos.</div>
+              </div>
             </div>
+
+            <!-- 4. Botón Guardar Cambios (Deshabilitado) -->
             <div class="text-end mb-5">
-              <button class="btn btn-green py-3 px-5 fs-15">GUARDAR CAMBIOS</button>
+              <button class="btn btn-green py-3 px-5 fs-15" disabled>
+                GUARDAR CAMBIOS (Próximamente)
+              </button>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- modal para editar Clases -->
+    <div class="modal fade" id="modalEditarClase" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Editar Actividad</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Cerrar"
+            ></button>
+          </div>
+          <form id="formEditarClase">
+            <div class="modal-body">
+              <input type="hidden" id="editarClaseId" />
+              <div class="mb-3">
+                <label class="form-label" for="editarClaseTitulo">Título</label>
+                <input type="text" class="form-control" id="editarClaseTitulo" required />
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="editarClaseDescripcion">Descripción</label>
+                <textarea class="form-control" id="editarClaseDescripcion" rows="2"></textarea>
+              </div>
+              <div class="row g-3">
+                <div class="col-6">
+                  <label class="form-label" for="editarClaseFecha">Fecha</label>
+                  <input type="date" class="form-control" id="editarClaseFecha" required />
+                </div>
+                <div class="col-6">
+                  <label class="form-label" for="editarClaseHora">Hora</label>
+                  <input type="time" class="form-control" id="editarClaseHora" required />
+                </div>
+                <div class="col-6">
+                  <label class="form-label" for="editarClaseDuracion">Duración (min)</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="editarClaseDuracion"
+                    min="15"
+                    max="240"
+                    required
+                  />
+                </div>
+                <div class="col-6">
+                  <label class="form-label" for="editarClaseCupo">Cupo</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="editarClaseCupo"
+                    min="1"
+                    max="200"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                Cancelar
+              </button>
+              <button type="submit" class="btn btn-green">Guardar Cambios</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

@@ -123,6 +123,64 @@ const renderizarClases = (clases) => {
   contenedor.setAttribute('aria-busy', 'false');
 };
 
+export const renderizarMiembros = (miembros) => {
+  const contenedor = document.getElementById('admin-miembros-lista');
+  if (!contenedor) return;
+  contenedor.replaceChildren();
+
+  if (miembros.length === 0) {
+    mostrarMensaje(contenedor, 'No hay miembros registrados.');
+    return;
+  }
+
+  miembros.forEach((miembro) => {
+    const tarjeta = crearElemento('article', 'admin-card');
+    const informacion = crearElemento('div', 'admin-card-info');
+    const nombre = crearElemento('h4', 'mb-0', miembro.nombre);
+    const email = crearElemento('p', 'mb-0 fs-13', miembro.email);
+    const datosFisicos = crearElemento(
+      'p',
+      'mb-0 fs-13 text-gray',
+      `${miembro.peso} kg · ${miembro.altura} cm · ${miembro.edad} años`,
+    );
+
+    informacion.append(nombre, email, datosFisicos);
+    tarjeta.append(informacion);
+    contenedor.append(tarjeta);
+  });
+
+  contenedor.setAttribute('aria-busy', 'false');
+};
+
+export const renderizarInstructores = (instructores) => {
+  const contenedor = document.getElementById('admin-instructores-lista');
+  if (!contenedor) return;
+  contenedor.replaceChildren();
+
+  if (instructores.length === 0) {
+    mostrarMensaje(contenedor, 'No hay instructores registrados.');
+    return;
+  }
+
+  instructores.forEach((instructor) => {
+    const tarjeta = crearElemento('article', 'admin-card');
+    const informacion = crearElemento('div', 'admin-card-info');
+    const nombre = crearElemento('h4', 'mb-0', instructor.nombre);
+    const email = crearElemento('p', 'mb-0 fs-13', instructor.email);
+    const especialidad = crearElemento(
+      'p',
+      'mb-0 fs-13 text-green',
+      instructor.especialidad || 'Sin especialidad',
+    );
+
+    informacion.append(nombre, email, especialidad);
+    tarjeta.append(informacion);
+    contenedor.append(tarjeta);
+  });
+
+  contenedor.setAttribute('aria-busy', 'false');
+};
+
 export const renderizarMembresias = (membresias) => {
   const contenedor = document.getElementById('admin-membresias-lista');
   contenedor.replaceChildren();
@@ -279,6 +337,13 @@ export function inicializarRenderizadoAdmin(usuario) {
   document.getElementById('perfil-telefono').value = usuario.telefono || 'No registrado';
 
   cargarYRenderizar('clases', renderizarClases, 'admin-clases-lista', 'admin-clases-resumen');
+  cargarYRenderizar('usuarios/miembros', renderizarMiembros, 'admin-miembros-lista', null);
+  cargarYRenderizar(
+    'usuarios/instructores',
+    renderizarInstructores,
+    'admin-instructores-lista',
+    null,
+  );
   cargarYRenderizar(
     'membresias',
     renderizarMembresias,
