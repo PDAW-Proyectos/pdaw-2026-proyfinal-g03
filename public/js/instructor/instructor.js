@@ -1,5 +1,10 @@
 import { verificarSesion, cerrarSesion } from '../auth.js';
-import { inicializarRenderizadoInstructor } from './renderizado-intructor.js';
+import { inicializarRenderizadoInstructor } from './renderizado-instructor.js';
+import {
+  inicializarGestionActividades,
+  inicializarFormularioEdicion,
+} from './gestionActividades.js';
+
 document.addEventListener('DOMContentLoaded', async () => {
   try {
     const usuario = await verificarSesion();
@@ -44,6 +49,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     });
     inicializarRenderizadoInstructor(usuario);
+    inicializarGestionActividades(usuario);
+    inicializarFormularioEdicion(usuario);
   } catch (error) {
     console.error('Error al inicializar el panel:', error);
   }

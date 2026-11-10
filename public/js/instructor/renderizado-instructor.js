@@ -18,13 +18,13 @@ const crearElemento = (etiqueta, clases, texto) => {
 };
 
 // Muestra un mensaje centrado dentro de un contenedor (usado para estados vacíos o errores).
-const mostrarMensaje = (contenedor, mensaje, clase = 'text-gray') => {
+export const mostrarMensaje = (contenedor, mensaje, clase = 'text-gray') => {
   contenedor.replaceChildren(crearElemento('div', `trainer-card ${clase}`, mensaje));
   contenedor.setAttribute('aria-busy', 'false');
 };
 
 // Muestra un indicador visual de carga ("Cargando...").
-const mostrarCargando = (contenedor) => {
+export const mostrarCargando = (contenedor) => {
   contenedor.replaceChildren(crearElemento('div', 'trainer-card text-gray', 'Cargando...'));
   contenedor.setAttribute('aria-busy', 'true');
 };
@@ -82,7 +82,7 @@ const obtenerDatos = async (recurso) => {
 };
 // Renderiza la lista de actividades del instructor calculando el resumen superior
 // y dibujando cada tarjeta con su título, fecha, horario y cupos.
-const renderizarActividades = (actividades) => {
+export const renderizarActividades = (actividades) => {
   const contenedor = document.getElementById('instructor-actividades-lista');
   if (!contenedor) return;
   contenedor.replaceChildren();
@@ -186,10 +186,18 @@ const renderizarActividades = (actividades) => {
       info.append(encabezado, detalle, infoInscriptos);
       // Botón de acción (deshabilitado si la clase está inactiva)
       const acciones = crearElemento('div', 'd-flex gap-2 flex-wrap');
-      const btnInscriptos = crearElemento('button', 'trainer-btn-icon', 'Inscriptos');
-      btnInscriptos.type = 'button';
-      btnInscriptos.disabled = actividad.estado === 'inactiva';
-      acciones.append(btnInscriptos);
+
+      const btnEditar = crearElemento('button', 'trainer-btn-icon', 'Editar');
+      btnEditar.type = 'button';
+      btnEditar.dataset.accion = 'editar-clase';
+      btnEditar.dataset.id = actividad.id;
+
+      const btnEliminar = crearElemento('button', 'trainer-btn-icon text-danger', 'Eliminar');
+      btnEliminar.type = 'button';
+      btnEliminar.dataset.accion = 'eliminar-clase';
+      btnEliminar.dataset.id = actividad.id;
+
+      acciones.append(btnEditar, btnEliminar);
 
       tarjeta.append(info, acciones);
       contenedor.append(tarjeta);
@@ -198,7 +206,7 @@ const renderizarActividades = (actividades) => {
   contenedor.setAttribute('aria-busy', 'false');
 };
 // Renderiza los bloqueos de agenda (imprevistos) del instructor.
-const renderizarBloqueos = (bloqueos) => {
+export const renderizarBloqueos = (bloqueos) => {
   const contenedor = document.getElementById('instructor-bloqueos-lista');
   if (!contenedor) return;
   contenedor.replaceChildren();
@@ -312,13 +320,27 @@ export function inicializarRenderizadoInstructor(usuario) {
     inputSalida.value = usuario.horarioSalida;
   }
 
-  // Carga de la lista de actividades desde la API
-  cargarYRenderizar(
-    'clases',
-    renderizarActividades,
-    'instructor-actividades-lista',
-    'instructor-actividades-resumen',
-  );
+  // para cargar las clases del instructor filtrando por su ID
+  const contenedor = document.getElementById('instructor-actividades-lista');
+  if (contenedor) {
+    mostrarCargando(contenedor);
+    fetch(`/api/clases?instructor=${usuario.id}&limit=50`, {
+      credentials: 'include',
+    })
+      .then(async (respuesta) => {
+        const datos = await respuesta.json();
+        if (!respuesta.ok) {
+          throw new Error(datos.error || 'No se pudieron cargar las actividades.');
+        }
+        const lista = Array.isArray(datos.data) ? datos.data : datos;
+        renderizarActividades(lista);
+      })
+      .catch((error) => {
+        mostrarMensaje(contenedor, error.message, 'text-danger');
+      });
+  }
+
+  inicializarCreacionClase(usuario);
 
   // Estado por defecto de los bloqueos (ya que el backend aún no tiene esta ruta)
   const contenedorBloqueos = document.getElementById('instructor-bloqueos-lista');
@@ -327,5 +349,84 @@ export function inicializarRenderizadoInstructor(usuario) {
       crearElemento('div', 'trainer-card text-gray', 'No tenés bloqueos activos.'),
     );
     actualizarResumen('instructor-bloqueos-resumen', '0 bloqueos');
+  }
+}
+
+// fn para manejar la creacion de clases
+export function inicializarCreacionClase(usuario) {
+  const form = document.getElementById('formCrearClase');
+  const mensaje = document.getElementById('mensajeCrearClase');
+  if (!form || !mensaje) return;
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    mensaje.textContent = '';
+
+    const titulo = document.getElementById('claseTitulo').value.trim();
+    const fecha = document.getElementById('claseFecha').value;
+    const hora = document.getElementById('claseHora').value;
+    const cupo = Number(document.getElementById('claseCupo').value);
+
+    if (!titulo || !fecha || !hora || !cupo) {
+      mensaje.textContent = 'Completá todos los campos.';
+      return;
+    }
+
+    const fechaHora = new Date(`${fecha}T${hora}:00`).toISOString();
+
+    const body = {
+      titulo,
+      descripcion: '',
+      fechaHora,
+      duracionMin: 60, // valor por defecto
+      cupo,
+    };
+
+    const boton = form.querySelector('button[type="submit"]');
+    const textoOriginal = boton.textContent;
+    boton.textContent = 'Creando...';
+    boton.disabled = true;
+
+    try {
+      const respuesta = await fetch('/api/clases', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(body),
+      });
+
+      const datos = await respuesta.json();
+
+      if (!respuesta.ok) {
+        throw new Error(datos.error || datos.detail || 'No se pudo crear la clase.');
+      }
+
+      form.reset();
+
+      await recargarActividades(usuario);
+    } catch (error) {
+      mensaje.textContent = error.message;
+    } finally {
+      boton.textContent = textoOriginal;
+      boton.disabled = false;
+    }
+  });
+}
+
+// fn auxiliar para recargar las actividades
+async function recargarActividades(usuario) {
+  const contenedor = document.getElementById('instructor-actividades-lista');
+  if (!contenedor) return;
+  mostrarCargando(contenedor);
+  try {
+    const respuesta = await fetch(`/api/clases?instructor=${usuario.id}&limit=50`, {
+      credentials: 'include',
+    });
+    const datos = await respuesta.json();
+    if (!respuesta.ok) throw new Error(datos.error || 'No se pudieron cargar las actividades.');
+    const lista = Array.isArray(datos.data) ? datos.data : datos;
+    renderizarActividades(lista);
+  } catch (error) {
+    mostrarMensaje(contenedor, error.message, 'text-danger');
   }
 }

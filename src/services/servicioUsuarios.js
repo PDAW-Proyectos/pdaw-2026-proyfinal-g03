@@ -47,6 +47,14 @@ class ServicioUsuarios {
   async crearInstructor(datos) {
     return this._crearUsuario(Instructor, datos);
   }
+
+  async listarMiembros() {
+    return this.repoUsuarios.listarPorRol('miembro');
+  }
+
+  async listarInstructores() {
+    return this.repoUsuarios.listarPorRol('instructor');
+  }
 }
 
 module.exports = ServicioUsuarios;

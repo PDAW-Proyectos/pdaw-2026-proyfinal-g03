@@ -7,9 +7,10 @@ class RepositorioClases extends RepositorioJSON {
     super({ Entidad: Clase, rutaArchivo });
   }
 
+  // se usa String() para comparar porque instructorId puede ser string o number dependiendo de la fuente de datos
   async listarPorInstructor(instructorId) {
     const id = v.numero(instructorId, 'instructorId', { min: 1, entero: true });
-    return (await this.listar()).filter((clase) => clase.instructorId === id);
+    return (await this.listar()).filter((clase) => String(clase.instructorId) === String(id));
   }
 
   async listarPorFecha(fecha) {
