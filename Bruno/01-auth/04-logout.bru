@@ -1,0 +1,19 @@
+meta {
+  name: Logout
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/api/auth/logout
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: in [200, 204]
+}
+
+docs {
+  Destruye la sesión actual.
+}

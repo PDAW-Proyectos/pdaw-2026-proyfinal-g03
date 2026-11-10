@@ -1,0 +1,23 @@
+meta {
+  name: Iniciar seguimiento sin plan
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/api/seguimientos
+  body: json
+  auth: none
+}
+
+body:json {
+  {}
+}
+
+assert {
+  res.status: eq 400
+}
+
+docs {
+  Hace falta al menos un plan (`planEntrenamientoId` y/o `planNutricionalId`).
+}

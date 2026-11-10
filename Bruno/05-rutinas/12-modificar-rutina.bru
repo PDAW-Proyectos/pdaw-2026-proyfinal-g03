@@ -1,0 +1,40 @@
+meta {
+  name: Modificar rutina
+  type: http
+  seq: 12
+}
+
+put {
+  url: {{baseUrl}}/api/rutinas/{{rutinaId}}
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "nombre": "Fuerza B",
+    "nivel": "avanzado",
+    "ejercicios": [
+      {
+        "nombre": "Sentadilla",
+        "series": 3,
+        "repeticiones": 10
+      },
+      {
+        "nombre": "Press de banca",
+        "series": 4,
+        "repeticiones": 8,
+        "descansoSeg": 90
+      }
+    ]
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.nombre: eq Fuerza B
+}
+
+docs {
+  PUT reemplaza la rutina completa. Se conservan el id y el dueño.
+}

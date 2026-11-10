@@ -34,7 +34,7 @@ class ServicioTurnos {
 
   async publicar({ administrador, datos }) {
     const turno = administrador.publicarTurno(datos); // el modelo valida y elige la subclase según tipo
-    return this.repoTurnos.agregar(turno);            // asigna el id
+    return this.repoTurnos.agregar(turno); // asigna el id
   }
 
   async reservar({ turnoId, miembro }) {

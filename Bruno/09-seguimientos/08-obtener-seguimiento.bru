@@ -1,0 +1,16 @@
+meta {
+  name: Obtener seguimiento
+  type: http
+  seq: 8
+}
+
+get {
+  url: {{baseUrl}}/api/seguimientos/{{seguimientoId}}
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+  res.body.id: eq {{seguimientoId}}
+}

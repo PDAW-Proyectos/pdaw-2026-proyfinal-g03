@@ -1,0 +1,22 @@
+meta {
+  name: Instructor no puede generar planes
+  type: http
+  seq: 12
+}
+
+post {
+  url: {{baseUrl}}/api/planes-entrenamiento/generar
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "nivel": "principiante",
+    "dias": 3
+  }
+}
+
+assert {
+  res.status: eq 403
+}

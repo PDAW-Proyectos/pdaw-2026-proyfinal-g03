@@ -65,4 +65,3 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.error('Error al inicializar el panel:', error);
   }
 });
-

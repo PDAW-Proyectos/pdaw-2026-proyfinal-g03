@@ -1,5 +1,5 @@
 // crea y conecta las dependencias
-// aca se crean los repositorios y los servicios, las rutas no instancian nada 
+// aca se crean los repositorios y los servicios, las rutas no instancian nada
 
 const config = require('./config');
 
@@ -15,8 +15,8 @@ const RepositorioMembresias = require('./repositories/RepositorioMembresias');
 const RepositorioHorarios = require('./repositories/RepositorioHorarios');
 
 // CLIENTE DE SERVICIO EXTERNO GEMINI
-const ClienteGemini = require('./services/gemini/ClienteGemini'); 
- 
+const ClienteGemini = require('./services/gemini/ClienteGemini');
+
 // SERVICIOS
 const ServicioClases = require('./services/ServicioClases');
 const ServicioAuth = require('./services/ServicioAuth');
@@ -27,7 +27,7 @@ const ServicioSeguimientos = require('./services/ServicioSeguimientos');
 const ServicioTurnos = require('./services/ServicioTurnos');
 const ServicioMembresias = require('./services/ServicioMembresias');
 const ServicioHorarios = require('./services/ServicioHorarios');
- 
+
 const repos = {
   repoClases: new RepositorioClases(),
   repoUsuarios: new RepositorioUsuarios(),
@@ -40,14 +40,15 @@ const repos = {
   repoHorarios: new RepositorioHorarios(),
 };
 
-const clienteGemini = new ClienteGemini(config.gemini);                 // *crea el cliente
+const clienteGemini = new ClienteGemini(config.gemini); // *crea el cliente
 
 // Cada servicio recibe solo los repositorios que necesita
 const servicios = {
   servicioClases: new ServicioClases({ repoClases: repos.repoClases }),
   servicioAuth: new ServicioAuth({ repoUsuarios: repos.repoUsuarios }),
-  servicioUsuarios: new ServicioUsuarios({repoUsuarios: repos.repoUsuarios,}),
-  servicioPlanes: new ServicioPlanes({                                  // *se lo pasa al servicio
+  servicioUsuarios: new ServicioUsuarios({ repoUsuarios: repos.repoUsuarios }),
+  servicioPlanes: new ServicioPlanes({
+    // *se lo pasa al servicio
     clienteGemini,
     repoPlanesEntrenamiento: repos.repoPlanesEntrenamiento,
     repoPlanesNutricionales: repos.repoPlanesNutricionales,
@@ -62,5 +63,5 @@ const servicios = {
     repoPlanesNutricionales: repos.repoPlanesNutricionales,
   }),
 };
- 
+
 module.exports = { repos, servicios };

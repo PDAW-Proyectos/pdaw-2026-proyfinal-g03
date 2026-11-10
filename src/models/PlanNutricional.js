@@ -4,8 +4,17 @@ const { ErrorValidacion } = require('../utils/errores');
 
 class PlanNutricional {
   constructor({
-    id = null, miembroId = null, nombre, objetivo, caloriasDiarias, descripcion = '',
-    comidas = [], recomendaciones = [], origen = 'gimnasio', idExterno = null, creadoEn = new Date(),
+    id = null,
+    miembroId = null,
+    nombre,
+    objetivo,
+    caloriasDiarias,
+    descripcion = '',
+    comidas = [],
+    recomendaciones = [],
+    origen = 'gimnasio',
+    idExterno = null,
+    creadoEn = new Date(),
   }) {
     this.id = id;
     this.origen = v.opcion(origen, 'origen', ORIGENES_PLAN);
@@ -19,11 +28,14 @@ class PlanNutricional {
     const rango = this.origen === 'ia' ? { min: 1200, max: 4500 } : { min: 800, max: 6000 };
     this.caloriasDiarias = v.numero(caloriasDiarias, 'caloriasDiarias', { ...rango, entero: true });
     this.descripcion = v.texto(descripcion, 'descripcion', { min: 0, max: 1000 });
-    this.comidas = v.lista(comidas, 'comidas', { min: this.origen === 'ia' ? 1 : 0, max: 8 }).map((c) => ({
-      momento: v.texto(c?.momento, 'momento', { max: 60 }),
-      ejemplo: v.texto(c?.ejemplo, 'ejemplo', { max: 300 }),
-    }));
-    this.recomendaciones = v.lista(recomendaciones, 'recomendaciones', { max: 10 })
+    this.comidas = v
+      .lista(comidas, 'comidas', { min: this.origen === 'ia' ? 1 : 0, max: 8 })
+      .map((c) => ({
+        momento: v.texto(c?.momento, 'momento', { max: 60 }),
+        ejemplo: v.texto(c?.ejemplo, 'ejemplo', { max: 300 }),
+      }));
+    this.recomendaciones = v
+      .lista(recomendaciones, 'recomendaciones', { max: 10 })
       .map((r) => v.texto(r, 'recomendación', { max: 300 }));
     this.idExterno = idExterno === null ? null : v.texto(idExterno, 'idExterno', { max: 100 });
     this.creadoEn = v.fechaHora(creadoEn, 'creadoEn');

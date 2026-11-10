@@ -1,0 +1,19 @@
+meta {
+  name: Instructor no tiene seguimientos
+  type: http
+  seq: 19
+}
+
+get {
+  url: {{baseUrl}}/api/seguimientos
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 403
+}
+
+docs {
+  El recurso es del miembro: falta el permiso `llevarSeguimiento`.
+}

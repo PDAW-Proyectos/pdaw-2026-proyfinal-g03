@@ -1,10 +1,10 @@
-const PlanNutricional = require('../models/PlanNutricional')
-const RepositorioJSON = require('./RepositorioJSON')
+const PlanNutricional = require('../models/PlanNutricional');
+const RepositorioJSON = require('./RepositorioJSON');
 
 class RepositorioPlanesNutricionales extends RepositorioJSON {
   constructor({ rutaArchivo } = {}) {
-    super({ Entidad: PlanNutricional, rutaArchivo })
+    super({ Entidad: PlanNutricional, rutaArchivo });
   }
 }
 
-module.exports = RepositorioPlanesNutricionales
+module.exports = RepositorioPlanesNutricionales;

@@ -1,0 +1,16 @@
+meta {
+  name: Finalizar seguimiento
+  type: http
+  seq: 15
+}
+
+post {
+  url: {{baseUrl}}/api/seguimientos/{{seguimientoId}}/finalizar
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+  res.body.estado: eq finalizado
+}

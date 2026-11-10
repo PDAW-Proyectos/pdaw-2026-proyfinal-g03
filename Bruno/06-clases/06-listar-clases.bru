@@ -1,0 +1,21 @@
+meta {
+  name: Listar clases
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/api/clases?page=1&limit=10
+  body: none
+  auth: none
+}
+
+params:query {
+  page: 1
+  limit: 10
+}
+
+assert {
+  res.status: eq 200
+  res.body.total: gte 1
+}

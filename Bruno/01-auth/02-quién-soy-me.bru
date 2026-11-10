@@ -1,0 +1,20 @@
+meta {
+  name: Quién soy (me)
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/auth/me
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+  res.body.usuario.email: eq {{adminEmail}}
+}
+
+docs {
+  Devuelve los datos públicos del usuario con sesión iniciada. Es la forma más rápida de comprobar que la cookie funciona.
+}

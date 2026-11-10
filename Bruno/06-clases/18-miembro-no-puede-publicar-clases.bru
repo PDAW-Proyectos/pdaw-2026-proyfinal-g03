@@ -1,0 +1,24 @@
+meta {
+  name: Miembro no puede publicar clases
+  type: http
+  seq: 18
+}
+
+post {
+  url: {{baseUrl}}/api/clases
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "titulo": "X",
+    "fechaHora": "{{fechaClase}}",
+    "duracionMin": 60,
+    "cupo": 10
+  }
+}
+
+assert {
+  res.status: eq 403
+}

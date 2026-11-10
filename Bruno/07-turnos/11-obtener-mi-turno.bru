@@ -1,0 +1,15 @@
+meta {
+  name: Obtener mi turno
+  type: http
+  seq: 11
+}
+
+get {
+  url: {{baseUrl}}/api/turnos/{{turnoId}}
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+}

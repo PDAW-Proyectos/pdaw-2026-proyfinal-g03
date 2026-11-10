@@ -21,17 +21,22 @@ module.exports = function crearControladorRutinas(servicio) {
 
     // POST /api/rutinas
     crear: async (req, res) => {
-      const rutina = await servicio.crear({ instructor: req.usuario, datos: filtrar(req.body, CAMPOS) });
+      const rutina = await servicio.crear({
+        instructor: req.usuario,
+        datos: filtrar(req.body, CAMPOS),
+      });
       res.status(201).location(`/api/rutinas/${rutina.id}`).json(rutina);
     },
 
     // PUT /api/rutinas/:id
     modificar: async (req, res) => {
-      res.json(await servicio.modificar({
-        rutinaId: req.params.id,
-        instructor: req.usuario,
-        datos: filtrar(req.body, CAMPOS),
-      }));
+      res.json(
+        await servicio.modificar({
+          rutinaId: req.params.id,
+          instructor: req.usuario,
+          datos: filtrar(req.body, CAMPOS),
+        }),
+      );
     },
 
     // DELETE /api/rutinas/:id

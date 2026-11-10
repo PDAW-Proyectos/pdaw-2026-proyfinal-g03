@@ -20,13 +20,18 @@ module.exports = function crearControladorMembresias(servicio) {
 
     // POST /api/membresias
     crear: async (req, res) => {
-      const plan = await servicio.crear({ administrador: req.usuario, datos: filtrar(req.body, CAMPOS) });
+      const plan = await servicio.crear({
+        administrador: req.usuario,
+        datos: filtrar(req.body, CAMPOS),
+      });
       res.status(201).location(`/api/membresias/${plan.id}`).json(plan);
     },
 
     // PUT /api/membresias/:id
     modificar: async (req, res) => {
-      res.json(await servicio.modificar({ membresiaId: req.params.id, datos: filtrar(req.body, CAMPOS) }));
+      res.json(
+        await servicio.modificar({ membresiaId: req.params.id, datos: filtrar(req.body, CAMPOS) }),
+      );
     },
 
     // DELETE /api/membresias/:id

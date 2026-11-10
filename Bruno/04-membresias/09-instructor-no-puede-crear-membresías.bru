@@ -1,0 +1,22 @@
+meta {
+  name: Instructor no puede crear membresías
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{baseUrl}}/api/membresias
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "nombre": "X",
+    "precioMensual": 1000
+  }
+}
+
+assert {
+  res.status: eq 403
+}

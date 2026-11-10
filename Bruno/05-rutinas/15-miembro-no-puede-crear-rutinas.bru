@@ -1,0 +1,35 @@
+meta {
+  name: Miembro no puede crear rutinas
+  type: http
+  seq: 15
+}
+
+post {
+  url: {{baseUrl}}/api/rutinas
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "nombre": "X",
+    "nivel": "principiante",
+    "ejercicios": [
+      {
+        "nombre": "Sentadilla",
+        "series": 3,
+        "repeticiones": 10
+      },
+      {
+        "nombre": "Press de banca",
+        "series": 4,
+        "repeticiones": 8,
+        "descansoSeg": 90
+      }
+    ]
+  }
+}
+
+assert {
+  res.status: eq 403
+}

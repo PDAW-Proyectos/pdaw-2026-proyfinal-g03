@@ -1,0 +1,35 @@
+meta {
+  name: Crear miembro 2 de prueba
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/api/usuarios/miembros
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "dni": "{{miembro2Dni}}",
+    "nombre": "Miembro 2 de prueba",
+    "email": "{{miembro2Email}}",
+    "peso": 80,
+    "altura": 180,
+    "edad": 28,
+    "objetivo": "ganar_musculo"
+  }
+}
+
+assert {
+  res.status: in [201, 409]
+}
+
+docs {
+  Solo el **administrador** crea usuarios (permiso `crearUsuario`).
+
+  El **DNI** (7 u 8 dígitos) es el id del usuario y su **contraseña inicial**: no se manda `password`.
+
+  Responde 201 la primera vez y 409 si el DNI o el email ya existen, así la colección se puede correr varias veces. Estos usuarios los usan las demás carpetas.
+}

@@ -1,0 +1,40 @@
+meta {
+  name: Publicar clase
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/api/clases
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "titulo": "Spinning de la mañana",
+    "descripcion": "Clase grupal",
+    "fechaHora": "{{fechaClase}}",
+    "duracionMin": 60,
+    "cupo": 15
+  }
+}
+
+script:pre-request {
+  const d = new Date(Date.now() + 7 * 24 * 3600 * 1000);
+  bru.setVar("fechaClase", d.toISOString());
+}
+
+script:post-response {
+  bru.setVar("claseId", res.body.id);
+}
+
+assert {
+  res.status: eq 201
+  res.body.cuposDisponibles: eq 15
+  res.body.instructorId: eq "{{instructorId}}"
+}
+
+docs {
+  **Instructor** (permiso `publicarClase`). El script previo calcula una fecha dentro de 7 días y la guarda en `fechaClase`, así la clase siempre es futura.
+}

@@ -8,31 +8,52 @@ class ErrorApp extends Error {
   }
 }
 class ErrorValidacion extends ErrorApp {
-  constructor(mensaje) { super(mensaje, 400); }
+  constructor(mensaje, campo = null) {
+    super(mensaje, 400);
+    this.campo = campo;
+    if (campo) this.details = [{ campo, mensaje }];
+  }
 }
 class ErrorProhibido extends ErrorApp {
-  constructor(mensaje) { super(mensaje, 403); }
+  constructor(mensaje) {
+    super(mensaje, 403);
+  }
 }
 class ErrorNoEncontrado extends ErrorApp {
-  constructor(mensaje) { super(mensaje, 404); }
+  constructor(mensaje) {
+    super(mensaje, 404);
+  }
 }
 class ErrorConflicto extends ErrorApp {
-  constructor(mensaje) { super(mensaje, 409); }
+  constructor(mensaje) {
+    super(mensaje, 409);
+  }
 }
 
 // Errores de servicio externo Gemini (el problema no es de quien hizo la solicitud)
 class ErrorLimiteExcedido extends ErrorApp {
-  constructor(mensaje) { super(mensaje, 429); }
+  constructor(mensaje) {
+    super(mensaje, 429);
+  }
 }
 class ErrorServicioExterno extends ErrorApp {
-  constructor(mensaje) { super(mensaje, 502); }
+  constructor(mensaje) {
+    super(mensaje, 502);
+  }
 }
 class ErrorTiempoAgotado extends ErrorApp {
-  constructor(mensaje) { super(mensaje, 504); }
+  constructor(mensaje) {
+    super(mensaje, 504);
+  }
 }
- 
-module.exports = {
-  ErrorApp, ErrorValidacion, ErrorProhibido, ErrorNoEncontrado, ErrorConflicto,
-  ErrorLimiteExcedido, ErrorServicioExterno, ErrorTiempoAgotado,
-};
 
+module.exports = {
+  ErrorApp,
+  ErrorValidacion,
+  ErrorProhibido,
+  ErrorNoEncontrado,
+  ErrorConflicto,
+  ErrorLimiteExcedido,
+  ErrorServicioExterno,
+  ErrorTiempoAgotado,
+};

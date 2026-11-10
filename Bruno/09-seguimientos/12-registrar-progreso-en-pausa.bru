@@ -1,0 +1,25 @@
+meta {
+  name: Registrar progreso en pausa
+  type: http
+  seq: 12
+}
+
+post {
+  url: {{baseUrl}}/api/seguimientos/{{seguimientoId}}/registros
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "completado": true
+  }
+}
+
+assert {
+  res.status: eq 409
+}
+
+docs {
+  Solo se registra progreso en un seguimiento activo: 409.
+}

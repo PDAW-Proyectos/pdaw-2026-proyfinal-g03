@@ -1,0 +1,19 @@
+meta {
+  name: No eliminar un turno reservado
+  type: http
+  seq: 17
+}
+
+delete {
+  url: {{baseUrl}}/api/turnos/{{turnoId}}
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 409
+}
+
+docs {
+  Un turno reservado no se puede eliminar: 409.
+}

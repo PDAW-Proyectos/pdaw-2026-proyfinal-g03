@@ -1,0 +1,31 @@
+meta {
+  name: DNI repetido
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{baseUrl}}/api/usuarios/miembros
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "dni": "{{miembroDni}}",
+    "nombre": "Otro",
+    "email": "otro.email@gym.com",
+    "peso": 70,
+    "altura": 170,
+    "edad": 30,
+    "objetivo": "mantener"
+  }
+}
+
+assert {
+  res.status: eq 409
+}
+
+docs {
+  Crear un usuario con un DNI que ya existe devuelve 409 (conflicto).
+}

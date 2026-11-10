@@ -45,7 +45,8 @@ class ClienteGemini {
         signal: AbortSignal.timeout(this.timeoutMs),
       });
     } catch (err) {
-      if (err.name === 'TimeoutError') throw new ErrorTiempoAgotado('Gemini tardó demasiado en responder');
+      if (err.name === 'TimeoutError')
+        throw new ErrorTiempoAgotado('Gemini tardó demasiado en responder');
       throw new ErrorServicioExterno('No se pudo conectar con Gemini');
     }
   }
@@ -54,10 +55,14 @@ class ClienteGemini {
   async #verificarEstado(respuesta) {
     if (respuesta.ok) return;
     if (respuesta.status === 429) {
-      throw new ErrorLimiteExcedido('Se alcanzó el límite de uso de la API. Intentar de nuevo en unos minutos');
+      throw new ErrorLimiteExcedido(
+        'Se alcanzó el límite de uso de la API. Intentar de nuevo en unos minutos',
+      );
     }
     if (respuesta.status === 503) {
-      throw new ErrorServicioExterno('El modelo de IA está saturado en este momento. Intentar de nuevo en unos minutos');
+      throw new ErrorServicioExterno(
+        'El modelo de IA está saturado en este momento. Intentar de nuevo en unos minutos',
+      );
     }
     // el detalle del error va a la consola del servidor, el cliente veo solo un mensaje genérico
     this.logger.error('Gemini respondió', respuesta.status, await respuesta.text());
@@ -72,7 +77,10 @@ class ClienteGemini {
       throw new ErrorServicioExterno('Gemini devolvió una respuesta ilegible');
     }
     const partes = datos.candidates?.[0]?.content?.parts ?? [];
-    const texto = partes.filter((p) => !p.thought).map((p) => p.text ?? '').join('');
+    const texto = partes
+      .filter((p) => !p.thought)
+      .map((p) => p.text ?? '')
+      .join('');
     try {
       const resultado = JSON.parse(texto);
       if (resultado === null || typeof resultado !== 'object') throw new Error('no es un objeto');

@@ -1,0 +1,23 @@
+meta {
+  name: Publicar turno con tipo inválido
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/api/turnos
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "tipo": "masaje",
+    "fecha": "{{fechaTurno}}",
+    "hora": "10:00"
+  }
+}
+
+assert {
+  res.status: eq 400
+}
