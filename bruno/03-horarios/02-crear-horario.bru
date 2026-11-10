@@ -1,0 +1,32 @@
+meta {
+  name: Crear horario
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/horarios
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "dia": "lunes",
+    "apertura": "08:00",
+    "cierre": "22:00"
+  }
+}
+
+script:post-response {
+  bru.setVar("horarioId", res.body.id);
+}
+
+assert {
+  res.status: eq 201
+  res.body.dia: eq lunes
+}
+
+docs {
+  **Administrador** (permiso `definirHorarios`). Guarda el id en la variable `horarioId`.
+}

@@ -1,0 +1,16 @@
+meta {
+  name: Obtener plan nutricional
+  type: http
+  seq: 8
+}
+
+get {
+  url: {{baseUrl}}/api/planes-nutricionales/{{planNutricionalId}}
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+  res.body.id: eq {{planNutricionalId}}
+}

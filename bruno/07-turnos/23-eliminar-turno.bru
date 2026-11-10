@@ -1,0 +1,15 @@
+meta {
+  name: Eliminar turno
+  type: http
+  seq: 23
+}
+
+delete {
+  url: {{baseUrl}}/api/turnos/{{turnoId}}
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 204
+}

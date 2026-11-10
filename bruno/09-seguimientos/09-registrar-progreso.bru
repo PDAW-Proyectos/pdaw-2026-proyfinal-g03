@@ -1,0 +1,29 @@
+meta {
+  name: Registrar progreso
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{baseUrl}}/api/seguimientos/{{seguimientoId}}/registros
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "pesoActual": 69.5,
+    "completado": true,
+    "notas": "Buena sesión"
+  }
+}
+
+assert {
+  res.status: eq 201
+  res.body.registros: isArray
+  res.body.registros.length: eq 1
+}
+
+docs {
+  Campos: `pesoActual` (20–400), `completado` (verdadero/falso), `notas`, `fecha` (opcional).
+}

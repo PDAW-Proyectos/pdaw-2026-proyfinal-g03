@@ -1,0 +1,16 @@
+meta {
+  name: Obtener plan de entrenamiento
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/api/planes-entrenamiento/{{planEntrenamientoId}}
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+  res.body.id: eq {{planEntrenamientoId}}
+}

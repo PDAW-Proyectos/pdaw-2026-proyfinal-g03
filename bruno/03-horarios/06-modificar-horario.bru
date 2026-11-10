@@ -1,0 +1,28 @@
+meta {
+  name: Modificar horario
+  type: http
+  seq: 6
+}
+
+put {
+  url: {{baseUrl}}/api/horarios/{{horarioId}}
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "dia": "lunes",
+    "apertura": "09:00",
+    "cierre": "21:00"
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.apertura: eq 09:00
+}
+
+docs {
+  PUT reemplaza el horario completo (hay que mandar todos los campos). Se conserva el id.
+}

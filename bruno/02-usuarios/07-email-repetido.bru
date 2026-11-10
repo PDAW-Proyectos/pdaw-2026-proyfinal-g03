@@ -1,0 +1,31 @@
+meta {
+  name: Email repetido
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{baseUrl}}/api/usuarios/miembros
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "dni": "39888777",
+    "nombre": "Repetido",
+    "email": "{{miembroEmail}}",
+    "peso": 70,
+    "altura": 170,
+    "edad": 30,
+    "objetivo": "mantener"
+  }
+}
+
+assert {
+  res.status: eq 409
+}
+
+docs {
+  Crear un usuario con un email que ya existe devuelve 409 (conflicto).
+}

@@ -1,0 +1,16 @@
+meta {
+  name: Desinscribirse
+  type: http
+  seq: 16
+}
+
+post {
+  url: {{baseUrl}}/api/clases/{{claseId}}/desinscribir
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+  res.body.cuposDisponibles: eq 20
+}

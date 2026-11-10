@@ -1,0 +1,30 @@
+meta {
+  name: Modificar clase
+  type: http
+  seq: 12
+}
+
+put {
+  url: {{baseUrl}}/api/clases/{{claseId}}
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "titulo": "Spinning de la mañana (nivel 2)",
+    "descripcion": "Clase grupal",
+    "fechaHora": "{{fechaClase}}",
+    "duracionMin": 45,
+    "cupo": 20
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.cupo: eq 20
+}
+
+docs {
+  PUT reemplaza la clase completa. Se conservan el id, el dueño y los inscriptos.
+}

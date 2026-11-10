@@ -1,0 +1,34 @@
+meta {
+  name: Generar plan de entrenamiento
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/api/planes-entrenamiento/generar
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "nivel": "principiante",
+    "dias": 3
+  }
+}
+
+script:post-response {
+  bru.setVar("planEntrenamientoId", res.body.id);
+}
+
+assert {
+  res.status: eq 201
+  res.body.origen: eq ia
+  res.body.miembroId: eq {{miembroId}}
+}
+
+docs {
+  **Miembro** (permiso `generarPlan`). Llama a Gemini, por eso necesita `GEMINI_API_KEY` en el `.env` y puede tardar hasta 30 segundos. Del body solo se usan `nivel` y `dias`; el resto sale del perfil del miembro.
+
+  Respuestas posibles: 201 ok, 400 datos inválidos, 429 límite de uso, 502/503 falla de Gemini.
+}

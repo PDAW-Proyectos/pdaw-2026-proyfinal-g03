@@ -1,0 +1,16 @@
+meta {
+  name: Obtener rutina
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/api/rutinas/{{rutinaId}}
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+  res.body.ejercicios[0].descansoSeg: eq 60
+}

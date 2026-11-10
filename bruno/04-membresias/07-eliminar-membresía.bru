@@ -1,0 +1,15 @@
+meta {
+  name: Eliminar membresía
+  type: http
+  seq: 7
+}
+
+delete {
+  url: {{baseUrl}}/api/membresias/{{membresiaId}}
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 204
+}

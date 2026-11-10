@@ -1,0 +1,21 @@
+meta {
+  name: Reservar turno
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{baseUrl}}/api/turnos/{{turnoId}}/reservar
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+  res.body.disponible: eq false
+  res.body.miembroId: eq "{{miembroId}}"
+}
+
+docs {
+  **Miembro** (permiso `solicitarTurno`). El turno pasa a su nombre.
+}

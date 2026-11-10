@@ -1,0 +1,15 @@
+meta {
+  name: Obtener clase eliminada
+  type: http
+  seq: 21
+}
+
+get {
+  url: {{baseUrl}}/api/clases/{{claseId}}
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 404
+}

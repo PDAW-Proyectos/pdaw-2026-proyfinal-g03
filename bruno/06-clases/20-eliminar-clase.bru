@@ -1,0 +1,15 @@
+meta {
+  name: Eliminar clase
+  type: http
+  seq: 20
+}
+
+delete {
+  url: {{baseUrl}}/api/clases/{{claseId}}
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 204
+}

@@ -1,0 +1,24 @@
+meta {
+  name: Listar clases de un instructor
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/api/clases?instructor={{instructorId}}
+  body: none
+  auth: none
+}
+
+params:query {
+  instructor: {{instructorId}}
+}
+
+assert {
+  res.status: eq 200
+  res.body.total: gte 1
+}
+
+docs {
+  Filtra por `?instructor=<id>`.
+}

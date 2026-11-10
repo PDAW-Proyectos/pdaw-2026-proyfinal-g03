@@ -1,0 +1,20 @@
+meta {
+  name: Mis turnos
+  type: http
+  seq: 10
+}
+
+get {
+  url: {{baseUrl}}/api/turnos/mios
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+  res.body.total: gte 1
+}
+
+docs {
+  Los turnos reservados por el miembro con sesión. Va antes de `/:id` en las rutas.
+}
