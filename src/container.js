@@ -13,6 +13,7 @@ const RepositorioSeguimientos = require('./repositories/RepositorioSeguimientos'
 const RepositorioTurnos = require('./repositories/RepositorioTurnos');
 const RepositorioMembresias = require('./repositories/RepositorioMembresias');
 const RepositorioHorarios = require('./repositories/RepositorioHorarios');
+const RepositorioSeguimientoProgreso = require('./repositories/RepositorioSeguimientoProgreso');
 
 // CLIENTE DE SERVICIO EXTERNO GEMINI
 const ClienteGemini = require('./services/gemini/ClienteGemini');
@@ -27,6 +28,7 @@ const ServicioSeguimientos = require('./services/ServicioSeguimientos');
 const ServicioTurnos = require('./services/ServicioTurnos');
 const ServicioMembresias = require('./services/ServicioMembresias');
 const ServicioHorarios = require('./services/ServicioHorarios');
+const ServicioSeguimientoProgreso = require('./services/ServicioSeguimientoProgreso');
 
 const repos = {
   repoClases: new RepositorioClases(),
@@ -38,6 +40,7 @@ const repos = {
   repoTurnos: new RepositorioTurnos(),
   repoMembresias: new RepositorioMembresias(),
   repoHorarios: new RepositorioHorarios(),
+  repoRegistrosPeso: new RepositorioSeguimientoProgreso(),
 };
 
 const clienteGemini = new ClienteGemini(config.gemini); // *crea el cliente
@@ -61,6 +64,10 @@ const servicios = {
     repoSeguimientos: repos.repoSeguimientos,
     repoPlanesEntrenamiento: repos.repoPlanesEntrenamiento,
     repoPlanesNutricionales: repos.repoPlanesNutricionales,
+  }),
+  servicioSeguimientoProgreso: new ServicioSeguimientoProgreso({
+    repoRegistros: repos.repoRegistros,
+    repoUsuarios: repos.repoUsuarios,
   }),
 };
 
