@@ -1,4 +1,4 @@
-const Clase = require('../models/Clase');
+const SeguimientoProgreso = require('../models/seguimientoProgreso');
 const RepositorioJSON = require('./RepositorioJSON');
 const v = require('../utils/validaciones');
 

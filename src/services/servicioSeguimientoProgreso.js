@@ -1,10 +1,10 @@
 
-const RegistroPeso = require('../models/RegistroPeso');
+const RegistroProgreso = require('../models/RegistroProgreso');
 const { ErrorNoEncontrado } = require('../utils/errores');
 
 class ServicioSeguimientoProgreso {
-    constructor({ repoRegistrosPeso, repoUsuarios }) {
-        this.repoRegistrosPeso = repoRegistrosPeso;
+    constructor({ repoRegistros, repoUsuarios }) {
+        this.repoRegistros = repoRegistros;
         this.repoUsuarios = repoUsuarios;
     }
 
@@ -27,7 +27,7 @@ class ServicioSeguimientoProgreso {
         });
 
         // Guardar el registro
-        return await this.repoRegistrosPeso.agregar(registro);
+        return await this.repoRegistros.agregar(registro);
     }
 
     async listarPesajes(miembroId) {
@@ -39,7 +39,7 @@ class ServicioSeguimientoProgreso {
         }
 
         // Obtener todos sus registros de peso
-        return await this.repoRegistrosPeso.listarPorMiembro(miembro.id);
+        return await this.repoRegistros.listarPorMiembro(miembro.id);
     }
 }
 
