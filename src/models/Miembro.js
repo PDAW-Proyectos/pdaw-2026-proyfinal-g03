@@ -8,6 +8,7 @@ const PERMISOS = new Set([
   'solicitarTurno',
   'llevarSeguimiento',
   'generarPlan',
+  'registrarPeso'
 ]);
 
 class Miembro extends Usuario {

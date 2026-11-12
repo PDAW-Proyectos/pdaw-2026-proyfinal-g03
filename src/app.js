@@ -78,7 +78,7 @@ function crearApp({
   app.use('/api/turnos', rutasTurnos(servicios));
   app.use('/api/membresias', rutasMembresias(servicios));
   app.use('/api/horarios', rutasHorarios(servicios));
-  app.use('/api/seguimiento-progreso', rutasSeguimientoProgreso({ servicioSeguimientoProgreso: servicios.servicioSeguimientoProgreso }));
+  app.use('/api/seguimientoProgreso', rutasSeguimientoProgreso({ servicioSeguimientoProgreso: servicios.servicioSeguimientoProgreso }));
 
   app.use(notFound);
   app.use(manejadorErrores(logger, { exposeStack: env === 'development' }));

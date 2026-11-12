@@ -1,6 +1,7 @@
 
-const RegistroProgreso = require('../models/RegistroProgreso');
+const seguimientoProgreso = require('../models/seguimientoProgreso');
 const { ErrorNoEncontrado } = require('../utils/errores');
+const { numero } = require('../utils/validaciones');
 
 class ServicioSeguimientoProgreso {
     constructor({ repoRegistros, repoUsuarios }) {
@@ -20,7 +21,7 @@ class ServicioSeguimientoProgreso {
         numero(pesoValidado, 'peso', { min: 20, max: 400 });
 
         // Crear un nuevo registro de peso
-        const registro = new RegistroPeso({
+        const registro = new seguimientoProgreso({
             miembroId: miembro.id,
             peso: pesoValidado,
             fecha: new Date()
