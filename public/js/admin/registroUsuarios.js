@@ -1,3 +1,10 @@
+const OBJETIVOS = [
+  { "id": 'perder_peso', "valor": "Perder peso", "requierePesoMeta": true },
+  { "id": 'ganar_musculo', "valor": "Ganar músculo", "requierePesoMeta": true },
+  { "id": 'mantener', "valor": "Mantener forma", "requierePesoMeta": false },
+  { "id": 'resistencia', "valor": "Mejorar resistencia", "requierePesoMeta": false }
+];
+
 let pasoActual = 1;
 const datosUsuario = {};
 
@@ -195,18 +202,15 @@ function mostrarDatosMiembro() {
   selectObjetivo.classList.add('form-select');
   selectObjetivo.required = true;
 
-  const opciones = [
-    { value: '', texto: 'Seleccioná un objetivo' },
-    { value: 'perder_peso', texto: 'Perder peso' },
-    { value: 'ganar_musculo', texto: 'Ganar músculo' },
-    { value: 'mantener', texto: 'Mantener peso' },
-    { value: 'resistencia', texto: 'Mejorar resistencia' },
-  ];
+  const opcionInicial = document.createElement('option');
+  opcionInicial.value = '';
+  opcionInicial.textContent = 'Seleccioná un objetivo';
+  selectObjetivo.appendChild(opcionInicial);
 
-  opciones.forEach((opcion) => {
+  OBJETIVOS.forEach(objetivo => {
     const option = document.createElement('option');
-    option.value = opcion.value;
-    option.textContent = opcion.texto;
+    option.value = objetivo.id;
+    option.textContent = objetivo.valor;
     selectObjetivo.appendChild(option);
   });
 
@@ -216,6 +220,56 @@ function mostrarDatosMiembro() {
   divObjetivo.appendChild(selectObjetivo);
 
   contenido.appendChild(divObjetivo);
+
+  // Contenedor para renderizar dinámicamente el peso meta.
+  const divPesoMeta = document.createElement('div');
+  divPesoMeta.id = 'campoPesoMeta';
+
+  contenido.appendChild(divPesoMeta);
+
+  // Renderizamos según el objetivo previamente seleccionado.
+  mostrarCampoPesoMeta(selectObjetivo.value);
+
+  // Escuchamos los cambios de objetivo.
+  selectObjetivo.addEventListener('change', () => {
+    mostrarCampoPesoMeta(selectObjetivo.value);
+  });
+}
+
+function mostrarCampoPesoMeta(objetivoId) {
+  const contenedor = document.getElementById('campoPesoMeta');
+
+  // Primero eliminamos el contenido anterior.
+  contenedor.innerHTML = '';
+
+  const objetivosConPesoMeta = ['perder_peso', 'ganar_musculo'];
+
+  // Si el objetivo no requiere peso meta, no creamos nada.
+  if (!objetivosConPesoMeta.includes(objetivoId)) {
+    return;
+  }
+
+  const divCampo = document.createElement('div');
+  divCampo.classList.add('mb-3');
+
+  const label = document.createElement('label');
+  label.setAttribute('for', 'pesoMeta');
+  label.classList.add('form-label');
+  label.textContent = 'Peso meta (kg)';
+
+  const input = document.createElement('input');
+  input.type = 'number';
+  input.id = 'pesoMeta';
+  input.classList.add('form-control');
+  input.min = '20';
+  input.max = '400';
+  input.step = '0.1';
+  input.required = true;
+  input.value = datosUsuario.pesoMeta ?? '';
+
+  divCampo.appendChild(label);
+  divCampo.appendChild(input);
+  contenedor.appendChild(divCampo);
 }
 
 // Muestra las membresías disponibles para el alumno.
@@ -451,6 +505,10 @@ function guardarDatosPaso() {
     datosUsuario.altura = document.getElementById('altura').value;
     datosUsuario.edad = document.getElementById('edad').value;
     datosUsuario.objetivo = document.getElementById('objetivo').value;
+    const inputPesoMeta = document.getElementById('pesoMeta');
+    datosUsuario.pesoMeta = inputPesoMeta
+      ? Number(inputPesoMeta.value)
+      : null;
   }
 
   if (pasoActual === 2 && datosUsuario.rol === 'instructor') {
