@@ -95,6 +95,7 @@ function mostrarDatosPersonales() {
     { label: 'Nombre', type: 'text', id: 'nombre' },
     { label: 'Email', type: 'email', id: 'email' },
     { label: 'DNI', type: 'text', id: 'dni' },
+    { label: 'Teléfono', type: 'text', id: 'telefono' }
   ];
 
   // Generamos los campos personales.
@@ -376,6 +377,9 @@ async function registrarUsuario() {
 
     const datos = await respuesta.json();
 
+    console.log('Datos enviados:', datosUsuario);
+    console.log('Respuesta del servidor:', datos);
+
     if (!respuesta.ok) {
       throw new Error(datos.mensaje || 'No se pudo registrar el usuario');
     }
@@ -498,6 +502,7 @@ function guardarDatosPaso() {
     datosUsuario.email = document.getElementById('email').value;
     datosUsuario.dni = document.getElementById('dni').value;
     datosUsuario.rol = document.getElementById('rol').value;
+    datosUsuario.telefono = document.getElementById('telefono').value;
   }
 
   if (pasoActual === 2 && datosUsuario.rol === 'miembro') {
@@ -507,7 +512,7 @@ function guardarDatosPaso() {
     datosUsuario.objetivo = document.getElementById('objetivo').value;
     const inputPesoMeta = document.getElementById('pesoMeta');
     datosUsuario.pesoMeta = inputPesoMeta
-      ? Number(inputPesoMeta.value)
+      ? (inputPesoMeta.value)
       : null;
   }
 

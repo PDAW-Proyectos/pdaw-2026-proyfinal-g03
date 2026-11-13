@@ -2,18 +2,33 @@ const v = require('../utils/validaciones');
 const { ErrorValidacion } = require('../utils/errores');
 
 class Usuario {
-  constructor({ id = null, dni, nombre, email, passwordHash }) {
+  constructor({ id = null, dni, telefono, nombre, email, passwordHash }) {
     if (new.target === Usuario) {
       throw new TypeError('Usuario es abstracta');
     }
 
     this.id = id ?? v.dni(dni);
-
+    this.telefono = this._validarTel(telefono);
     this.nombre = v.texto(nombre, 'nombre', { max: 80 });
     this.email = v.email(email);
     this.passwordHash = v.texto(passwordHash, 'passwordHash');
   }
 
+  _validarTel(telefono) {
+    if (!telefono) {
+      return null;
+    }
+
+    const telefonoValidado = String(telefono).trim();
+
+    if (!/^\d{8,15}$/.test(telefonoValidado)) {
+      throw new ErrorValidacion(
+        'El teléfono debe contener entre 8 y 15 dígitos'
+      );
+    }
+
+    return telefonoValidado;
+  }
   // metodos abstractos (getters): cada subclase responde por si misma
   get rol() {
     throw new Error('Sin implementar');
