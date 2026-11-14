@@ -18,20 +18,12 @@ class ServicioUsuarios {
 
     const usuarios = await this.repoUsuarios.listar();
 
-    const errores = [];
-
-    if (usuarios.some(usuario => usuario.id === dniValidado)) {
-      errores.push('DNI');
+    if (usuarios.some((usuario) => usuario.id === dniValidado)) {
+      throw new ErrorConflicto('Ya existe un usuario con ese DNI');
     }
 
-    if (usuarios.some(usuario => usuario.email === emailValidado)) {
-      errores.push('email');
-    }
-
-    if (errores.length > 0) {
-      throw new ErrorConflicto(
-        `Ya existe un usuario con ese ${errores.join(' y ')}`
-      );
+    if (usuarios.some((usuario) => usuario.email === emailValidado)) {
+      throw new ErrorConflicto('Ya existe un usuario con ese email');
     }
 
     const passwordHashNuevo = await bcrypt.hash(dniValidado, 12); // La contraseña inicial es el DNI.
