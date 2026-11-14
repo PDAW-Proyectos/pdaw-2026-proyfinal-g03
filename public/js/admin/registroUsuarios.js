@@ -87,18 +87,15 @@ function formularioRegistroUsuario(contenedor) {
 // Muestra el primer paso del registro.
 function mostrarDatosPersonales() {
   const contenido = document.getElementById('contenidoRegistro');
-
-  // Limpiamos el contenido anterior.
   contenido.innerHTML = '';
 
   const campos = [
     { label: 'Nombre', type: 'text', id: 'nombre' },
-    { label: 'Email', type: 'email', id: 'email' },
+    { label: 'Email', type: 'text', id: 'email' },
     { label: 'DNI', type: 'text', id: 'dni' },
     { label: 'Teléfono', type: 'text', id: 'telefono' }
   ];
 
-  // Generamos los campos personales.
   campos.forEach((campo) => {
     const divCampo = document.createElement('div');
     divCampo.classList.add('mb-3');
@@ -112,11 +109,17 @@ function mostrarDatosPersonales() {
     input.type = campo.type;
     input.id = campo.id;
     input.classList.add('form-control');
-    input.required = true;
     input.value = datosUsuario[campo.id] || '';
+
+    const error = crearMensajeError(campo.id);
+
+    input.addEventListener('input', () => {
+      limpiarError(campo.id);
+    });
 
     divCampo.appendChild(label);
     divCampo.appendChild(input);
+    divCampo.appendChild(error);
 
     contenido.appendChild(divCampo);
   });
@@ -133,13 +136,11 @@ function mostrarDatosPersonales() {
   const selectRol = document.createElement('select');
   selectRol.id = 'rol';
   selectRol.classList.add('form-select');
-  selectRol.required = true;
-  selectRol.value = datosUsuario.rol || '';
 
   const opciones = [
     { value: '', text: 'Seleccionar rol' },
     { value: 'miembro', text: 'Alumno' },
-    { value: 'instructor', text: 'Entrenador' },
+    { value: 'instructor', text: 'Entrenador' }
   ];
 
   opciones.forEach((opcion) => {
@@ -151,8 +152,13 @@ function mostrarDatosPersonales() {
 
   selectRol.value = datosUsuario.rol || '';
 
+  const errorRol = crearMensajeError('rol');
+
+  selectRol.addEventListener('change', () => limpiarError('rol'));
+
   divRol.appendChild(labelRol);
   divRol.appendChild(selectRol);
+  divRol.appendChild(errorRol);
 
   contenido.appendChild(divRol);
 }
@@ -163,9 +169,30 @@ function mostrarDatosMiembro() {
   contenido.innerHTML = '';
 
   const campos = [
-    { label: 'Peso (kg)', id: 'peso', type: 'number' },
-    { label: 'Altura (cm)', id: 'altura', type: 'number' },
-    { label: 'Edad', id: 'edad', type: 'number' },
+    {
+      label: 'Peso (kg)',
+      id: 'peso',
+      type: 'number',
+      min: 20,
+      max: 400,
+      step: 0.1
+    },
+    {
+      label: 'Altura (cm)',
+      id: 'altura',
+      type: 'number',
+      min: 80,
+      max: 250,
+      step: 0.1
+    },
+    {
+      label: 'Edad',
+      id: 'edad',
+      type: 'number',
+      min: 14,
+      max: 110,
+      step: 1
+    }
   ];
 
   campos.forEach((campo) => {
@@ -184,8 +211,15 @@ function mostrarDatosMiembro() {
     input.required = true;
     input.value = datosUsuario[campo.id] || '';
 
+    const error = crearMensajeError(campo.id);
+
+    input.addEventListener('input', () => {
+      limpiarError(campo.id);
+    });
+
     divCampo.appendChild(label);
     divCampo.appendChild(input);
+    divCampo.appendChild(error);
 
     contenido.appendChild(divCampo);
   });
@@ -203,6 +237,12 @@ function mostrarDatosMiembro() {
   selectObjetivo.classList.add('form-select');
   selectObjetivo.required = true;
 
+  const errorObjetivo = crearMensajeError('objetivo');
+
+  selectObjetivo.addEventListener('change', () => {
+    limpiarError('objetivo');
+  });
+
   const opcionInicial = document.createElement('option');
   opcionInicial.value = '';
   opcionInicial.textContent = 'Seleccioná un objetivo';
@@ -219,6 +259,7 @@ function mostrarDatosMiembro() {
 
   divObjetivo.appendChild(labelObjetivo);
   divObjetivo.appendChild(selectObjetivo);
+  divObjetivo.appendChild(errorObjetivo);
 
   contenido.appendChild(divObjetivo);
 
@@ -239,14 +280,18 @@ function mostrarDatosMiembro() {
 
 function mostrarCampoPesoMeta(objetivoId) {
   const contenedor = document.getElementById('campoPesoMeta');
+  const inputAnterior = document.getElementById('pesoMeta');
 
-  // Primero eliminamos el contenido anterior.
+  if (inputAnterior) {
+    datosUsuario.pesoMeta = inputAnterior.value;
+  }
+
   contenedor.innerHTML = '';
 
-  const objetivosConPesoMeta = ['perder_peso', 'ganar_musculo'];
+  const objetivo = OBJETIVOS.find(obj => obj.id === objetivoId);
 
-  // Si el objetivo no requiere peso meta, no creamos nada.
-  if (!objetivosConPesoMeta.includes(objetivoId)) {
+  if (!objetivo || !objetivo.requierePesoMeta) {
+    datosUsuario.pesoMeta = null;
     return;
   }
 
@@ -262,14 +307,18 @@ function mostrarCampoPesoMeta(objetivoId) {
   input.type = 'number';
   input.id = 'pesoMeta';
   input.classList.add('form-control');
-  input.min = '20';
-  input.max = '400';
-  input.step = '0.1';
-  input.required = true;
+
   input.value = datosUsuario.pesoMeta ?? '';
+
+  const error = crearMensajeError('pesoMeta');
+
+  input.addEventListener('input', () => {
+    limpiarError('pesoMeta');
+  });
 
   divCampo.appendChild(label);
   divCampo.appendChild(input);
+  divCampo.appendChild(error);
   contenedor.appendChild(divCampo);
 }
 
@@ -308,6 +357,13 @@ async function mostrarMembresias() {
     select.classList.add('form-select');
     select.required = true;
 
+    const error = crearMensajeError('planMembresiaId');
+
+    select.addEventListener('change', () => {
+      limpiarError('planMembresiaId');
+    });
+
+
     const opcionInicial = document.createElement('option');
     opcionInicial.value = '';
     opcionInicial.textContent = 'Seleccionar membresía';
@@ -325,6 +381,7 @@ async function mostrarMembresias() {
     select.value = datosUsuario.planMembresiaId || '';
 
     contenido.appendChild(select);
+    contenido.appendChild(error);
   } catch (error) {
     const mensaje = document.getElementById('mensajeRegistro');
     mensaje.textContent = error.message;
@@ -352,8 +409,15 @@ function mostrarDatosInstructor() {
   input.maxLength = 80;
   input.value = datosUsuario.especialidad || '';
 
+  const error = crearMensajeError('especialidad');
+
+  input.addEventListener('input', () => {
+    limpiarError('especialidad');
+  });
+
   divCampo.appendChild(label);
   divCampo.appendChild(input);
+  divCampo.appendChild(error);
 
   contenido.appendChild(divCampo);
 }
@@ -381,13 +445,19 @@ async function registrarUsuario() {
     console.log('Respuesta del servidor:', datos);
 
     if (!respuesta.ok) {
-      throw new Error(datos.mensaje || 'No se pudo registrar el usuario');
+      const mensajeError =
+        datos.mensaje ||
+        datos.detail ||
+        datos.error ||
+        'No se pudo registrar el usuario';
+
+      throw new Error(mensajeError);
     }
 
     alert('Usuario registrado correctamente');
     return true;
   } catch (error) {
-    document.getElementById('mensajeRegistro').textContent = error.message;
+    mostrarErrorRegistro(error.message);
     return false;
   }
 }
@@ -419,8 +489,25 @@ export function inicializarRegistroUsuarios() {
       mensaje.textContent = '';
     });
 
-    if (!formulario.checkValidity()) {
-      formulario.reportValidity();
+    let valido = true;
+
+    if (pasoActual === 1) {
+      valido = validarDatosPersonales();
+    }
+
+    if (pasoActual === 2 && datosUsuario.rol === 'miembro') {
+      valido = validarDatosMiembro();
+    }
+
+    if (pasoActual === 2 && datosUsuario.rol === 'instructor') {
+      valido = validarDatosInstructor();
+    }
+
+    if (pasoActual === 3 && datosUsuario.rol === 'miembro') {
+      valido = validarMembresia();
+    }
+
+    if (!valido) {
       return;
     }
 
@@ -511,9 +598,7 @@ function guardarDatosPaso() {
     datosUsuario.edad = document.getElementById('edad').value;
     datosUsuario.objetivo = document.getElementById('objetivo').value;
     const inputPesoMeta = document.getElementById('pesoMeta');
-    datosUsuario.pesoMeta = inputPesoMeta
-      ? (inputPesoMeta.value)
-      : null;
+    datosUsuario.pesoMeta = inputPesoMeta ? (inputPesoMeta.value) : null;
   }
 
   if (pasoActual === 2 && datosUsuario.rol === 'instructor') {
@@ -531,4 +616,213 @@ function guardarDatosPaso() {
   }
 
   return true;
+}
+
+// Muestra un mensaje de error debajo de un campo.
+function mostrarError(idCampo, mensaje) {
+  const error = document.getElementById(`error-${idCampo}`);
+  if (error) {
+    error.textContent = mensaje;
+  }
+
+  const input = document.getElementById(idCampo);
+  if (input) {
+    input.classList.add('is-invalid');
+    input.classList.remove('is-valid');
+  }
+}
+
+// Limpia el mensaje de error de un campo.
+function limpiarError(idCampo) {
+  const error = document.getElementById(`error-${idCampo}`);
+  if (error) {
+    error.textContent = '';
+  }
+
+  const input = document.getElementById(idCampo);
+  if (input) {
+    input.classList.remove('is-invalid');
+  }
+}
+
+// Crea el espacio donde aparecerá el mensaje.
+function crearMensajeError(idCampo) {
+  const error = document.createElement('small');
+  error.id = `error-${idCampo}`;
+  error.classList.add('text-danger', 'd-block', 'mt-1');
+  return error;
+}
+
+function validarDatosPersonales() {
+  let valido = true;
+
+  const nombre = document.getElementById('nombre').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const dni = document.getElementById('dni').value.trim();
+  const telefono = document.getElementById('telefono').value.trim();
+  const rol = document.getElementById('rol').value;
+
+  // Nombre
+  if (!nombre) {
+    mostrarError('nombre', 'El nombre es obligatorio.');
+    valido = false;
+  } else if (nombre.length < 2 || nombre.length > 80) {
+    mostrarError('nombre', 'El nombre debe tener entre 2 y 80 caracteres.');
+    valido = false;
+  } else if (!/^[A-Za-zÁÉÍÓÚáéíóúÑñÜü\s'-]+$/.test(nombre)) {
+    mostrarError('nombre', 'El nombre solo puede contener letras y espacios.');
+    valido = false;
+  }
+
+  // Email
+  if (!email) {
+    mostrarError('email', 'El email es obligatorio.');
+    valido = false;
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    mostrarError('email', 'Ingresá un email válido.');
+    valido = false;
+  } else if (email.length > 254) {
+    mostrarError('email', 'El email no puede superar los 254 caracteres.');
+    valido = false;
+  }
+
+  // DNI
+  if (!dni) {
+    mostrarError('dni', 'El DNI es obligatorio.');
+    valido = false;
+  } else if (!/^\d{7,8}$/.test(dni)) {
+    mostrarError('dni', 'El DNI debe tener entre 7 y 8 dígitos.');
+    valido = false;
+  }
+
+  // Teléfono (opcional)
+  if (telefono && !/^\d{8,15}$/.test(telefono)) {
+    mostrarError('telefono', 'El teléfono debe contener entre 8 y 15 dígitos.');
+    valido = false;
+  }
+
+  // Rol
+  if (!rol) {
+    mostrarError('rol', 'Seleccioná un rol.');
+    valido = false;
+  }
+
+  return valido;
+}
+
+function validarDatosMiembro() {
+  let valido = true;
+
+  const peso = Number(document.getElementById('peso').value);
+  const altura = Number(document.getElementById('altura').value);
+  const edad = Number(document.getElementById('edad').value);
+  const objetivo = document.getElementById('objetivo').value;
+  const inputPesoMeta = document.getElementById('pesoMeta');
+
+  if (!document.getElementById('peso').value) {
+    mostrarError('peso', 'Ingresá tu peso.');
+    valido = false;
+  } else if (!Number.isFinite(peso) || peso < 20 || peso > 400) {
+    mostrarError('peso', 'El peso debe estar entre 20 y 400 kg.');
+    valido = false;
+  }
+
+  if (!document.getElementById('altura').value) {
+    mostrarError('altura', 'Ingresá tu altura.');
+    valido = false;
+  } else if (!Number.isFinite(altura) || altura < 80 || altura > 250) {
+    mostrarError('altura', 'La altura debe estar entre 80 y 250 cm.');
+    valido = false;
+  }
+
+  if (!document.getElementById('edad').value) {
+    mostrarError('edad', 'Ingresá tu edad.');
+    valido = false;
+  } else if (!Number.isInteger(edad) || edad < 14 || edad > 110) {
+    mostrarError('edad', 'La edad debe ser un número entero entre 14 y 110.');
+    valido = false;
+  }
+
+  if (!objetivo) {
+    mostrarError('objetivo', 'Seleccioná un objetivo.');
+    valido = false;
+  }
+
+  if (inputPesoMeta) {
+    const pesoMeta = Number(inputPesoMeta.value);
+
+    if (!inputPesoMeta.value) {
+      mostrarError('pesoMeta', 'Ingresá tu peso meta.');
+      valido = false;
+
+    } else if (!Number.isFinite(pesoMeta) || pesoMeta < 20 || pesoMeta > 400) {
+      mostrarError('pesoMeta', 'El peso meta debe estar entre 20 y 400 kg.');
+      valido = false;
+
+    } else if (objetivo === 'perder_peso' && pesoMeta >= peso) {
+      mostrarError('pesoMeta', 'Para perder peso, tu peso meta debe ser menor que tu peso actual.');
+      valido = false;
+
+    } else if (objetivo === 'ganar_musculo' && pesoMeta <= peso) {
+      mostrarError('pesoMeta', 'Para ganar músculo, tu peso meta debe ser mayor que tu peso actual.');
+      valido = false;
+    }
+  }
+
+  return valido;
+}
+
+function validarMembresia() {
+  const select = document.getElementById('planMembresiaId');
+
+  if (!select) {
+    const mensaje = document.getElementById('mensajeRegistro');
+    mensaje.textContent = 'No hay membresías disponibles para seleccionar.';
+    return false;
+  }
+
+  if (!select.value) {
+    mostrarError('planMembresiaId', 'Tenés que seleccionar una membresía.');
+    return false;
+  }
+
+  return true;
+}
+
+function validarDatosInstructor() {
+  const especialidad = document.getElementById('especialidad').value.trim();
+
+  if (!especialidad) {
+    mostrarError('especialidad', 'La especialidad es obligatoria.');
+    return false;
+  }
+
+  if (especialidad.length < 2 || especialidad.length > 80) {
+    mostrarError('especialidad', 'La especialidad debe tener entre 2 y 80 caracteres.');
+    return false;
+  }
+
+  return true;
+}
+
+function mostrarErrorRegistro(mensaje) {
+  const texto = mensaje.toLowerCase();
+
+  const esDni = texto.includes('dni');
+  const esEmail = texto.includes('email') || texto.includes('correo');
+
+  if (esDni || esEmail) {
+    pasoActual = 1;
+    mostrarDatosPersonales();
+
+    document.getElementById('volverRegistro').hidden = true;
+    document.getElementById('siguienteRegistro').textContent = 'Siguiente';
+
+    if (esDni) mostrarError('dni', 'Este DNI ya está registrado.');
+    if (esEmail) mostrarError('email', 'Este email ya está registrado.');
+
+    return;
+  }
+
+  document.getElementById('mensajeRegistro').textContent = mensaje;
 }
