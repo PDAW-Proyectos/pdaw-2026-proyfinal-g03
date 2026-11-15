@@ -34,7 +34,7 @@ const fetchSeguro = async (url) => {
     return null;
   }
 };
-const mostrarToast = (titulo, mensaje, tipo = 'success') => {
+export const mostrarToast = (titulo, mensaje, tipo = 'success') => {
   const toastEl = document.getElementById('miToast');
   const toastTitulo = document.getElementById('toast-titulo');
   const toastMensaje = document.getElementById('toast-mensaje');
@@ -89,7 +89,7 @@ const dibujarGrafico = (registros) => {
   contenedor.replaceChildren();
   contenedor.style.borderStyle = 'solid';
   contenedor.style.backgroundColor = '#1e1e1e';
-  contenedor.style.height = 'auto'; 
+  contenedor.style.height = 'auto';
   contenedor.style.minHeight = '200px';
 
   const datos = registros.map((r) => Number(r.peso || r.pesoActual));
@@ -114,7 +114,7 @@ const dibujarGrafico = (registros) => {
   for (let i = 0; i <= 4; i++) {
     const y = paddingTop + i * (chartHeight / 4);
     const valorY = maxPeso - i * (rangoPeso / 4);
-    
+
     const linea = document.createElementNS('http://www.w3.org/2000/svg', 'line');
     linea.setAttribute('x1', paddingLeft);
     linea.setAttribute('y1', y);
@@ -208,10 +208,10 @@ const renderizarHistorialYGrafico = (usuario) => {
     if (mesSeleccionadoGrafico) {
       const [anio, mes] = mesSeleccionadoGrafico.split('-');
       labelMes.textContent = `${nombresMeses[parseInt(mes) - 1]} ${anio}`;
-      
+
       const hoy = new Date();
       const mesActualStr = `${hoy.getFullYear()}-${String(hoy.getMonth() + 1).padStart(2, '0')}`;
-      
+
       btnSiguiente.disabled = (mesSeleccionadoGrafico >= mesActualStr);
       btnAnterior.disabled = false;
     }
@@ -248,7 +248,7 @@ const renderizarHistorialYGrafico = (usuario) => {
   if (tbody) {
     tbody.replaceChildren();
     const registrosParaTabla = registrosFiltrados;
-    
+
     if (registrosParaTabla.length === 0) {
       const tr = crearElemento('tr');
       tr.append(
@@ -263,13 +263,13 @@ const renderizarHistorialYGrafico = (usuario) => {
         const tr = crearElemento('tr');
         const fecha = new Date(reg.fecha);
         const anterior = ultimos[index + 1];
-        
+
         const pesoActualReg = Number(reg.peso);
         const pesoAnterior = anterior ? Number(anterior.peso) : null;
-        
+
         const difReg = pesoAnterior !== null ? pesoActualReg - pesoAnterior : 0;
         const difTxt = difReg === 0 ? '-' : `${difReg > 0 ? '+' : ''}${difReg.toFixed(1)} kg`;
-        
+
         tr.append(
           crearElemento('td', 'py-3 px-4 text-white', fecha.toLocaleDateString('es-AR')),
           crearElemento('td', 'py-3 px-4 text-white', `${pesoActualReg} kg`),
@@ -284,7 +284,7 @@ const renderizarHistorialYGrafico = (usuario) => {
   const tarjetas = seccion.querySelectorAll('.user-card h3');
   if (tarjetas.length >= 3) {
     tarjetas[0].textContent = imc !== '-' ? imc : '-';
-    tarjetas[1].textContent = pesoMeta > 0 ? `${pesoMeta} kg` : '-'; 
+    tarjetas[1].textContent = pesoMeta > 0 ? `${pesoMeta} kg` : '-';
     tarjetas[2].textContent = pesoActualTxt;
   }
 
@@ -339,7 +339,7 @@ const inicializarRegistroPeso = (usuario) => {
 
     const fechaHoyStr = new Date().toISOString().split('T')[0];
     const registros = usuario.historialPesos || [];
-    
+
     const indiceHoy = registros.findIndex(r => {
       const d = new Date(r.fecha);
       return d.toISOString().split('T')[0] === fechaHoyStr;
@@ -368,7 +368,7 @@ const inicializarRegistroPeso = (usuario) => {
       }
 
       if (!Array.isArray(usuario.historialPesos)) usuario.historialPesos = [];
-      
+
       if (esActualizacion) {
         usuario.historialPesos[indiceHoy].peso = peso;
       } else {
@@ -377,13 +377,13 @@ const inicializarRegistroPeso = (usuario) => {
           peso: peso
         });
       }
-      
+
       usuario.peso = peso;
       inputPeso.value = '';
-      
+
       const hoy = new Date();
       mesSeleccionadoGrafico = `${hoy.getFullYear()}-${String(hoy.getMonth() + 1).padStart(2, '0')}`;
-      
+
       renderizarHistorialYGrafico(usuario);
 
       if (esActualizacion) {
@@ -413,7 +413,7 @@ const inicializarFiltroMes = (usuario) => {
     const cambiarMes = (direccion) => {
       if (!mesSeleccionadoGrafico) return;
       let [anio, mes] = mesSeleccionadoGrafico.split('-').map(Number);
-      mes += direccion; 
+      mes += direccion;
       if (mes > 12) { mes = 1; anio++; }
       if (mes < 1) { mes = 12; anio--; }
       mesSeleccionadoGrafico = `${anio}-${String(mes).padStart(2, '0')}`;
@@ -639,7 +639,8 @@ export function inicializarAccionesTurnos(usuario) {
     }
   });
 }
-const renderizarPerfil = (usuario) => {
+
+export const renderizarPerfil = (usuario) => {
   const asignarValor = (id, valor) => {
     const input = document.getElementById(id);
     if (input) input.value = valor !== undefined && valor !== null ? valor : '';
@@ -650,15 +651,13 @@ const renderizarPerfil = (usuario) => {
   asignarValor('perfil-email', usuario.email);
   asignarValor('perfil-telefono', usuario.telefono);
   asignarValor('perfil-altura', usuario.altura);
+  asignarValor('perfil-edad', usuario.edad);
   asignarValor('perfil-peso-inicial', usuario.peso);
   asignarValor('perfil-peso-meta', usuario.pesoMeta);
 
   const selectObjetivo = document.getElementById('selectObjetivo');
-  if (selectObjetivo && usuario.objetivo) {
-    let valorSelect = usuario.objetivo;
-    if (usuario.objetivo === 'perder_peso') valorSelect = 'deficit';
-    if (usuario.objetivo === 'ganar_musculo') valorSelect = 'volumen';
-    selectObjetivo.value = valorSelect;
+  if (selectObjetivo) {
+    selectObjetivo.value = usuario.objetivo || '';
   }
 };
 
