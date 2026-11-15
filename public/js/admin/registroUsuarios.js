@@ -1,7 +1,8 @@
 import { pasoActual, cambiarPaso, datosUsuario, guardarDatosPaso, reiniciarRegistro } from './estadoRegistro.js';
-import { formularioRegistroUsuario, mostrarDatosPersonales, mostrarDatosMiembro, mostrarDatosInstructor, mostrarMembresias, mostrarToast } from './vistasRegistro.js';
+import { formularioRegistroUsuario, mostrarDatosPersonales, mostrarDatosMiembro, mostrarDatosInstructor, mostrarMembresias } from './vistasRegistro.js';
 import { validarDatosPersonales, validarDatosMiembro, validarDatosInstructor, validarMembresia, mostrarErrorRegistro } from './validacionesRegistro.js';
 import { registrarUsuario } from './servicioRegistro.js';
+import { mostrarToast } from '../componentes/toast.js';
 
 // Inicializa el registro de usuarios.
 export function inicializarRegistroUsuarios() {

@@ -230,6 +230,11 @@
               <h4 class="mb-0 text-white">
                 <i class="bi bi-person-badge text-green me-2"></i> Datos Personales
               </h4>
+              <button type="button" class="user-btn-outline py-2 px-3 fs-13" data-bs-toggle="modal"
+                data-bs-target="#modalCambiarPassword">
+                <i class="bi bi-key-fill me-1"></i>
+                Cambiar contraseña
+              </button>
             </div>
             <div class="row g-3">
               <div class="col-md-3">
@@ -250,6 +255,10 @@
                 <input id="perfil-telefono" type="tel" class="user-form-control w-100" value="No registrado" readonly />
               </div>
             </div>
+            <button id="guardar-datos-personales" type="button"
+              class="user-btn-outline d-block ms-auto mt-3 py-1 px-3 fs-13 d-none">
+              <i class="bi bi-check-lg"></i> Guardar cambios
+            </button>
           </div>
         </div>
       </div>
@@ -337,6 +346,62 @@
               Cancelar
             </button>
             <button type="submit" class="btn btn-green">Guardar Horario</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modalCambiarPassword" tabindex="-1" aria-labelledby="tituloModalPassword"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content bg-pulso-darker border border-secondary">
+
+        <div class="modal-header border-secondary">
+          <h5 class="modal-title text-white" id="tituloModalPassword">
+            <i class="bi bi-shield-lock text-green me-2"></i>
+            Cambiar contraseña
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+
+        <form id="formCambiarPassword">
+          <div class="modal-body">
+
+            <div class="mb-3">
+              <label for="passwordActual" class="text-gray mb-2 fs-14">
+                Contraseña actual
+              </label>
+              <input type="password" id="passwordActual" class="user-form-control w-100"
+                placeholder="Ingresá tu contraseña actual" required />
+            </div>
+
+            <div class="mb-3">
+              <label for="passwordNueva" class="text-gray mb-2 fs-14">
+                Nueva contraseña
+              </label>
+              <input type="password" id="passwordNueva" class="user-form-control w-100"
+                placeholder="Ingresá la nueva contraseña" minlength="8" required />
+            </div>
+
+            <div class="mb-2">
+              <label for="passwordConfirmacion" class="text-gray mb-2 fs-14">
+                Confirmar nueva contraseña
+              </label>
+              <input type="password" id="passwordConfirmacion" class="user-form-control w-100"
+                placeholder="Repetí la nueva contraseña" minlength="8" required />
+            </div>
+
+          </div>
+
+          <div class="modal-footer border-secondary">
+            <button type="button" class="user-btn-outline py-2 px-3" data-bs-dismiss="modal">
+              Cancelar
+            </button>
+            <button type="submit" id="btnGuardarPassword" class="btn btn-green py-2 px-3">
+              <i class="bi bi-check-lg me-1"></i>
+              Guardar contraseña
+            </button>
           </div>
         </form>
       </div>

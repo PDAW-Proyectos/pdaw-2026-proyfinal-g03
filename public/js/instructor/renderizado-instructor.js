@@ -299,7 +299,10 @@ export function inicializarRenderizadoInstructor(usuario) {
     document.getElementById('perfil-email').value = usuario.email || '';
   }
   if (document.getElementById('perfil-telefono')) {
-    document.getElementById('perfil-telefono').value = usuario.telefono || 'No registrado';
+    document.getElementById('perfil-telefono').value = usuario.telefono || '';
+  }
+  if (document.getElementById('perfil-especialidad')) {
+    document.getElementById('perfil-especialidad').value = usuario.especialidad || '';
   }
 
   // Llenado del horario base

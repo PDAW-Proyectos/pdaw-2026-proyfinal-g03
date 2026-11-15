@@ -2,7 +2,7 @@ import { verificarSesion, cerrarSesion } from '../auth.js';
 import { inicializarRenderizadoMiembro } from './renderizado-miembro.js';
 import { inicializarGeneracionPlan } from './rutinas.js';
 import { inicializarGeneracionPlanNutricional } from './planesNutricionales.js';
-import { inicializarPerfil } from './perfil/perfil.js';
+import { inicializarPerfilMiembro } from '../perfil/perfil.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   try {
@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     //Renderizado inicial
     await inicializarRenderizadoMiembro(usuario);
-    inicializarPerfil(usuario);
+    inicializarPerfilMiembro(usuario);
     inicializarGeneracionPlan();
     inicializarGeneracionPlanNutricional();
   } catch (error) {
