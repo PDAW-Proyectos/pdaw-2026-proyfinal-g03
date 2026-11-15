@@ -1,5 +1,5 @@
 import { pasoActual, cambiarPaso, datosUsuario, guardarDatosPaso, reiniciarRegistro } from './estadoRegistro.js';
-import { formularioRegistroUsuario, mostrarDatosPersonales, mostrarDatosMiembro, mostrarDatosInstructor, mostrarMembresias } from './vistasRegistro.js';
+import { formularioRegistroUsuario, mostrarDatosPersonales, mostrarDatosMiembro, mostrarDatosInstructor, mostrarMembresias, mostrarToast } from './vistasRegistro.js';
 import { validarDatosPersonales, validarDatosMiembro, validarDatosInstructor, validarMembresia, mostrarErrorRegistro } from './validacionesRegistro.js';
 import { registrarUsuario } from './servicioRegistro.js';
 
@@ -100,12 +100,13 @@ export function inicializarRegistroUsuarios() {
 
       try {
         await registrarUsuario();
-        alert('Usuario registrado correctamente');
+
+        mostrarToast('Registro exitoso', 'El usuario se registró correctamente.', 'success');
         modal.hide();
 
       } catch (error) {
+        mostrarToast('Error al registrar', error.message, 'error');
         mostrarErrorRegistro(error.message);
-
       } finally {
         siguiente.disabled = false;
 
