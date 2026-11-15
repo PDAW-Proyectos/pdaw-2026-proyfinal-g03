@@ -14,7 +14,7 @@
       "nombre": "Avigail",
       "email": "avi@avi.com",
       "peso": 55,
-      "pesoMeta": null,
+      "pesoMeta": 80,
       "altura": 167,
       "edad": 23,
       "objetivo": "perder_peso",

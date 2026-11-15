@@ -5,6 +5,7 @@ const crearElemento = (etiqueta, clases, texto) => {
   if (texto !== undefined) el.textContent = texto;
   return el;
 };
+
 // Crea un párrafo (<p>) que contiene un ícono de Bootstrap Icons seguido de un texto.
 const crearParrafoConIcono = (clases, iconoClases, texto) => {
   const p = crearElemento('p', clases);
@@ -20,7 +21,6 @@ const mostrarMensaje = (contenedor, mensaje, clase = 'text-gray') => {
 };
 
 // Petición fetch "segura" que maneja errores y adapta la respuesta a un array.
-// Dependiendo de cómo responda el backend, extrae los datos de "json.data" o "json.items".
 const fetchSeguro = async (url) => {
   try {
     const res = await fetch(url, { credentials: 'include' });
@@ -34,59 +34,87 @@ const fetchSeguro = async (url) => {
     return null;
   }
 };
-// Dibuja un gráfico de líneas usando SVG nativo, sin librerías externas.
-// Recibe un array con los registros de peso para graficar la evolución.
+const mostrarToast = (titulo, mensaje, tipo = 'success') => {
+  const toastEl = document.getElementById('miToast');
+  const toastTitulo = document.getElementById('toast-titulo');
+  const toastMensaje = document.getElementById('toast-mensaje');
+  const toastIcono = document.getElementById('toast-icono');
+
+  if (!toastEl) {
+    alert(`${titulo}: ${mensaje}`);
+    return;
+  }
+
+  toastTitulo.textContent = titulo;
+  toastMensaje.textContent = mensaje;
+
+  if (tipo === 'success') {
+    toastIcono.className = 'bi bi-check-circle-fill text-success fs-5';
+    toastEl.classList.remove('border-danger');
+    toastEl.classList.add('border-start', 'border-4', 'border-success');
+  } else {
+    toastIcono.className = 'bi bi-exclamation-triangle-fill text-danger fs-5';
+    toastEl.classList.remove('border-start', 'border-4', 'border-success');
+    toastEl.classList.add('border-danger');
+  }
+
+  const toast = bootstrap.Toast.getOrCreateInstance(toastEl, {
+    delay: 4000,
+    autohide: true
+  });
+  toast.show();
+};
 const dibujarGrafico = (registros) => {
   const contenedor = document.getElementById('contenedor-grafico');
   if (!contenedor) return;
 
-  // Validación: se necesitan al menos 2 pesajes para trazar una línea
-  if (registros.length < 2) {
+  if (!Array.isArray(registros) || registros.length === 0) {
     contenedor.replaceChildren(
-      crearElemento(
-        'div',
-        'text-gray text-center w-100 py-5',
-        'Registrá al menos 2 pesajes para ver tu gráfico de evolución.',
-      ),
+      crearElemento('div', 'text-gray text-center w-100 py-5', 'No hay pesajes guardados en este mes.'),
     );
+    contenedor.style.height = 'auto';
+    contenedor.style.minHeight = '150px';
     return;
   }
 
-  // Limpieza y preparación del contenedor
+  if (registros.length === 1) {
+    contenedor.replaceChildren(
+      crearElemento('div', 'text-gray text-center w-100 py-5', 'Registrá al menos 2 pesajes este mes para ver tu gráfico de evolución.'),
+    );
+    contenedor.style.height = 'auto';
+    contenedor.style.minHeight = '150px';
+    return;
+  }
+
   contenedor.replaceChildren();
   contenedor.style.borderStyle = 'solid';
   contenedor.style.backgroundColor = '#1e1e1e';
+  contenedor.style.height = 'auto'; 
+  contenedor.style.minHeight = '200px';
 
-  // Separación de datos para los ejes X e Y
-  const datos = registros.map((r) => Number(r.peso));
+  const datos = registros.map((r) => Number(r.peso || r.pesoActual));
   const etiquetas = registros.map((r) => {
     const d = new Date(r.fecha);
-    return `${d.getDate()}/${d.getMonth() + 1}`;
+    return `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1).toString().padStart(2, '0')}`;
   });
 
-  // Configuración de dimensiones del gráfico
-  const width = 700,
-    height = 280,
-    paddingLeft = 50,
-    paddingBottom = 40,
-    paddingTop = 30,
-    paddingRight = 30;
+  const width = 700, height = 280, paddingLeft = 50, paddingBottom = 40, paddingTop = 30, paddingRight = 30;
   const chartWidth = width - paddingLeft - paddingRight;
   const chartHeight = height - paddingTop - paddingBottom;
-  const maxPeso = Math.max(...datos) + 5;
-  const minPeso = Math.min(...datos) - 5;
+  const maxPeso = Math.max(...datos) + 2;
+  const minPeso = Math.min(...datos) - 2;
   const rangoPeso = maxPeso - minPeso || 1;
 
-  // Creación del lienzo SVG
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
   svg.setAttribute('width', '100%');
   svg.setAttribute('height', '100%');
+  svg.style.display = 'block';
 
-  // Dibujo de la cuadrícula y textos del eje Y (peso)
   for (let i = 0; i <= 4; i++) {
     const y = paddingTop + i * (chartHeight / 4);
     const valorY = maxPeso - i * (rangoPeso / 4);
+    
     const linea = document.createElementNS('http://www.w3.org/2000/svg', 'line');
     linea.setAttribute('x1', paddingLeft);
     linea.setAttribute('y1', y);
@@ -101,18 +129,16 @@ const dibujarGrafico = (registros) => {
     textoY.setAttribute('fill', '#888');
     textoY.setAttribute('font-size', '12');
     textoY.setAttribute('text-anchor', 'end');
-    textoY.textContent = valorY.toFixed(0);
+    textoY.textContent = valorY.toFixed(1);
     svg.appendChild(textoY);
   }
 
-  // Cálculo de las coordenadas (x, y) de cada punto
   const puntos = datos.map((peso, index) => {
     const x = paddingLeft + index * (chartWidth / (datos.length - 1));
     const y = height - paddingBottom - ((peso - minPeso) / rangoPeso) * chartHeight;
     return { x, y, peso, etiqueta: etiquetas[index] };
   });
 
-  // Dibujo de la línea que une los puntos
   const polyline = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
   polyline.setAttribute('points', puntos.map((p) => `${p.x},${p.y}`).join(' '));
   polyline.setAttribute('fill', 'none');
@@ -120,7 +146,6 @@ const dibujarGrafico = (registros) => {
   polyline.setAttribute('stroke-width', '3');
   svg.appendChild(polyline);
 
-  // Dibujo de los círculos (puntos), el peso arriba y la fecha abajo
   puntos.forEach((p) => {
     const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
     circle.setAttribute('cx', p.x);
@@ -136,8 +161,9 @@ const dibujarGrafico = (registros) => {
     textoPeso.setAttribute('y', p.y - 12);
     textoPeso.setAttribute('fill', '#3b82f6');
     textoPeso.setAttribute('font-size', '12');
+    textoPeso.setAttribute('font-weight', 'bold');
     textoPeso.setAttribute('text-anchor', 'middle');
-    textoPeso.textContent = p.peso;
+    textoPeso.textContent = `${p.peso} kg`;
     svg.appendChild(textoPeso);
 
     const textoX = document.createElementNS('http://www.w3.org/2000/svg', 'text');
@@ -152,82 +178,113 @@ const dibujarGrafico = (registros) => {
 
   contenedor.appendChild(svg);
 };
+let mesSeleccionadoGrafico = null;
 
-// Renderiza las tarjetas superiores del historial (IMC, Meta, Peso actual),
-// el resumen de progreso (Peso inicial, Diferencia) y arma la tabla de registros.
 const renderizarHistorialYGrafico = (usuario) => {
   const seccion = document.getElementById('user-historial');
   if (!seccion) return;
 
-  // Se busca el historial en el JSON. Si no hay, se usa un array vacío.
   const registros = Array.isArray(usuario.historialPesos) ? [...usuario.historialPesos] : [];
-
-  // Ordenamos el historial del más antiguo al más nuevo
   registros.sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
 
-  const pesoDelUsuario = Number(usuario.peso || 0);
-  const pesoInicial = registros.length > 0 ? Number(registros[0].peso) : pesoDelUsuario;
-  const pesoMeta = Number(usuario.pesoMeta || 0);
+  const mesesSet = new Set();
+  registros.forEach(r => {
+    const d = new Date(r.fecha);
+    mesesSet.add(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`);
+  });
+  const mesesArray = Array.from(mesesSet).sort();
 
-  let imc = '-',
-    diferencia = '-',
-    pesoActualTxt = '-',
-    pesoInicialTxt = '-',
-    claseDif = 'text-gray';
+  const labelMes = document.getElementById('mesActualGrafico');
+  const btnAnterior = document.getElementById('btnMesAnterior');
+  const btnSiguiente = document.getElementById('btnMesSiguiente');
+  const nombresMeses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 
-  // Si hay altura y peso, calculamos el IMC y la diferencia
-  if (pesoDelUsuario > 0 && usuario.altura) {
-    const alturaM = usuario.altura / 100;
-    imc = (pesoDelUsuario / (alturaM * alturaM)).toFixed(1);
-    pesoActualTxt = `${pesoDelUsuario} kg`;
-    pesoInicialTxt = `${pesoInicial} kg`;
-
-    const difNum = pesoDelUsuario - pesoInicial;
-    diferencia = `${difNum > 0 ? '+' : ''}${difNum.toFixed(1)} kg`;
-    claseDif = difNum <= 0 ? 'text-green' : 'text-danger';
-
-    // Renderizado de la tabla de progreso
-    const tbody = document.querySelector('#user-progreso tbody');
-    if (tbody) {
-      tbody.replaceChildren();
-      if (registros.length === 0) {
-        // Si no hay historial, mostramos una única fila con el peso actual
-        const tr = crearElemento('tr');
-        tr.append(
-          crearElemento('td', 'py-3 px-4 text-white', new Date().toLocaleDateString('es-AR')),
-          crearElemento('td', 'py-3 px-4 text-white', `${pesoDelUsuario} kg`),
-          crearElemento('td', 'py-3 px-4 text-end text-gray', '-'),
-        );
-        tbody.append(tr);
-      } else {
-        // Si hay historial, mostramos las últimas 5 filas
-        const ultimos = [...registros].reverse().slice(0, 5);
-        ultimos.forEach((reg, index) => {
-          const tr = crearElemento('tr');
-          const fecha = new Date(reg.fecha);
-          const anterior = ultimos[index + 1];
-          const difReg = anterior ? reg.peso - anterior.peso : 0;
-          const difTxt = difReg === 0 ? '-' : `${difReg > 0 ? '+' : ''}${difReg.toFixed(1)} kg`;
-          const claseReg = difReg < 0 ? 'text-green' : difReg > 0 ? 'text-danger' : 'text-gray';
-
-          tr.append(
-            crearElemento('td', 'py-3 px-4 text-white', fecha.toLocaleDateString('es-AR')),
-            crearElemento('td', 'py-3 px-4 text-white', `${reg.peso} kg`),
-            crearElemento('td', `py-3 px-4 text-end ${claseReg}`, difTxt),
-          );
-          tbody.append(tr);
-        });
-      }
+  if (labelMes && btnAnterior && btnSiguiente) {
+    if (mesSeleccionadoGrafico === null) {
+      const hoy = new Date();
+      mesSeleccionadoGrafico = `${hoy.getFullYear()}-${String(hoy.getMonth() + 1).padStart(2, '0')}`;
     }
-    // Llamamos a la función que dibuja el gráfico
-    dibujarGrafico(registros);
+
+    if (mesSeleccionadoGrafico) {
+      const [anio, mes] = mesSeleccionadoGrafico.split('-');
+      labelMes.textContent = `${nombresMeses[parseInt(mes) - 1]} ${anio}`;
+      
+      const hoy = new Date();
+      const mesActualStr = `${hoy.getFullYear()}-${String(hoy.getMonth() + 1).padStart(2, '0')}`;
+      
+      btnSiguiente.disabled = (mesSeleccionadoGrafico >= mesActualStr);
+      btnAnterior.disabled = false;
+    }
   }
 
-  // Actualización de los textos de las tarjetas superiores
+  let registrosFiltrados = registros;
+  if (mesSeleccionadoGrafico) {
+    registrosFiltrados = registros.filter(r => {
+      const d = new Date(r.fecha);
+      const mesStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+      return mesStr === mesSeleccionadoGrafico;
+    });
+  }
+
+  const pesoDelUsuario = registros.length > 0 ? Number(registros[registros.length - 1].peso) : Number(usuario.peso || 0);
+  const pesoInicial = registros.length > 0 ? Number(registros[0].peso) : pesoDelUsuario;
+  const pesoMeta = usuario.pesoMeta !== null && usuario.pesoMeta !== undefined ? Number(usuario.pesoMeta) : 0;
+
+  let imc = '-', diferencia = '-', pesoActualTxt = '-', pesoInicialTxt = '-', claseDif = 'text-white';
+
+  if (pesoDelUsuario > 0) {
+    pesoActualTxt = `${pesoDelUsuario} kg`;
+    pesoInicialTxt = `${pesoInicial} kg`;
+    const difNum = pesoDelUsuario - pesoInicial;
+    diferencia = `${difNum > 0 ? '+' : ''}${difNum.toFixed(1)} kg`;
+
+    if (usuario.altura) {
+      const alturaM = usuario.altura / 100;
+      imc = (pesoDelUsuario / (alturaM * alturaM)).toFixed(1);
+    }
+  }
+
+  const tbody = document.querySelector('#user-progreso tbody');
+  if (tbody) {
+    tbody.replaceChildren();
+    const registrosParaTabla = registrosFiltrados;
+    
+    if (registrosParaTabla.length === 0) {
+      const tr = crearElemento('tr');
+      tr.append(
+        crearElemento('td', 'py-3 px-4 text-white', '-'),
+        crearElemento('td', 'py-3 px-4 text-white', '-'),
+        crearElemento('td', 'py-3 px-4 text-end text-gray', '-'),
+      );
+      tbody.append(tr);
+    } else {
+      const ultimos = [...registrosParaTabla].reverse().slice(0, 10);
+      ultimos.forEach((reg, index) => {
+        const tr = crearElemento('tr');
+        const fecha = new Date(reg.fecha);
+        const anterior = ultimos[index + 1];
+        
+        const pesoActualReg = Number(reg.peso);
+        const pesoAnterior = anterior ? Number(anterior.peso) : null;
+        
+        const difReg = pesoAnterior !== null ? pesoActualReg - pesoAnterior : 0;
+        const difTxt = difReg === 0 ? '-' : `${difReg > 0 ? '+' : ''}${difReg.toFixed(1)} kg`;
+        
+        tr.append(
+          crearElemento('td', 'py-3 px-4 text-white', fecha.toLocaleDateString('es-AR')),
+          crearElemento('td', 'py-3 px-4 text-white', `${pesoActualReg} kg`),
+          crearElemento('td', `py-3 px-4 text-end text-white`, difTxt),
+        );
+        tbody.append(tr);
+      });
+    }
+  }
+
+  dibujarGrafico(registrosFiltrados);
   const tarjetas = seccion.querySelectorAll('.user-card h3');
   if (tarjetas.length >= 3) {
-    tarjetas[0].textContent = imc;
-    tarjetas[1].textContent = pesoMeta > 0 ? `${pesoMeta} kg` : '-';
+    tarjetas[0].textContent = imc !== '-' ? imc : '-';
+    tarjetas[1].textContent = pesoMeta > 0 ? `${pesoMeta} kg` : '-'; 
     tarjetas[2].textContent = pesoActualTxt;
   }
 
@@ -238,17 +295,141 @@ const renderizarHistorialYGrafico = (usuario) => {
     h4s[1].className = claseDif;
   }
 };
+const cargarHistorialPesos = async (usuario) => {
+  try {
+    const respuesta = await fetch('/api/seguimientoProgreso', { credentials: 'include' });
+    if (respuesta.ok) {
+      const data = await respuesta.json();
+      if (data.pesajes && Array.isArray(data.pesajes)) {
+        usuario.historialPesos = data.pesajes.map(p => ({
+          fecha: p.fecha,
+          peso: p.peso
+        }));
+      }
+    }
+  } catch (error) {
+    console.warn('No se pudo cargar el historial de pesos:', error);
+  }
+};
 
-// Obtiene las clases disponibles y las renderiza con su estado de inscripcion
-// Muestra el botón "RESERVAR" solo si hay cupos disponibles.
-// si el usuario ya está inscripto, muestra un btn para desinscribirse
+const inicializarRegistroPeso = (usuario) => {
+  const btnRegistrar = document.getElementById('btnRegistrarPeso');
+  const inputPeso = document.getElementById('inputPesoActual');
+
+  if (!btnRegistrar || !inputPeso) return;
+
+  inputPeso.disabled = false;
+  btnRegistrar.disabled = false;
+
+  if (btnRegistrar.dataset.registroInicializado === 'true') return;
+  btnRegistrar.dataset.registroInicializado = 'true';
+
+  btnRegistrar.addEventListener('click', async () => {
+    const peso = parseFloat(inputPeso.value);
+
+    if (isNaN(peso) || peso <= 0) {
+      mostrarToast('Error', 'Por favor, ingresa un peso válido.', 'error');
+      return;
+    }
+
+    if (peso < 20 || peso > 400) {
+      mostrarToast('Error', 'El peso debe estar entre 20 kg y 400 kg.', 'error');
+      return;
+    }
+
+    const fechaHoyStr = new Date().toISOString().split('T')[0];
+    const registros = usuario.historialPesos || [];
+    
+    const indiceHoy = registros.findIndex(r => {
+      const d = new Date(r.fecha);
+      return d.toISOString().split('T')[0] === fechaHoyStr;
+    });
+
+    const esActualizacion = indiceHoy !== -1;
+
+    btnRegistrar.disabled = true;
+    const textoOriginal = btnRegistrar.textContent;
+    btnRegistrar.textContent = 'GUARDANDO...';
+
+    try {
+      const respuesta = await fetch('/api/seguimientoProgreso', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ peso: peso }),
+      });
+
+      if (!respuesta.ok) {
+        const errorData = await respuesta.json().catch(() => ({}));
+        if (respuesta.status === 403) {
+          throw new Error('No tenés permisos para registrar el peso.');
+        }
+        throw new Error(errorData.detail || errorData.error || 'Error al registrar el peso.');
+      }
+
+      if (!Array.isArray(usuario.historialPesos)) usuario.historialPesos = [];
+      
+      if (esActualizacion) {
+        usuario.historialPesos[indiceHoy].peso = peso;
+      } else {
+        usuario.historialPesos.push({
+          fecha: new Date().toISOString(),
+          peso: peso
+        });
+      }
+      
+      usuario.peso = peso;
+      inputPeso.value = '';
+      
+      const hoy = new Date();
+      mesSeleccionadoGrafico = `${hoy.getFullYear()}-${String(hoy.getMonth() + 1).padStart(2, '0')}`;
+      
+      renderizarHistorialYGrafico(usuario);
+
+      if (esActualizacion) {
+        mostrarToast('Peso actualizado', 'El peso de hoy se guardó correctamente. Tu progreso ya está al día.', 'success');
+      } else {
+        mostrarToast('Peso registrado', 'Tu nuevo peso se ha guardado con éxito en tu historial.', 'success');
+      }
+
+    } catch (error) {
+      console.error(error);
+      mostrarToast('Error', error.message, 'error');
+    } finally {
+      btnRegistrar.disabled = false;
+      btnRegistrar.textContent = textoOriginal;
+    }
+  });
+};
+
+const inicializarFiltroMes = (usuario) => {
+  const btnAnterior = document.getElementById('btnMesAnterior');
+  const btnSiguiente = document.getElementById('btnMesSiguiente');
+
+  if (btnAnterior && btnSiguiente && btnAnterior.dataset.inicializado !== 'true') {
+    btnAnterior.dataset.inicializado = 'true';
+    btnSiguiente.dataset.inicializado = 'true';
+
+    const cambiarMes = (direccion) => {
+      if (!mesSeleccionadoGrafico) return;
+      let [anio, mes] = mesSeleccionadoGrafico.split('-').map(Number);
+      mes += direccion; 
+      if (mes > 12) { mes = 1; anio++; }
+      if (mes < 1) { mes = 12; anio--; }
+      mesSeleccionadoGrafico = `${anio}-${String(mes).padStart(2, '0')}`;
+      renderizarHistorialYGrafico(usuario);
+    };
+
+    btnAnterior.addEventListener('click', () => cambiarMes(-1));
+    btnSiguiente.addEventListener('click', () => cambiarMes(1));
+  }
+};
 export const renderizarReservas = async (usuario) => {
   const contenedor = document.getElementById('contenedorReservas');
   if (!contenedor) return;
   contenedor.className = 'd-flex flex-column gap-3 mb-5';
   contenedor.replaceChildren();
 
-  // se piden las clases y a la vez al usuario actual para saber sus inscripciones
   const [clases, usuarioActual] = await Promise.all([
     fetchSeguro('/api/clases'),
     fetchSeguro('/api/auth/me'),
@@ -265,10 +446,7 @@ export const renderizarReservas = async (usuario) => {
   lista.sort((a, b) => new Date(a.fechaHora) - new Date(b.fechaHora));
 
   lista.forEach((clase) => {
-    const card = crearElemento(
-      'div',
-      'user-card d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3',
-    );
+    const card = crearElemento('div', 'user-card d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3');
     const info = crearElemento('div', 'flex-grow-1');
     const titulo = crearElemento('h4', 'text-white mb-1 fs-5', clase.titulo || 'Clase');
 
@@ -280,13 +458,7 @@ export const renderizarReservas = async (usuario) => {
       textoFechaHora = `${dia}/${mes}/${anio} · ${hora} hs`;
     }
 
-    const pFecha = crearParrafoConIcono(
-      'text-gray mb-1 fs-14',
-      'bi bi-calendar-event me-2 text-green',
-      textoFechaHora,
-    );
-
-    // para saber si el usuario ya esta inscripto se ve si su ID ya está en inscriptosIds
+    const pFecha = crearParrafoConIcono('text-gray mb-1 fs-14', 'bi bi-calendar-event me-2 text-green', textoFechaHora);
     const inscriptos = Array.isArray(clase.inscriptosIds) ? clase.inscriptosIds : [];
     const yaInscripto = usuarioData?.id && inscriptos.map(String).includes(String(usuarioData.id));
 
@@ -294,23 +466,16 @@ export const renderizarReservas = async (usuario) => {
 
     const acciones = crearElemento('div', 'd-flex align-items-center gap-3');
     const cupo = clase.cupo || clase.cupoMaximo || 0;
-    const disponibles =
-      clase.cuposDisponibles !== undefined ? clase.cuposDisponibles : cupo - inscriptos.length;
+    const disponibles = clase.cuposDisponibles !== undefined ? clase.cuposDisponibles : cupo - inscriptos.length;
 
     if (yaInscripto) {
       acciones.append(crearElemento('span', 'text-green fs-14 fw-bold', '✓ Ya estás inscripto'));
-      const btnCancelar = crearElemento(
-        'button',
-        'btn user-btn-outline text-danger border-danger py-2 px-4 fs-14',
-        'CANCELAR',
-      );
+      const btnCancelar = crearElemento('button', 'btn user-btn-outline text-danger border-danger py-2 px-4 fs-14', 'CANCELAR');
       btnCancelar.dataset.accion = 'cancelar';
       btnCancelar.dataset.id = clase.id;
       acciones.append(btnCancelar);
     } else if (disponibles > 0) {
-      acciones.append(
-        crearElemento('span', 'text-green fs-14 fw-bold', `Quedan ${disponibles} lugares`),
-      );
+      acciones.append(crearElemento('span', 'text-green fs-14 fw-bold', `Quedan ${disponibles} lugares`));
       const btnReservar = crearElemento('button', 'btn btn-green py-2 px-4 fs-14', 'RESERVAR');
       btnReservar.dataset.accion = 'reservar';
       btnReservar.dataset.id = clase.id;
@@ -324,7 +489,6 @@ export const renderizarReservas = async (usuario) => {
   });
 };
 
-// se inicializan los listeners de reservar o cancelar
 export function inicializarAccionesReservas(usuario) {
   const contenedor = document.getElementById('user-reservar');
   if (!contenedor) return;
@@ -342,13 +506,10 @@ export function inicializarAccionesReservas(usuario) {
     boton.textContent = 'Procesando...';
 
     try {
-      const respuesta = await fetch(
-        `/api/clases/${claseId}/${accion === 'reservar' ? 'inscribir' : 'desinscribir'}`,
-        {
-          method: 'POST',
-          credentials: 'include',
-        },
-      );
+      const respuesta = await fetch(`/api/clases/${claseId}/${accion === 'reservar' ? 'inscribir' : 'desinscribir'}`, {
+        method: 'POST',
+        credentials: 'include',
+      });
 
       const datos = await respuesta.json();
 
@@ -357,8 +518,9 @@ export function inicializarAccionesReservas(usuario) {
       }
 
       await renderizarReservas(usuario);
+      mostrarToast('Éxito', accion === 'reservar' ? 'Reserva confirmada.' : 'Reserva cancelada.', 'success');
     } catch (error) {
-      alert(error.message);
+      mostrarToast('Error al procesar reserva', error.message, 'error');
     } finally {
       boton.disabled = false;
       boton.textContent = textoOriginal;
@@ -366,8 +528,6 @@ export function inicializarAccionesReservas(usuario) {
   });
 }
 
-// Obtiene y renderiza los turnos médicos disponibles desde el backend.
-// se agrega el renderizado de los turnos disponibles y los que el usuario ya reservó
 export const renderizarTurnos = async (usuario) => {
   const contenedor = document.getElementById('contenedorTurnos');
   if (!contenedor) return;
@@ -387,35 +547,21 @@ export const renderizarTurnos = async (usuario) => {
     nutricionista: 'Nutrición',
   };
 
-  // turnos reservados
   const seccionMios = crearElemento('div', 'mb-5');
   seccionMios.append(crearElemento('h3', 'text-white mb-3 fs-15', 'Mis turnos reservados'));
 
   if (mios.length === 0) {
-    seccionMios.append(
-      crearElemento('p', 'text-gray fs-14', 'No tenés turnos reservados actualmente.'),
-    );
+    seccionMios.append(crearElemento('p', 'text-gray fs-14', 'No tenés turnos reservados actualmente.'));
   } else {
     const listaMios = crearElemento('div', 'd-flex flex-column gap-3');
     mios.forEach((turno) => {
-      const card = crearElemento(
-        'div',
-        'user-card d-flex justify-content-between align-items-center flex-wrap gap-3',
-      );
+      const card = crearElemento('div', 'user-card d-flex justify-content-between align-items-center flex-wrap gap-3');
       const info = crearElemento('div');
       info.append(
         crearElemento('h4', 'text-white mb-1 fs-5', etiquetasTipo[turno.tipo] || turno.tipo),
-        crearElemento(
-          'p',
-          'text-gray mb-0 fs-14',
-          `${turno.fecha} · ${turno.hora} hs · ${turno.duracionMin} min`,
-        ),
+        crearElemento('p', 'text-gray mb-0 fs-14', `${turno.fecha} · ${turno.hora} hs · ${turno.duracionMin} min`),
       );
-      const btnCancelar = crearElemento(
-        'button',
-        'btn user-btn-outline text-danger border-danger py-2 px-4 fs-14',
-        'CANCELAR',
-      );
+      const btnCancelar = crearElemento('button', 'btn user-btn-outline text-danger border-danger py-2 px-4 fs-14', 'CANCELAR');
       btnCancelar.dataset.accion = 'cancelar-turno';
       btnCancelar.dataset.id = turno.id;
       card.append(info, btnCancelar);
@@ -424,32 +570,22 @@ export const renderizarTurnos = async (usuario) => {
     seccionMios.append(listaMios);
   }
 
-  // turnos disponibles
   const seccionDisponibles = crearElemento('div');
   seccionDisponibles.append(crearElemento('h3', 'text-white mb-3 fs-15', 'Turnos disponibles'));
 
   if (disponibles.length === 0) {
-    seccionDisponibles.append(
-      crearElemento('p', 'text-gray fs-14', 'No hay turnos médicos disponibles.'),
-    );
+    seccionDisponibles.append(crearElemento('p', 'text-gray fs-14', 'No hay turnos médicos disponibles.'));
   } else {
     const listaDisponibles = crearElemento('div', 'd-flex flex-column gap-3');
     disponibles
       .slice()
       .sort((a, b) => new Date(`${a.fecha}T${a.hora}`) - new Date(`${b.fecha}T${b.hora}`))
       .forEach((turno) => {
-        const card = crearElemento(
-          'div',
-          'user-card d-flex justify-content-between align-items-center flex-wrap gap-3',
-        );
+        const card = crearElemento('div', 'user-card d-flex justify-content-between align-items-center flex-wrap gap-3');
         const info = crearElemento('div');
         info.append(
           crearElemento('h4', 'text-white mb-1 fs-5', etiquetasTipo[turno.tipo] || turno.tipo),
-          crearElemento(
-            'p',
-            'text-gray mb-0 fs-14',
-            `${turno.fecha} · ${turno.hora} hs · ${turno.duracionMin} min`,
-          ),
+          crearElemento('p', 'text-gray mb-0 fs-14', `${turno.fecha} · ${turno.hora} hs · ${turno.duracionMin} min`),
         );
         const btnReservar = crearElemento('button', 'btn btn-green py-2 px-4 fs-14', 'RESERVAR');
         btnReservar.dataset.accion = 'reservar-turno';
@@ -463,7 +599,6 @@ export const renderizarTurnos = async (usuario) => {
   contenedor.append(seccionMios, seccionDisponibles);
 };
 
-// se inicializa los listeners de reservar/cancelar turnos
 export function inicializarAccionesTurnos(usuario) {
   const contenedor = document.getElementById('user-turnos');
   if (!contenedor) return;
@@ -495,15 +630,15 @@ export function inicializarAccionesTurnos(usuario) {
       }
 
       await renderizarTurnos(usuario);
+      mostrarToast('Éxito', accion === 'reservar-turno' ? 'Turno reservado.' : 'Turno cancelado.', 'success');
     } catch (error) {
-      alert(error.message);
+      mostrarToast('Error al procesar turno', error.message, 'error');
     } finally {
       boton.disabled = false;
       boton.textContent = textoOriginal;
     }
   });
 }
-// Llena los inputs del perfil con los datos reales del usuario logueado.
 const renderizarPerfil = (usuario) => {
   const asignarValor = (id, valor) => {
     const input = document.getElementById(id);
@@ -518,7 +653,6 @@ const renderizarPerfil = (usuario) => {
   asignarValor('perfil-peso-inicial', usuario.peso);
   asignarValor('perfil-peso-meta', usuario.pesoMeta);
 
-  // Traduce los valores del JSON ("perder_peso") a los values del HTML ("deficit")
   const selectObjetivo = document.getElementById('selectObjetivo');
   if (selectObjetivo && usuario.objetivo) {
     let valorSelect = usuario.objetivo;
@@ -527,8 +661,7 @@ const renderizarPerfil = (usuario) => {
     selectObjetivo.value = valorSelect;
   }
 };
-// Renderiza las notificaciones del miembro.
-// Si el backend no envía notificaciones, muestra un mensaje por defecto.
+
 const renderizarNotificaciones = async (usuario) => {
   const contenedor = document.querySelector('#user-notificaciones .d-flex.flex-column.gap-3');
   if (!contenedor) return;
@@ -548,10 +681,7 @@ const renderizarNotificaciones = async (usuario) => {
     const leida = n.leida || false;
     const icono = n.icono || 'bi-bell';
 
-    const card = crearElemento(
-      'div',
-      `user-card d-flex align-items-start gap-3 ${leida ? 'opacity-50' : 'border-start-green'}`,
-    );
+    const card = crearElemento('div', `user-card d-flex align-items-start gap-3 ${leida ? 'opacity-50' : 'border-start-green'}`);
 
     const iconDiv = crearElemento('div', 'p-3 rounded bg-pulso-darker');
     const iconTag = crearElemento('i', `bi ${icono} ${leida ? 'text-gray' : 'text-green'} fs-4`);
@@ -569,10 +699,12 @@ const renderizarNotificaciones = async (usuario) => {
     contenedor.append(card);
   });
 };
-// Función principal que llama a todos los renderizadores para armar el panel.
 export async function inicializarRenderizadoMiembro(usuario) {
   renderizarPerfil(usuario);
+  await cargarHistorialPesos(usuario);
   renderizarHistorialYGrafico(usuario);
+  inicializarFiltroMes(usuario);
+  inicializarRegistroPeso(usuario);
   await renderizarReservas(usuario);
   inicializarAccionesReservas(usuario);
   await renderizarTurnos(usuario);

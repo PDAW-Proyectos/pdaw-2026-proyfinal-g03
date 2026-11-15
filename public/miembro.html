@@ -23,7 +23,6 @@
   </head>
 
   <body data-rol="miembro" class="admin-body">
-    <!-- Header Dinámico -->
     <header class="admin-header">
       <a class="navbar-brand m-0" href="index.html">
         <span class="text-green"
@@ -68,16 +67,13 @@
     </header>
     <div class="container-fluid">
       <div class="row">
-        <!-- Sidebar / Menú Lateral (Responsive y Fijo) -->
         <div class="col-12 col-lg-2 admin-sidebar">
-          <!-- Contenedor del menú Offcanvas -->
           <div
             class="offcanvas-lg offcanvas-start bg-pulso-darker"
             tabindex="-1"
             id="menuLateral"
             aria-labelledby="menuLateralLabel"
           >
-            <!-- Header del menú (solo celular) -->
             <div class="offcanvas-header d-lg-none border-bottom border-secondary">
               <h5 class="offcanvas-title text-white" id="menuLateralLabel">Opciones</h5>
               <button
@@ -88,7 +84,6 @@
                 aria-label="Close"
               ></button>
             </div>
-            <!-- Contenido del menú -->
             <div class="offcanvas-body d-lg-block p-0">
               <ul
                 class="admin-nav nav flex-lg-column flex-row flex-wrap"
@@ -163,83 +158,64 @@
             </div>
           </div>
         </div>
-        <!-- Contenido Dinámico -->
         <div class="col-12 col-lg-10 admin-content-area">
           <div id="user-historial" class="seccion-contenido">
             <h2 class="user-page-title">HISTORIAL</h2>
-            <!-- sección a modificar -->
-            <div
-              class="alert bg-pulso-darker border border-secondary text-gray mb-4 fs-13 d-flex align-items-center"
-            >
-              <i class="bi bi-info-circle text-green me-2 fs-5"></i>
-              <span
-                >El historial de progreso estará disponible próximamente. Los datos que ves a
-                continuación son de ejemplo.</span
-              >
-            </div>
+            
             <div class="row g-4 mb-4">
               <div class="col-md-4">
                 <div class="user-card text-center">
                   <p class="text-gray mb-2 fs-14">IMC</p>
-                  <h3 class="text-white mb-0">23.5</h3>
-                  <span class="badge bg-dark border border-secondary text-gray fs-12 mt-2"
-                    >Ejemplo</span
-                  >
+                  <h3 class="text-white mb-0">-</h3>
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="user-card text-center">
                   <p class="text-gray mb-2 fs-14">Meta</p>
-                  <h3 class="text-white mb-0">70 kg</h3>
-                  <span class="badge bg-dark border border-secondary text-gray fs-12 mt-2"
-                    >Ejemplo</span
-                  >
+                  <h3 class="text-white mb-0">-</h3>
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="user-card text-center">
                   <p class="text-gray mb-2 fs-14">Valor Actual</p>
-                  <h3 class="text-white mb-0">75 kg</h3>
-                  <span class="badge bg-dark border border-secondary text-gray fs-12 mt-2"
-                    >Ejemplo</span
-                  >
+                  <h3 class="text-white mb-0">-</h3>
                 </div>
               </div>
             </div>
-            <div class="user-card">
-              <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div class="user-card">
+              <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
                 <div>
-                  <p class="text-gray mb-1 fs-14">Peso Inicial (hace 3 meses)</p>
-                  <h4 class="text-white">82 kg</h4>
+                  <p class="text-gray mb-1 fs-14">Peso Inicial</p>
+                  <h4 class="text-white">-</h4>
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                  <button id="btnMesAnterior" class="btn btn-link text-white p-0 text-decoration-none" style="font-size: 1.2rem;" aria-label="Mes anterior">
+                    <i class="bi bi-chevron-left"></i>
+                  </button>
+                  
+                  <span id="mesActualGrafico" class="text-white fw-bold" style="min-width: 120px; text-align: center;">
+                    Cargando...
+                  </span>
+                  
+                  <button id="btnMesSiguiente" class="btn btn-link text-white p-0 text-decoration-none" style="font-size: 1.2rem;" aria-label="Mes siguiente">
+                    <i class="bi bi-chevron-right"></i>
+                  </button>
                 </div>
                 <div class="text-end">
                   <p class="text-gray mb-1 fs-14">Progreso total</p>
-                  <h4 class="text-green">-7 kg</h4>
+                  <h4 class="text-white">-</h4>
                 </div>
+
               </div>
               <div
-                class="bg-dark rounded d-flex justify-content-center align-items-center border border-secondary"
-                style="height: 200px; border-style: dashed !important"
-              >
-                <span class="text-gray"
-                  ><i class="bi bi-bar-chart-line fs-1 mb-2 d-block"></i> Gráfico de mejora</span
-                >
-              </div>
+                id="contenedor-grafico"
+                class="bg-dark rounded border border-secondary"
+                style="min-height: 200px; border-style: dashed !important"
+              ></div>
             </div>
           </div>
           <div id="user-progreso" class="seccion-contenido d-none">
             <h2 class="user-page-title">MI PROGRESO</h2>
-
-            <!-- seccion a modificar -->
-            <div
-              class="alert bg-pulso-darker border border-secondary text-gray mb-4 fs-13 d-flex align-items-center"
-            >
-              <i class="bi bi-info-circle text-green me-2 fs-5"></i>
-              <span
-                >El registro de peso y la evolución estarán disponibles próximamente. Los datos que
-                ves a continuación son de ejemplo.</span
-              >
-            </div>
 
             <p class="text-gray mb-4">
               Registrá tu peso actual para llevar un seguimiento de tu evolución.
@@ -248,22 +224,18 @@
               <div class="row g-3 align-items-end">
                 <div class="col-md-6">
                   <label class="text-gray mb-2 fs-14" for="inputPesoActual">Peso actual (kg)</label>
-                  <!-- disabled -->
                   <input
                     type="number"
                     id="inputPesoActual"
                     class="user-form-control w-100"
                     placeholder="Ej: 75.5"
-                    disabled
                   />
                 </div>
                 <div class="col-md-6">
-                  <!-- disabled -->
                   <button
                     class="btn btn-green w-100 py-2 fs-14"
                     id="btnRegistrarPeso"
                     style="height: 48px"
-                    disabled
                   >
                     REGISTRAR PESO
                   </button>
@@ -277,9 +249,8 @@
               en la pestaña de "Historial".
             </p>
 
-            <h3 class="text-white mb-3 fs-15 d-flex align-items-center gap-2">
+            <h3 class="text-white mb-3 fs-15">
               TUS REGISTROS
-              <span class="badge bg-dark border border-secondary text-gray fs-12">Ejemplo</span>
             </h3>
             <div class="table-responsive user-card p-0 overflow-hidden">
               <table class="table table-dark table-hover mb-0 table-dark-custom">
@@ -291,26 +262,11 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td class="py-3 px-4 text-white">21/10/2026</td>
-                    <td class="py-3 px-4 text-white">75.0</td>
-                    <td class="py-3 px-4 text-end text-green">-0.5 kg</td>
-                  </tr>
-                  <tr>
-                    <td class="py-3 px-4 text-white">14/10/2026</td>
-                    <td class="py-3 px-4 text-white">75.5</td>
-                    <td class="py-3 px-4 text-end text-green">-1.0 kg</td>
-                  </tr>
-                  <tr>
-                    <td class="py-3 px-4 text-white">07/10/2026</td>
-                    <td class="py-3 px-4 text-white">76.5</td>
-                    <td class="py-3 px-4 text-end text-gray">-</td>
-                  </tr>
+                  <!-- Aquí se inyectarán las filas con JS -->
                 </tbody>
               </table>
             </div>
           </div>
-
           <div id="user-rutinas" class="seccion-contenido d-none">
             <h2 class="user-page-title">TUS RUTINAS</h2>
 
@@ -393,7 +349,6 @@
               </div>
             </div>
           </div>
-
           <div id="user-reservar" class="seccion-contenido d-none">
             <h2 class="user-page-title">RESERVAR CLASES</h2>
             <p class="text-gray mb-4">
@@ -628,7 +583,6 @@
                 </div>
               </div>
             </div>
-            <!-- Datos Físicos Base -->
             <div class="user-card mb-4">
               <h4 class="mb-4">Datos Físicos Base</h4>
               <div class="row g-3 mb-3">
@@ -707,7 +661,6 @@
                 para cambiar o cancelar tu plan.
               </p>
             </div>
-            <!-- Eliminar Cuenta (se desabilita el btn por ahora) -->
             <div class="user-card">
               <h4 class="mb-2">Eliminar cuenta</h4>
               <p class="text-gray mb-4 fs-14">
@@ -724,6 +677,20 @@
           </div>
         </div>
       </div>
+    </div>
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" id="toast-container">
+        <div id="miToast" class="toast align-items-center text-bg-dark border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body d-flex align-items-center gap-2">
+                    <i id="toast-icono" class="bi bi-check-circle-fill text-success fs-5"></i>
+                    <div>
+                        <strong id="toast-titulo" class="d-block">Título</strong>
+                        <span id="toast-mensaje" class="fs-14 text-gray">Mensaje</span>
+                    </div>
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script type="module" src="./js/miembro/miembro.js"></script>
