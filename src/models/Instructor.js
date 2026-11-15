@@ -3,7 +3,7 @@ const Clase = require('./Clase');
 const Rutina = require('./Rutina');
 const v = require('../utils/validaciones');
 
-const PERMISOS = new Set(['publicarClase', 'crearRutina']);
+const PERMISOS = new Set(['publicarClase', 'crearRutina', 'modificarPerfil']);
 
 class Instructor extends Usuario {
   constructor({ especialidad, ...base }) {

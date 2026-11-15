@@ -52,7 +52,7 @@ class Usuario {
   // Contrato de persistencia A REVISAR
   // JSON.stringify(usuario) y res.json(usuario) llaman a toJSON(): por defecto no muestra el passwordHash
   toJSON() {
-    return { id: this.id, rol: this.rol, nombre: this.nombre, email: this.email };
+    return { id: this.id, rol: this.rol, nombre: this.nombre, email: this.email, telefono: this.telefono };
   }
   // pasa la version completa para el repositorio (incluye password)
   toStorage() {
