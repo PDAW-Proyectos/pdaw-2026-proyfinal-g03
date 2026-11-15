@@ -33,3 +33,7 @@ export function modificarDatosMiembro(datos) {
 export async function cambiarPassword(datos) {
     return enviarModificacion('/api/usuarios/perfil/password', datos);
 }
+
+export function modificarEspecialidad(datos) {
+    return enviarModificacion('/api/usuarios/perfil/instructor', datos);
+}
