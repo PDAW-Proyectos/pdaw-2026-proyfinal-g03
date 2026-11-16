@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 
 const Miembro = require('../models/Miembro');
 const Instructor = require('../models/Instructor');
-const { ErrorConflicto,ErrorValidacion } = require('../utils/errores');
+const { ErrorConflicto, ErrorValidacion } = require('../utils/errores');
 const v = require('../utils/validaciones');
 
 class ServicioUsuarios {
@@ -162,6 +162,23 @@ class ServicioUsuarios {
     });
 
     return this.repoUsuarios.actualizar(actualizado);
+  }
+
+  async eliminarCuenta(dni) {
+    const usuario = await this.repoUsuarios.obtenerPorId(dni);
+
+    if (
+      !(usuario instanceof Miembro) &&
+      !(usuario instanceof Instructor)
+    ) {
+      throw new ErrorValidacion(
+        'Solo los miembros e instructores pueden eliminar su cuenta'
+      );
+    }
+
+    await this.repoUsuarios.eliminar(usuario.id);
+
+    return usuario;
   }
 
 }
