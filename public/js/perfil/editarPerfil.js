@@ -1,4 +1,4 @@
-import { modificarDatosPersonales, modificarDatosMiembro, cambiarPassword } from './servicioPerfil.js';
+import { modificarDatosPersonales, modificarDatosMiembro, cambiarPassword, eliminarCuenta } from './servicioPerfil.js';
 import { mostrarToast } from '../componentes/toast.js';
 
 const camposPersonales = {
@@ -241,6 +241,7 @@ export function inicializarEdicionPerfil(usuario, opciones = {}) {
     }
 
     configurarCambioPassword();
+    configurarEliminarCuenta();
 }
 
 // Configuración específica del perfil de miembro.
@@ -250,3 +251,31 @@ export const configuracionMiembro = {
     botonAdicionalId: 'guardar-datos-fisicos',
     modificarAdicional: modificarDatosMiembro
 };
+
+
+function configurarEliminarCuenta() {
+    const botonConfirmar = document.getElementById('confirmar-eliminar-cuenta');
+    const modalElemento = document.getElementById('modalEliminarCuenta');
+
+    if (!botonConfirmar || !modalElemento) return;
+
+    const modal = bootstrap.Modal.getOrCreateInstance(modalElemento);
+
+    botonConfirmar.addEventListener('click', async () => {
+        botonConfirmar.disabled = true;
+        botonConfirmar.textContent = 'Eliminando...';
+
+        try {
+            await eliminarCuenta();
+
+            modal.hide();
+
+            window.location.href = '/login.html';
+        } catch (error) {
+            mostrarToast(error.message, 'danger');
+        } finally {
+            botonConfirmar.disabled = false;
+            botonConfirmar.textContent = 'Eliminar cuenta';
+        }
+    });
+}
