@@ -1,5 +1,6 @@
 import { modificarDatosPersonales, modificarDatosMiembro, cambiarPassword } from './servicioPerfil.js';
 import { mostrarToast } from '../componentes/toast.js';
+import{renderizarHistorialYGrafico} from '../miembro/renderizado-miembro.js'
 
 const camposPersonales = {
     nombre: 'perfil-nombre',
@@ -111,7 +112,7 @@ function configurarEdicionUnica({ grupos, botonId, usuario }) {
                     grupos[item.indice].campos
                 );
             }
-
+            renderizarHistorialYGrafico(usuario)
             mostrarToast('Cambios guardados correctamente.', '', 'success');
         } catch (error) {
             console.error('Error al modificar perfil:', error);
