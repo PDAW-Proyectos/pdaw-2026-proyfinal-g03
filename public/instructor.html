@@ -265,6 +265,50 @@
               <div class="trainer-card text-gray">No tenés bloqueos activos.</div>
             </div>
           </div>
+
+          <div class="user-card">
+            <h4 class="mb-2">Eliminar cuenta</h4>
+            <p class="text-gray mb-4 fs-14">
+              Esta acción cierra tu sesión y desvincula tu acceso permanentemente.
+            </p>
+            <button class="user-btn-outline" id="eliminar-cuenta" data-bs-toggle="modal"
+              data-bs-target="#modalEliminarCuenta">
+              <i class="bi bi-trash"></i> ELIMINAR CUENTA
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal fade" id="modalEliminarCuenta" tabindex="-1" aria-labelledby="tituloEliminarCuenta"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-danger" id="tituloEliminarCuenta">
+            Eliminar cuenta
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+
+        <div class="modal-body">
+          <p class="text-black">
+            ¿Estás seguro de que querés eliminar tu cuenta?
+          </p>
+          <p class="text-muted mb-0">
+            Esta acción es permanente y no podrás volver a acceder con esta cuenta.
+          </p>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Cancelar
+          </button>
+          <button type="button" class="btn btn-danger" id="confirmar-eliminar-cuenta">
+            Eliminar cuenta
+          </button>
         </div>
       </div>
     </div>

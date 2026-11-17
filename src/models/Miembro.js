@@ -10,7 +10,8 @@ const PERMISOS = new Set([
   'llevarSeguimiento',
   'generarPlan',
   'registrarPeso',
-  'modificarPerfil'
+  'modificarPerfil',
+  'eliminarCuenta'
 ]);
 
 class Miembro extends Usuario {

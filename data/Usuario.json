@@ -7,6 +7,7 @@
       "nombre": "Administrador",
       "email": "admin@gimnasio.com",
       "telefono": null,
+<<<<<<< HEAD
       "passwordHash": "$2b$12$PQhscZbDY1lyDrBMiTE1NOESXapjud4d7k.ZeKfMTjNdl.KvoJ2ue"
     },
     {
@@ -22,6 +23,9 @@
       "objetivo": "perder_peso",
       "planMembresiaId": 1,
       "passwordHash": "$2b$12$nxiP5BvAMBqkeh6P1/yw3.HQ3bYwt3X/gf3bGNuNr4O/AvyFWhTre"
+=======
+      "passwordHash": "$2b$12$HOLdGRuj79SyxK.sl60A0OWmKrk7gP3AEAJ9PViI.yXKuoYUb7NZC"
+>>>>>>> a9110ad7457f11cc15af5c4e158680acb69b592c
     }
   ]
 }

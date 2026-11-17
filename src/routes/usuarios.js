@@ -98,5 +98,23 @@ module.exports = function rutasUsuarios({ servicioUsuarios }) {
     }
   });
 
+  // Eliminar la propia cuenta
+  // Eliminar cuenta propia
+  router.delete(
+    '/perfil',
+    exigirPermiso('eliminarCuenta'),
+    async (req, res, next) => {
+      try {
+        await servicioUsuarios.eliminarCuenta(req.usuario.id);
+
+        res.json({
+          mensaje: 'Cuenta eliminada correctamente'
+        });
+      } catch (error) {
+        next(error);
+      }
+    }
+  );
+
   return router;
 };

@@ -37,3 +37,22 @@ export async function cambiarPassword(datos) {
 export function modificarEspecialidad(datos) {
     return enviarModificacion('/api/usuarios/perfil/instructor', datos);
 }
+
+export async function eliminarCuenta() {
+    const respuesta = await fetch('/api/usuarios/perfil', {
+        method: 'DELETE',
+        credentials: 'include'
+    });
+
+    const resultado = await respuesta.json();
+
+    if (!respuesta.ok) {
+        throw new Error(
+            resultado.mensaje ||
+            resultado.detail ||
+            'No se pudo eliminar la cuenta'
+        );
+    }
+
+    return resultado;
+}
