@@ -159,7 +159,7 @@
                       type="number"
                       id="claseCupo"
                       class="trainer-form-control w-100"
-                      placeholder="20"
+                      placeholder="maximo de integrantes"
                       min="1"
                       required
                     />
@@ -178,52 +178,72 @@
               </div>
             </div>
 
-            <!-- funcionalidad de filtrado a implementar -->
-            <div class="row g-2 mb-4 opacity-50 position-relative">
-              <div class="col-md-4">
-                <input
-                  type="text"
-                  class="trainer-form-control w-100"
-                  placeholder="Buscar por nombre..."
-                  disabled
-                />
+            <section
+              id="formFiltrosActividades"
+              class="trainer-card mb-4"
+              aria-labelledby="filtrosActividadesTitulo"
+            >
+              <div class="d-flex align-items-center gap-2 mb-3">
+                <i class="bi bi-funnel-fill text-green fs-5" aria-hidden="true"></i>
+                <div>
+                  <h3 id="filtrosActividadesTitulo" class="text-white fs-5 mb-1">
+                    Filtrar actividades
+                  </h3>
+                  <p class="text-gray fs-13 mb-0">Los resultados se actualizan automáticamente.</p>
+                </div>
               </div>
-              <div class="col-md-3">
-                <select class="trainer-form-control w-100" disabled>
-                  <option selected>Día: Todos</option>
-                  <option>Lunes</option>
-                  <option>Martes</option>
-                  <option>Miércoles</option>
-                  <option>Jueves</option>
-                  <option>Viernes</option>
-                  <option>Sábado</option>
-                </select>
+              <div class="row g-2">
+                <div class="col-md-3">
+                  <input
+                    type="text"
+                    id="filtroNombreActividad"
+                    class="trainer-form-control w-100"
+                    placeholder="Buscar por nombre..."
+                    aria-label="Buscar actividades por nombre"
+                  />
+                </div>
+                <div class="col-md-3">
+                  <select
+                    id="filtroDiaActividad"
+                    class="trainer-form-control w-100"
+                    aria-label="Filtrar actividades por día"
+                  >
+                    <option value="" selected>Todos los días</option>
+                    <option value="lunes">Lunes</option>
+                    <option value="martes">Martes</option>
+                    <option value="miercoles">Miércoles</option>
+                    <option value="jueves">Jueves</option>
+                    <option value="viernes">Viernes</option>
+                    <option value="sabado">Sábado</option>
+                    <option value="domingo">Domingo</option>
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <select
+                    id="filtroVigenciaActividad"
+                    class="trainer-form-control w-100"
+                    aria-label="Filtrar actividades activas o inactivas"
+                  >
+                    <option value="" selected>Estado: Todos</option>
+                    <option value="activas">Activas</option>
+                    <option value="inactivas">Inactivas</option>
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <select
+                    id="filtroEstadoActividad"
+                    class="trainer-form-control w-100"
+                    aria-label="Filtrar actividades por estado temporal"
+                  >
+                    <option value="" selected>Fecha: Todas</option>
+                    <option value="proximas">Próximas</option>
+                    <option value="encurso">En curso</option>
+                    <option value="finalizadas">Finalizadas</option>
+                    <option value="porExpirar">Por expirar</option>
+                  </select>
+                </div>
               </div>
-              <div class="col-md-3">
-                <select class="trainer-form-control w-100" disabled>
-                  <option selected>Estado: Todos</option>
-                  <option>Activas</option>
-                  <option>Inactivas</option>
-                  <option>Por expirar</option>
-                </select>
-              </div>
-              <div class="col-md-2">
-                <button class="btn btn-green w-100 py-2 fs-13" disabled>FILTRAR</button>
-              </div>
-
-              <!-- funcionalidad a implementar -->
-              <div
-                class="position-absolute top-50 start-50 translate-middle w-100 text-center"
-                style="pointer-events: none"
-              >
-                <span
-                  class="badge bg-dark border border-secondary text-gray py-2 px-3 fs-12 shadow"
-                >
-                  <i class="bi bi-tools text-green me-2"></i> La búsqueda y filtros avanzados estará
-                  disponible próximamente.
-                </span>
-              </div>
-            </div>
+            </section>
             <p id="instructor-actividades-resumen" class="text-gray mb-3 fs-14"></p>
             <div id="instructor-actividades-lista" class="d-flex flex-column gap-3"></div>
           </div>

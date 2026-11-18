@@ -1,4 +1,5 @@
-const diasOrdenados = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
+let actividadesInstructor = []
+let filtrosActividades = { nombre: '', dia: '', vigencia: '', estado: '' }
 
 // Formateador nativo para mostrar las fechas en formato corto (DD/MM/YYYY).
 const formatoFecha = new Intl.DateTimeFormat('es-AR', {
@@ -35,6 +36,92 @@ const actualizarResumen = (id, texto) => {
     resumen.textContent = texto;
   }
 };
+
+const normalizarTexto = (texto) =>
+  texto
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLocaleLowerCase('es-AR')
+
+const obtenerEstadoActividad = (actividad, ahora = Date.now()) => {
+  const inicio = new Date(actividad.fechaHora).getTime()
+  const fin = inicio + (Number(actividad.duracionMin) || 0) * 60000
+
+  if (inicio > ahora) return 'proximas'
+  if (fin <= ahora) return 'finalizadas'
+  return 'encurso'
+}
+
+const actividadEstaActiva = (actividad) => {
+  if (typeof actividad.activa === 'boolean') return actividad.activa
+
+  const estado = normalizarTexto(actividad.estado || '')
+  return estado !== 'inactiva' && estado !== 'inactivo'
+}
+
+const actividadPorExpirar = (actividad, ahora = Date.now()) => {
+  const inicio = new Date(actividad.fechaHora).getTime()
+  const fin = inicio + (Number(actividad.duracionMin) || 0) * 60000
+  const limiteExpiracion = ahora + 24 * 60 * 60 * 1000
+
+  // En actividades de fecha única, está "por expirar" si termina dentro de las próximas 24 horas.
+  return (
+    actividadEstaActiva(actividad) && Number.isFinite(fin) && fin > ahora && fin <= limiteExpiracion
+  )
+}
+
+const obtenerDiaActividad = (actividad) => {
+  const fecha = new Date(actividad.fechaHora)
+  if (Number.isNaN(fecha.getTime())) return ''
+  return normalizarTexto(
+    new Intl.DateTimeFormat('es-AR', {
+      weekday: 'long',
+      timeZone: 'America/Argentina/Buenos_Aires',
+    }).format(fecha),
+  )
+}
+
+const aplicarFiltrosActividades = () => {
+  const nombre = normalizarTexto(filtrosActividades.nombre.trim())
+  const ahora = Date.now()
+  return actividadesInstructor.filter((actividad) => {
+    const coincideNombre = normalizarTexto(actividad.titulo || '').includes(nombre)
+    const coincideDia =
+      !filtrosActividades.dia || obtenerDiaActividad(actividad) === filtrosActividades.dia
+    const coincideVigencia =
+      !filtrosActividades.vigencia ||
+      (filtrosActividades.vigencia === 'activas' && actividadEstaActiva(actividad)) ||
+      (filtrosActividades.vigencia === 'inactivas' && !actividadEstaActiva(actividad))
+    const estadoTemporal = obtenerEstadoActividad(actividad, ahora)
+    const coincideEstado =
+      !filtrosActividades.estado ||
+      estadoTemporal === filtrosActividades.estado ||
+      (filtrosActividades.estado === 'porExpirar' && actividadPorExpirar(actividad, ahora))
+    return coincideNombre && coincideDia && coincideVigencia && coincideEstado
+  })
+}
+
+export const inicializarFiltrosActividades = () => {
+  const contenedorFiltros = document.getElementById('formFiltrosActividades')
+  if (!contenedorFiltros) return
+
+  const aplicar = () => {
+    filtrosActividades = {
+      nombre: document.getElementById('filtroNombreActividad').value,
+      dia: document.getElementById('filtroDiaActividad').value,
+      vigencia: document.getElementById('filtroVigenciaActividad').value,
+      estado: document.getElementById('filtroEstadoActividad').value,
+    }
+    renderizarActividades(actividadesInstructor)
+  }
+
+  contenedorFiltros.addEventListener('input', (event) => {
+    if (event.target.id === 'filtroNombreActividad') aplicar()
+  })
+  contenedorFiltros.addEventListener('change', (event) => {
+    if (event.target.matches('select')) aplicar()
+  })
+}
 // Realiza una petición HTTP para obtener una página de datos del backend.
 // Maneja respuestas en formato Array plano o en formato paginado { data, total, limit }.
 const obtenerPagina = async (recurso, pagina) => {
@@ -86,9 +173,14 @@ export const renderizarActividades = (actividades) => {
   const contenedor = document.getElementById('instructor-actividades-lista');
   if (!contenedor) return;
   contenedor.replaceChildren();
+  actividadesInstructor = actividades
 
-  // Cálculos para el resumen superior (activas, inactivas, inscriptos)
-  const activas = actividades.filter((a) => a.estado !== 'inactiva').length;
+  // El estado de vigencia se toma del dato de la actividad; el estado temporal se deriva de la fecha.
+  const estados = actividades.map((actividad) => obtenerEstadoActividad(actividad))
+  const proximas = estados.filter((estado) => estado === 'proximas').length
+  const enCurso = estados.filter((estado) => estado === 'encurso').length
+  const finalizadas = estados.filter((estado) => estado === 'finalizadas').length
+  const activas = actividades.filter(actividadEstaActiva).length
   const inactivas = actividades.length - activas;
   const totalInscriptos = actividades.reduce((total, actividad) => {
     const inscriptos = Array.isArray(actividad.inscriptosIds)
@@ -97,18 +189,25 @@ export const renderizarActividades = (actividades) => {
     return total + inscriptos;
   }, 0);
 
+  const actividadesFiltradas = aplicarFiltrosActividades()
+  const hayFiltros = Object.values(filtrosActividades).some(Boolean)
   actualizarResumen(
     'instructor-actividades-resumen',
-    `${actividades.length} actividades · ${activas} activas · ${inactivas} inactivas · ${totalInscriptos} inscriptos totales`,
-  );
+    `${actividades.length} actividades · ${activas} activas · ${inactivas} inactivas · ${proximas} próximas · ${enCurso} en curso · ${finalizadas} finalizadas · ${totalInscriptos} inscriptos totales${hayFiltros ? ` · mostrando ${actividadesFiltradas.length}` : ''}`,
+  )
 
-  if (actividades.length === 0) {
-    mostrarMensaje(contenedor, 'No tenés actividades creadas todavía.');
+  if (actividadesFiltradas.length === 0) {
+    mostrarMensaje(
+      contenedor,
+      hayFiltros
+        ? 'No hay actividades que coincidan con los filtros seleccionados.'
+        : 'No tenés actividades creadas todavía.',
+    )
     return;
   }
 
   // Ordenamos las actividades por fecha antes de dibujarlas
-  actividades
+  actividadesFiltradas
     .slice()
     .sort((a, b) => {
       const fechaA = a.fechaHora || '';
@@ -119,10 +218,11 @@ export const renderizarActividades = (actividades) => {
       const tarjeta = crearElemento(
         'article',
         'trainer-card d-flex justify-content-between align-items-center flex-wrap gap-3',
-      );
+      )
 
-      // Estilos visuales para las actividades inactivas
-      if (actividad.estado === 'inactiva') {
+      const estadoTemporal = obtenerEstadoActividad(actividad)
+      const activa = actividadEstaActiva(actividad)
+      if (!activa || estadoTemporal === 'finalizadas') {
         tarjeta.classList.add('opacity-50');
         tarjeta.style.borderStyle = 'dashed';
       }
@@ -131,20 +231,29 @@ export const renderizarActividades = (actividades) => {
       const encabezado = crearElemento('div', 'd-flex align-items-center gap-2 mb-1 flex-wrap');
       const titulo = crearElemento('h4', 'text-white mb-0', actividad.titulo || 'Clase sin título');
 
-      const estado = crearElemento(
+      const estadoVigencia = crearElemento(
         'span',
-        actividad.estado === 'inactiva'
+        activa ? 'badge badge-green fs-12' : 'badge bg-secondary text-white fs-12',
+        activa ? 'Activa' : 'Inactiva',
+      )
+      const estadoFecha = crearElemento(
+        'span',
+        estadoTemporal === 'finalizadas'
           ? 'badge bg-secondary text-white fs-12'
           : 'badge badge-green fs-12',
-        actividad.estado === 'inactiva' ? 'Inactiva' : 'Activa',
-      );
+        estadoTemporal === 'finalizadas'
+          ? 'Finalizada'
+          : estadoTemporal === 'encurso'
+            ? 'En curso'
+            : 'Próxima',
+      )
       const tipo = crearElemento(
         'span',
         'badge bg-dark border border-secondary text-gray fs-12',
         'Fecha Única',
-      );
+      )
 
-      encabezado.append(titulo, estado, tipo);
+      encabezado.append(titulo, estadoVigencia, estadoFecha, tipo)
 
       // Formateo de la fecha y hora (sumando la duración para calcular el fin)
       let textoDias = 'Sin fecha';
@@ -184,7 +293,7 @@ export const renderizarActividades = (actividades) => {
         ),
       );
       info.append(encabezado, detalle, infoInscriptos);
-      // Botón de acción (deshabilitado si la clase está inactiva)
+      // Acciones disponibles para cada actividad.
       const acciones = crearElemento('div', 'd-flex gap-2 flex-wrap');
 
       const btnEditar = crearElemento('button', 'trainer-btn-icon', 'Editar');
