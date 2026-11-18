@@ -39,8 +39,6 @@ const fetchSeguro = async (url) => {
 const dibujarGrafico = (listaDePesajes, pesoInicialDelPerfil) => {
   const contenedorGrafico = document.getElementById('contenedor-grafico');
   if (!contenedorGrafico) return;
-
-  // Si no hay ningún pesaje, mostramos el mensaje
   if (!Array.isArray(listaDePesajes) || listaDePesajes.length === 0) {
     contenedorGrafico.replaceChildren(
       crearElemento('div', 'text-gray text-center w-100 py-5', 'No hay pesajes guardados en este mes.'),
@@ -49,11 +47,10 @@ const dibujarGrafico = (listaDePesajes, pesoInicialDelPerfil) => {
     contenedorGrafico.style.minHeight = '150px';
     return;
   }
-
-  // Armamos un array con los datos para el gráfico.
   let datosParaGrafico = [...listaDePesajes];
-  if (datosParaGrafico.length === 1 && pesoInicialDelPerfil > 0) {
+  if (pesoInicialDelPerfil > 0) {
     const primerPesaje = datosParaGrafico[0];
+<<<<<<< HEAD
     const fechaDelPrimerPesaje = new Date(primerPesaje.fecha);
     fechaDelPrimerPesaje.setDate(fechaDelPrimerPesaje.getDate() - 1);
 
@@ -61,10 +58,21 @@ const dibujarGrafico = (listaDePesajes, pesoInicialDelPerfil) => {
       fecha: fechaDelPrimerPesaje.toISOString(),
       peso: pesoInicialDelPerfil
     });
+=======
+    if (Number(primerPesaje.peso) !== Number(pesoInicialDelPerfil)) {
+      const fechaDelPrimerPesaje = new Date(primerPesaje.fecha);
+      fechaDelPrimerPesaje.setDate(fechaDelPrimerPesaje.getDate() - 1);
+      
+      datosParaGrafico.unshift({
+        fecha: fechaDelPrimerPesaje.toISOString(),
+        peso: pesoInicialDelPerfil
+      });
+    }
+>>>>>>> 7f67dba4adc7994e12197f7e37a05c0ed665a2ea
   }
   if (datosParaGrafico.length < 2) {
     contenedorGrafico.replaceChildren(
-      crearElemento('div', 'text-gray text-center w-100 py-5', 'Registrá un pesaje para ver tu gráfico.'),
+      crearElemento('div', 'text-gray text-center w-100 py-5', 'Registrá al menos un pesaje para ver tu gráfico de evolución.'),
     );
     contenedorGrafico.style.height = 'auto';
     contenedorGrafico.style.minHeight = '150px';
