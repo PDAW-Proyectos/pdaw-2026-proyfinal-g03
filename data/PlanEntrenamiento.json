@@ -1,5 +1,5 @@
 {
-  "ultimoId": 1,
+  "ultimoId": 2,
   "items": [
     {
       "id": 1,
@@ -128,6 +128,158 @@
       "origen": "ia",
       "idExterno": null,
       "creadoEn": "2026-11-09T21:37:16.705Z"
+    },
+    {
+      "id": 2,
+      "miembroId": 96385274,
+      "nombre": "Plan de Ganancia Muscular Principiante",
+      "descripcion": "Rutina general de 4 días enfocada en la ganancia de masa muscular para principiantes con un peso de 49 kg.",
+      "objetivo": "ganar_musculo",
+      "nivel": "principiante",
+      "duracionSemanas": 4,
+      "dias": [
+        {
+          "dia": "Lunes",
+          "enfoque": "Tren Superior",
+          "ejercicios": [
+            {
+              "nombre": "Press de banca con mancuernas",
+              "series": 3,
+              "repeticiones": 10,
+              "descansoSeg": 60
+            },
+            {
+              "nombre": "Remo con mancuerna a una mano",
+              "series": 3,
+              "repeticiones": 10,
+              "descansoSeg": 60
+            },
+            {
+              "nombre": "Press militar con mancuernas sentado",
+              "series": 3,
+              "repeticiones": 10,
+              "descansoSeg": 60
+            },
+            {
+              "nombre": "Jalón al pecho en polea",
+              "series": 3,
+              "repeticiones": 12,
+              "descansoSeg": 60
+            },
+            {
+              "nombre": "Curl de bíceps con mancuernas",
+              "series": 3,
+              "repeticiones": 12,
+              "descansoSeg": 45
+            }
+          ]
+        },
+        {
+          "dia": "Martes",
+          "enfoque": "Tren Inferior",
+          "ejercicios": [
+            {
+              "nombre": "Sentadilla libre con peso corporal o barra ligera",
+              "series": 3,
+              "repeticiones": 10,
+              "descansoSeg": 90
+            },
+            {
+              "nombre": "Peso muerto rumano con mancuernas",
+              "series": 3,
+              "repeticiones": 10,
+              "descansoSeg": 90
+            },
+            {
+              "nombre": "Zancadas hacia atrás",
+              "series": 3,
+              "repeticiones": 10,
+              "descansoSeg": 60
+            },
+            {
+              "nombre": "Elevación de talones de pie",
+              "series": 3,
+              "repeticiones": 15,
+              "descansoSeg": 45
+            }
+          ]
+        },
+        {
+          "dia": "Jueves",
+          "enfoque": "Empuje y Core",
+          "ejercicios": [
+            {
+              "nombre": "Flexiones de pecho sobre rodillas o suelo",
+              "series": 3,
+              "repeticiones": 10,
+              "descansoSeg": 60
+            },
+            {
+              "nombre": "Press inclinado con mancuernas",
+              "series": 3,
+              "repeticiones": 10,
+              "descansoSeg": 60
+            },
+            {
+              "nombre": "Elevaciones laterales con mancuernas",
+              "series": 3,
+              "repeticiones": 12,
+              "descansoSeg": 45
+            },
+            {
+              "nombre": "Plancha abdominal",
+              "series": 3,
+              "repeticiones": 1,
+              "descansoSeg": 45
+            }
+          ]
+        },
+        {
+          "dia": "Viernes",
+          "enfoque": "Tracción y Piernas",
+          "ejercicios": [
+            {
+              "nombre": "Dominadas asistidas o jalón al pecho",
+              "series": 3,
+              "repeticiones": 10,
+              "descansoSeg": 60
+            },
+            {
+              "nombre": "Remo en polea baja",
+              "series": 3,
+              "repeticiones": 10,
+              "descansoSeg": 60
+            },
+            {
+              "nombre": "Prensa de pierna inclinada",
+              "series": 3,
+              "repeticiones": 12,
+              "descansoSeg": 90
+            },
+            {
+              "nombre": "Extensiones de cuádriceps en máquina",
+              "series": 3,
+              "repeticiones": 12,
+              "descansoSeg": 60
+            },
+            {
+              "nombre": "Curl femoral tumbado en máquina",
+              "series": 3,
+              "repeticiones": 12,
+              "descansoSeg": 60
+            }
+          ]
+        }
+      ],
+      "recomendaciones": [
+        "Consulta con tu médico o el nutricionista del gimnasio antes de empezar este plan.",
+        "Mantén una hidratación adecuada durante todo el entrenamiento.",
+        "Duerme entre 7 y 8 horas diarias para favorecer la recuperación muscular.",
+        "Prioriza una técnica correcta frente a levantar más peso."
+      ],
+      "origen": "ia",
+      "idExterno": null,
+      "creadoEn": "2026-11-18T22:25:51.956Z"
     }
   ]
 }
