@@ -50,25 +50,15 @@ const dibujarGrafico = (listaDePesajes, pesoInicialDelPerfil) => {
   let datosParaGrafico = [...listaDePesajes];
   if (pesoInicialDelPerfil > 0) {
     const primerPesaje = datosParaGrafico[0];
-<<<<<<< HEAD
-    const fechaDelPrimerPesaje = new Date(primerPesaje.fecha);
-    fechaDelPrimerPesaje.setDate(fechaDelPrimerPesaje.getDate() - 1);
-
-    datosParaGrafico.unshift({
-      fecha: fechaDelPrimerPesaje.toISOString(),
-      peso: pesoInicialDelPerfil
-    });
-=======
     if (Number(primerPesaje.peso) !== Number(pesoInicialDelPerfil)) {
       const fechaDelPrimerPesaje = new Date(primerPesaje.fecha);
       fechaDelPrimerPesaje.setDate(fechaDelPrimerPesaje.getDate() - 1);
-      
+
       datosParaGrafico.unshift({
         fecha: fechaDelPrimerPesaje.toISOString(),
         peso: pesoInicialDelPerfil
       });
     }
->>>>>>> 7f67dba4adc7994e12197f7e37a05c0ed665a2ea
   }
   if (datosParaGrafico.length < 2) {
     contenedorGrafico.replaceChildren(
