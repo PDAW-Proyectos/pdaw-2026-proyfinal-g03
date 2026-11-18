@@ -2,6 +2,8 @@ import { verificarSesion, cerrarSesion } from '../auth.js';
 import { inicializarRegistroUsuarios } from './registroUsuarios.js';
 import { inicializarRenderizadoAdmin } from './renderizado.js';
 import { inicializarEdicionPerfil } from '../perfil/editarPerfil.js';
+import { inicializarGestionMembresias } from './gestionMembresias.js';
+import { cargarGestionMembresias } from './renderizado-membresias.js';
 import {
   inicializarGestionTurnos,
   inicializarGestionHorarios,
@@ -63,6 +65,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     inicializarEliminarHorarios();
     inicializarGestionPlanes();
     inicializarEdicionPerfil(usuario);
+    inicializarGestionMembresias();
+    await cargarGestionMembresias();
   } catch (error) {
     console.error('Error al inicializar el panel:', error);
   }

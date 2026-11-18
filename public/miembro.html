@@ -154,19 +154,19 @@
             Registrá tu peso actual para llevar un seguimiento de tu evolución.
           </p>
           <div class="row g-4 mb-4">
-              <div class="col-md-6">
-                <div class="user-card text-center">
-                  <p class="text-gray mb-2 fs-14">Peso Inicial</p>
-                  <h3 id="progresoPesoInicial" class="text-white mb-0">-</h3>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="user-card text-center">
-                  <p class="text-gray mb-2 fs-14">Peso Actual</p>
-                  <h3 id="progresoPesoActual" class="text-white mb-0">-</h3>
-                </div>
+            <div class="col-md-6">
+              <div class="user-card text-center">
+                <p class="text-gray mb-2 fs-14">Peso Inicial</p>
+                <h3 id="progresoPesoInicial" class="text-white mb-0">-</h3>
               </div>
             </div>
+            <div class="col-md-6">
+              <div class="user-card text-center">
+                <p class="text-gray mb-2 fs-14">Peso Actual</p>
+                <h3 id="progresoPesoActual" class="text-white mb-0">-</h3>
+              </div>
+            </div>
+          </div>
           <div class="user-card mb-5">
             <div class="row g-3 align-items-end">
               <div class="col-md-6">
@@ -448,29 +448,32 @@
             </button>
           </div>
 
-          <!-- Tu Plan Actual (se desabilitan los botones por ahora)-->
+          <!-- Tu Plan Actual -->
           <div class="user-card mb-4" style="border-color: var(--pulso-green)">
             <div class="d-flex justify-content-between align-items-start mb-3">
               <div>
                 <h4 class="mb-1 text-white">
-                  Tu Plan Actual: <span class="text-green">Mensual</span>
+                  Tu Plan Actual: <span class="text-green" id="perfil-plan-nombre">-</span>
                 </h4>
                 <p class="text-gray mb-0 fs-14">
-                  <i class="bi bi-calendar-check me-2"></i> Vence el 1/12/2026
+                  <i class="bi bi-calendar-check me-2"></i>
+                  Vence el <span id="perfil-fecha-vencimiento">-</span>
                 </p>
               </div>
-              <span class="badge badge-green fs-12">Activo</span>
+              <span class="badge badge-green fs-12" id="perfil-estado-membresia">Activo</span>
             </div>
             <div class="d-flex gap-2 mb-3">
-              <button class="btn btn-green py-2 px-4 fs-14" disabled>CAMBIAR PLAN</button>
-              <button class="user-btn-outline text-danger border-danger fs-14" disabled>
+              <button class="btn btn-green py-2 px-4 fs-14" id="btnCambiarPlan" data-bs-toggle="modal"
+                data-bs-target="#modalCambiarPlan">
+                <i class="bi bi-arrow-left-right me-1"></i> CAMBIAR PLAN
+              </button>
+              <button class="user-btn-outline text-danger border-danger fs-14" id="btnSolicitarBaja"
+                data-bs-toggle="modal" data-bs-target="#modalSolicitarBaja">
                 DAR DE BAJA
               </button>
             </div>
-            <p class="text-gray fs-13 mb-0">
+            <p id="mensajeSolicitud" class="text-gray fs-13 mb-0">
               <i class="bi bi-info-circle me-1"></i>
-              La gestión de planes estará disponible próximamente. Por ahora, contactá a recepción
-              para cambiar o cancelar tu plan.
             </p>
           </div>
           <div class="user-card">
@@ -488,6 +491,73 @@
     </div>
   </div>
 
+  <!-- Modal cambiar plan -->
+  <div class="modal fade" id="modalCambiarPlan" tabindex="-1" aria-labelledby="tituloModalCambiarPlan"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content bg-pulso-darker border border-secondary">
+        <div class="modal-header border-secondary">
+          <h5 class="modal-title text-white" id="tituloModalCambiarPlan">
+            <i class="bi bi-arrow-left-right text-green me-2"></i> Cambiar plan de membresía
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <p class="text-gray fs-14">
+            Seleccioná el plan al que querés cambiarte.
+            La modificación se aplicará al finalizar tu período abonado,
+            una vez confirmado el pago por administración.
+          </p>
+
+          <div class="mb-3">
+            <label for="selectNuevoPlan" class="text-gray mb-2 fs-14">
+              Nuevo plan
+            </label>
+            <select id="selectNuevoPlan" class="user-form-control w-100" required>
+              <option value="">Cargando planes...</option>
+            </select>
+          </div>
+          <p id="mensajeCambioPlan" class="fs-14 mb-0"></p>
+        </div>
+        <div class="modal-footer border-secondary">
+          <button type="button" class="user-btn-outline py-2 px-3" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-green py-2 px-3" id="confirmarCambioPlan">
+            Solicitar cambio
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal solicitar baja -->
+  <div class="modal fade" id="modalSolicitarBaja" tabindex="-1" aria-labelledby="tituloModalBaja" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content bg-pulso-darker border border-secondary">
+        <div class="modal-header border-secondary">
+          <h5 class="modal-title text-white" id="tituloModalBaja">
+            <i class="bi bi-exclamation-circle text-danger me-2"></i>
+            Solicitar baja
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+
+        <div class="modal-body">
+          <p class="text-white">¿Estás seguro de que querés solicitar la baja de tu membresía?</p>
+          <p class="text-gray fs-14 mb-0">
+            Vas a conservar el acceso al gimnasio hasta la fecha de vencimiento
+            de tu período abonado. La solicitud deberá ser gestionada por administración.
+          </p>
+        </div>
+
+        <div class="modal-footer border-secondary">
+          <button type="button" class="user-btn-outline py-2 px-3" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-danger py-2 px-3" id="confirmarSolicitudBaja">
+            Confirmar baja
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--confirmar eliminar cuenta-->
   <div class="modal fade" id="modalEliminarCuenta" tabindex="-1" aria-labelledby="tituloEliminarCuenta"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">

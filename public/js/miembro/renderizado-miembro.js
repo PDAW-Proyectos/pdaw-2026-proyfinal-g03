@@ -55,8 +55,8 @@ const dibujarGrafico = (listaDePesajes, pesoInicialDelPerfil) => {
   if (datosParaGrafico.length === 1 && pesoInicialDelPerfil > 0) {
     const primerPesaje = datosParaGrafico[0];
     const fechaDelPrimerPesaje = new Date(primerPesaje.fecha);
-    fechaDelPrimerPesaje.setDate(fechaDelPrimerPesaje.getDate() - 1); 
-    
+    fechaDelPrimerPesaje.setDate(fechaDelPrimerPesaje.getDate() - 1);
+
     datosParaGrafico.unshift({
       fecha: fechaDelPrimerPesaje.toISOString(),
       peso: pesoInicialDelPerfil
@@ -164,7 +164,7 @@ const dibujarGrafico = (listaDePesajes, pesoInicialDelPerfil) => {
 };
 let mesSeleccionadoGrafico = null;
 
- export const renderizarHistorialYGrafico = (usuario) => {
+export const renderizarHistorialYGrafico = (usuario) => {
   const seccionHistorial = document.getElementById('user-historial');
   if (!seccionHistorial) return;
 
@@ -208,11 +208,11 @@ let mesSeleccionadoGrafico = null;
       return mesDelRegistro === mesSeleccionadoGrafico;
     });
   }
-  const ultimoPesoRegistrado = listaDePesajes.length > 0 
-    ? Number(listaDePesajes[listaDePesajes.length - 1].peso) 
+  const ultimoPesoRegistrado = listaDePesajes.length > 0
+    ? Number(listaDePesajes[listaDePesajes.length - 1].peso)
     : Number(usuario.peso || 0);
   const pesoInicialDelPerfil = Number(usuario.peso || 0);
-  
+
   const metaDePeso = usuario.pesoMeta !== null && usuario.pesoMeta !== undefined ? Number(usuario.pesoMeta) : 0;
 
   let calculoIMC = '-', textoDiferenciaTotal = '-', textoPesoActual = '-', textoPesoInicial = '-', claseDeDiferencia = 'text-white';
@@ -244,7 +244,7 @@ let mesSeleccionadoGrafico = null;
       cuerpoDeTabla.append(filaVacia);
     } else {
       const ultimosPesajesDeLaTabla = [...pesajesParaLaTabla].reverse().slice(0, 10);
-      
+
       ultimosPesajesDeLaTabla.forEach((registro, indice) => {
         const filaDeTabla = crearElemento('tr');
         const fechaDelRegistro = new Date(registro.fecha);
@@ -272,7 +272,7 @@ let mesSeleccionadoGrafico = null;
     }
   }
 
- dibujarGrafico(pesajesFiltrados, pesoInicialDelPerfil);
+  dibujarGrafico(pesajesFiltrados, pesoInicialDelPerfil);
   const tarjetasDeHistorial = seccionHistorial.querySelectorAll('.user-card h3');
   if (tarjetasDeHistorial.length >= 3) {
     tarjetasDeHistorial[0].textContent = calculoIMC !== '-' ? calculoIMC : '-';
@@ -292,7 +292,7 @@ let mesSeleccionadoGrafico = null;
   if (tarjetaProgresoPesoInicial) {
     tarjetaProgresoPesoInicial.textContent = pesoInicialDelPerfil > 0 ? `${pesoInicialDelPerfil} kg` : '-';
   }
-  
+
   if (tarjetaProgresoPesoActual) {
     tarjetaProgresoPesoActual.textContent = ultimoPesoRegistrado > 0 ? `${ultimoPesoRegistrado} kg` : '-';
   }
@@ -379,7 +379,7 @@ const inicializarRegistroPeso = (usuario) => {
           peso: pesoIngresado
         });
       }
-      
+
       inputDelPeso.value = '';
 
       const fechaDeHoy = new Date();
@@ -670,4 +670,71 @@ export async function inicializarRenderizadoMiembro(usuario) {
   inicializarAccionesReservas(usuario);
   await renderizarTurnos(usuario);
   inicializarAccionesTurnos(usuario);
+  await renderizarMembresia(usuario);
+}
+
+export async function renderizarMembresia(usuario) {
+  const nombrePlan = document.getElementById('perfil-plan-nombre');
+  const vencimiento = document.getElementById('perfil-fecha-vencimiento');
+  const estado = document.getElementById('perfil-estado-membresia');
+
+  if (!nombrePlan || !vencimiento || !estado) return;
+
+  if (!usuario.planMembresiaId) {
+    nombrePlan.textContent = 'Sin membresía';
+    vencimiento.textContent = '-';
+    estado.textContent = 'Inactiva';
+    return;
+  }
+
+  try {
+    const respuesta = await fetch('/api/membresias', {
+      credentials: 'include'
+    });
+
+    if (!respuesta.ok) {
+      throw new Error('No se pudieron cargar los planes.');
+    }
+
+    const datos = await respuesta.json();
+    const planes = datos.data ?? [];
+
+    const plan = planes.find(
+      p => String(p.id) === String(usuario.planMembresiaId)
+    );
+
+    nombrePlan.textContent = plan?.nombre ?? 'Plan no encontrado';
+
+    if (usuario.fechaVencimiento) {
+      vencimiento.textContent = new Date(
+        usuario.fechaVencimiento
+      ).toLocaleDateString('es-AR');
+    } else {
+      vencimiento.textContent = '-';
+    }
+
+    const fechaVencimiento = usuario.fechaVencimiento
+      ? new Date(usuario.fechaVencimiento)
+      : null;
+
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0);
+
+    const vencida = !fechaVencimiento ||
+      new Date(fechaVencimiento.getFullYear(),
+        fechaVencimiento.getMonth(),
+        fechaVencimiento.getDate()) < hoy;
+
+    estado.textContent = usuario.bajaMembresiaPendiente
+      ? 'Baja programada'
+      : vencida
+        ? 'Inactiva'
+        : 'Activa';
+
+  } catch (error) {
+    console.error('Error al renderizar membresía:', error);
+    nombrePlan.textContent = 'No disponible';
+    vencimiento.textContent = '-';
+    estado.textContent = 'No disponible';
+  }
 }

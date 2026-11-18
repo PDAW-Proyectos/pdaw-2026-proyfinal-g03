@@ -1,4 +1,5 @@
 import { verificarSesion, cerrarSesion } from '../auth.js';
+import { inicializarSolicitudBaja, inicializarCambioPlan } from './membresia.js';
 import { inicializarRenderizadoMiembro } from './renderizado-miembro.js';
 import { inicializarGeneracionPlan } from './rutinas.js';
 import { inicializarGeneracionPlanNutricional } from './planesNutricionales.js';
@@ -48,49 +49,27 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     });
 
-    /* A MODIFICAR
-    //Registrar Peso
-    const btnRegistrarPeso = document.getElementById('btnRegistrarPeso');
-    const inputPeso = document.getElementById('inputPesoActual');
-
-    btnRegistrarPeso?.addEventListener('click', async () => {
-      const peso = Number(inputPeso.value);
-
-      if (!peso || peso <= 0) {
-        alert('Por favor, ingresá un peso válido.');
-        return;
-      }
-
-      const btnOriginal = btnRegistrarPeso.textContent;
-      btnRegistrarPeso.textContent = 'Guardando...';
-      btnRegistrarPeso.disabled = true;
-
-      try {
-        const res = await fetch('/api/seguimientos', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include',
-          body: JSON.stringify({ peso: peso }),
-        });
-
-        if (!res.ok) throw new Error('No se pudo guardar el peso');
-
-        inputPeso.value = '';
-
-        // Volvemos a pedir los datos actualizados y renderizamos
-        const usuarioActualizado = await verificarSesion();
-        await inicializarRenderizadoMiembro(usuarioActualizado || usuario);
-      } catch (error) {
-        alert('Error al guardar: ' + error.message);
-      } finally {
-        btnRegistrarPeso.textContent = btnOriginal;
-        btnRegistrarPeso.disabled = false;
-      }
-    });
-    */
-
     //Renderizado inicial
-    await inicializarRenderizadoMiembro(usuario);
+    await inicializarRenderizadoMiembro(usuario)
+    const respuestaSolicitudes = await fetch(
+      '/api/solicitudesMembresia/mis-solicitudes',
+      { credentials: 'include' }
+    );
+
+    const datosSolicitudes = await respuestaSolicitudes.json();
+
+    if (!respuestaSolicitudes.ok) {
+      throw new Error(
+        datosSolicitudes.detail ||
+        datosSolicitudes.error ||
+        'No se pudieron cargar las solicitudes.'
+      );
+    }
+
+    const solicitudCambio = datosSolicitudes.solicitudes?.[0] ?? null;
+
+    inicializarSolicitudBaja(usuario);
+    inicializarCambioPlan(usuario, solicitudCambio);
     inicializarPerfilMiembro(usuario);
     inicializarGeneracionPlan();
     inicializarGeneracionPlanNutricional();

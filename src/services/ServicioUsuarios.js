@@ -41,7 +41,15 @@ class ServicioUsuarios {
   }
 
   async crearMiembro(datos) {
-    return this._crearUsuario(Miembro, datos);
+    const datosConMembresia = {
+      ...datos,
+      fechaUltimaRenovacion: new Date().toISOString(),
+      fechaVencimiento: new Date(
+        Date.now() + 30 * 24 * 60 * 60 * 1000
+      ).toISOString(),
+    };
+
+    return this._crearUsuario(Miembro, datosConMembresia);
   }
 
   async crearInstructor(datos) {

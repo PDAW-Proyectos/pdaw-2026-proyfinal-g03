@@ -1,0 +1,77 @@
+{
+  "ultimoId": 9,
+  "items": [
+    {
+      "id": 1,
+      "miembroId": "44007760",
+      "tipo": "cambio_plan",
+      "planSolicitadoId": 2,
+      "fechaSolicitud": "2026-11-18T20:55:41.523Z",
+      "estado": "aprobada"
+    },
+    {
+      "id": 2,
+      "miembroId": "44007760",
+      "tipo": "baja",
+      "planSolicitadoId": null,
+      "fechaSolicitud": "2026-11-18T20:57:04.839Z",
+      "estado": "aprobada"
+    },
+    {
+      "id": 3,
+      "miembroId": "44007760",
+      "tipo": "cambio_plan",
+      "planSolicitadoId": 1,
+      "fechaSolicitud": "2026-11-18T21:16:07.380Z",
+      "estado": "rechazada"
+    },
+    {
+      "id": 4,
+      "miembroId": "44007760",
+      "tipo": "baja",
+      "planSolicitadoId": null,
+      "fechaSolicitud": "2026-11-18T21:16:47.548Z",
+      "estado": "aprobada"
+    },
+    {
+      "id": 5,
+      "miembroId": "44007760",
+      "tipo": "cambio_plan",
+      "planSolicitadoId": 1,
+      "fechaSolicitud": "2026-11-18T21:23:41.876Z",
+      "estado": "aprobada"
+    },
+    {
+      "id": 6,
+      "miembroId": "44007760",
+      "tipo": "baja",
+      "planSolicitadoId": null,
+      "fechaSolicitud": "2026-11-18T21:38:30.301Z",
+      "estado": "aprobada"
+    },
+    {
+      "id": 7,
+      "miembroId": "44007760",
+      "tipo": "cambio_plan",
+      "planSolicitadoId": 1,
+      "fechaSolicitud": "2026-11-18T21:44:34.178Z",
+      "estado": "aprobada"
+    },
+    {
+      "id": 8,
+      "miembroId": "44007760",
+      "tipo": "baja",
+      "planSolicitadoId": null,
+      "fechaSolicitud": "2026-11-18T22:06:33.077Z",
+      "estado": "aprobada"
+    },
+    {
+      "id": 9,
+      "miembroId": "44007760",
+      "tipo": "cambio_plan",
+      "planSolicitadoId": 1,
+      "fechaSolicitud": "2026-11-18T22:25:11.853Z",
+      "estado": "pendiente"
+    }
+  ]
+}
