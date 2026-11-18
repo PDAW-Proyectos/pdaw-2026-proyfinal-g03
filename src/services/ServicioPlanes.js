@@ -4,11 +4,11 @@ const PlanEntrenamiento = require('../models/PlanEntrenamiento');
 const PlanNutricional = require('../models/PlanNutricional');
 const v = require('../utils/validaciones');
 const { NIVELES } = require('../utils/constantes');
+const { OBJETIVOS } = require('../utils/constantes');
 const { ErrorServicioExterno, ErrorProhibido } = require('../utils/errores');
 const { INSTRUCCION_SISTEMA, pedidoEntrenamiento, pedidoNutricion } = require('./gemini/prompts');
 const { ESQUEMA_ENTRENAMIENTO, ESQUEMA_NUTRICION } = require('./gemini/esquemas');
 const paginar = require('../utils/paginar');
-
 const DURACION_PLAN_SEMANAS = 4;
 
 class ServicioPlanes {
@@ -49,20 +49,22 @@ class ServicioPlanes {
     return this.repoPlanesEntrenamiento.agregar(plan);
   }
 
-  async generarNutricional({ miembro, nivel, dias }) {
-    const opciones = this.#validarOpciones({ nivel, dias });
+  async generarNutricional({ miembro, objetivo }) {
+    const objetivoValidado = v.opcion(objetivo, 'objetivo', OBJETIVOS);
+
     const datos = await this.clienteGemini.generarJSON({
       instruccion: INSTRUCCION_SISTEMA,
-      pedido: pedidoNutricion(miembro, opciones),
+      pedido: pedidoNutricion(miembro, { objetivo: objetivoValidado }),
       esquema: ESQUEMA_NUTRICION,
     });
+
     const plan = this.#construirDesdeIA(
       () =>
         new PlanNutricional({
           miembroId: miembro.id,
           nombre: datos.nombre,
           descripcion: datos.descripcion,
-          objetivo: miembro.objetivo,
+          objetivo: objetivoValidado,
           caloriasDiarias: datos.caloriasDiarias,
           comidas: datos.comidas,
           recomendaciones: datos.recomendaciones,
