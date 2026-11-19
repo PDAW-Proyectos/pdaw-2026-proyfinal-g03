@@ -2,7 +2,7 @@
 
 import { cargarYRenderizar, renderizarTurnos, renderizarHorarios } from './renderizado.js';
 import { mostrarToast } from '../componentes/toast.js';
-import { mostrarConfirmacion } from './admin.js'; 
+import { mostrarConfirmacion } from './admin.js';
 
 export function inicializarGestionTurnos() {
   const btnNuevoTurno = document.getElementById('btnNuevoTurno');
@@ -25,7 +25,7 @@ export function inicializarGestionTurnos() {
     mensaje.textContent = '';
 
     const tipo = document.getElementById('turnoTipo').value;
-    const medico = document.getElementById('turnoMedico').value; 
+    const medico = document.getElementById('turnoMedico').value;
     const fecha = document.getElementById('turnoFecha').value;
     const hora = document.getElementById('turnoHora').value;
 
@@ -34,7 +34,7 @@ export function inicializarGestionTurnos() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify({ tipo, medico, fecha, hora }), 
+        body: JSON.stringify({ tipo, medico, fecha, hora }),
       });
 
       const datos = await respuesta.json();
@@ -44,13 +44,13 @@ export function inicializarGestionTurnos() {
       }
 
       modal.hide();
-      
+
       mostrarToast('Turno publicado', 'El turno se agendó correctamente.', 'success');
 
       await cargarYRenderizar(
         'turnos',
         renderizarTurnos,
-        'admin-turnos-chequeos', 
+        'admin-turnos-chequeos',
         'admin-turnos-resumen',
       );
     } catch (error) {
@@ -71,7 +71,7 @@ export function inicializarGestionHorarios() {
 
   btnNuevoHorario.addEventListener('click', () => {
     formHorario.reset();
-    mensaje.textContent = '';
+    if (mensaje) mensaje.textContent = '';
     modal.show();
   });
 
@@ -98,7 +98,7 @@ export function inicializarGestionHorarios() {
       }
 
       modal.hide();
-      
+
       mostrarToast('Horario creado', 'El horario se guardó correctamente.', 'success');
 
       await cargarYRenderizar(
@@ -116,7 +116,7 @@ export function inicializarGestionHorarios() {
 export function inicializarEliminarTurnos() {
   const contenedorChequeos = document.getElementById('admin-turnos-chequeos');
   const contenedorNutricion = document.getElementById('admin-turnos-nutricion');
-  
+
   if (!contenedorChequeos || !contenedorNutricion) return;
 
   const manejarEliminarTurno = (event) => {
@@ -124,9 +124,9 @@ export function inicializarEliminarTurnos() {
     if (!botonEliminar) return;
 
     const turnoId = botonEliminar.dataset.id;
-    
+
     mostrarConfirmacion('¿Estás seguro que querés eliminar este turno?', async () => {
-      
+
       try {
         const respuesta = await fetch(`/api/turnos/${turnoId}`, {
           method: 'DELETE',
@@ -165,9 +165,9 @@ export function inicializarEliminarHorarios() {
     if (!botonEliminar) return;
 
     const horarioId = botonEliminar.dataset.id;
-    
+
     mostrarConfirmacion('¿Estás seguro que querés eliminar este horario?', async () => {
-      
+
       try {
         const respuesta = await fetch(`/api/horarios/${horarioId}`, {
           method: 'DELETE',
