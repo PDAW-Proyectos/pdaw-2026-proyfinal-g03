@@ -1,5 +1,8 @@
 import { verificarSesion, cerrarSesion } from '../auth.js';
-import { inicializarRenderizadoInstructor } from './renderizado-instructor.js';
+import {
+  inicializarFiltrosActividades,
+  inicializarRenderizadoInstructor
+} from './renderizado-instructor.js'
 import { inicializarEdicionPerfil } from '../perfil/editarPerfil.js';
 import { modificarEspecialidad } from '../perfil/servicioPerfil.js';
 import {
@@ -50,6 +53,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error('Error al cerrar sesión:', error);
       }
     });
+    inicializarFiltrosActividades()
     inicializarRenderizadoInstructor(usuario);
     inicializarGestionActividades(usuario);
     inicializarFormularioEdicion(usuario);
