@@ -124,33 +124,6 @@ export const inicializarFiltrosActividades = () => {
     if (event.target.matches('select')) aplicar()
   })
 }
-// Realiza una petición HTTP para obtener una página de datos del backend.
-// Maneja respuestas en formato Array plano o en formato paginado { data, total, limit }.
-const obtenerPagina = async (recurso, pagina) => {
-  const respuesta = await fetch(`/api/${recurso}?page=${pagina}&limit=50`, {
-    credentials: 'include',
-  });
-  const resultado = await respuesta.json();
-
-  if (!respuesta.ok) {
-    throw new Error(resultado.error || `No se pudieron cargar ${recurso}.`);
-  }
-
-  // Si el backend devuelve un array directo, adaptamos la estructura
-  if (Array.isArray(resultado)) {
-    return { data: resultado, total: resultado.length, limit: 50 };
-  }
-
-  if (!Array.isArray(resultado.data)) {
-    throw new Error(`La respuesta de ${recurso} no tiene el formato esperado.`);
-  }
-
-  return {
-    data: resultado.data,
-    total: resultado.total || resultado.data.length,
-    limit: resultado.limit || 50,
-  };
-};
 
 export const renderizarActividades = (actividades) => {
   const contenedor = document.getElementById('instructor-actividades-lista');
@@ -533,7 +506,7 @@ export function inicializarCreacionClase(usuario) {
       return;
     }
 
-    let fechas = [];
+    let fechas;
 
     if (modo.value === 'unica') {
       if (!fechaUnica.value) {
