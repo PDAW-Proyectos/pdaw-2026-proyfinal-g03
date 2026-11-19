@@ -438,6 +438,44 @@ const normalizarTextoBusqueda = (texto) => {
     .trim();
 };
 
+const agruparClasesPorGrupo = (clases) => {
+  const grupos = new Map();
+
+  clases.forEach(clase => {
+    // Las clases sin grupo se mantienen individuales.
+    const clave = clase.grupoId || `clase-${clase.id}`;
+
+    if (!grupos.has(clave)) {
+      grupos.set(clave, []);
+    }
+
+    grupos.get(clave).push(clase);
+  });
+
+  return Array.from(grupos.values()).map(grupo => {
+    grupo.sort((a, b) =>
+      new Date(a.fechaHora) - new Date(b.fechaHora)
+    );
+
+    return grupo;
+  });
+};
+
+const crearDesplegable = (titulo, contenido) => {
+  const details = crearElemento('details', 'mt-2');
+  const summary = crearElemento(
+    'summary',
+    'text-green fw-bold fs-14',
+    titulo
+  );
+
+  summary.style.cursor = 'pointer';
+
+  details.append(summary, contenido);
+
+  return details;
+};
+
 export const renderizarReservas = async (usuario) => {
   const contenedorDeReservas = document.getElementById('contenedorReservas');
   if (!contenedorDeReservas) return;
@@ -446,7 +484,7 @@ export const renderizarReservas = async (usuario) => {
   contenedorDeReservas.replaceChildren();
 
   const [listaDeClases, usuarioActual] = await Promise.all([
-    fetchSeguro('/api/clases'),
+    obtenerTodasLasClases(),
     fetchSeguro('/api/auth/me'),
   ]);
 
@@ -483,21 +521,61 @@ export const renderizarReservas = async (usuario) => {
     seccionMisReservas.append(crearElemento('p', 'text-gray fs-14', 'No tenés clases reservadas actualmente.'));
   } else {
     const listaMisReservas = crearElemento('div', 'd-flex flex-column gap-3');
-    misClasesReservadas.forEach((clase) => {
-      const tarjetaDeClase = crearElemento('div', 'user-card d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3');
-      const informacionDeClase = crearElemento('div', 'flex-grow-1');
+    const gruposReservados = agruparClasesPorGrupo(misClasesReservadas);
 
-      informacionDeClase.append(
-        crearElemento('h4', 'text-white mb-1 fs-5', clase.titulo || 'Clase'),
-        crearParrafoConIcono('text-gray mb-0 fs-14', 'bi bi-calendar-event me-2 text-green', formatearFechaHora(clase.fechaHora))
+    gruposReservados.forEach(grupo => {
+      const primeraClase = grupo[0];
+
+      const tarjeta = crearElemento(
+        'div',
+        'user-card d-flex flex-column gap-3'
       );
 
-      const botonCancelar = crearElemento('button', 'btn user-btn-outline text-danger border-danger py-2 px-4 fs-14', 'CANCELAR');
-      botonCancelar.dataset.accion = 'cancelar';
-      botonCancelar.dataset.id = clase.id;
+      const informacion = crearElemento('div');
 
-      tarjetaDeClase.append(informacionDeClase, botonCancelar);
-      listaMisReservas.append(tarjetaDeClase);
+      informacion.append(
+        crearElemento('h4', 'text-white mb-1 fs-5', primeraClase.titulo || 'Clase'),
+        crearElemento(
+          'p',
+          'text-gray mb-0 fs-14',
+          `${grupo.length} clases reservadas`
+        )
+      );
+
+      const listaFechas = crearElemento('div', 'd-flex flex-column gap-2');
+
+      grupo.forEach(clase => {
+        const fila = crearElemento(
+          'div',
+          'd-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 p-2 rounded border border-secondary'
+        );
+
+        const fecha = crearElemento(
+          'span',
+          'text-white fs-14',
+          formatearFechaHora(clase.fechaHora)
+        );
+
+        const botonCancelar = crearElemento(
+          'button',
+          'btn user-btn-outline text-danger border-danger py-2 px-4 fs-14',
+          'CANCELAR'
+        );
+
+        botonCancelar.dataset.accion = 'cancelar';
+        botonCancelar.dataset.id = clase.id;
+
+        fila.append(fecha, botonCancelar);
+        listaFechas.append(fila);
+      });
+
+      const desplegable = crearDesplegable(
+        `VER MIS FECHAS (${grupo.length})`,
+        listaFechas
+      );
+
+      tarjeta.append(informacion, desplegable);
+      listaMisReservas.append(tarjeta);
     });
     seccionMisReservas.append(listaMisReservas);
   }
@@ -595,76 +673,245 @@ export const renderizarReservas = async (usuario) => {
     seccionDisponibles.append(sinResultados);
   } else {
     const listaDisponibles = crearElemento('div', 'd-flex flex-column gap-3');
-    clasesFiltradas.forEach((clase) => {
-      const tarjetaDeClase = crearElemento('div', 'user-card d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3');
-      const informacionDeClase = crearElemento('div', 'flex-grow-1');
 
-      informacionDeClase.append(
-        crearElemento('h4', 'text-white mb-1 fs-5', clase.titulo || 'Clase'),
-        crearParrafoConIcono('text-gray mb-0 fs-14', 'bi bi-calendar-event me-2 text-green', formatearFechaHora(clase.fechaHora))
+    const gruposDeClases = agruparClasesPorGrupo(clasesFiltradas);
+
+    gruposDeClases.forEach(grupo => {
+      const primeraClase = grupo[0];
+      const claveGrupo = primeraClase.grupoId || `clase-${primeraClase.id}`;
+
+      // Todas las clases futuras disponibles de este grupo,
+      // aunque el filtro de fecha muestre solamente algunas.
+      const clasesDelGrupo = clasesDisponibles.filter(clase => {
+        const clave = clase.grupoId || `clase-${clase.id}`;
+        return clave === claveGrupo;
+      });
+
+      const tarjeta = crearElemento(
+        'div',
+        'user-card d-flex flex-column gap-3'
       );
 
-      const accionesDeClase = crearElemento('div', 'd-flex align-items-center gap-3');
-      const cupoMaximo = clase.cupo || clase.cupoMaximo || 0;
-      const listaDeInscriptos = Array.isArray(clase.inscriptosIds) ? clase.inscriptosIds : [];
-      const lugaresDisponibles = clase.cuposDisponibles !== undefined ? clase.cuposDisponibles : cupoMaximo - listaDeInscriptos.length;
+      const informacion = crearElemento('div');
 
-      if (lugaresDisponibles > 0) {
-        accionesDeClase.append(crearElemento('span', 'text-green fs-14 fw-bold', `Quedan ${lugaresDisponibles} lugares`));
-        const botonReservar = crearElemento('button', 'btn btn-green py-2 px-4 fs-14', 'RESERVAR');
-        botonReservar.dataset.accion = 'reservar';
-        botonReservar.dataset.id = clase.id;
-        accionesDeClase.append(botonReservar);
-      } else {
-        accionesDeClase.append(crearElemento('span', 'text-danger fs-14 fw-bold', 'Sin cupo'));
-      }
+      informacion.append(
+        crearElemento('h4', 'text-white mb-2 fs-5', primeraClase.titulo || 'Clase')
+      );
 
-      tarjetaDeClase.append(informacionDeClase, accionesDeClase);
-      listaDisponibles.append(tarjetaDeClase);
+      // Obtener los días de la semana.
+      const dias = [...new Set(grupo.map(clase => {
+        return new Intl.DateTimeFormat('es-AR', {
+          weekday: 'long',
+          timeZone: 'America/Argentina/Buenos_Aires'
+        }).format(new Date(clase.fechaHora));
+      }))];
+
+      const horarios = [...new Set(grupo.map(clase => {
+        return new Intl.DateTimeFormat('es-AR', {
+          hour: '2-digit',
+          minute: '2-digit',
+          timeZone: 'America/Argentina/Buenos_Aires'
+        }).format(new Date(clase.fechaHora));
+      }))];
+
+      const fechaHasta = new Intl.DateTimeFormat('es-AR', {
+        dateStyle: 'short',
+        timeZone: 'America/Argentina/Buenos_Aires'
+      }).format(new Date(grupo[grupo.length - 1].fechaHora));
+
+      informacion.append(
+        crearParrafoConIcono(
+          'text-gray mb-1 fs-14',
+          'bi bi-calendar-week me-2 text-green',
+          `Días: ${dias.join(', ')}`
+        ),
+        crearParrafoConIcono(
+          'text-gray mb-1 fs-14',
+          'bi bi-clock me-2 text-green',
+          `Horario: ${horarios.join(', ')} hs`
+        ),
+        crearParrafoConIcono(
+          'text-gray mb-0 fs-14',
+          'bi bi-calendar-check me-2 text-green',
+          `Última clase programada: ${fechaHasta}`
+        )
+      );
+
+      tarjeta.append(informacion);
+
+      // Fechas individuales y disponibilidad de cada clase.
+      const listaFechas = crearElemento('div', 'd-flex flex-column gap-2');
+
+      grupo.forEach(clase => {
+        const fila = crearElemento(
+          'div',
+          'd-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 p-2 rounded border border-secondary'
+        );
+
+        const fecha = crearElemento(
+          'span',
+          'text-white fs-14',
+          formatearFechaHora(clase.fechaHora)
+        );
+
+        const cupoMaximo = clase.cupo || clase.cupoMaximo || 0;
+        const inscriptos = Array.isArray(clase.inscriptosIds)
+          ? clase.inscriptosIds.length
+          : 0;
+
+        const lugares = clase.cuposDisponibles !== undefined
+          ? clase.cuposDisponibles
+          : cupoMaximo - inscriptos;
+
+        const disponibilidad = crearElemento(
+          'span',
+          lugares > 0
+            ? 'text-green fs-14 fw-bold'
+            : 'text-danger fs-14 fw-bold',
+          lugares > 0 ? `${lugares} lugares disponibles` : 'Sin cupo'
+        );
+
+        fila.append(fecha, disponibilidad);
+        listaFechas.append(fila);
+      });
+
+      const desplegableFechas = crearDesplegable(`VER FECHAS (${grupo.length})`, listaFechas);
+
+      tarjeta.append(desplegableFechas);
+
+      // Un botón para inscribirse a todas las clases futuras disponibles.
+      const botonReservar = crearElemento(
+        'button',
+        'btn btn-green py-2 px-4 fs-14 align-self-start',
+        'INSCRIBIRME A LA CLASES'
+      );
+
+      botonReservar.dataset.accion = 'reservar-grupo';
+      botonReservar.dataset.ids = JSON.stringify(
+        clasesDelGrupo.map(clase => clase.id)
+      );
+
+      tarjeta.append(botonReservar);
+      listaDisponibles.append(tarjeta);
     });
+
     seccionDisponibles.append(listaDisponibles);
   }
 
   contenedorDeReservas.append(seccionDisponibles);
 };
+
 export function inicializarAccionesReservas(usuario) {
   const contenedorDeReservas = document.getElementById('user-reservar');
   if (!contenedorDeReservas) return;
 
-  contenedorDeReservas.addEventListener('click', async (evento) => {
-    const botonPresionado = evento.target.closest('[data-accion]');
-    if (!botonPresionado) return;
+  if (contenedorDeReservas.dataset.accionesInicializadas === 'true') return;
+  contenedorDeReservas.dataset.accionesInicializadas = 'true';
 
-    const accionDelBoton = botonPresionado.dataset.accion;
-    const idDeLaClase = botonPresionado.dataset.id;
-    if (!idDeLaClase) return;
+  contenedorDeReservas.addEventListener('click', async evento => {
+    const boton = evento.target.closest('[data-accion]');
+    if (!boton) return;
 
-    botonPresionado.disabled = true;
-    const textoOriginal = botonPresionado.textContent;
-    botonPresionado.textContent = accionDelBoton === 'reservar' ? 'CANCELANDO...' : 'RESERVANDO...';
+    const accion = boton.dataset.accion;
+    const esGrupo = accion === 'reservar-grupo';
+
+    const ids = esGrupo
+      ? JSON.parse(boton.dataset.ids || '[]')
+      : [boton.dataset.id];
+
+    if (ids.length === 0 || ids.some(id => !id)) return;
+
+    boton.disabled = true;
+    const textoOriginal = boton.textContent;
+
+    boton.textContent = esGrupo
+      ? 'INSCRIBIENDO...'
+      : accion === 'reservar'
+        ? 'RESERVANDO...'
+        : 'CANCELANDO...';
 
     try {
-      const respuestaDelServidor = await fetch(`/api/clases/${idDeLaClase}/${accionDelBoton === 'reservar' ? 'inscribir' : 'desinscribir'}`, {
-        method: 'POST',
-        credentials: 'include',
-      });
+      let exitosas = 0;
+      const fallidas = [];
 
-      const datosDeLaRespuesta = await respuestaDelServidor.json();
+      for (const id of ids) {
+        try {
+          const respuesta = await fetch(
+            `/api/clases/${id}/${accion === 'cancelar' ? 'desinscribir' : 'inscribir'}`,
+            {
+              method: 'POST',
+              credentials: 'include'
+            }
+          );
 
-      if (!respuestaDelServidor.ok) {
-        throw new Error(datosDeLaRespuesta.error || datosDeLaRespuesta.detail || 'No se pudo procesar la solicitud.');
+          const datos = await respuesta.json();
+
+          if (!respuesta.ok) {
+            throw new Error(
+              datos.error || datos.detail || 'No se pudo procesar la inscripción.'
+            );
+          }
+
+          exitosas++;
+        } catch (error) {
+          fallidas.push({ id, mensaje: error.message });
+        }
+
+        if (!esGrupo) break;
       }
 
       await renderizarReservas(usuario);
-      mostrarToast('Éxito', accionDelBoton === 'reservar' ? 'Reserva confirmada.' : 'Reserva cancelada.', 'success');
+
+      if (fallidas.length === 0) {
+        mostrarToast(
+          'Éxito',
+          esGrupo
+            ? `Te inscribiste en ${exitosas} clases.`
+            : accion === 'reservar'
+              ? 'Reserva confirmada.'
+              : 'Reserva cancelada.',
+          'success'
+        );
+      } else {
+        mostrarToast(
+          'Inscripción parcial',
+          `Se confirmaron ${exitosas} inscripciones. No se pudieron completar ${fallidas.length}.`,
+          'warning'
+        );
+      }
 
     } catch (error) {
       mostrarToast('Error al procesar reserva', error.message, 'error');
-      botonPresionado.disabled = false;
-      botonPresionado.textContent = textoOriginal;
+      boton.disabled = false;
+      boton.textContent = textoOriginal;
     }
   });
 }
+
+const obtenerTodasLasClases = async () => {
+  const primeraPagina = await fetchSeguro('/api/clases');
+
+  if (Array.isArray(primeraPagina)) return primeraPagina;
+
+  const clases = [...(primeraPagina.data || [])];
+  const total = primeraPagina.total || clases.length;
+  const limite = primeraPagina.limit || 10;
+
+  const totalPaginas = Math.ceil(total / limite);
+
+  for (let pagina = 2; pagina <= totalPaginas; pagina++) {
+    const resultado = await fetchSeguro(`/api/clases?page=${pagina}`);
+
+    const clasesPagina = Array.isArray(resultado)
+      ? resultado
+      : resultado.data || [];
+
+    clases.push(...clasesPagina);
+  }
+
+  return clases;
+};
+
 let filtroTextoNombreTurnos = '';
 let filtroFechaTurnos = '';
 
@@ -861,6 +1108,7 @@ export function inicializarAccionesTurnos(usuario) {
     }
   });
 }
+
 export const renderizarPerfil = (usuario) => {
   const asignarValor = (id, valor) => {
     const input = document.getElementById(id);
@@ -881,6 +1129,7 @@ export const renderizarPerfil = (usuario) => {
     selectObjetivo.value = usuario.objetivo || '';
   }
 };
+
 export async function inicializarRenderizadoMiembro(usuario) {
   renderizarPerfil(usuario);
   await cargarHistorialPesos(usuario);
