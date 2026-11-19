@@ -28,12 +28,6 @@ const crearParrafoConIcono = (clases, iconoClases, texto) => {
   return p;
 };
 
-// Muestra un mensaje centrado dentro de un contenedor.
-const mostrarMensaje = (contenedor, mensaje, clase = 'text-gray') => {
-  contenedor.replaceChildren(crearElemento('div', `user-card text-center py-4 ${clase}`, mensaje));
-  contenedor.setAttribute('aria-busy', 'false');
-};
-
 // Petición fetch "segura" que maneja errores y adapta la respuesta a un array.
 const fetchSeguro = async (url) => {
   try {
@@ -59,7 +53,7 @@ const dibujarGrafico = (listaDePesajes, pesoInicialDelPerfil) => {
     contenedorGrafico.style.minHeight = '150px';
     return;
   }
-  let datosParaGrafico = [...listaDePesajes];
+  const datosParaGrafico = [...listaDePesajes];
   if (pesoInicialDelPerfil > 0) {
     const primerPesaje = datosParaGrafico[0];
     if (Number(primerPesaje.peso) !== Number(pesoInicialDelPerfil)) {
@@ -186,7 +180,6 @@ export const renderizarHistorialYGrafico = (usuario) => {
     const fecha = new Date(registro.fecha);
     mesesUnicos.add(`${fecha.getFullYear()}-${String(fecha.getMonth() + 1).padStart(2, '0')}`);
   });
-  const listaDeMeses = Array.from(mesesUnicos).sort();
 
   const textoDelMes = document.getElementById('mesActualGrafico');
   const botonMesAnterior = document.getElementById('btnMesAnterior');
@@ -225,7 +218,8 @@ export const renderizarHistorialYGrafico = (usuario) => {
 
   const metaDePeso = usuario.pesoMeta !== null && usuario.pesoMeta !== undefined ? Number(usuario.pesoMeta) : 0;
 
-  let calculoIMC = '-', textoDiferenciaTotal = '-', textoPesoActual = '-', textoPesoInicial = '-', claseDeDiferencia = 'text-white';
+  let calculoIMC = '-', textoDiferenciaTotal = '-', textoPesoActual = '-', textoPesoInicial = '-';
+  const claseDeDiferencia = 'text-white';
 
   if (ultimoPesoRegistrado > 0) {
     textoPesoActual = `${ultimoPesoRegistrado} kg`;
@@ -447,7 +441,7 @@ const normalizarTextoBusqueda = (texto) => {
 export const renderizarReservas = async (usuario) => {
   const contenedorDeReservas = document.getElementById('contenedorReservas');
   if (!contenedorDeReservas) return;
-  
+
   contenedorDeReservas.className = 'd-flex flex-column gap-4 mb-5';
   contenedorDeReservas.replaceChildren();
 
@@ -471,7 +465,7 @@ export const renderizarReservas = async (usuario) => {
   clasesVigentes.forEach(clase => {
     const listaDeInscriptos = Array.isArray(clase.inscriptosIds) ? clase.inscriptosIds : [];
     const yaEstaInscripto = datosDelUsuario?.id && listaDeInscriptos.map(String).includes(String(datosDelUsuario.id));
-    
+
     if (yaEstaInscripto) {
       misClasesReservadas.push(clase);
     } else {
@@ -492,7 +486,7 @@ export const renderizarReservas = async (usuario) => {
     misClasesReservadas.forEach((clase) => {
       const tarjetaDeClase = crearElemento('div', 'user-card d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3');
       const informacionDeClase = crearElemento('div', 'flex-grow-1');
-      
+
       informacionDeClase.append(
         crearElemento('h4', 'text-white mb-1 fs-5', clase.titulo || 'Clase'),
         crearParrafoConIcono('text-gray mb-0 fs-14', 'bi bi-calendar-event me-2 text-green', formatearFechaHora(clase.fechaHora))
@@ -510,14 +504,14 @@ export const renderizarReservas = async (usuario) => {
   contenedorDeReservas.append(seccionMisReservas);
 
   const seccionDisponibles = crearElemento('div', 'mt-2');
-  
+
   seccionDisponibles.append(crearElemento('h3', 'text-white mb-3 fs-15', 'ACTIVIDADES DISPONIBLES'));
 
   const barraFiltros = crearElemento('div', 'd-flex flex-column flex-md-row align-items-md-center gap-3 p-3 mb-4 rounded border border-secondary');
   barraFiltros.style.backgroundColor = 'transparent';
 
   const wrapperNombre = crearElemento('div', 'position-relative flex-grow-1');
-  
+
   const iconoBusqueda = crearElemento('i', 'bi bi-search position-absolute text-gray');
   iconoBusqueda.style.left = '15px';
   iconoBusqueda.style.top = '50%';
@@ -530,7 +524,7 @@ export const renderizarReservas = async (usuario) => {
   inputNombre.placeholder = 'Buscar por nombre...';
   inputNombre.value = filtroTextoNombre;
   inputNombre.style.paddingLeft = '45px';
-  
+
   inputNombre.addEventListener('focus', () => inputNombre.style.borderColor = '#a3e635');
   inputNombre.addEventListener('blur', () => inputNombre.style.borderColor = '#6c757d');
 
@@ -550,8 +544,8 @@ export const renderizarReservas = async (usuario) => {
   inputFecha.type = 'date';
   inputFecha.value = filtroFecha;
   inputFecha.style.paddingLeft = '45px';
-  inputFecha.style.colorScheme = 'dark'; 
-  
+  inputFecha.style.colorScheme = 'dark';
+
   inputFecha.addEventListener('focus', () => inputFecha.style.borderColor = '#a3e635');
   inputFecha.addEventListener('blur', () => inputFecha.style.borderColor = '#6c757d');
 
@@ -559,7 +553,7 @@ export const renderizarReservas = async (usuario) => {
 
   inputNombre.addEventListener('input', (e) => {
     filtroTextoNombre = e.target.value;
-    renderizarReservas(usuario); 
+    renderizarReservas(usuario);
   });
 
   inputFecha.addEventListener('change', (e) => {
@@ -574,7 +568,7 @@ export const renderizarReservas = async (usuario) => {
 
   if (filtroTextoNombre && filtroTextoNombre.trim() !== '') {
     const busquedaNormalizada = normalizarTextoBusqueda(filtroTextoNombre);
-    clasesFiltradas = clasesFiltradas.filter(c => 
+    clasesFiltradas = clasesFiltradas.filter(c =>
       normalizarTextoBusqueda(c.titulo || '').includes(busquedaNormalizada)
     );
   }
@@ -587,24 +581,24 @@ export const renderizarReservas = async (usuario) => {
   }
   if (clasesFiltradas.length === 0) {
     const hayFiltrosAplicados = (filtroTextoNombre && filtroTextoNombre.trim() !== '') || filtroFecha;
-    
+
     const sinResultados = crearElemento('div', 'text-center py-5 rounded border border-secondary border-dashed');
     sinResultados.style.backgroundColor = 'rgba(30, 30, 30, 0.5)';
-    
+
     sinResultados.append(
       crearElemento('h5', 'text-white mb-2', 'SIN RESULTADOS'),
-      crearElemento('p', 'text-gray mb-0', hayFiltrosAplicados 
-        ? 'No encontramos actividades con ese nombre o fecha.' 
+      crearElemento('p', 'text-gray mb-0', hayFiltrosAplicados
+        ? 'No encontramos actividades con ese nombre o fecha.'
         : 'No hay actividades disponibles en este momento.')
     );
-    
+
     seccionDisponibles.append(sinResultados);
   } else {
     const listaDisponibles = crearElemento('div', 'd-flex flex-column gap-3');
     clasesFiltradas.forEach((clase) => {
       const tarjetaDeClase = crearElemento('div', 'user-card d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3');
       const informacionDeClase = crearElemento('div', 'flex-grow-1');
-      
+
       informacionDeClase.append(
         crearElemento('h4', 'text-white mb-1 fs-5', clase.titulo || 'Clase'),
         crearParrafoConIcono('text-gray mb-0 fs-14', 'bi bi-calendar-event me-2 text-green', formatearFechaHora(clase.fechaHora))
@@ -743,12 +737,12 @@ export const renderizarTurnos = async (usuario) => {
   inputNombre.placeholder = 'Buscar por especialidad...';
   inputNombre.value = filtroTextoNombreTurnos;
   inputNombre.style.paddingLeft = '45px';
-  
+
   inputNombre.addEventListener('focus', () => inputNombre.style.borderColor = '#a3e635');
   inputNombre.addEventListener('blur', () => inputNombre.style.borderColor = '#6c757d');
   inputNombre.addEventListener('input', (e) => {
     filtroTextoNombreTurnos = e.target.value;
-    renderizarTurnos(usuario); 
+    renderizarTurnos(usuario);
   });
 
   wrapperNombre.append(iconoBusqueda, inputNombre);
@@ -767,8 +761,8 @@ export const renderizarTurnos = async (usuario) => {
   inputFecha.type = 'date';
   inputFecha.value = filtroFechaTurnos;
   inputFecha.style.paddingLeft = '45px';
-  inputFecha.style.colorScheme = 'dark'; 
-  
+  inputFecha.style.colorScheme = 'dark';
+
   inputFecha.addEventListener('focus', () => inputFecha.style.borderColor = '#a3e635');
   inputFecha.addEventListener('blur', () => inputFecha.style.borderColor = '#6c757d');
   inputFecha.addEventListener('change', (e) => {
@@ -784,7 +778,7 @@ export const renderizarTurnos = async (usuario) => {
 
   if (filtroTextoNombreTurnos && filtroTextoNombreTurnos.trim() !== '') {
     const busquedaNormalizada = normalizarTextoBusqueda(filtroTextoNombreTurnos);
-    turnosFiltrados = turnosFiltrados.filter(t => 
+    turnosFiltrados = turnosFiltrados.filter(t =>
       normalizarTextoBusqueda(obtenerNombreTurno(t)).includes(busquedaNormalizada)
     );
   }
@@ -798,8 +792,8 @@ export const renderizarTurnos = async (usuario) => {
     sinResultados.style.backgroundColor = 'rgba(30, 30, 30, 0.5)';
     sinResultados.append(
       crearElemento('h5', 'text-white mb-2', 'SIN RESULTADOS'),
-      crearElemento('p', 'text-gray mb-0', hayFiltrosAplicados 
-        ? 'No encontramos turnos con esa especialidad o fecha.' 
+      crearElemento('p', 'text-gray mb-0', hayFiltrosAplicados
+        ? 'No encontramos turnos con esa especialidad o fecha.'
         : 'No hay turnos médicos disponibles en este momento.')
     );
     seccionDeTurnosDisponibles.append(sinResultados);

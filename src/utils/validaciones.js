@@ -10,18 +10,46 @@ function texto(valor, campo, { min = 1, max = 200 } = {}) {
   return limpio;
 }
 
+
 function numero(valor, campo, { min = -Infinity, max = Infinity, entero = false } = {}) {
   if (valor === null || valor === undefined || valor === '') {
     throw new ErrorValidacion(`${campo} es obligatorio`, campo);
   }
+
   const n = Number(valor);
-  if (!Number.isFinite(n) || n < min || n > max || (entero && !Number.isInteger(n))) {
+
+  validarNumeroFinito(n, campo);
+  validarRango(n, campo, min, max);
+  validarEntero(n, campo, entero, { min, max });
+
+  return n;
+}
+
+function validarNumeroFinito(numero, campo) {
+  if (!Number.isFinite(numero)) {
     throw new ErrorValidacion(
-      `${campo} debe ser un número${entero ? ' entero' : ''} entre ${min} y ${max}`,
+      `${campo} debe ser un número`,
       campo,
     );
   }
-  return n;
+}
+
+function validarRango(numero, campo, min, max) {
+  if (numero < min || numero > max) {
+    throw new ErrorValidacion(
+      `${campo} debe ser un número entre ${min} y ${max}`,
+      campo,
+    );
+  }
+}
+
+function validarEntero(numero, campo, entero, { min, max }) {
+  if (entero && !Number.isInteger(numero)) {
+    throw new ErrorValidacion(
+      `${campo} debe ser un número entero entre ${min} y ${max}`,
+      campo,
+    );
+  }
 }
 
 function idOpcional(valor, campo) {

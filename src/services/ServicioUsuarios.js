@@ -11,7 +11,7 @@ class ServicioUsuarios {
   }
 
   async _crearUsuario(Entidad, datos) {
-    const { dni, nombre, email, rol, passwordHash, ...datosEspecificos } = datos;
+    const { dni, nombre, email, ...datosEspecificos } = datos;
 
     const dniValidado = v.dni(dni);
     const emailValidado = v.email(email);

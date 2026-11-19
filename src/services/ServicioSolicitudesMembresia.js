@@ -12,48 +12,14 @@ class ServicioSolicitudesMembresia {
     async solicitar({ miembroId, tipo, planSolicitadoId = null }) {
         const miembro = await this.repoUsuarios.obtenerPorId(miembroId);
 
-        if (!(miembro instanceof Miembro)) {
-            throw new ErrorValidacion('El usuario no es un miembro');
-        }
-
-        if (miembro.bajaMembresiaPendiente) {
-            throw new ErrorValidacion(
-                'No podés realizar cambios porque tenés una baja programada'
-            );
-        }
+        this._validarMiembro(miembro);
 
         if (tipo === 'cambio_plan') {
-            if (!planSolicitadoId) {
-                throw new ErrorValidacion('Debés seleccionar un plan');
-            }
-
-            const plan = await this.repoMembresias.obtenerPorId(planSolicitadoId);
-
-            if (!plan || !plan.activo) {
-                throw new ErrorValidacion('El plan seleccionado no está disponible');
-            }
-
-            if (String(planSolicitadoId) === String(miembro.planMembresiaId)) {
-                throw new ErrorValidacion('Ya tenés contratado ese plan');
-            }
+            await this._validarCambioPlan(miembro, planSolicitadoId);
         }
 
         if (tipo === 'baja') {
-            if (!miembro.planMembresiaId) {
-                throw new ErrorValidacion('No tenés una membresía activa');
-            }
-
-            const fechaVencimiento = new Date(miembro.fechaVencimiento);
-            const hoy = new Date();
-
-            hoy.setHours(0, 0, 0, 0);
-            fechaVencimiento.setHours(0, 0, 0, 0);
-
-            if (fechaVencimiento < hoy) {
-                throw new ErrorValidacion(
-                    'No podés solicitar la baja de una membresía vencida'
-                );
-            }
+            this._validarBaja(miembro);
         }
 
         const solicitudes = await this.repoSolicitudesMembresia.listar();
@@ -85,6 +51,51 @@ class ServicioSolicitudesMembresia {
         return this.repoSolicitudesMembresia.agregar(solicitud);
     }
 
+    _validarMiembro(miembro) {
+        if (!(miembro instanceof Miembro)) {
+            throw new ErrorValidacion('El usuario no es un miembro');
+        }
+
+        if (miembro.bajaMembresiaPendiente) {
+            throw new ErrorValidacion(
+                'No podés realizar cambios porque tenés una baja programada'
+            );
+        }
+    }
+
+    async _validarCambioPlan(miembro, planSolicitadoId) {
+        if (!planSolicitadoId) {
+            throw new ErrorValidacion('Debés seleccionar un plan');
+        }
+
+        const plan = await this.repoMembresias.obtenerPorId(planSolicitadoId);
+
+        if (!plan || !plan.activo) {
+            throw new ErrorValidacion('El plan seleccionado no está disponible');
+        }
+
+        if (String(planSolicitadoId) === String(miembro.planMembresiaId)) {
+            throw new ErrorValidacion('Ya tenés contratado ese plan');
+        }
+    }
+
+    _validarBaja(miembro) {
+        if (!miembro.planMembresiaId) {
+            throw new ErrorValidacion('No tenés una membresía activa');
+        }
+
+        const fechaVencimiento = new Date(miembro.fechaVencimiento);
+        const hoy = new Date();
+
+        hoy.setHours(0, 0, 0, 0);
+        fechaVencimiento.setHours(0, 0, 0, 0);
+
+        if (fechaVencimiento < hoy) {
+            throw new ErrorValidacion(
+                'No podés solicitar la baja de una membresía vencida'
+            );
+        }
+    }
 
     async listarPendientes() {
         const solicitudes = await this.repoSolicitudesMembresia.listar();

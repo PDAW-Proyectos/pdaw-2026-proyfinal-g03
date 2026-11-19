@@ -1,5 +1,4 @@
 const { conNextTodos } = require('../utils/http');
-const v = require('../utils/validaciones');
 
 module.exports = function crearControladorSeguimientoProgreso(servicio) {
     return conNextTodos({

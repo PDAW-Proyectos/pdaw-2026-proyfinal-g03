@@ -106,7 +106,7 @@ const cargarActividades = async () => {
   try {
     const actividades = await obtenerDatos('actividades');
     renderizarActividades(actividades);
-  } catch (error) {
+  } catch {
     mostrarMensaje(
       actividadesLista,
       'No se pudieron cargar las actividades. Intentá nuevamente más tarde.',
@@ -119,7 +119,7 @@ const cargarHorarios = async () => {
   try {
     const horarios = await obtenerDatos('horarios');
     renderizarHorarios(horarios);
-  } catch (error) {
+  } catch {
     mostrarMensaje(
       horariosLista,
       'No se pudieron cargar los horarios. Intentá nuevamente más tarde.',

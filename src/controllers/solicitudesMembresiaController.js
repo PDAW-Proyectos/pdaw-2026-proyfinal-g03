@@ -2,7 +2,7 @@ const { conNextTodos } = require('../utils/http');
 
 module.exports = function crearControladorSolicitudesMembresia(servicioSolicitudesMembresia) {
     return conNextTodos({
-        solicitar: async (req, res, next) => {
+        solicitar: async (req, res) => {
             const solicitud = await servicioSolicitudesMembresia.solicitar({
                 miembroId: req.usuario.id,
                 tipo: req.body?.tipo,

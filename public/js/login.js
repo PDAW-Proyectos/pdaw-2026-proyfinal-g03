@@ -28,17 +28,13 @@ loginForm.addEventListener('submit', async (event) => {
 
   botonIngresar.disabled = true;
 
-  let temporizador100ms;
-  let temporizador1s;
-  let temporizador10s;
-
   // Entre 100 ms y 1 segundo: cambio visual.
-  temporizador100ms = setTimeout(() => {
+  const temporizador100ms = setTimeout(() => {
     botonIngresar.textContent = 'Validando...';
   }, 100);
 
   // Más de 1 segundo: spinner.
-  temporizador1s = setTimeout(() => {
+  const temporizador1s = setTimeout(() => {
     botonIngresar.innerHTML = `
       <span class="spinner-border spinner-border-sm me-2"
             aria-hidden="true"></span>
@@ -47,7 +43,7 @@ loginForm.addEventListener('submit', async (event) => {
   }, 1000);
 
   // Más de 10 segundos: informar y permitir cancelar.
-  temporizador10s = setTimeout(() => {
+  const temporizador10s = setTimeout(() => {
     estado.textContent = 'La solicitud está tardando más de lo habitual.';
     botonCancelar.classList.remove('d-none');
   }, 10000);

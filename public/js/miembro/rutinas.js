@@ -1,9 +1,4 @@
 // gestion de rutinas y planes de entrenamiento con IA
-const formatoFecha = new Intl.DateTimeFormat('es-AR', {
-  dateStyle: 'short',
-  timeZone: 'America/Argentina/Buenos_Aires',
-});
-
 const crearElemento = (etiqueta, clases, texto) => {
   const el = document.createElement(etiqueta);
   if (clases) el.className = clases;

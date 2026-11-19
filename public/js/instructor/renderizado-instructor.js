@@ -1,5 +1,3 @@
-const diasOrdenados = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
-
 // Formateador nativo para mostrar las fechas en formato corto (DD/MM/YYYY).
 const formatoFecha = new Intl.DateTimeFormat('es-AR', {
   dateStyle: 'short',
@@ -272,18 +270,6 @@ export const renderizarBloqueos = (bloqueos) => {
       contenedor.append(tarjeta);
     });
   contenedor.setAttribute('aria-busy', 'false');
-};
-// Envuelve el proceso de buscar datos y renderizar, mostrando estados de carga y error.
-const cargarYRenderizar = async (recurso, renderizar, idContenedor, idResumen) => {
-  const contenedor = document.getElementById(idContenedor);
-  if (!contenedor) return;
-  mostrarCargando(contenedor);
-  try {
-    renderizar(await obtenerDatos(recurso));
-  } catch (error) {
-    actualizarResumen(idResumen, 'Resumen no disponible.');
-    mostrarMensaje(contenedor, error.message, 'text-danger');
-  }
 };
 // Función principal que se exporta.
 // Llena los datos del perfil del instructor y dispara la carga de sus actividades.

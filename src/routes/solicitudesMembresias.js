@@ -1,7 +1,6 @@
 
 const { Router } = require('express');
 const { exigirPermiso } = require('../middlewares/permisos');
-const exigirMembresiaActiva = require('../middlewares/membresiaActiva');
 const crearControladorSolicitudesMembresia = require('../controllers/solicitudesMembresiaController');
 
 module.exports = function rutasSolicitudesMembresia({ servicioSolicitudesMembresia }) {
