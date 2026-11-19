@@ -1,5 +1,4 @@
 // gestion de rutinas y planes de entrenamiento con IA
-
 const formatoFecha = new Intl.DateTimeFormat('es-AR', {
   dateStyle: 'short',
   timeZone: 'America/Argentina/Buenos_Aires',
@@ -15,6 +14,7 @@ const crearElemento = (etiqueta, clases, texto) => {
 const mostrarMensaje = (contenedor, mensaje, clase = 'text-gray') => {
   contenedor.replaceChildren(crearElemento('div', `user-card text-center py-4 ${clase}`, mensaje));
 };
+
 const crearModalEdicion = () => {
   const modalExistente = document.getElementById('modalEditarRutina');
   if (modalExistente) modalExistente.remove();
@@ -26,22 +26,22 @@ const crearModalEdicion = () => {
   modalDiv.style.backgroundColor = 'rgba(0,0,0,0.8)';
 
   const dialog = crearElemento('div', 'modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable');
-  
+
   const content = crearElemento('div', 'modal-content bg-dark text-white border border-secondary rounded-3');
   content.style.backgroundColor = '#121212';
 
   const header = crearElemento('div', 'modal-header border-0 pb-0');
-  
+
   const headerTitleContainer = crearElemento('div', 'd-flex align-items-center gap-3');
   const iconoHeader = crearElemento('i', 'bi bi-sliders text-green fs-3');
-  
+
   const headerTextContainer = crearElemento('div');
   const titulo = crearElemento('h3', 'modal-title fw-bold text-uppercase mb-0', 'Editar Rutina');
   titulo.style.fontFamily = "'Oswald', sans-serif";
   titulo.style.letterSpacing = '1px';
   const subtitulo = crearElemento('small', 'text-gray');
   subtitulo.id = 'modalSubtituloDia';
-  
+
   headerTextContainer.append(titulo, subtitulo);
   headerTitleContainer.append(iconoHeader, headerTextContainer);
 
@@ -56,11 +56,11 @@ const crearModalEdicion = () => {
   const seccionTitulo = crearElemento('div', 'd-flex justify-content-between align-items-center mb-3 border-bottom border-secondary pb-2');
   const tituloEjercicios = crearElemento('h4', 'fw-bold text-uppercase mb-0', 'Ejercicios');
   tituloEjercicios.style.fontFamily = "'Oswald', sans-serif";
-  
+
   const btnAnadir = crearElemento('button', 'btn btn-link text-white text-decoration-none p-0 d-flex align-items-center gap-2');
   btnAnadir.id = 'btnAnadirEjercicio';
   btnAnadir.innerHTML = '<i class="bi bi-plus-circle fs-5"></i> <span class="fs-14">Añadir ejercicio</span>'; // Uso innerHTML solo para el icono
-  
+
   seccionTitulo.append(tituloEjercicios, btnAnadir);
 
   const rowHeaders = crearElemento('div', 'row text-gray fs-13 fw-bold mb-2 px-2');
@@ -76,10 +76,13 @@ const crearModalEdicion = () => {
   const listaEjercicios = crearElemento('div', 'd-flex flex-column gap-2');
   listaEjercicios.id = 'listaEjerciciosModal';
 
-  body.append(seccionTitulo, rowHeaders, listaEjercicios);
+  const mensajeValidacion = crearElemento('div', 'mt-3');
+  mensajeValidacion.id = 'mensajeValidacionRutina';
+  body.append(seccionTitulo, rowHeaders, mensajeValidacion, listaEjercicios);
+
 
   const footer = crearElemento('div', 'modal-footer border-top border-secondary pt-3');
-  
+
   const btnCancelar = crearElemento('button', 'btn btn-outline-light text-white px-4 py-2 rounded-1', 'Cancelar');
   btnCancelar.type = 'button';
   btnCancelar.setAttribute('data-bs-dismiss', 'modal');
@@ -98,16 +101,16 @@ const crearModalEdicion = () => {
 
   document.body.append(modalDiv);
 };
- 
+
 const renderizarFilasModal = (ejercicios) => {
   const contenedor = document.getElementById('listaEjerciciosModal');
   if (!contenedor) return;
-  
-  contenedor.replaceChildren(); 
+
+  contenedor.replaceChildren();
 
   ejercicios.forEach((ej, index) => {
     const fila = crearElemento('div', 'row gx-2 align-items-center');
-    
+
     const colNombre = crearElemento('div', 'col-5');
     const inputNombre = crearElemento('input', 'form-control bg-transparent text-white border-secondary fs-14 py-2');
     inputNombre.type = 'text';
@@ -137,14 +140,14 @@ const renderizarFilasModal = (ejercicios) => {
 
     const colDescanso = crearElemento('div', 'col-2');
     const grupoDescanso = crearElemento('div', 'input-group');
-    
+
     const inputDescanso = crearElemento('input', 'form-control bg-transparent text-white border-secondary fs-14 py-2 text-center');
     inputDescanso.type = 'number';
-    inputDescanso.value = ej.descansoSeg || '';
+    inputDescanso.value = ej.descansoSeg ?? 60;
     inputDescanso.placeholder = '0';
     inputDescanso.dataset.field = 'descansoSeg';
     inputDescanso.dataset.index = index;
-    
+
     const spanS = crearElemento('span', 'input-group-text bg-transparent text-gray border-secondary fs-14 px-2', 's');
     grupoDescanso.append(inputDescanso, spanS);
     colDescanso.append(grupoDescanso);
@@ -177,12 +180,46 @@ const renderizarFilasModal = (ejercicios) => {
 
 let diaEnEdicion = null;
 let planEnEdicion = null;
+let planOriginal = null;
+
+const validarEjercicios = (ejercicios) => {
+  for (const ej of ejercicios) {
+    if (!ej.nombre.trim()) {
+      return 'El nombre del ejercicio es obligatorio.';
+    }
+
+    if (ej.nombre.trim().length > 80) {
+      return 'El nombre no puede superar los 80 caracteres.';
+    }
+
+    if (!Number.isInteger(Number(ej.series)) || Number(ej.series) < 1 || Number(ej.series) > 20) {
+      return 'Las series deben estar entre 1 y 20.';
+    }
+
+    if (!Number.isInteger(Number(ej.repeticiones)) || Number(ej.repeticiones) < 1 || Number(ej.repeticiones) > 200) {
+      return 'Las repeticiones deben estar entre 1 y 200.';
+    }
+
+    if (!Number.isInteger(Number(ej.descansoSeg)) || Number(ej.descansoSeg) < 0 || Number(ej.descansoSeg) > 600) {
+      return 'El descanso debe estar entre 0 y 600 segundos.';
+    }
+
+    if (planEnEdicion.dias.some(dia => dia.ejercicios.length === 0)) {
+      return 'Cada día debe tener al menos un ejercicio.';
+    }
+  }
+
+  return null;
+};
 
 const abrirModalEdicion = (dia, plan) => {
-  diaEnEdicion = dia;
-  planEnEdicion = plan;
+  const contenedor = document.getElementById('contenedorPlanEntrenamiento');
+  planOriginal = plan;
+  planEnEdicion = structuredClone(plan);
 
-  crearModalEdicion(); 
+  const indiceDia = plan.dias.indexOf(dia);
+  diaEnEdicion = planEnEdicion.dias[indiceDia];
+  crearModalEdicion();
 
   document.getElementById('modalSubtituloDia').textContent = `${dia.dia} · ${dia.enfoque}`;
   renderizarFilasModal(dia.ejercicios);
@@ -192,15 +229,67 @@ const abrirModalEdicion = (dia, plan) => {
   modal.show();
 
   document.getElementById('btnAnadirEjercicio').onclick = () => {
-    diaEnEdicion.ejercicios.push({ nombre: '', series: '', repeticiones: '', descansoSeg: '' });
+    diaEnEdicion.ejercicios.push({ nombre: '', series: '', repeticiones: '', descansoSeg: 60 });
     renderizarFilasModal(diaEnEdicion.ejercicios);
   };
 
-  document.getElementById('btnGuardarCambiosModal').onclick = () => {
-    renderizarPlan(planEnEdicion);
-    modal.hide();
+  document.getElementById('btnGuardarCambiosModal').onclick = async () => {
+    const boton = document.getElementById('btnGuardarCambiosModal');
+    const textoOriginal = boton.innerHTML;
+
+    const error = validarEjercicios(
+      planEnEdicion.dias.flatMap(dia => dia.ejercicios)
+    );
+
+    const mensaje = document.getElementById('mensajeValidacionRutina');
+
+    if (error) {
+      mostrarMensaje(mensaje, error, 'text-danger');
+      return;
+    }
+
+    mensaje.replaceChildren();
+
+    boton.disabled = true;
+    boton.textContent = 'Guardando...';
+
+    try {
+      const respuesta = await fetch(`/api/planes-entrenamiento/${planOriginal.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          dias: planEnEdicion.dias.map(dia => ({
+            ...dia,
+            ejercicios: dia.ejercicios.map(ej => ({
+              ...ej,
+              nombre: ej.nombre.trim(),
+              series: Number(ej.series),
+              repeticiones: Number(ej.repeticiones),
+              descansoSeg: Number(ej.descansoSeg),
+            })),
+          })),
+        }),
+      });
+
+      const datos = await respuesta.json();
+
+      if (!respuesta.ok) {
+        throw new Error(datos.error || datos.detail || 'No se pudieron guardar los cambios.');
+      }
+
+      renderizarPlan(datos);
+      modal.hide();
+
+    } catch (error) {
+      mostrarMensaje(contenedor, error.message, 'text-danger');
+    } finally {
+      boton.disabled = false;
+      boton.innerHTML = textoOriginal;
+    }
   };
 };
+
 const renderizarPlan = (plan) => {
   const contenedor = document.getElementById('contenedorPlanEntrenamiento');
   if (!contenedor) return;
@@ -211,15 +300,15 @@ const renderizarPlan = (plan) => {
   }
 
   contenedor.replaceChildren();
-  const tarjeta = crearElemento('div', 'user-card mb-2'); 
+  const tarjeta = crearElemento('div', 'user-card mb-2');
   const header = crearElemento('div', 'd-flex justify-content-between align-items-start mb-3');
   const info = crearElemento('div');
-  
+
   info.append(
     crearElemento('h4', 'text-white mb-1', plan.nombre),
     crearElemento('p', 'text-gray mb-0 fs-14', plan.descripcion || ''),
   );
-  
+
   const badge = crearElemento('span', 'badge badge-green fs-12', `${plan.duracionSemanas} semanas`);
   header.append(info, badge);
   tarjeta.append(header);
@@ -239,10 +328,10 @@ const renderizarPlan = (plan) => {
   }
 
   contenedor.append(tarjeta);
-  const contenedorDias = crearElemento('div', 'd-flex flex-column gap-2'); 
+  const contenedorDias = crearElemento('div', 'd-flex flex-column gap-2');
 
   plan.dias.forEach((dia, index) => {
-    const item = crearElemento('div', 'user-card'); 
+    const item = crearElemento('div', 'user-card');
 
     const headerDia = crearElemento('div', 'd-flex justify-content-between align-items-center w-100');
 
@@ -258,9 +347,9 @@ const renderizarPlan = (plan) => {
     btnEditar.type = 'button';
     btnEditar.innerHTML = '<i class="bi bi-pencil fs-6"></i>';
     btnEditar.title = 'Editar día';
-    
+
     btnEditar.addEventListener('click', (e) => {
-      e.preventDefault(); 
+      e.preventDefault();
       abrirModalEdicion(dia, plan);
     });
     const botonDia = crearElemento('button', 'btn btn-link text-gray p-1 text-decoration-none');
@@ -286,7 +375,7 @@ const renderizarPlan = (plan) => {
 
     cuerpo.append(listaEjercicios);
     collapse.append(cuerpo);
-    item.append(headerDia, collapse); 
+    item.append(headerDia, collapse);
     contenedorDias.append(item);
   });
   contenedor.append(contenedorDias);
