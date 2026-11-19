@@ -182,21 +182,34 @@
             </div>
           </div>
         </div>
-        <div id="admin-local" class="seccion-contenido d-none">
-          <div class="admin-header-action d-flex justify-content-between align-items-center mb-4">
-            <h2 class="admin-page-title m-0">GESTIÓN LOCAL</h2>
-            <button class="btn btn-green" id="btnNuevoHorario">
-              <i class="bi bi-plus-lg"></i> AGREGAR HORARIO
-            </button>
+              <div id="admin-local" class="seccion-contenido d-none">
+        <div class="admin-header-action d-flex justify-content-between align-items-center mb-4">
+          <h2 class="admin-page-title m-0">GESTIÓN LOCAL</h2>
+          <button class="btn btn-green" id="btnNuevoHorario">
+            <i class="bi bi-plus-lg"></i> AGREGAR HORARIO
+          </button>
+        </div>
+        
+        <h4 class="text-white mb-3 fs-15">Horarios de Apertura y Cierre</h4>
+        <p id="admin-horarios-resumen" class="text-gray mb-4" aria-live="polite">
+          Cargando resumen...
+        </p>
+        <div class="panel-horarios p-3 p-md-4 rounded border border-secondary" style="background-color: #121212;">
+          <div class="d-flex justify-content-end align-items-center mb-4 flex-wrap gap-3 border-bottom border-secondary pb-3">
+            <div class="form-check form-switch d-flex align-items-center gap-2 m-0">
+              <input class="form-check-input" type="checkbox" role="switch" id="switchAgrupar" style="cursor: pointer;">
+              <label class="form-check-label text-gray fw-bold text-uppercase" for="switchAgrupar" style="font-size: 11px; letter-spacing: 0.5px; cursor: pointer;">
+                Agrupar días iguales
+              </label>
+            </div>
           </div>
-          <h4 class="text-white mb-3 fs-15">Horarios de Apertura y Cierre</h4>
-          <p id="admin-horarios-resumen" class="text-gray mb-3" aria-live="polite">
-            Cargando resumen...
-          </p>
-          <div id="admin-horarios-lista" class="d-flex flex-column gap-3" aria-live="polite" aria-busy="true">
+          <!-- Acá se inyectarán los horarios dinámicamente -->
+          <div id="admin-horarios-lista" class="d-flex flex-column" aria-live="polite" aria-busy="true">
             <div class="admin-card">Cargando horarios...</div>
           </div>
+
         </div>
+      </div>
         <div id="admin-planes" class="seccion-contenido d-none">
           <h2 class="admin-page-title">GESTIÓN DE PLANES</h2>
           <div class="row g-4">
@@ -354,132 +367,60 @@
   </div>
 
   <!-- modal para Nuevo Horario -->
-  <div class="modal fade" id="modalHorario" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Agregar Horario de Apertura</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-        </div>
-        <form id="formHorario">
-          <div class="modal-body">
-            <div class="mb-3">
-              <label for="horarioDia" class="form-label">Día</label>
-              <select class="form-select" id="horarioDia" required>
-                <option value="">Seleccionar día...</option>
-                <option value="lunes">Lunes</option>
-                <option value="martes">Martes</option>
-                <option value="miercoles">Miércoles</option>
-                <option value="jueves">Jueves</option>
-                <option value="viernes">Viernes</option>
-                <option value="sabado">Sábado</option>
-                <option value="domingo">Domingo</option>
-              </select>
-            </div>
-            <div class="row g-3">
-              <div class="col-6">
-                <label for="horarioApertura" class="form-label">Apertura</label>
-                <input type="time" class="form-control" id="horarioApertura" required />
-              </div>
-              <div class="col-6">
-                <label for="horarioCierre" class="form-label">Cierre</label>
-                <input type="time" class="form-control" id="horarioCierre" required />
-              </div>
-            </div>
-            <div id="mensajeHorario" class="text-danger fs-14 mt-2"></div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-              Cancelar
-            </button>
-            <button type="submit" class="btn btn-green">Guardar Horario</button>
-          </div>
-        </form>
+<div class="modal fade" id="modalHorario" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <!-- 1. Agregamos las clases de fondo oscuro y borde -->
+    <div class="modal-content bg-pulso-darker border border-secondary">
+      
+      <div class="modal-header border-secondary">
+        <h5 class="modal-title text-white">Agregar Horario de Apertura</h5>
+        <!-- 2. Botón de cerrar en blanco -->
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
-    </div>
-  </div>
-
-  <div class="modal fade" id="modalCambiarPassword" tabindex="-1" aria-labelledby="tituloModalPassword"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content bg-pulso-darker border border-secondary">
-
-        <div class="modal-header border-secondary">
-          <h5 class="modal-title text-white" id="tituloModalPassword">
-            <i class="bi bi-shield-lock text-green me-2"></i>
-            Cambiar contraseña
-          </h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-        </div>
-
-        <form id="formCambiarPassword">
-          <div class="modal-body">
-
-            <div class="mb-3">
-              <label for="passwordActual" class="text-gray mb-2 fs-14">
-                Contraseña actual
-              </label>
-              <input type="password" id="passwordActual" class="user-form-control w-100"
-                placeholder="Ingresá tu contraseña actual" required />
-            </div>
-
-            <div class="mb-3">
-              <label for="passwordNueva" class="text-gray mb-2 fs-14">
-                Nueva contraseña
-              </label>
-              <input type="password" id="passwordNueva" class="user-form-control w-100"
-                placeholder="Ingresá la nueva contraseña" minlength="8" required />
-            </div>
-
-            <div class="mb-2">
-              <label for="passwordConfirmacion" class="text-gray mb-2 fs-14">
-                Confirmar nueva contraseña
-              </label>
-              <input type="password" id="passwordConfirmacion" class="user-form-control w-100"
-                placeholder="Repetí la nueva contraseña" minlength="8" required />
-            </div>
-
-          </div>
-
-          <div class="modal-footer border-secondary">
-            <button type="button" class="user-btn-outline py-2 px-3" data-bs-dismiss="modal">
-              Cancelar
-            </button>
-            <button type="submit" id="btnGuardarPassword" class="btn btn-green py-2 px-3">
-              <i class="bi bi-check-lg me-1"></i>
-              Guardar contraseña
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal fade" id="modalConfirmarMembresia" tabindex="-1" aria-labelledby="tituloConfirmarMembresia"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content membresia-modal">
-        <div class="modal-header">
-          <h5 class="modal-title" id="tituloConfirmarMembresia">
-            CONFIRMAR OPERACIÓN
-          </h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-        </div>
-
+      
+      <form id="formHorario">
         <div class="modal-body">
-          <p id="textoConfirmarMembresia" class="text-gray mb-0">
-            ¿Querés continuar?
-          </p>
-          <p id="errorConfirmarMembresia" class="text-danger fs-13 mt-3 mb-0 d-none" role="alert"></p>
+          <div class="mb-3">
+            <!-- 3. Textos en gris claro y selectores oscuros -->
+            <label for="horarioDia" class="form-label text-gray fs-14 mb-2">Día</label>
+            <select class="form-select bg-dark text-white border-secondary" id="horarioDia" style="color-scheme: dark;" required>
+              <option value="">Seleccionar día...</option>
+              <option value="lunes">Lunes</option>
+              <option value="martes">Martes</option>
+              <option value="miercoles">Miércoles</option>
+              <option value="jueves">Jueves</option>
+              <option value="viernes">Viernes</option>
+              <option value="sabado">Sábado</option>
+              <option value="domingo">Domingo</option>
+            </select>
+          </div>
+          <div class="row g-3">
+            <div class="col-6">
+              <label for="horarioApertura" class="form-label text-gray fs-14 mb-2">Apertura</label>
+              <!-- 4. Inputs oscuros con el ícono del reloj en blanco -->
+              <input type="time" class="form-control bg-dark text-white border-secondary" id="horarioApertura" style="color-scheme: dark;" required />
+            </div>
+            <div class="col-6">
+              <label for="horarioCierre" class="form-label text-gray fs-14 mb-2">Cierre</label>
+              <input type="time" class="form-control bg-dark text-white border-secondary" id="horarioCierre" style="color-scheme: dark;" required />
+            </div>
+          </div>
+          <div id="mensajeHorario" class="text-danger fs-14 mt-3"></div>
         </div>
-
-        <div class="modal-footer">
-          <button type="button" class="btn btn-outline-custom" data-bs-dismiss="modal">Cancelar</button>
-          <button type="button" class="btn btn-green" id="btnEjecutarConfirmacionMembresia">CONFIRMAR</button>
+        
+        <div class="modal-footer border-secondary">
+          <!-- 5. Botón cancelar con tu clase personalizada y botón guardar igual que en cambiar contraseña -->
+          <button type="button" class="user-btn-outline py-2 px-3" data-bs-dismiss="modal">
+            Cancelar
+          </button>
+          <button type="submit" class="btn btn-green py-2 px-3">
+            Guardar Horario
+          </button>
         </div>
-      </div>
+      </form>
     </div>
   </div>
+</div>
  <!--modal para eliminar cuenta-->
    <div class="modal fade" id="modalEliminarUsuario" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">

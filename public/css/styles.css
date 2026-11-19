@@ -1473,3 +1473,59 @@ footer {
 #modalConfirmarMembresia .btn-close:hover {
   opacity: 1;
 }
+/* Panel de Horarios */
+.panel-horarios {
+  /* Un borde más oscuro que el secondary de bootstrap */
+  border-color: #2a2a2a !important; 
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Línea conectora punteada */
+.linea-conectora {
+  border-bottom: 1px dashed #3a3a3a;
+  height: 1px;
+  margin-top: 10px;
+}
+
+/* Fila de horario */
+.fila-horario {
+  transition: background-color 0.2s ease;
+  padding: 12px 10px;
+  border-radius: 8px;
+}
+
+.fila-horario:hover {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+/* Botones de acción (tacho de basura) */
+.btn-accion {
+  color: #6c757d;
+  transition: color 0.2s ease, transform 0.2s ease;
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.btn-accion:hover {
+  color: #dc3545;
+  transform: scale(1.1);
+}
+
+/* SWITCH VERDE */
+.form-check-input {
+  background-color: #2a2a2a; /* Fondo apagado */
+  border-color: #444;
+  cursor: pointer;
+  width: 2.5em !important;
+  height: 1.25em !important;
+}
+.form-check-input:checked {
+  background-color: #a3e635 !important; /* Verde Iron Temple */
+  border-color: #a3e635 !important;
+}
+.form-check-input:focus {
+  box-shadow: 0 0 0 0.25rem rgba(163, 230, 53, 0.25);
+  border-color: #a3e635;
+}

@@ -250,15 +250,18 @@ export const renderizarMembresias = (membresias) => {
   contenedor.setAttribute('aria-busy', 'false');
 };
 
+let agruparDiasIguales = false;
+
 export const renderizarHorarios = (horarios) => {
   const contenedor = document.getElementById('admin-horarios-lista');
   contenedor.replaceChildren();
-
+  
   const minutosSemanales = horarios.reduce((total, horario) => {
     const [horaApertura, minutoApertura] = horario.apertura.split(':').map(Number);
     const [horaCierre, minutoCierre] = horario.cierre.split(':').map(Number);
     return total + (horaCierre * 60 + minutoCierre) - (horaApertura * 60 + minutoApertura);
   }, 0);
+  
   actualizarResumen(
     'admin-horarios-resumen',
     `${horarios.length} horarios · ${Math.floor(minutosSemanales / 60)} h ${minutosSemanales % 60} min por semana`,
@@ -269,31 +272,105 @@ export const renderizarHorarios = (horarios) => {
     return;
   }
 
-  horarios
-    .slice()
-    .sort((a, b) => diasOrdenados.indexOf(a.dia) - diasOrdenados.indexOf(b.dia))
-    .forEach((horario) => {
-      const dia = `${horario.dia.charAt(0).toUpperCase()}${horario.dia.slice(1)}`;
-      const tarjeta = crearElemento('article', 'admin-card');
-      const informacion = crearElemento('div', 'admin-card-info');
-      informacion.append(
-        crearElemento('h4', 'mb-0', dia),
-        crearElemento('p', 'mb-0', `${horario.apertura} a ${horario.cierre}`),
-      );
-      const botonEliminar = crearElemento(
-        'button',
-        'btn btn-sm btn-outline-danger ms-2',
-        'Eliminar',
-      );
-      botonEliminar.dataset.accion = 'eliminar-horario';
-      botonEliminar.dataset.id = horario.id;
-      tarjeta.append(informacion, botonEliminar);
-      contenedor.append(tarjeta);
+  const diasSemana = ['domingo', 'lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado'];
+  const hoy = diasSemana[new Date().getDay()];
+
+  const contieneHoy = (diasArray) => diasArray.includes(hoy);
+
+  let elementosAMostrar = [];
+  
+  if (agruparDiasIguales) {
+    const agrupados = {};
+    horarios.forEach(h => {
+      const clave = `${h.apertura}-${h.cierre}`;
+      if (!agrupados[clave]) {
+        agrupados[clave] = { apertura: h.apertura, cierre: h.cierre, dias: [], ids: [] };
+      }
+      agrupados[clave].dias.push(h.dia);
+      agrupados[clave].ids.push(h.id);
     });
+    elementosAMostrar = Object.values(agrupados).sort((a, b) => 
+      diasOrdenados.indexOf(a.dias[0]) - diasOrdenados.indexOf(b.dias[0])
+    );
+  } else {
+    elementosAMostrar = horarios
+      .slice()
+      .sort((a, b) => diasOrdenados.indexOf(a.dia) - diasOrdenados.indexOf(b.dia))
+      .map(h => ({ apertura: h.apertura, cierre: h.cierre, dias: [h.dia], ids: [h.id] }));
+  }
+  elementosAMostrar.forEach((grupo, index) => {
+    const esUltimo = index === elementosAMostrar.length - 1;
+    const esGrupoHoy = contieneHoy(grupo.dias);
+
+    const fila = crearElemento('div', `fila-horario d-flex align-items-center justify-content-between position-relative ${!esUltimo ? 'border-bottom border-secondary' : ''}`);
+    
+    const contenedorDia = crearElemento('div', 'd-flex flex-column');
+    const tituloDiaDiv = crearElemento('div', 'd-flex align-items-center gap-2');
+    
+    let textoDia = grupo.dias[0].substring(0, 3).toUpperCase();
+    let subtexto = grupo.dias[0].charAt(0).toUpperCase() + grupo.dias[0].slice(1);
+    
+    if (grupo.dias.length > 1) {
+      const primerDia = grupo.dias[0].substring(0, 3).toUpperCase();
+      const ultimoDia = grupo.dias[grupo.dias.length - 1].substring(0, 3).toUpperCase();
+      textoDia = `${primerDia}–${ultimoDia}`;
+      const nombresCompletos = grupo.dias.map(d => d.charAt(0).toUpperCase() + d.slice(1));
+      subtexto = `${nombresCompletos[0]} a ${nombresCompletos[nombresCompletos.length - 1]}`;
+    }
+
+    const tituloDia = crearElemento('span', 'text-white fw-bold fs-5', textoDia);
+    tituloDia.style.fontFamily = "'Oswald', sans-serif";
+    tituloDia.style.letterSpacing = '1px';
+    
+    tituloDiaDiv.append(tituloDia);
+
+    if (esGrupoHoy) {
+      const badgeHoy = crearElemento('span', 'badge bg-transparent text-green border border-success rounded-pill px-2 py-1', 'HOY');
+      badgeHoy.style.fontSize = '10px';
+      badgeHoy.style.borderColor = '#a3e635 !important';
+      tituloDiaDiv.append(badgeHoy);
+      tituloDia.classList.add('text-green');
+    }
+
+    const subtituloDia = crearElemento('span', 'text-gray fs-13', subtexto);
+    contenedorDia.append(tituloDiaDiv, subtituloDia);
+
+    const lineaConectora = crearElemento('div', 'linea-conectora flex-grow-1 mx-3 d-none d-md-block');
+
+    const contenedorDerecha = crearElemento('div', 'd-flex align-items-center gap-3 gap-md-4');
+
+    const horarioTexto = crearElemento('span', 'text-white fw-bold fs-4', `${grupo.apertura}–${grupo.cierre}`);
+    horarioTexto.style.fontFamily = "'Oswald', sans-serif";
+    horarioTexto.style.letterSpacing = '1px';
+
+    const [hApertura, mApertura] = grupo.apertura.split(':').map(Number);
+    const [hCierre, mCierre] = grupo.cierre.split(':').map(Number);
+    const minutosDia = (hCierre * 60 + mCierre) - (hApertura * 60 + mApertura);
+    const duracionTexto = crearElemento('span', 'text-gray fs-13 text-end', `${Math.floor(minutosDia / 60)} h`);
+    duracionTexto.style.width = '30px';
+
+    contenedorDerecha.append(horarioTexto, duracionTexto);
+    if (grupo.dias.length === 1) {
+      const btnEliminar = crearElemento('button', 'btn-accion ms-2');
+      btnEliminar.innerHTML = '<i class="bi bi-trash fs-5"></i>';
+      btnEliminar.title = 'Eliminar horario';
+      btnEliminar.dataset.accion = 'eliminar-horario';
+      btnEliminar.dataset.id = grupo.ids[0];
+      
+      contenedorDerecha.append(btnEliminar);
+    }
+
+    fila.append(contenedorDia, lineaConectora, contenedorDerecha);
+    contenedor.append(fila);
+  });
 
   contenedor.setAttribute('aria-busy', 'false');
 };
 
+// Función para que admin.js cambie el estado del switch
+window.setAgruparDias = (valor) => {
+  agruparDiasIguales = valor;
+};
 export const renderizarTurnos = (turnos) => {
   const contenedorChequeos = document.getElementById('admin-turnos-chequeos');
   const contenedorNutricion = document.getElementById('admin-turnos-nutricion');
