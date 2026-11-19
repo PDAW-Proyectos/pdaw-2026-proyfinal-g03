@@ -17,6 +17,7 @@ module.exports = function rutasClases({ servicioClases }) {
   router.delete('/:id', exigirPermiso('publicarClase'), controlador.eliminar);
   router.post('/:id/inscribir', exigirPermiso('inscribirseAClase'), exigirMembresiaActiva, controlador.inscribir);
   router.post('/:id/desinscribir', exigirPermiso('inscribirseAClase'), exigirMembresiaActiva, controlador.desinscribir);
+  router.post('/:id/destacar', exigirPermiso("destacarActividades"), controlador.destacar)
 
   return router;
 };

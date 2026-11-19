@@ -63,6 +63,14 @@ class ServicioClases {
       throw new ErrorProhibido('La clase es de otro instructor');
     return clase;
   }
+
+  async destacar({ claseId }) {
+    const clase = await this.repoClases.obtenerPorId(claseId);
+
+    clase.destacar();
+
+    return this.repoClases.actualizar(clase);
+  }
 }
 
 module.exports = ServicioClases;
