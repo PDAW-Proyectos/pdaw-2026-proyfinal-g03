@@ -12,6 +12,7 @@ module.exports = function rutasPlanesEntrenamiento({ servicioPlanes }) {
   router.post('/generar', exigirPermiso('generarPlan'), exigirMembresiaActiva, controlador.generarEntrenamiento);
   router.get('/mios', exigirPermiso('generarPlan'), exigirMembresiaActiva, controlador.listarEntrenamientos);
   router.get('/:id', controlador.obtenerEntrenamiento);
+  router.put('/:id', exigirPermiso('generarPlan'), exigirMembresiaActiva, controlador.modificarEntrenamiento);
 
   return router;
 };
