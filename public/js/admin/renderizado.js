@@ -134,7 +134,7 @@ export const renderizarMiembros = (miembros) => {
   }
 
   miembros.forEach((miembro) => {
-    const tarjeta = crearElemento('article', 'admin-card');
+    const tarjeta = crearElemento('article', 'admin-card d-flex justify-content-between align-items-center');
     const informacion = crearElemento('div', 'admin-card-info');
     const nombre = crearElemento('h4', 'mb-0', miembro.nombre);
     const email = crearElemento('p', 'mb-0 fs-13', miembro.email);
@@ -145,7 +145,19 @@ export const renderizarMiembros = (miembros) => {
     );
 
     informacion.append(nombre, email, datosFisicos);
-    tarjeta.append(informacion);
+
+    const botonEliminar = crearElemento(
+      'button',
+      'btn btn-sm btn-outline-danger ms-2',
+      '' 
+    );
+    botonEliminar.innerHTML = '<i class="bi bi-trash3"></i>';
+    botonEliminar.title = 'Eliminar miembro'; 
+    botonEliminar.dataset.accion = 'eliminar-usuario';
+    botonEliminar.dataset.id = miembro.id;
+    botonEliminar.dataset.tipo = 'miembro';
+    botonEliminar.dataset.nombre = miembro.nombre;
+    tarjeta.append(informacion, botonEliminar);
     contenedor.append(tarjeta);
   });
 
@@ -163,7 +175,7 @@ export const renderizarInstructores = (instructores) => {
   }
 
   instructores.forEach((instructor) => {
-    const tarjeta = crearElemento('article', 'admin-card');
+    const tarjeta = crearElemento('article', 'admin-card d-flex justify-content-between align-items-center');
     const informacion = crearElemento('div', 'admin-card-info');
     const nombre = crearElemento('h4', 'mb-0', instructor.nombre);
     const email = crearElemento('p', 'mb-0 fs-13', instructor.email);
@@ -174,7 +186,19 @@ export const renderizarInstructores = (instructores) => {
     );
 
     informacion.append(nombre, email, especialidad);
-    tarjeta.append(informacion);
+
+    const botonEliminar = crearElemento(
+      'button',
+      'btn btn-sm btn-outline-danger ms-2',
+      ''
+    );
+    botonEliminar.innerHTML = '<i class="bi bi-trash3"></i>';
+    botonEliminar.title = 'Eliminar instructor';
+    botonEliminar.dataset.accion = 'eliminar-usuario';
+    botonEliminar.dataset.id = instructor.id;
+    botonEliminar.dataset.tipo = 'instructor';
+     botonEliminar.dataset.nombre = instructor.nombre; 
+    tarjeta.append(informacion, botonEliminar);
     contenedor.append(tarjeta);
   });
 

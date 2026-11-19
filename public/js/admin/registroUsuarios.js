@@ -3,6 +3,7 @@ import { formularioRegistroUsuario, mostrarDatosPersonales, mostrarDatosMiembro,
 import { validarDatosPersonales, validarDatosMiembro, validarDatosInstructor, validarMembresia, mostrarErrorRegistro } from './validacionesRegistro.js';
 import { registrarUsuario } from './servicioRegistro.js';
 import { mostrarToast } from '../componentes/toast.js';
+import { cargarYRenderizar, renderizarMiembros, renderizarInstructores } from './renderizado.js';
 
 // Inicializa el registro de usuarios.
 export function inicializarRegistroUsuarios() {
@@ -103,6 +104,12 @@ export function inicializarRegistroUsuarios() {
         await registrarUsuario();
 
         mostrarToast('Registro exitoso', 'El usuario se registró correctamente.', 'success');
+        
+        if (datosUsuario.rol === 'instructor') {
+          cargarYRenderizar('usuarios/instructores', renderizarInstructores, 'admin-instructores-lista', null);
+        } else {
+          cargarYRenderizar('usuarios/miembros', renderizarMiembros, 'admin-miembros-lista', null);
+        }
         modal.hide();
 
       } catch (error) {
