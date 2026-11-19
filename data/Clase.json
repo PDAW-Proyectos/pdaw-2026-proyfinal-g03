@@ -1,113 +1,45 @@
 {
-  "ultimoId": 9,
+  "ultimoId": 12,
   "items": [
     {
-      "id": 1,
-      "titulo": "crossfit",
+      "id": 10,
+      "titulo": "crossfit n",
       "descripcion": "",
       "instructorId": 12345679,
-      "fechaHora": "2026-11-20T21:00:00.000Z",
+      "fechaHora": "2026-11-28T23:00:00.000Z",
       "duracionMin": 60,
-      "cupo": 10,
-      "cuposDisponibles": 10,
+      "cupo": 20,
+      "cuposDisponibles": 20,
       "inscriptosIds": [],
-      "grupoId": "aa888f11-8054-4687-8cbe-830bc3c49451"
+      "grupoId": null
     },
     {
-      "id": 2,
-      "titulo": "crossfit",
+      "id": 11,
+      "titulo": "crossfit mamamamamamma",
       "descripcion": "",
       "instructorId": 12345679,
-      "fechaHora": "2026-11-24T21:00:00.000Z",
+      "fechaHora": "2026-11-25T21:00:00.000Z",
       "duracionMin": 60,
-      "cupo": 10,
-      "cuposDisponibles": 10,
-      "inscriptosIds": [],
-      "grupoId": "aa888f11-8054-4687-8cbe-830bc3c49451"
+      "cupo": 25,
+      "cuposDisponibles": 24,
+      "inscriptosIds": [
+        44007760
+      ],
+      "grupoId": "e138604f-a2a8-4ab3-88a3-81c220f4fe29"
     },
     {
-      "id": 3,
-      "titulo": "crossfit",
+      "id": 12,
+      "titulo": "crossfit mamamamamamma",
       "descripcion": "",
       "instructorId": 12345679,
-      "fechaHora": "2026-11-27T21:00:00.000Z",
+      "fechaHora": "2026-11-28T21:00:00.000Z",
       "duracionMin": 60,
-      "cupo": 10,
-      "cuposDisponibles": 10,
-      "inscriptosIds": [],
-      "grupoId": "aa888f11-8054-4687-8cbe-830bc3c49451"
-    },
-    {
-      "id": 4,
-      "titulo": "crossfit",
-      "descripcion": "",
-      "instructorId": 12345679,
-      "fechaHora": "2026-12-01T21:00:00.000Z",
-      "duracionMin": 60,
-      "cupo": 10,
-      "cuposDisponibles": 10,
-      "inscriptosIds": [],
-      "grupoId": "aa888f11-8054-4687-8cbe-830bc3c49451"
-    },
-    {
-      "id": 5,
-      "titulo": "crossfit",
-      "descripcion": "",
-      "instructorId": 12345679,
-      "fechaHora": "2026-12-04T21:00:00.000Z",
-      "duracionMin": 60,
-      "cupo": 10,
-      "cuposDisponibles": 10,
-      "inscriptosIds": [],
-      "grupoId": "aa888f11-8054-4687-8cbe-830bc3c49451"
-    },
-    {
-      "id": 6,
-      "titulo": "crossfit",
-      "descripcion": "",
-      "instructorId": 12345679,
-      "fechaHora": "2026-12-08T21:00:00.000Z",
-      "duracionMin": 60,
-      "cupo": 10,
-      "cuposDisponibles": 10,
-      "inscriptosIds": [],
-      "grupoId": "aa888f11-8054-4687-8cbe-830bc3c49451"
-    },
-    {
-      "id": 7,
-      "titulo": "crossfit",
-      "descripcion": "",
-      "instructorId": 12345679,
-      "fechaHora": "2026-12-11T21:00:00.000Z",
-      "duracionMin": 60,
-      "cupo": 10,
-      "cuposDisponibles": 10,
-      "inscriptosIds": [],
-      "grupoId": "aa888f11-8054-4687-8cbe-830bc3c49451"
-    },
-    {
-      "id": 8,
-      "titulo": "crossfit",
-      "descripcion": "",
-      "instructorId": 12345679,
-      "fechaHora": "2026-12-15T21:00:00.000Z",
-      "duracionMin": 60,
-      "cupo": 10,
-      "cuposDisponibles": 10,
-      "inscriptosIds": [],
-      "grupoId": "aa888f11-8054-4687-8cbe-830bc3c49451"
-    },
-    {
-      "id": 9,
-      "titulo": "crossfit",
-      "descripcion": "",
-      "instructorId": 12345679,
-      "fechaHora": "2026-12-18T21:00:00.000Z",
-      "duracionMin": 60,
-      "cupo": 10,
-      "cuposDisponibles": 10,
-      "inscriptosIds": [],
-      "grupoId": "aa888f11-8054-4687-8cbe-830bc3c49451"
+      "cupo": 25,
+      "cuposDisponibles": 24,
+      "inscriptosIds": [
+        44007760
+      ],
+      "grupoId": "e138604f-a2a8-4ab3-88a3-81c220f4fe29"
     }
   ]
 }
