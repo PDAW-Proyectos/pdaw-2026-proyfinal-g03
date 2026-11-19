@@ -1,4 +1,5 @@
 const diasOrdenados = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
+let turnosDisponibles = [];
 const tiposTurno = {
   chequeo_medico: 'Chequeo médico',
   nutricionista: 'Nutrición',
@@ -300,14 +301,34 @@ export const renderizarTurnos = (turnos) => {
 
   if (!contenedorChequeos || !contenedorNutricion) return;
 
+  turnosDisponibles = turnos;
+
+  const inputNombre = document.getElementById('filtroNombreTurno');
+  const inputFecha = document.getElementById('filtroFechaTurno');
+
+  const nombreBuscado = normalizarTextoBusqueda(inputNombre?.value ?? '');
+  const fechaBuscada = inputFecha?.value ?? '';
+
+  const turnosFiltrados = turnosDisponibles.filter((turno) => {
+    const coincideNombre = normalizarTextoBusqueda(turno.medico ?? '')
+      .includes(nombreBuscado);
+
+    const coincideFecha = !fechaBuscada || turno.fecha === fechaBuscada;
+
+    return coincideNombre && coincideFecha;
+  });
+
   contenedorChequeos.replaceChildren();
   contenedorNutricion.replaceChildren();
+  contenedorChequeos.setAttribute('aria-busy', 'true');
+  contenedorNutricion.setAttribute('aria-busy', 'true');
 
-  const chequeos = turnos.filter((turno) => turno.tipo === 'chequeo_medico').length;
-  const nutricion = turnos.filter((turno) => turno.tipo === 'nutricionista').length;
+  const chequeos = turnosFiltrados.filter((turno) => turno.tipo === 'chequeo_medico').length;
+  const nutricion = turnosFiltrados.filter((turno) => turno.tipo === 'nutricionista').length;
+
   actualizarResumen(
     'admin-turnos-resumen',
-    `${turnos.length} turnos disponibles · ${chequeos} chequeos médicos · ${nutricion} de nutrición`,
+    `${turnosFiltrados.length} turnos encontrados · ${chequeos} chequeos médicos · ${nutricion} de nutrición`,
   );
 
   const crearTarjetaTurno = (turno) => {
@@ -337,7 +358,7 @@ export const renderizarTurnos = (turnos) => {
     return tarjeta;
   };
 
-  const turnosChequeo = turnos.filter(t => t.tipo === 'chequeo_medico');
+  const turnosChequeo = turnosFiltrados.filter((t) => t.tipo === 'chequeo_medico');
   if (turnosChequeo.length === 0) {
     mostrarMensaje(contenedorChequeos, 'No hay turnos de chequeo médico.');
   } else {
@@ -347,7 +368,7 @@ export const renderizarTurnos = (turnos) => {
     contenedorChequeos.setAttribute('aria-busy', 'false');
   }
 
-  const turnosNutricion = turnos.filter(t => t.tipo === 'nutricionista');
+  const turnosNutricion = turnosFiltrados.filter((t) => t.tipo === 'nutricionista');
   if (turnosNutricion.length === 0) {
     mostrarMensaje(contenedorNutricion, 'No hay turnos de nutrición.');
   } else {
@@ -357,6 +378,13 @@ export const renderizarTurnos = (turnos) => {
     contenedorNutricion.setAttribute('aria-busy', 'false');
   }
 };
+
+const normalizarTextoBusqueda = (texto) =>
+  String(texto ?? '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .trim();
 
 export const cargarYRenderizar = async (recurso, renderizar, idContenedor, idResumen) => {
   const contenedor = document.getElementById(idContenedor);
@@ -373,6 +401,17 @@ export function inicializarRenderizadoAdmin(usuario) {
   document.getElementById('perfil-dni').value = usuario.id;
   document.getElementById('perfil-email').value = usuario.email;
   document.getElementById('perfil-telefono').value = usuario.telefono || '';
+
+  const inputNombreTurno = document.getElementById('filtroNombreTurno');
+  const inputFechaTurno = document.getElementById('filtroFechaTurno');
+
+  inputNombreTurno?.addEventListener('input', () => {
+    renderizarTurnos(turnosDisponibles);
+  });
+
+  inputFechaTurno?.addEventListener('change', () => {
+    renderizarTurnos(turnosDisponibles);
+  });
 
   cargarYRenderizar('clases', renderizarClases, 'admin-clases-lista', 'admin-clases-resumen');
   cargarYRenderizar('usuarios/miembros', renderizarMiembros, 'admin-miembros-lista', null);

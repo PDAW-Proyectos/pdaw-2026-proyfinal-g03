@@ -155,29 +155,46 @@
             </div>
           </div>
         </div>
-                <div id="admin-medicos" class="seccion-contenido d-none">
+        <div id="admin-medicos" class="seccion-contenido d-none">
           <div class="admin-header-action d-flex justify-content-between align-items-center mb-4">
             <h2 class="admin-page-title m-0">DISPONIBILIDAD MÉDICA</h2>
             <button class="btn btn-green" id="btnNuevoTurno">
               <i class="bi bi-plus-lg"></i> PUBLICAR TURNO
             </button>
           </div>
-          <p class="text-gray mb-4">Turnos disponibles para chequeos médicos y nutrición.</p>
-          <p id="admin-turnos-resumen" class="text-gray mb-3" aria-live="polite">
-            Cargando resumen...
-          </p>
-          
-          <div class="row g-4">
-            <div class="col-lg-6">
-              <h4 class="text-white mb-3 fs-15">Chequeos Médicos</h4>
-              <div id="admin-turnos-chequeos" class="d-flex flex-column gap-3" aria-live="polite" aria-busy="true">
-                <div class="admin-card">Cargando chequeos...</div>
+          <div id="admin-turnos-disponibles">
+            <div
+              class="d-flex flex-column flex-md-row align-items-md-center gap-3 p-3 mb-4 rounded border border-secondary"
+              style="background-color: transparent;">
+              <div class="position-relative flex-grow-1"><i class="bi bi-search position-absolute text-gray"
+                  style="left: 15px; top: 50%; transform: translateY(-50%); font-size: 16px; pointer-events: none;">
+                </i><input id="filtroNombreTurno" class="form-control bg-transparent text-white border-secondary"
+                  type="text" placeholder=" Buscar por nombre del médico..." style=" padding-left: 45px;">
+              </div>
+              <div class="position-relative" style="min-width: 220px;">
+                <i class="bi bi-calendar-event position-absolute text-gray"
+                  style="left: 15px; top: 50%; transform: translateY(-50%); font-size: 16px; pointer-events: none;"></i>
+                <input id="filtroFechaTurno" class="form-control bg-transparent text-white border-secondary" type="date"
+                  style="padding-left: 45px; color-scheme: dark;">
               </div>
             </div>
-            <div class="col-lg-6">
-              <h4 class="text-white mb-3 fs-15">Nutrición</h4>
-              <div id="admin-turnos-nutricion" class="d-flex flex-column gap-3" aria-live="polite" aria-busy="true">
-                <div class="admin-card">Cargando nutrición...</div>
+            <p class="text-gray mb-4">Turnos disponibles para chequeos médicos y nutrición.</p>
+            <p id="admin-turnos-resumen" class="text-gray mb-3" aria-live="polite">
+              Cargando resumen...
+            </p>
+
+            <div class="row g-4">
+              <div class="col-lg-6">
+                <h4 class="text-white mb-3 fs-15">Chequeos Médicos</h4>
+                <div id="admin-turnos-chequeos" class="d-flex flex-column gap-3" aria-live="polite" aria-busy="true">
+                  <div class="admin-card">Cargando chequeos...</div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <h4 class="text-white mb-3 fs-15">Nutrición</h4>
+                <div id="admin-turnos-nutricion" class="d-flex flex-column gap-3" aria-live="polite" aria-busy="true">
+                  <div class="admin-card">Cargando nutrición...</div>
+                </div>
               </div>
             </div>
           </div>
@@ -310,7 +327,7 @@
   <!-- modal para Registrar Usuario, se llena dinamicamente desde registroUsuarios.js -->
   <div class="modal fade" id="modalRegistroUsuario" tabindex="-1" aria-hidden="true"></div>
 
-   <!-- modal para Nuevo Turno -->
+  <!-- modal para Nuevo Turno -->
   <div class="modal fade" id="modalTurno" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content bg-pulso-darker border border-secondary">
@@ -330,7 +347,8 @@
             </div>
             <div class="mb-3">
               <label for="turnoMedico" class="form-label text-gray fs-14">Nombre del Médico / Nutricionista</label>
-              <input type="text" class="form-control bg-dark text-white border-secondary" id="turnoMedico" placeholder="Ej: Dr. Pérez" required />
+              <input type="text" class="form-control bg-dark text-white border-secondary" id="turnoMedico"
+                placeholder="Ej: Dr. Pérez" required />
             </div>
             <div class="mb-3">
               <label for="turnoFecha" class="form-label text-gray fs-14">Fecha</label>
@@ -480,19 +498,21 @@
       </div>
     </div>
   </div>
- <!--modal para eliminar cuenta-->
-   <div class="modal fade" id="modalEliminarUsuario" tabindex="-1" aria-hidden="true">
+  <!--modal para eliminar cuenta-->
+  <div class="modal fade" id="modalEliminarUsuario" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content bg-pulso-darker border border-secondary" style="border-radius: 12px;">
-        
+
         <div class="modal-body p-4">
           <div class="d-flex align-items-center gap-2 mb-4">
-            <div class="d-flex align-items-center justify-content-center border border-danger rounded" style="width: 40px; height: 40px;">
+            <div class="d-flex align-items-center justify-content-center border border-danger rounded"
+              style="width: 40px; height: 40px;">
               <i class="bi bi-exclamation-triangle text-danger fs-5"></i>
             </div>
             <span class="text-danger fw-bold fs-14" style="letter-spacing: 0.5px;">ACCIÓN IRREVERSIBLE</span>
           </div>
-          <h3 class="text-white fw-bold mb-4" style="font-family: 'Oswald', sans-serif; font-size: 2rem; line-height: 1.1;">
+          <h3 class="text-white fw-bold mb-4"
+            style="font-family: 'Oswald', sans-serif; font-size: 2rem; line-height: 1.1;">
             ¿ELIMINAR A <br> <span id="nombreUsuarioEliminar" class="text-green">NOMBRE</span>?
           </h3>
 
@@ -500,7 +520,9 @@
             <button type="button" class="btn btn-outline-custom w-50 py-2 fw-bold fs-14" data-bs-dismiss="modal">
               CANCELAR
             </button>
-            <button type="button" class="btn btn-danger w-50 py-2 fw-bold fs-14 d-flex align-items-center justify-content-center gap-2" id="btnConfirmarEliminar">
+            <button type="button"
+              class="btn btn-danger w-50 py-2 fw-bold fs-14 d-flex align-items-center justify-content-center gap-2"
+              id="btnConfirmarEliminar">
               <i class="bi bi-trash3"></i> SÍ, ELIMINAR
             </button>
           </div>
@@ -512,26 +534,30 @@
       </div>
     </div>
   </div>
-    <!-- Modal Genérico de Confirmación -->
+  <!-- Modal Genérico de Confirmación -->
   <div class="modal fade" id="modalConfirmacion" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content bg-pulso-darker border border-secondary" style="border-radius: 12px;">
-        
+
         <div class="modal-body p-4">
           <div class="d-flex align-items-center gap-2 mb-4">
-            <div class="d-flex align-items-center justify-content-center border border-danger rounded" style="width: 40px; height: 40px;">
+            <div class="d-flex align-items-center justify-content-center border border-danger rounded"
+              style="width: 40px; height: 40px;">
               <i class="bi bi-exclamation-triangle text-danger fs-5"></i>
             </div>
             <span class="text-danger fw-bold fs-14" style="letter-spacing: 0.5px;">CONFIRMACIÓN</span>
           </div>
-          <h3 class="text-white fw-bold mb-4" style="font-family: 'Oswald', sans-serif; font-size: 1.8rem; line-height: 1.1;">
+          <h3 class="text-white fw-bold mb-4"
+            style="font-family: 'Oswald', sans-serif; font-size: 1.8rem; line-height: 1.1;">
             <span id="textoConfirmacionModal">¿Estás seguro?</span>
           </h3>
           <div class="d-flex gap-3 mb-4">
             <button type="button" class="btn btn-outline-custom w-50 py-2 fw-bold fs-14" data-bs-dismiss="modal">
               CANCELAR
             </button>
-            <button type="button" class="btn btn-danger w-50 py-2 fw-bold fs-14 d-flex align-items-center justify-content-center gap-2" id="btnAceptarConfirmacion">
+            <button type="button"
+              class="btn btn-danger w-50 py-2 fw-bold fs-14 d-flex align-items-center justify-content-center gap-2"
+              id="btnAceptarConfirmacion">
               <i class="bi bi-check-lg"></i> ACEPTAR
             </button>
           </div>
@@ -560,7 +586,7 @@
       </div>
     </div>
   </div>
- 
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script type="module" src="js/admin/admin.js"></script>
 </body>
