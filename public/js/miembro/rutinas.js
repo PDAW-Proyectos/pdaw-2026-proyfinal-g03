@@ -398,8 +398,8 @@ export function inicializarGeneracionPlan() {
     }
 
     // estado de carga en el btn
-    const textoOriginal = btn.textContent;
-    btn.textContent = 'Generando plan... (puede tardar unos segundos)';
+    const textoOriginal = btn.innerHTML;
+    btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Generando plan...`;
     btn.disabled = true;
 
     try {
@@ -419,15 +419,20 @@ export function inicializarGeneracionPlan() {
       // el backend devuelve el plan con todos sus días y ejercicios
       renderizarPlan(datos);
     } catch (error) {
-      mensaje.textContent = error.message;
-      // si falla se muetra el estado vacío de nuevo
+      mensaje.textContent = '';
+
       mostrarMensaje(
         contenedor,
-        'No se pudo generar el plan. Intentá de nuevo en unos minutos.',
+        `<div class="d-flex flex-column align-items-center py-4">
+           <i class="bi bi-robot text-warning fs-1 mb-3"></i>
+           <h5 class="text-white mb-2">Servicio temporalmente ocupado</h5>
+           <p class="text-gray mb-0 text-center">El generador de planes con IA está tardando más de lo habitual. <br>Por favor, intentá de nuevo en unos minutos o consultá con nuestros entrenadores.</p>
+         </div>`,
         'text-danger',
       );
     } finally {
-      btn.textContent = textoOriginal;
+      // se restaura el btn para que el usuario pueda reintentar
+      btn.innerHTML = textoOriginal;
       btn.disabled = false;
     }
   });

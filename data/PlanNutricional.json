@@ -1,5 +1,5 @@
 {
-  "ultimoId": 1,
+  "ultimoId": 4,
   "items": [
     {
       "id": 1,
@@ -38,6 +38,123 @@
       "origen": "ia",
       "idExterno": null,
       "creadoEn": "2026-11-09T22:54:24.827Z"
+    },
+    {
+      "id": 2,
+      "miembroId": 96385274,
+      "nombre": "Plan Nutricional para Ganar Masa Muscular",
+      "objetivo": "ganar_musculo",
+      "caloriasDiarias": 2200,
+      "descripcion": "Un plan sencillo y equilibrado para ayudar a un principiante a aumentar masa muscular de forma saludable con dos días de entrenamiento.",
+      "comidas": [
+        {
+          "momento": "Desayuno",
+          "ejemplo": "Avena con leche, un banano y un huevo revuelto."
+        },
+        {
+          "momento": "Media Mañana",
+          "ejemplo": "Un puñado de frutos secos y una manzana."
+        },
+        {
+          "momento": "Almuerzo",
+          "ejemplo": "Arroz con pechuga de pollo, ensalada fresca y aceite de oliva."
+        },
+        {
+          "momento": "Merienda",
+          "ejemplo": "Yogur natural con un poco de granola."
+        },
+        {
+          "momento": "Cena",
+          "ejemplo": "Pescado al horno con puré de papa y verduras cocidas."
+        }
+      ],
+      "recomendaciones": [
+        "Te sugerimos consultar con tu médico o el nutricionista del gimnasio antes de empezar este plan.",
+        "Bebe suficiente agua durante todo el día para mantenerte hidratado.",
+        "Asegúrate de descansar adecuadamente entre los días de entrenamiento.",
+        "Come despacio y mastica bien los alimentos para una mejor digestión."
+      ],
+      "origen": "ia",
+      "idExterno": null,
+      "creadoEn": "2026-11-18T22:26:07.584Z"
+    },
+    {
+      "id": 3,
+      "miembroId": 96385274,
+      "nombre": "Plan Nutricional Sencillo para Pérdida de Peso",
+      "objetivo": "perder_peso",
+      "caloriasDiarias": 1600,
+      "descripcion": "Un plan general, equilibrado y moderado adaptado para buscar la pérdida de peso de forma saludable.",
+      "comidas": [
+        {
+          "momento": "Desayuno",
+          "ejemplo": "Una taza de café o té con leche descremada y una tostada de pan integral con queso fresco magro."
+        },
+        {
+          "momento": "Media Mañana",
+          "ejemplo": "Una fruta fresca de estación o un yogur descremado."
+        },
+        {
+          "momento": "Almuerzo",
+          "ejemplo": "Pechuga de pollo a la plancha con una porción abundante de ensalada de hojas verdes y tomate, aliñada con una cucharadita de aceite de oliva."
+        },
+        {
+          "momento": "Merienda",
+          "ejemplo": "Una infusión a elección y un puñado pequeño de frutos secos."
+        },
+        {
+          "momento": "Cena",
+          "ejemplo": "Merluza al horno con vegetales cocidos al vapor (zapallito y zanahoria)."
+        }
+      ],
+      "recomendaciones": [
+        "Es fundamental consultar con el médico o el nutricionista del gimnasio antes de empezar cualquier plan.",
+        "Bebe suficiente agua durante todo el día para mantenerte hidratado.",
+        "Realiza caminatas o actividad física moderada de forma regular.",
+        "Evita las bebidas azucaradas y los alimentos ultraprocesados."
+      ],
+      "origen": "ia",
+      "idExterno": null,
+      "creadoEn": "2026-11-18T23:04:12.916Z"
+    },
+    {
+      "id": 4,
+      "miembroId": 96385274,
+      "nombre": "Plan Nutricional Sencillo para Resistencia",
+      "objetivo": "resistencia",
+      "caloriasDiarias": 2000,
+      "descripcion": "Un plan general y equilibrado diseñado para mantener tus niveles de energía y mejorar tu resistencia en los entrenamientos diarios.",
+      "comidas": [
+        {
+          "momento": "Desayuno",
+          "ejemplo": "Tostadas de pan integral con aguacate y huevo revuelto, acompañado de un vaso de jugo de fruta natural."
+        },
+        {
+          "momento": "Media Mañana",
+          "ejemplo": "Un plátano y un puñado pequeño de frutos secos."
+        },
+        {
+          "momento": "Almuerzo",
+          "ejemplo": "Pechuga de pollo a la plancha con una porción abundante de arroz integral y ensalada fresca de vegetales."
+        },
+        {
+          "momento": "Merienda",
+          "ejemplo": "Yogur natural con un poco de avena y rodajas de manzana."
+        },
+        {
+          "momento": "Cena",
+          "ejemplo": "Pescado al horno con patatas cocidas y verduras al vapor."
+        }
+      ],
+      "recomendaciones": [
+        "Te sugerimos consultar con un médico o con el nutricionista del gimnasio antes de empezar este plan.",
+        "Mantente hidratado bebiendo agua a lo largo de todo el día.",
+        "Asegúrate de descansar lo suficiente para una buena recuperación muscular.",
+        "Realiza los ejercicios de manera progresiva y sin forzar tu cuerpo."
+      ],
+      "origen": "ia",
+      "idExterno": null,
+      "creadoEn": "2026-11-18T23:04:52.940Z"
     }
   ]
 }
