@@ -29,6 +29,7 @@ describe('ServicioUsuarios', () => {
       nombre: 'Juan Perez',
       email: 'juan@test.com',
       peso: 80,
+      pesoMeta: 90,
       altura: 180,
       edad: 30,
       objetivo: 'ganar_musculo',
@@ -53,7 +54,7 @@ describe('ServicioUsuarios', () => {
       peso: 80,
       altura: 180,
       edad: 30,
-      objetivo: 'ganar_musculo',
+      objetivo: 'resistencia',
     };
 
     await expect(servicioUsuarios.crearMiembro(datosNuevos)).rejects.toThrow(

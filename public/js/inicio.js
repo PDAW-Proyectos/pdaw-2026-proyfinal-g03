@@ -127,7 +127,7 @@ const cargarActividades = async () => {
   try {
     const actividades = await obtenerDatos('actividades');
     renderizarActividades(actividades);
-  } catch (error) {
+  } catch {
     mostrarMensaje(
       actividadesDestacadas,
       'No se pudieron cargar las actividades. Intentá nuevamente más tarde.',
@@ -140,7 +140,7 @@ const cargarMembresias = async () => {
   try {
     const membresias = await obtenerDatos('membresias');
     renderizarMembresias(membresias);
-  } catch (error) {
+  } catch {
     mostrarMensaje(
       membresiasInicio,
       'No se pudieron cargar las membresías. Intentá nuevamente más tarde.',
@@ -153,7 +153,7 @@ const cargarHorarios = async () => {
   try {
     const horarios = await obtenerDatos('horarios');
     renderizarHorarios(horarios);
-  } catch (error) {
+  } catch {
     mostrarMensaje(
       horariosInicio,
       'No se pudieron cargar los horarios. Intentá nuevamente más tarde.',

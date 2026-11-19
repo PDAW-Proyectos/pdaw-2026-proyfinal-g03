@@ -20,7 +20,7 @@ export function inicializarGestionActividades(usuario) {
   });
 }
 
-async function abrirModalEdicion(claseId, usuario) {
+async function abrirModalEdicion(claseId) {
   try {
     const respuesta = await fetch(`/api/clases/${claseId}`, { credentials: 'include' });
     const clase = await respuesta.json();

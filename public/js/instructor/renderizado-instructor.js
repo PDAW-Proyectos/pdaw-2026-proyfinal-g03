@@ -382,18 +382,6 @@ export const renderizarBloqueos = (bloqueos) => {
     });
   contenedor.setAttribute('aria-busy', 'false');
 };
-// Envuelve el proceso de buscar datos y renderizar, mostrando estados de carga y error.
-const cargarYRenderizar = async (recurso, renderizar, idContenedor, idResumen) => {
-  const contenedor = document.getElementById(idContenedor);
-  if (!contenedor) return;
-  mostrarCargando(contenedor);
-  try {
-    renderizar(await obtenerDatos(recurso));
-  } catch (error) {
-    actualizarResumen(idResumen, 'Resumen no disponible.');
-    mostrarMensaje(contenedor, error.message, 'text-danger');
-  }
-};
 // Función principal que se exporta.
 // Llena los datos del perfil del instructor y dispara la carga de sus actividades.
 export function inicializarRenderizadoInstructor(usuario) {
@@ -408,7 +396,10 @@ export function inicializarRenderizadoInstructor(usuario) {
     document.getElementById('perfil-email').value = usuario.email || '';
   }
   if (document.getElementById('perfil-telefono')) {
-    document.getElementById('perfil-telefono').value = usuario.telefono || 'No registrado';
+    document.getElementById('perfil-telefono').value = usuario.telefono || '';
+  }
+  if (document.getElementById('perfil-especialidad')) {
+    document.getElementById('perfil-especialidad').value = usuario.especialidad || '';
   }
 
   // Llenado del horario base

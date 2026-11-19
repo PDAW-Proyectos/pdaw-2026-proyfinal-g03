@@ -38,8 +38,12 @@ function pedidoEntrenamiento(miembro, { nivel, dias, semanas }) {
 Arma un plan de entrenamiento semanal con exactamente ${dias} días de entrenamiento y de 4 a 6 ejercicios por día. La misma semana se repite durante ${semanas} semanas.`;
 }
 
-function pedidoNutricion(miembro, { nivel, dias }) {
-  return `${describirMiembro(miembro, { nivel, dias })}
+function pedidoNutricion(miembro, { objetivo }) {
+  return `Datos del miembro:
+- Edad: ${miembro.edad} años
+- Peso: ${miembro.peso} kg
+- Altura: ${miembro.altura} cm
+- Objetivo nutricional: ${ETIQUETAS_OBJETIVO[objetivo]}
 
 Arma un plan nutricional diario sencillo, con calorías diarias aproximadas y de 4 a 5 comidas con ejemplos simples.`;
 }

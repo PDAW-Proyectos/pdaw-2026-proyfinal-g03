@@ -95,16 +95,15 @@ export function inicializarGeneracionPlanNutricional() {
     event.preventDefault();
     mensaje.textContent = '';
 
-    const nivel = document.getElementById('nutricionNivel').value;
-    const dias = Number(document.getElementById('nutricionDias').value);
+    const objetivo = document.getElementById('nutricionObjetivo').value;
 
-    if (!nivel || !dias) {
-      mensaje.textContent = 'Seleccioná un nivel y una cantidad de días.';
+    if (!objetivo) {
+      mensaje.textContent = 'Seleccioná un objetivo.';
       return;
     }
 
-    const textoOriginal = btn.textContent;
-    btn.textContent = 'Generando plan... (puede tardar unos segundos)';
+    const textoOriginal = btn.innerHTML;
+    btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Generando plan...`;
     btn.disabled = true;
 
     try {
@@ -112,7 +111,7 @@ export function inicializarGeneracionPlanNutricional() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify({ nivel, dias }),
+        body: JSON.stringify({ objetivo }),
       });
 
       const datos = await respuesta.json();
@@ -123,14 +122,20 @@ export function inicializarGeneracionPlanNutricional() {
 
       renderizarPlanNutricional(datos);
     } catch (error) {
-      mensaje.textContent = error.message;
+      mensaje.textContent = '';
+
       mostrarMensaje(
         contenedor,
-        'No se pudo generar el plan. Intentá de nuevo en unos minutos.',
+        `<div class="d-flex flex-column align-items-center py-4">
+           <i class="bi bi-robot text-warning fs-1 mb-3"></i>
+           <h5 class="text-white mb-2">Servicio temporalmente ocupado</h5>
+           <p class="text-gray mb-0 text-center">El generador de planes con IA está tardando más de lo habitual. <br>Por favor, intentá de nuevo en unos minutos o consultá con nuestro personal.</p>
+         </div>`,
         'text-danger',
       );
     } finally {
-      btn.textContent = textoOriginal;
+      // se restaura el btn para que el usuario pueda reintentar
+      btn.innerHTML = textoOriginal;
       btn.disabled = false;
     }
   });

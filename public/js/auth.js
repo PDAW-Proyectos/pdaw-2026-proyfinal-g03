@@ -7,16 +7,17 @@ const PANEL_POR_ROL = {
 // =========================================
 // INICIAR SESIÓN
 // =========================================
-export async function iniciarSesion(email, password) {
+export async function iniciarSesion(email, password, signal) {
   const respuesta = await fetch('/api/auth/login', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
     body: JSON.stringify({ email, password }),
+    signal
   });
   const datos = await respuesta.json();
   if (!respuesta.ok) {
-    throw new Error(datos.mensaje || datos.error || 'Error al iniciar sesión');
+    throw new Error(datos.mensaje || datos.error || datos.detail || 'Error al iniciar sesión');
   }
   const panel = PANEL_POR_ROL[datos.usuario.rol];
   if (!panel) {

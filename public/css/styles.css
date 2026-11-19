@@ -32,37 +32,48 @@ h6,
 .text-green {
   color: var(--pulso-green) !important;
 }
+
 .bg-green {
   background-color: var(--pulso-green) !important;
   color: var(--pulso-dark) !important;
 }
+
 .text-gray {
   color: var(--pulso-gray);
 }
+
 .fs-12 {
   font-size: 12px !important;
 }
+
 .fs-13 {
   font-size: 13px !important;
 }
+
 .fs-14 {
   font-size: 14px !important;
 }
+
 .fs-15 {
   font-size: 15px !important;
 }
+
 .fs-16 {
   font-size: 16px !important;
 }
+
 .bg-pulso-card {
   background-color: #161616 !important;
 }
+
 .bg-pulso-darker {
   background-color: #0a0a0a !important;
 }
+
 .border-start-green {
   border-left: 4px solid var(--pulso-green) !important;
 }
+
 .border-yellow {
   border-color: #ffc107 !important;
 }
@@ -77,6 +88,7 @@ h6,
   padding: 12px 24px;
   transition: all 0.3s ease;
 }
+
 .btn-green:hover {
   background-color: #9ce62e;
   color: var(--pulso-dark);
@@ -90,6 +102,7 @@ h6,
   font-weight: 700;
   transition: all 0.3s ease;
 }
+
 .btn-outline-custom:hover {
   background-color: #222;
   color: #fff;
@@ -99,6 +112,7 @@ h6,
 #btnCerrarSesion:hover {
   color: var(--pulso-green);
 }
+
 /* =========================================
    2. LANDING PAGE (index, gimnasio, actividades, membresia)
    ========================================= */
@@ -106,17 +120,20 @@ h6,
   background-color: var(--pulso-darker);
   padding: 20px 0;
 }
+
 .navbar-brand {
   font-size: 28px;
   font-weight: 700;
   letter-spacing: 1px;
   color: #fff !important;
 }
+
 .nav-link {
   color: #ccc !important;
   font-size: 14px;
   margin: 0 15px;
 }
+
 .nav-link:hover {
   color: var(--pulso-green) !important;
 }
@@ -130,6 +147,7 @@ h6,
   display: flex;
   align-items: center;
 }
+
 .hero-section::before {
   content: '';
   position: absolute;
@@ -137,23 +155,24 @@ h6,
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(
-    90deg,
-    rgba(10, 10, 10, 1) 0%,
-    rgba(10, 10, 10, 0.8) 40%,
-    rgba(10, 10, 10, 0) 100%
-  );
+  background: linear-gradient(90deg,
+      rgba(10, 10, 10, 1) 0%,
+      rgba(10, 10, 10, 0.8) 40%,
+      rgba(10, 10, 10, 0) 100%);
   z-index: 1;
 }
+
 .hero-content {
   position: relative;
   z-index: 2;
 }
+
 .hero-title {
   font-size: clamp(3rem, 6vw, 5.5rem);
   line-height: 1;
   margin-bottom: 20px;
 }
+
 .hero-text {
   max-width: 500px;
   font-size: 1.1rem;
@@ -168,6 +187,7 @@ h6,
   text-transform: uppercase;
   margin-bottom: 20px;
 }
+
 .subtitle-line::before {
   content: '';
   display: inline-block;
@@ -196,17 +216,21 @@ h6,
   padding: 60px 0;
   border-bottom: 1px solid #222;
 }
+
 .stat-item {
   border-right: 1px solid #333;
 }
+
 .stat-item:last-child {
   border-right: none;
 }
+
 .stat-number {
   font-size: 3rem;
   font-weight: 700;
   margin-bottom: 5px;
 }
+
 .stat-number span {
   color: var(--pulso-green);
 }
@@ -215,6 +239,7 @@ h6,
   padding-top: 100px !important;
   padding-bottom: 100px !important;
 }
+
 .activity-card {
   position: relative;
   height: 400px;
@@ -228,27 +253,26 @@ h6,
   color: white;
   overflow: hidden;
 }
+
 .activity-card::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.9) 0%,
-    rgba(0, 0, 0, 0.2) 50%,
-    rgba(0, 0, 0, 0.6) 100%
-  );
+  background: linear-gradient(to top,
+      rgba(0, 0, 0, 0.9) 0%,
+      rgba(0, 0, 0, 0.2) 50%,
+      rgba(0, 0, 0, 0.6) 100%);
   z-index: 1;
   transition: 0.3s;
 }
+
 .activity-card:hover::before {
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.9) 0%,
-    rgba(0, 0, 0, 0.4) 50%,
-    rgba(0, 0, 0, 0.6) 100%
-  );
+  background: linear-gradient(to top,
+      rgba(0, 0, 0, 0.9) 0%,
+      rgba(0, 0, 0, 0.4) 50%,
+      rgba(0, 0, 0, 0.6) 100%);
 }
+
 .activity-label {
   position: relative;
   z-index: 2;
@@ -256,7 +280,8 @@ h6,
   letter-spacing: 1px;
   color: #fff;
 }
-.activity-card > div:last-child {
+
+.activity-card>div:last-child {
   position: relative;
   z-index: 2;
 }
@@ -267,16 +292,19 @@ h6,
   object-fit: cover;
   border-radius: 0;
 }
+
 .icon-list {
   list-style: none;
   padding: 0;
 }
+
 .icon-list li {
   display: flex;
   align-items: center;
   margin-bottom: 15px;
   color: #fff;
 }
+
 .icon-list li span {
   font-size: 1.2rem;
 }
@@ -284,6 +312,7 @@ h6,
 .border-top-custom {
   border-top: 1px solid #222;
 }
+
 .pricing-card {
   border: 1px solid #333;
   padding: 40px;
@@ -293,9 +322,11 @@ h6,
   display: flex;
   flex-direction: column;
 }
+
 .pricing-card.featured {
   border-color: var(--pulso-green);
 }
+
 .featured-badge {
   position: absolute;
   top: -15px;
@@ -307,11 +338,13 @@ h6,
   font-weight: 700;
   text-transform: uppercase;
 }
+
 .pricing-list {
   list-style: none;
   padding: 0;
   margin: 30px 0;
 }
+
 .pricing-list li {
   margin-bottom: 15px;
   font-size: 14px;
@@ -319,6 +352,7 @@ h6,
   display: flex;
   align-items: center;
 }
+
 .pricing-list li::before {
   content: '✓';
   color: var(--pulso-green);
@@ -329,22 +363,26 @@ h6,
 .cta-banner {
   padding: 80px 0;
 }
+
 .btn-cta {
   border-radius: 0;
   padding: 15px 30px;
   font-family: 'Oswald', sans-serif;
   font-weight: 700;
 }
+
 .btn-cta:hover {
   background-color: #333;
   color: #fff;
 }
+
 footer {
   background-color: var(--pulso-darker);
   padding: 40px 0;
   font-size: 14px;
   color: var(--pulso-gray);
 }
+
 .footer-brand {
   font-size: 24px;
 }
@@ -356,6 +394,7 @@ footer {
   background-color: var(--pulso-darker);
   min-height: 100vh;
 }
+
 .admin-header {
   padding: 20px 40px;
   border-bottom: 1px solid #222;
@@ -367,6 +406,7 @@ footer {
   z-index: 1020;
   background-color: var(--pulso-darker);
 }
+
 .admin-user-info {
   font-size: 14px;
   font-weight: 600;
@@ -374,6 +414,7 @@ footer {
   align-items: center;
   gap: 20px;
 }
+
 .admin-user-info a {
   color: #fff;
   text-decoration: none;
@@ -382,6 +423,7 @@ footer {
   gap: 5px;
   transition: color 0.3s;
 }
+
 .admin-user-info a:hover {
   color: var(--pulso-green);
 }
@@ -403,9 +445,11 @@ footer {
   padding: 0;
   margin: 0;
 }
+
 .admin-nav li {
   margin-bottom: 10px;
 }
+
 .admin-nav-link {
   display: flex !important;
   align-items: center;
@@ -426,16 +470,19 @@ footer {
   word-wrap: break-word;
   line-height: 1.2;
 }
+
 .admin-nav-link:hover {
   color: #ffffff !important;
   background-color: rgba(255, 255, 255, 0.05) !important;
 }
+
 .admin-nav-link.active {
   background-color: #1e1e1e !important;
   color: var(--pulso-green) !important;
   border-color: #1e1e1e !important;
   font-weight: 700 !important;
 }
+
 .admin-nav-link i {
   font-size: 1.1rem;
   flex-shrink: 0;
@@ -444,11 +491,13 @@ footer {
 .admin-content-area {
   padding: 40px;
 }
+
 .admin-page-title {
   font-size: 3rem;
   font-weight: 700;
   margin-bottom: 30px;
 }
+
 .admin-header-action {
   display: flex;
   justify-content: space-between;
@@ -467,14 +516,17 @@ footer {
   align-items: center;
   transition: border-color 0.3s;
 }
+
 .admin-card:hover {
   border-color: #444;
 }
+
 .admin-card-info h4 {
   margin: 0 0 5px 0;
   font-size: 1.2rem;
   color: #fff;
 }
+
 .admin-card-info p {
   margin: 0;
   color: var(--pulso-gray);
@@ -488,6 +540,7 @@ footer {
   align-items: center;
   flex-wrap: wrap;
 }
+
 .admin-btn-icon {
   background: transparent;
   border: 1px solid #444;
@@ -500,19 +553,23 @@ footer {
   align-items: center;
   gap: 5px;
 }
+
 .admin-btn-icon:hover {
   background: #333;
   color: var(--pulso-green);
   border-color: var(--pulso-green);
 }
+
 .admin-btn-icon.text-danger {
   border-color: #ff4444 !important;
   color: #ff4444 !important;
 }
+
 .admin-btn-icon.text-success {
   border-color: #198754 !important;
   color: #198754 !important;
 }
+
 .admin-btn-icon.text-warning {
   border-color: #ffc107 !important;
   color: #ffc107 !important;
@@ -524,6 +581,7 @@ footer {
   margin-bottom: 30px;
   flex-wrap: wrap;
 }
+
 .admin-btn-filter {
   height: 50px;
   background-color: transparent;
@@ -537,6 +595,7 @@ footer {
   gap: 8px;
   transition: all 0.3s;
 }
+
 .admin-btn-filter:hover,
 .admin-btn-filter.active {
   background-color: var(--pulso-green);
@@ -544,21 +603,25 @@ footer {
   border-color: var(--pulso-green);
   font-weight: 600;
 }
+
 .admin-input-group {
   margin-bottom: 25px;
 }
+
 .admin-input-group label {
   display: block;
   margin-bottom: 10px;
   font-size: 15px;
   font-weight: 600;
 }
+
 .admin-input-row {
   display: flex;
   gap: 15px;
   align-items: center;
   flex-wrap: wrap;
 }
+
 .admin-form-control {
   background-color: #0f0f0f;
   border: 1px solid #333;
@@ -568,6 +631,7 @@ footer {
   width: 100%;
   max-width: 200px;
 }
+
 .admin-form-control:focus {
   background-color: #0f0f0f;
   color: #fff;
@@ -585,13 +649,16 @@ footer {
   box-shadow: none !important;
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23666'/%3e%3c/svg%3e") !important;
 }
+
 .custom-switch:checked {
   background-color: var(--pulso-green) !important;
   border-color: var(--pulso-green) !important;
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23121212'/%3e%3c/svg%3e") !important;
 }
+
 .btn-cierre {
-  height: 50px !important; /* misma altura que .trainer-form-control */
+  height: 50px !important;
+  /* misma altura que .trainer-form-control */
   padding-top: 0 !important;
   padding-bottom: 0 !important;
   line-height: 1 !important;
@@ -601,8 +668,10 @@ footer {
   white-space: nowrap;
   box-sizing: border-box;
 }
+
 .btn-horariohabitual {
-  height: 49px !important; /* misma altura que .trainer-form-control */
+  height: 49px !important;
+  /* misma altura que .trainer-form-control */
   padding-top: 0px !important;
   padding-bottom: 0px !important;
   line-height: 1 !important;
@@ -618,6 +687,7 @@ footer {
   background-color: var(--pulso-darker);
   min-height: 100vh;
 }
+
 .user-header {
   padding: 20px 40px;
   border-bottom: 1px solid #222;
@@ -625,12 +695,14 @@ footer {
   justify-content: space-between;
   align-items: center;
 }
+
 .user-info {
   display: flex;
   align-items: center;
   gap: 10px;
   font-size: 14px;
 }
+
 .user-info a {
   color: #fff;
   text-decoration: none;
@@ -639,18 +711,22 @@ footer {
   gap: 8px;
   transition: color 0.3s;
 }
+
 .user-info a:hover {
   color: var(--pulso-green);
 }
+
 .user-name {
   color: var(--pulso-gray);
   font-family: 'Inter', sans-serif;
   text-transform: none;
 }
+
 .user-name strong {
   color: #ffffff;
   font-weight: 600;
 }
+
 .user-separator {
   color: #444;
   margin: 0 5px;
@@ -659,11 +735,13 @@ footer {
 .user-content-area {
   padding: 40px;
 }
+
 .user-page-title {
   font-size: 3rem;
   font-weight: 700;
   margin-bottom: 30px;
 }
+
 .user-card {
   background-color: #161616;
   border: 1px solid var(--pulso-border);
@@ -672,9 +750,11 @@ footer {
   margin-bottom: 15px;
   transition: border-color 0.3s;
 }
+
 .user-card:hover {
   border-color: #444;
 }
+
 .user-btn-outline {
   background: transparent;
   border: 1px solid #444;
@@ -690,10 +770,12 @@ footer {
   align-items: center;
   gap: 5px;
 }
+
 .user-btn-outline:hover {
   background: #333;
   border-color: #fff;
 }
+
 .user-form-control {
   background-color: #0f0f0f;
   border: 1px solid #333;
@@ -701,6 +783,7 @@ footer {
   padding: 12px 15px;
   border-radius: 4px;
 }
+
 .user-form-control:focus {
   background-color: #0f0f0f;
   color: #fff;
@@ -716,6 +799,7 @@ footer {
   background-color: var(--pulso-darker);
   min-height: 100vh;
 }
+
 .trainer-header {
   padding: 20px 40px;
   border-bottom: 1px solid #222;
@@ -723,12 +807,14 @@ footer {
   justify-content: space-between;
   align-items: center;
 }
+
 .trainer-user-info {
   display: flex;
   align-items: center;
   gap: 10px;
   font-size: 14px;
 }
+
 .trainer-user-info a {
   color: #fff;
   text-decoration: none;
@@ -737,18 +823,22 @@ footer {
   gap: 8px;
   transition: color 0.3s;
 }
+
 .trainer-user-info a:hover {
   color: var(--pulso-green);
 }
+
 .trainer-name {
   color: var(--pulso-gray);
   font-family: 'Inter', sans-serif;
   text-transform: none;
 }
+
 .trainer-name strong {
   color: #ffffff;
   font-weight: 600;
 }
+
 .trainer-separator {
   color: #444;
   margin: 0 5px;
@@ -757,11 +847,13 @@ footer {
 .trainer-content-area {
   padding: 40px;
 }
+
 .trainer-page-title {
   font-size: 3rem;
   font-weight: 700;
   margin-bottom: 30px;
 }
+
 .trainer-card {
   background-color: #161616;
   border: 1px solid var(--pulso-border);
@@ -770,9 +862,11 @@ footer {
   margin-bottom: 15px;
   transition: border-color 0.3s;
 }
+
 .trainer-card:hover {
   border-color: #444;
 }
+
 .trainer-btn-icon {
   background: transparent;
   border: 1px solid #444;
@@ -785,11 +879,13 @@ footer {
   align-items: center;
   gap: 5px;
 }
+
 .trainer-btn-icon:hover {
   background: #333;
   color: var(--pulso-green);
   border-color: var(--pulso-green);
 }
+
 .trainer-form-control {
   background-color: #0f0f0f;
   border: 1px solid #333;
@@ -797,6 +893,7 @@ footer {
   padding: 12px 15px;
   border-radius: 4px;
 }
+
 .trainer-form-control:focus {
   background-color: #0f0f0f;
   color: #fff;
@@ -804,8 +901,10 @@ footer {
   outline: none;
   box-shadow: none;
 }
+
 .btn-crear {
-  height: 50px !important; /* misma altura que .trainer-form-control */
+  height: 50px !important;
+  /* misma altura que .trainer-form-control */
   padding-top: 0 !important;
   padding-bottom: 0 !important;
   line-height: 1 !important;
@@ -815,8 +914,10 @@ footer {
   white-space: nowrap;
   box-sizing: border-box;
 }
+
 .btn-filtrar {
-  height: 45px !important; /* misma altura que .trainer-form-control */
+  height: 45px !important;
+  /* misma altura que .trainer-form-control */
   padding-top: 0 !important;
   padding-bottom: 0 !important;
   line-height: 1 !important;
@@ -826,6 +927,7 @@ footer {
   white-space: nowrap;
   box-sizing: border-box;
 }
+
 /* =========================================
    6. LOGIN ESPECÍFICO (login.html)
    ========================================= */
@@ -833,18 +935,21 @@ footer {
   height: 100vh;
   overflow: hidden;
 }
+
 .login-img-side {
   background-image: url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1920&auto=format&fit=crop');
   background-size: cover;
   background-position: center;
   position: relative;
 }
+
 .login-img-side::before {
   content: '';
   position: absolute;
   inset: 0;
   background: linear-gradient(90deg, rgba(10, 10, 10, 0.6) 0%, rgba(10, 10, 10, 0.9) 100%);
 }
+
 .login-form-side {
   background-color: #0a0a0a;
   display: flex;
@@ -852,11 +957,13 @@ footer {
   justify-content: center;
   position: relative;
 }
+
 .login-form-wrapper {
   width: 100%;
   max-width: 420px;
   padding: 20px;
 }
+
 .login-input {
   background-color: #161616 !important;
   border: 1px solid #333 !important;
@@ -864,13 +971,16 @@ footer {
   border-radius: 0 !important;
   padding: 12px 15px !important;
 }
+
 .login-input:focus {
   border-color: var(--pulso-green) !important;
   box-shadow: none !important;
 }
+
 .login-input::placeholder {
   color: #666 !important;
 }
+
 .btn-back-home {
   position: absolute;
   top: 20px;
@@ -884,15 +994,18 @@ footer {
   transition: color 0.3s;
   z-index: 10;
 }
+
 .btn-back-home:hover {
   color: var(--pulso-green);
 }
+
 .login-aviso-box {
   background-color: #161616;
   border: 1px solid #333;
   max-width: 380px;
   margin: 0 auto;
 }
+
 .login-aviso-box p {
   font-size: 12px;
   line-height: 1.4;
@@ -902,6 +1015,7 @@ footer {
    7. RESPONSIVE GENERAL
    ========================================= */
 @media (max-width: 991.98px) {
+
   .admin-sidebar,
   .user-sidebar,
   .trainer-sidebar {
@@ -915,6 +1029,7 @@ footer {
     height: auto !important;
     overflow-y: visible !important;
   }
+
   .admin-nav,
   .user-nav,
   .trainer-nav {
@@ -924,12 +1039,14 @@ footer {
     justify-content: center;
     gap: 10px;
   }
+
   .admin-nav li,
   .user-nav li,
   .trainer-nav li {
     margin-bottom: 0;
     width: auto !important;
   }
+
   .admin-nav-link,
   .user-nav-link,
   .trainer-nav-link {
@@ -937,19 +1054,23 @@ footer {
     font-size: 14px !important;
     white-space: nowrap !important;
   }
+
   .admin-content-area,
   .user-content-area,
   .trainer-content-area {
     padding: 30px 20px !important;
   }
+
   .login-body {
     height: auto;
     min-height: 100vh;
     overflow-y: auto;
   }
+
   .login-img-side {
     display: none !important;
   }
+
   .login-form-side {
     min-height: 100vh;
     padding: 20px;
@@ -957,11 +1078,13 @@ footer {
 }
 
 @media (max-width: 575.98px) {
+
   .admin-page-title,
   .user-page-title,
   .trainer-page-title {
     font-size: 2rem;
   }
+
   .admin-card,
   .user-card,
   .trainer-card {
@@ -969,17 +1092,20 @@ footer {
     align-items: flex-start;
     gap: 15px;
   }
+
   .admin-actions,
   .user-actions,
   .trainer-actions {
     width: 100%;
     justify-content: flex-start;
   }
+
   .admin-card-info p,
   .user-card-info p,
   .trainer-card-info p {
     white-space: normal;
   }
+
   .admin-header-action,
   .user-header-action,
   .trainer-header-action {
@@ -987,11 +1113,13 @@ footer {
     align-items: flex-start !important;
     gap: 15px;
   }
+
   .admin-header,
   .user-header,
   .trainer-header {
     padding: 20px;
   }
+
   .user-name,
   .trainer-name {
     font-size: 12px;
@@ -1006,17 +1134,21 @@ footer {
   box-shadow: none !important;
   color: #fff;
 }
+
 .accordion-button:not(.collapsed) {
   background-color: #1e1e1e !important;
   color: var(--pulso-green) !important;
 }
+
 .accordion-button::after {
   filter: invert(1);
 }
+
 .accordion-item {
   border: 1px solid #333 !important;
   background-color: #161616 !important;
 }
+
 .accordion-body {
   background-color: #161616 !important;
   color: var(--pulso-gray);
@@ -1139,4 +1271,205 @@ footer {
   background-color: #351b1b;
   border-color: #702c2c;
   color: #ffaaaa;
+}
+
+/* =========================================
+   GESTIÓN DE MEMBRESÍAS
+   ========================================= */
+
+#admin-membresias .membresia-card {
+  background: #161616;
+  border: 1px solid var(--pulso-border);
+  border-left: 3px solid #444;
+  border-radius: 6px;
+  padding: 22px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  transition: border-color 0.25s ease, background-color 0.25s ease;
+}
+
+#admin-membresias .membresia-card:hover {
+  border-color: #555;
+  background-color: #191919;
+}
+
+#admin-membresias .membresia-card--solicitud {
+  border-left-color: var(--pulso-green);
+}
+
+#admin-membresias .membresia-card--proxima {
+  border-left-color: #ffc107;
+}
+
+#admin-membresias .membresia-card--vencida {
+  border-left-color: #dc3545;
+}
+
+#admin-membresias .membresia-info {
+  min-width: 0;
+  flex: 1;
+}
+
+#admin-membresias .membresia-nombre {
+  color: #fff;
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin: 0 0 8px;
+}
+
+#admin-membresias .membresia-detalle {
+  color: var(--pulso-gray);
+  font-size: 14px;
+  margin: 0 0 5px;
+}
+
+#admin-membresias .membresia-fecha {
+  color: #777;
+  font-size: 12px;
+  margin: 0;
+}
+
+#admin-membresias .membresia-estado {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 12px;
+  padding: 5px 10px;
+  border: 1px solid currentColor;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+#admin-membresias .membresia-estado--proxima {
+  color: #ffc107;
+}
+
+#admin-membresias .membresia-estado--vencida {
+  color: #ff6b6b;
+}
+
+#admin-membresias .membresia-estado--baja {
+  color: #aaa;
+}
+
+#admin-membresias .membresia-acciones {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+#admin-membresias .membresia-btn {
+  min-height: 40px;
+  padding: 9px 16px;
+  border-radius: 3px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+#admin-membresias .membresia-btn-aprobar {
+  background: var(--pulso-green);
+  border: 1px solid var(--pulso-green);
+  color: var(--pulso-dark);
+}
+
+#admin-membresias .membresia-btn-aprobar:hover {
+  background: #9ce62e;
+  border-color: #9ce62e;
+}
+
+#admin-membresias .membresia-btn-rechazar {
+  background: transparent;
+  border: 1px solid #a83b3b;
+  color: #ff7777;
+}
+
+#admin-membresias .membresia-btn-rechazar:hover {
+  background: #351b1b;
+  border-color: #ff5555;
+}
+
+#admin-membresias .membresia-btn-renovar {
+  background: var(--pulso-green);
+  border: 1px solid var(--pulso-green);
+  color: var(--pulso-dark);
+}
+
+#admin-membresias .membresia-btn-renovar:hover {
+  background: #9ce62e;
+  border-color: #9ce62e;
+}
+
+#admin-membresias .membresia-vacio {
+  padding: 25px;
+  background: #161616;
+  border: 1px dashed #333;
+  border-radius: 6px;
+  color: var(--pulso-gray);
+  text-align: center;
+  font-size: 14px;
+}
+
+@media (max-width: 767.98px) {
+  #admin-membresias .membresia-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 20px;
+  }
+
+  #admin-membresias .membresia-acciones {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  #admin-membresias .membresia-btn {
+    flex: 1;
+  }
+}
+
+#modalConfirmarMembresia .modal-content {
+  background: #111;
+  color: #fff;
+  border: 1px solid #292929;
+  border-radius: 6px;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.6);
+}
+
+#modalConfirmarMembresia .modal-header,
+#modalConfirmarMembresia .modal-footer {
+  background: #151515;
+  border-color: #292929;
+  padding: 18px 24px;
+}
+
+#modalConfirmarMembresia .modal-title {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+#modalConfirmarMembresia .modal-body {
+  padding: 24px;
+}
+
+#modalConfirmarMembresia .btn-close {
+  filter: invert(1);
+  opacity: 0.7;
+}
+
+#modalConfirmarMembresia .btn-close:hover {
+  opacity: 1;
 }

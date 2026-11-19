@@ -4,11 +4,15 @@ module.exports = function crearAuthController({ servicioAuth }) {
   async function login(req, res, next) {
     try {
       const { email, password } = req.body ?? {};
-      if (typeof email !== 'string' || typeof password !== 'string' || !email.trim() || !password) {
-        throw new ErrorValidacion('Email y contraseña son obligatorios');
+      if (typeof email !== 'string' || !email.trim()) {
+        throw new ErrorValidacion('El email es obligatorio');
       }
 
-      const usuario = await servicioAuth.iniciarSesion(email, password);
+      if (typeof password !== 'string' || !password) {
+        throw new ErrorValidacion('La contraseña es obligatoria');
+      }
+      const emailLimpio = email.trim();
+      const usuario = await servicioAuth.iniciarSesion(emailLimpio, password);
       await new Promise((resolve, reject) => {
         req.session.regenerate((error) => {
           if (error) reject(error);

@@ -2,9 +2,20 @@
 // el miembro sale de la sesión (req.usuario), nunca del cuerpo
 
 // solo se aceptan solo estos dos campos (nivel y dias) del cuerpo, los datos físicos salen del perfil del miembro
-const CAMPOS = ['nivel', 'dias'];
-const filtrar = (body = {}) =>
-  Object.fromEntries(CAMPOS.filter((c) => c in body).map((c) => [c, body[c]]));
+const CAMPOS_ENTRENAMIENTO = ['nivel', 'dias'];
+const CAMPOS_NUTRICION = ['objetivo'];
+
+const filtrar = (body = {}, camposPermitidos) =>
+  Object.fromEntries(camposPermitidos.filter((c) => c in body).map((c) => [c, body[c]]));
+
+const CAMPOS_EDICION = ['dias'];
+
+const filtrarEdicion = (body = {}) =>
+  Object.fromEntries(
+    CAMPOS_EDICION
+      .filter(c => c in body)
+      .map(c => [c, body[c]])
+  );
 
 const { conNextTodos } = require('../utils/http');
 
@@ -14,7 +25,7 @@ module.exports = function crearControladorPlanes(servicio) {
     generarEntrenamiento: async (req, res) => {
       const plan = await servicio.generarEntrenamiento({
         miembro: req.usuario,
-        ...filtrar(req.body),
+        ...filtrar(req.body, CAMPOS_ENTRENAMIENTO),
       });
       res.status(201).location(`/api/planes-entrenamiento/${plan.id}`).json(plan);
     },
@@ -23,7 +34,7 @@ module.exports = function crearControladorPlanes(servicio) {
     generarNutricional: async (req, res) => {
       const plan = await servicio.generarNutricional({
         miembro: req.usuario,
-        ...filtrar(req.body),
+        ...filtrar(req.body, CAMPOS_NUTRICION),
       });
       res.status(201).location(`/api/planes-nutricionales/${plan.id}`).json(plan);
     },
@@ -50,6 +61,17 @@ module.exports = function crearControladorPlanes(servicio) {
     // GET /api/planes-nutricionales/:id
     obtenerNutricional: async (req, res) => {
       res.json(await servicio.obtenerNutricional({ planId: req.params.id, miembro: req.usuario }));
+    },
+
+    // PUT /api/planes-entrenamiento/:id
+    modificarEntrenamiento: async (req, res) => {
+      const plan = await servicio.modificarEntrenamiento({
+        planId: req.params.id,
+        miembro: req.usuario,
+        ...filtrarEdicion(req.body),
+      });
+
+      res.json(plan);
     },
   });
 };
