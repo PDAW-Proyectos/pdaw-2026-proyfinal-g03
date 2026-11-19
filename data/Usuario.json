@@ -39,7 +39,7 @@
     {
       "id": "44444444",
       "rol": "instructor",
-      "nombre": "cami",
+      "nombre": "Facu",
       "email": "faqndospot@gmail.com",
       "telefono": null,
       "especialidad": "yoga",
@@ -62,6 +62,33 @@
       "planMembresiaPendienteId": null,
       "bajaMembresiaPendiente": false,
       "passwordHash": "$2b$12$Y7fOzw9R7xrNXKCfcbtJe.Su8fTnXTAaCoHC4H8XkozYQuC54RGxi"
+    },
+    {
+      "id": "78945612",
+      "rol": "miembro",
+      "nombre": "Albin",
+      "email": "albin@correo.com",
+      "telefono": "123456456",
+      "peso": 20,
+      "pesoMeta": 40,
+      "altura": 150,
+      "edad": 14,
+      "objetivo": "ganar_musculo",
+      "planMembresiaId": 1,
+      "fechaUltimaRenovacion": "2026-11-19T19:06:36.757Z",
+      "fechaVencimiento": "2026-12-19T19:06:36.757Z",
+      "planMembresiaPendienteId": null,
+      "bajaMembresiaPendiente": false,
+      "passwordHash": "$2b$12$XnVI6ucist8jt2biiKCTW.6nY/sP/ssdascO8tF3YxDJf./9S/VcC"
+    },
+    {
+      "id": "74185274",
+      "rol": "instructor",
+      "nombre": "Bianca",
+      "email": "bianca@correo.com",
+      "telefono": "1111111111",
+      "especialidad": "Running",
+      "passwordHash": "$2b$12$SCgZy04xDMwqbNhJRNqfguBYbrBvsVRs5AfrcK55yxhAPZj2zV3pW"
     }
   ]
 }
