@@ -1,5 +1,5 @@
 {
-  "ultimoId": 6,
+  "ultimoId": 8,
   "items": [
     {
       "id": 1,
@@ -47,8 +47,8 @@
       "fecha": "2026-11-23",
       "hora": "09:30",
       "duracionMin": 45,
-      "disponible": true,
-      "miembroId": null,
+      "disponible": false,
+      "miembroId": 46093529,
       "medico": null
     },
     {
@@ -60,6 +60,16 @@
       "disponible": true,
       "miembroId": null,
       "medico": "facu"
+    },
+    {
+      "id": 7,
+      "tipo": "nutricionista",
+      "fecha": "2026-11-25",
+      "hora": "16:00",
+      "duracionMin": 45,
+      "disponible": true,
+      "miembroId": null,
+      "medico": "Ariel"
     }
   ]
 }

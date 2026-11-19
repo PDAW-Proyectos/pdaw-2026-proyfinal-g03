@@ -1,5 +1,5 @@
 {
-  "ultimoId": 9,
+  "ultimoId": 10,
   "items": [
     {
       "id": 1,
@@ -38,10 +38,10 @@
       "cierre": "17:20"
     },
     {
-      "id": 8,
+      "id": 10,
       "dia": "sabado",
-      "apertura": "13:00",
-      "cierre": "15:00"
+      "apertura": "09:00",
+      "cierre": "12:00"
     }
   ]
 }

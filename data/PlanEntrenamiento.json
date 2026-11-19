@@ -1,5 +1,5 @@
 {
-  "ultimoId": 2,
+  "ultimoId": 5,
   "items": [
     {
       "id": 1,
@@ -280,6 +280,267 @@
       "origen": "ia",
       "idExterno": null,
       "creadoEn": "2026-11-18T22:25:51.956Z"
+    },
+    {
+      "id": 3,
+      "miembroId": 44007760,
+      "nombre": "Plan de Entrenamiento de Prueba",
+      "descripcion": "Este es un plan generado por el Mock para pruebas locales.",
+      "objetivo": "mantener",
+      "nivel": "intermedio",
+      "duracionSemanas": 4,
+      "dias": [
+        {
+          "dia": "Lunes",
+          "enfoque": "Fuerza - Tren Superior",
+          "ejercicios": [
+            {
+              "nombre": "Press de banca",
+              "series": 4,
+              "repeticiones": 10,
+              "descansoSeg": 60
+            },
+            {
+              "nombre": "Remo con barra",
+              "series": 3,
+              "repeticiones": 12,
+              "descansoSeg": 60
+            }
+          ]
+        },
+        {
+          "dia": "Miércoles",
+          "enfoque": "Fuerza - Tren Inferior",
+          "ejercicios": [
+            {
+              "nombre": "Sentadillas",
+              "series": 4,
+              "repeticiones": 10,
+              "descansoSeg": 90
+            },
+            {
+              "nombre": "Peso muerto",
+              "series": 3,
+              "repeticiones": 8,
+              "descansoSeg": 90
+            }
+          ]
+        }
+      ],
+      "recomendaciones": [
+        "Este plan es simulado para pruebas.",
+        "Recordá calentar antes de entrenar."
+      ],
+      "origen": "ia",
+      "idExterno": null,
+      "creadoEn": "2026-11-19T17:36:09.510Z"
+    },
+    {
+      "id": 4,
+      "miembroId": 44007760,
+      "nombre": "Plan de Mantenimiento Juvenil",
+      "descripcion": "Rutina general y sencilla de dos días por semana adecuada para mantener la condicion fisica actual de forma segura.",
+      "objetivo": "mantener",
+      "nivel": "intermedio",
+      "duracionSemanas": 4,
+      "dias": [
+        {
+          "dia": "Lunes",
+          "enfoque": "Cuerpo Completo",
+          "ejercicios": [
+            {
+              "nombre": "Sentadillas sin peso",
+              "series": 3,
+              "repeticiones": 10,
+              "descansoSeg": 60
+            },
+            {
+              "nombre": "Flexiones inclinadas",
+              "series": 3,
+              "repeticiones": 8,
+              "descansoSeg": 60
+            },
+            {
+              "nombre": "Puente de glúteos",
+              "series": 3,
+              "repeticiones": 12,
+              "descansoSeg": 45
+            },
+            {
+              "nombre": "Plancha abdominal",
+              "series": 3,
+              "repeticiones": 1,
+              "descansoSeg": 45
+            }
+          ]
+        },
+        {
+          "dia": "Jueves",
+          "enfoque": "Movilidad y Fuerza General",
+          "ejercicios": [
+            {
+              "nombre": "Zancadas hacia atrás",
+              "series": 3,
+              "repeticiones": 8,
+              "descansoSeg": 60
+            },
+            {
+              "nombre": "Elevaciones laterales con banda elástica",
+              "series": 3,
+              "repeticiones": 10,
+              "descansoSeg": 45
+            },
+            {
+              "nombre": "Remo con banda elástica",
+              "series": 3,
+              "repeticiones": 10,
+              "descansoSeg": 60
+            },
+            {
+              "nombre": "Extensiones de espalda en suelo",
+              "series": 3,
+              "repeticiones": 10,
+              "descansoSeg": 45
+            }
+          ]
+        }
+      ],
+      "recomendaciones": [
+        "Te sugerimos consultar con el médico o el nutricionista del gimnasio antes de empezar.",
+        "Mantén una hidratación constante durante toda la sesión.",
+        "Realiza un calentamiento previo antes de iniciar los ejercicios.",
+        "Prioriza siempre una buena postura frente a la cantidad de repeticiones."
+      ],
+      "origen": "ia",
+      "idExterno": null,
+      "creadoEn": "2026-11-19T17:38:26.246Z"
+    },
+    {
+      "id": 5,
+      "miembroId": 46093529,
+      "nombre": "Plan General para Perder Peso - Nivel Intermedio",
+      "descripcion": "Rutina sencilla de 3 días enfocada en la actividad cardiovascular y fuerza general para ayudar en la pérdida de peso.",
+      "objetivo": "perder_peso",
+      "nivel": "intermedio",
+      "duracionSemanas": 4,
+      "dias": [
+        {
+          "dia": "Día 1",
+          "enfoque": "Cuerpo Completo y Cardio",
+          "ejercicios": [
+            {
+              "nombre": "Sentadillas con peso corporal",
+              "series": 4,
+              "repeticiones": 15,
+              "descansoSeg": 60
+            },
+            {
+              "nombre": "Flexiones de pecho",
+              "series": 3,
+              "repeticiones": 12,
+              "descansoSeg": 60
+            },
+            {
+              "nombre": "Zancadas alternas",
+              "series": 3,
+              "repeticiones": 12,
+              "descansoSeg": 60
+            },
+            {
+              "nombre": "Plancha abdominal",
+              "series": 3,
+              "repeticiones": 1,
+              "descansoSeg": 45
+            },
+            {
+              "nombre": "Caminadora o elíptica",
+              "series": 1,
+              "repeticiones": 20,
+              "descansoSeg": 0
+            }
+          ]
+        },
+        {
+          "dia": "Día 2",
+          "enfoque": "Tren Superior y Core",
+          "ejercicios": [
+            {
+              "nombre": "Remo con mancuernas",
+              "series": 9,
+              "repeticiones": 12,
+              "descansoSeg": 60
+            },
+            {
+              "nombre": "Press de hombros con mancuernas",
+              "series": 3,
+              "repeticiones": 12,
+              "descansoSeg": 60
+            },
+            {
+              "nombre": "Curl de bíceps",
+              "series": 3,
+              "repeticiones": 12,
+              "descansoSeg": 60
+            },
+            {
+              "nombre": "Extensión de tríceps",
+              "series": 3,
+              "repeticiones": 12,
+              "descansoSeg": 60
+            },
+            {
+              "nombre": "Bicicleta estática",
+              "series": 1,
+              "repeticiones": 20,
+              "descansoSeg": 0
+            }
+          ]
+        },
+        {
+          "dia": "Día 3",
+          "enfoque": "Tren Inferior y Resistencia",
+          "ejercicios": [
+            {
+              "nombre": "Peso muerto con mancuernas",
+              "series": 4,
+              "repeticiones": 12,
+              "descansoSeg": 60
+            },
+            {
+              "nombre": "Sentadillas sumo",
+              "series": 3,
+              "repeticiones": 15,
+              "descansoSeg": 60
+            },
+            {
+              "nombre": "Elevación de talones",
+              "series": 3,
+              "repeticiones": 20,
+              "descansoSeg": 45
+            },
+            {
+              "nombre": "Elevación de piernas",
+              "series": 3,
+              "repeticiones": 15,
+              "descansoSeg": 45
+            },
+            {
+              "nombre": "Remo en máquina",
+              "series": 1,
+              "repeticiones": 20,
+              "descansoSeg": 0
+            }
+          ]
+        }
+      ],
+      "recomendaciones": [
+        "Consulta siempre con tu médico o el nutricionista del gimnasio antes de empezar cualquier plan.",
+        "Mantente hidratado durante todo el entrenamiento.",
+        "Duerme lo suficiente para permitir una buena recuperación muscular."
+      ],
+      "origen": "ia",
+      "idExterno": null,
+      "creadoEn": "2026-11-19T18:57:05.751Z"
     }
   ]
 }

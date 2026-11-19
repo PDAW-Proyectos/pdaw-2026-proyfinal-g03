@@ -1,5 +1,5 @@
 {
-  "ultimoId": 5,
+  "ultimoId": 7,
   "items": [
     {
       "id": 1,
@@ -194,6 +194,83 @@
       "origen": "ia",
       "idExterno": null,
       "creadoEn": "2026-11-19T14:24:36.706Z"
+    },
+    {
+      "id": 6,
+      "miembroId": 46093529,
+      "nombre": "Plan General para Ganar Masa Muscular",
+      "objetivo": "ganar_musculo",
+      "caloriasDiarias": 2600,
+      "descripcion": "Un plan nutricional sencillo y equilibrado para apoyar el aumento de masa muscular con alimentos comunes.",
+      "comidas": [
+        {
+          "momento": "Desayuno",
+          "ejemplo": "Avena con leche, un banano y un puñado de frutos secos."
+        },
+        {
+          "momento": "Almuerzo",
+          "ejemplo": "Pechuga de pollo a la plancha, arroz blanco, ensalada fresca y una porción de aguacate."
+        },
+        {
+          "momento": "Merienda",
+          "ejemplo": "Pan integral con crema de maní y una manzana."
+        },
+        {
+          "momento": "Cena",
+          "ejemplo": "Filete de pescado o carne magra, papas al horno y verduras cocidas."
+        },
+        {
+          "momento": "Colación nocturna",
+          "ejemplo": "Un vaso de yogur natural o un trozo de queso fresco."
+        }
+      ],
+      "recomendaciones": [
+        "Mantente bien hidratado tomando suficiente agua durante todo el día.",
+        "Prioriza el descanso adecuado para favorecer la recuperación muscular.",
+        "Realiza actividad física de fuerza de manera constante y segura.",
+        "Te sugerimos consultar con el médico o el nutricionista del gimnasio antes de empezar este plan para adaptarlo a tus necesidades personales."
+      ],
+      "origen": "ia",
+      "idExterno": null,
+      "creadoEn": "2026-11-19T18:58:44.509Z"
+    },
+    {
+      "id": 7,
+      "miembroId": 44007760,
+      "nombre": "Plan General de Resistencia para Jóvenes",
+      "objetivo": "resistencia",
+      "caloriasDiarias": 1600,
+      "descripcion": "Un plan de alimentación sencillo y equilibrado enfocado en aportar la energía necesaria para mejorar la resistencia física de manera saludable y adecuada para la edad.",
+      "comidas": [
+        {
+          "momento": "Desayuno",
+          "ejemplo": "Una taza de leche, una tostada con queso fresco y una porción de fruta."
+        },
+        {
+          "momento": "Media Mañana",
+          "ejemplo": "Un yogur natural o un puñado pequeño de frutos secos."
+        },
+        {
+          "momento": "Almuerzo",
+          "ejemplo": "Arroz con pollo a la plancha y una porción de verduras cocidas."
+        },
+        {
+          "momento": "Merienda",
+          "ejemplo": "Un vaso de jugo de fruta natural y galletas integrales simples."
+        },
+        {
+          "momento": "Cena",
+          "ejemplo": "Pescado al horno con puré de patatas y ensalada ligera."
+        }
+      ],
+      "recomendaciones": [
+        "Mantente bien hidratado tomando agua durante todo el día.",
+        "Realiza actividad física de forma moderada y descansa lo suficiente.",
+        "Consulta con el médico o el nutricionista del gimnasio antes de empezar este plan para adaptarlo a tus necesidades específicas."
+      ],
+      "origen": "ia",
+      "idExterno": null,
+      "creadoEn": "2026-11-19T19:28:37.767Z"
     }
   ]
 }

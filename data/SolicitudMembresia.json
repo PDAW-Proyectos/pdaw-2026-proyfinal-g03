@@ -1,4 +1,13 @@
 {
-  "ultimoId": 0,
-  "items": []
+  "ultimoId": 1,
+  "items": [
+    {
+      "id": 1,
+      "miembroId": "46093529",
+      "tipo": "cambio_plan",
+      "planSolicitadoId": 2,
+      "fechaSolicitud": "2026-11-19T19:00:26.470Z",
+      "estado": "pendiente"
+    }
+  ]
 }
