@@ -1,5 +1,4 @@
 import { mostrarToast } from '../componentes/toast.js';
-
 // Crea un elemento HTML de forma segura.
 const crearElemento = (etiqueta, clases, texto) => {
   const el = document.createElement(etiqueta);
@@ -707,7 +706,7 @@ export const renderizarTurnos = async (usuario) => {
       const informacionDelTurno = crearElemento('div');
       informacionDelTurno.append(
         crearElemento('h4', 'text-white mb-1 fs-5', obtenerNombreTurno(turno)),
-        crearElemento('p', 'text-gray mb-0 fs-14', `${turno.fecha} · ${turno.hora} hs · ${turno.duracionMin} min`),
+        crearElemento('p', 'text-gray mb-0 fs-14', `${turno.medico || 'Médico no asignado'} · ${turno.fecha} · ${turno.hora} hs · ${turno.duracionMin} min`),
       );
       const botonCancelarTurno = crearElemento('button', 'btn user-btn-outline text-danger border-danger py-2 px-4 fs-14', 'CANCELAR');
       botonCancelarTurno.dataset.accion = 'cancelar-turno';
@@ -807,7 +806,7 @@ export const renderizarTurnos = async (usuario) => {
         const informacionDelTurno = crearElemento('div');
         informacionDelTurno.append(
           crearElemento('h4', 'text-white mb-1 fs-5', obtenerNombreTurno(turno)),
-          crearElemento('p', 'text-gray mb-0 fs-14', `${turno.fecha} · ${turno.hora} hs · ${turno.duracionMin} min`),
+           crearElemento('p', 'text-gray mb-0 fs-14', `${turno.medico || 'Médico no asignado'} · ${turno.fecha} · ${turno.hora} hs · ${turno.duracionMin} min`),
         );
         const botonReservarTurno = crearElemento('button', 'btn btn-green py-2 px-4 fs-14', 'RESERVAR');
         botonReservarTurno.dataset.accion = 'reservar-turno';

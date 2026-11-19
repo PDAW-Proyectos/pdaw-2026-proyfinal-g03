@@ -277,35 +277,33 @@
               <p class="text-gray mb-0">Cargando actividades...</p>
             </div>
           </div>
-          <div id="user-nutricion" class="seccion-contenido d-none">
-            <h2 class="user-page-title">NUTRICIÓN</h2>
+        </div>
+        <div id="user-nutricion" class="seccion-contenido d-none">
+          <h2 class="user-page-title">NUTRICIÓN</h2>
 
-            <div class="row g-4 align-items-start">
-              <div class="col-lg-8">
-                <p class="text-gray mb-4">
-                  Generá un plan nutricional personalizado con inteligencia artificial.
-                </p>
+          <div class="row g-4 align-items-start">
+            <div class="col-12">
+              <p class="text-gray mb-4">
+                Generá un plan nutricional personalizado con inteligencia artificial.
+              </p>
 
-                <div class="user-card mb-5">
-                  <h4 class="mb-3 text-white">
-                    <i class="bi bi-magic text-green me-2"></i> Generar nuevo plan
-                  </h4>
-                  <form id="formGenerarPlanNutricional">
-                    <div class="row g-3 align-items-end">
-                      <div class="col-md-12">
-                        <label class="text-gray mb-2 fs-14" for="nutricionObjetivo"
-                          >Tu objetivo</label
-                        >
-                        <select class="user-form-control w-100" id="nutricionObjetivo" required>
-                          <option value="">Seleccionar objetivo...</option>
-                          <option value="perder_peso">Perder peso (Déficit Calórico)</option>
-                          <option value="ganar_musculo">Ganar masa muscular</option>
-                          <option value="mantener">Mantener peso</option>
-                          <option value="resistencia">Mejorar resistencia</option>
-                        </select>
-                      </div>
+              <div class="user-card mb-5">
+                <h4 class="mb-3 text-white">
+                  <i class="bi bi-magic text-green me-2"></i> Generar nuevo plan
+                </h4>
+                <form id="formGenerarPlanNutricional">
+                  <div class="row g-3 align-items-end">
+                    <div class="col-md-12">
+                      <label class="text-gray mb-2 fs-14" for="nutricionObjetivo">Tu objetivo</label>
+                      <select class="user-form-control w-100" id="nutricionObjetivo" required>
+                        <option value="">Seleccionar objetivo...</option>
+                        <option value="perder_peso">Perder peso (Déficit Calórico)</option>
+                        <option value="ganar_musculo">Ganar masa muscular</option>
+                        <option value="mantener">Mantener peso</option>
+                        <option value="resistencia">Mejorar resistencia</option>
+                      </select>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                       <label class="text-gray mb-2 fs-14" for="nutricionDias">Días de la semana</label>
                       <select class="user-form-control w-100" id="nutricionDias" required>
                         <option value="">Seleccionar...</option>
@@ -326,16 +324,16 @@
                   <div id="mensajePlanNutricional" class="text-danger fs-14 mt-2 text-center"></div>
                 </form>
               </div>
-
-              <div id="contenedorPlanNutricional">
-                <div class="user-card text-center py-5">
-                  <i class="bi bi-apple text-gray fs-1 mb-3 d-block"></i>
-                  <h5 class="text-white mb-2">Todavía no tenés un plan nutricional</h5>
-                  <p class="text-gray mb-0 fs-14">
-                    Usá el formulario de arriba para crear tu primer plan personalizado.
-                  </p>
-                </div>
-              </div>
+            </div>
+          </div>
+          
+          <div id="contenedorPlanNutricional">
+            <div class="user-card text-center py-5">
+              <i class="bi bi-apple text-gray fs-1 mb-3 d-block"></i>
+              <h5 class="text-white mb-2">Todavía no tenés un plan nutricional</h5>
+              <p class="text-gray mb-0 fs-14">
+                Usá el formulario de arriba para crear tu primer plan personalizado.
+              </p>
             </div>
           </div>
         </div>
@@ -445,9 +443,6 @@
                 DAR DE BAJA
               </button>
             </div>
-            <p id="mensajeSolicitud" class="text-gray fs-13 mb-0">
-              <i class="bi bi-info-circle me-1"></i>
-            </p>
           </div>
           <div class="user-card">
             <h4 class="mb-2">Eliminar cuenta</h4>

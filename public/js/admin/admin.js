@@ -124,7 +124,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
       });
     }
-
    try {
       inicializarRegistroUsuarios();
       inicializarGestionTurnos();
@@ -143,3 +142,22 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.error('Error general al inicializar el panel:', error);
   }
 });
+export function mostrarConfirmacion(mensaje, callbackAceptar) {
+  const modalEl = document.getElementById('modalConfirmacion');
+  const textoEl = document.getElementById('textoConfirmacionModal');
+  const btnAceptar = document.getElementById('btnAceptarConfirmacion');
+
+  if (!modalEl || !textoEl || !btnAceptar) return;
+
+  textoEl.textContent = mensaje;
+  const nuevoBtnAceptar = btnAceptar.cloneNode(true);
+  btnAceptar.parentNode.replaceChild(nuevoBtnAceptar, btnAceptar);
+
+  const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+  nuevoBtnAceptar.addEventListener('click', () => {
+    modal.hide();
+    callbackAceptar();
+  });
+
+  modal.show();
+}

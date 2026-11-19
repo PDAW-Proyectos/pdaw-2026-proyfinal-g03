@@ -37,24 +37,6 @@
       "passwordHash": "$2b$12$etz7I9a4u6Pl25bwXkhrKOlwiExXMPhN5b7k2PsyIjLS/7BfdLFua"
     },
     {
-      "id": "46093529",
-      "rol": "miembro",
-      "nombre": "topi",
-      "email": "minepremi3@outlook.com",
-      "telefono": null,
-      "peso": 23,
-      "pesoMeta": 45,
-      "altura": 123,
-      "edad": 22,
-      "objetivo": "ganar_musculo",
-      "planMembresiaId": 1,
-      "fechaUltimaRenovacion": "2026-11-19T05:36:02.253Z",
-      "fechaVencimiento": "2026-12-19T05:36:02.253Z",
-      "planMembresiaPendienteId": null,
-      "bajaMembresiaPendiente": false,
-      "passwordHash": "$2b$12$B9um3FWMlSbVXLOafVHgk.idVJtBc7TRZjp6RrrSqkPBpEosz6bDC"
-    },
-    {
       "id": "44444444",
       "rol": "instructor",
       "nombre": "cami",
@@ -62,6 +44,24 @@
       "telefono": null,
       "especialidad": "yoga",
       "passwordHash": "$2b$12$8nj7pCrH4i9V0Xxjr5aU9emD205esgDAxXPwnoYPZqTnp3GDELmbO"
+    },
+    {
+      "id": "46093529",
+      "rol": "miembro",
+      "nombre": "cami",
+      "email": "cami24704@gmail.com",
+      "telefono": null,
+      "peso": 80,
+      "pesoMeta": 55,
+      "altura": 163,
+      "edad": 22,
+      "objetivo": "perder_peso",
+      "planMembresiaId": 1,
+      "fechaUltimaRenovacion": "2026-11-19T06:26:40.433Z",
+      "fechaVencimiento": "2026-12-19T06:26:40.433Z",
+      "planMembresiaPendienteId": null,
+      "bajaMembresiaPendiente": false,
+      "passwordHash": "$2b$12$Y7fOzw9R7xrNXKCfcbtJe.Su8fTnXTAaCoHC4H8XkozYQuC54RGxi"
     }
   ]
 }

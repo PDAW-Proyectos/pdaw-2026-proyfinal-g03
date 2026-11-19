@@ -295,8 +295,13 @@ export const renderizarHorarios = (horarios) => {
 };
 
 export const renderizarTurnos = (turnos) => {
-  const contenedor = document.getElementById('admin-turnos-disponibles');
-  contenedor.replaceChildren();
+  const contenedorChequeos = document.getElementById('admin-turnos-chequeos');
+  const contenedorNutricion = document.getElementById('admin-turnos-nutricion');
+  
+  if (!contenedorChequeos || !contenedorNutricion) return;
+  
+  contenedorChequeos.replaceChildren();
+  contenedorNutricion.replaceChildren();
 
   const chequeos = turnos.filter((turno) => turno.tipo === 'chequeo_medico').length;
   const nutricion = turnos.filter((turno) => turno.tipo === 'nutricionista').length;
@@ -305,43 +310,52 @@ export const renderizarTurnos = (turnos) => {
     `${turnos.length} turnos disponibles · ${chequeos} chequeos médicos · ${nutricion} de nutrición`,
   );
 
-  if (turnos.length === 0) {
-    mostrarMensaje(contenedor, 'No hay turnos médicos disponibles.');
-    return;
+  const crearTarjetaTurno = (turno) => {
+    const tarjeta = crearElemento('article', 'admin-card d-flex justify-content-between align-items-center');
+    const informacion = crearElemento('div', 'admin-card-info');
+    const encabezado = crearElemento('div', 'd-flex align-items-center gap-2 mb-1 flex-wrap');
+    const titulo = crearElemento('h4', 'mb-0', tiposTurno[turno.tipo] || turno.tipo);
+    const estado = crearElemento('span', 'badge bg-success fs-12', 'Disponible');
+    const fecha = new Date(`${turno.fecha}T00:00:00`);
+
+    encabezado.append(titulo, estado);
+    informacion.append(encabezado);
+    let detalleTexto = `${formatoFecha.format(fecha)} · ${turno.hora} · ${turno.duracionMin} min`;
+    if (turno.medico) {
+      detalleTexto += ` · ${turno.medico}`;
+    }
+
+    informacion.append(crearElemento('p', 'mb-0 text-gray fs-13', detalleTexto));
+    
+    const botonEliminar = crearElemento('button', 'btn btn-sm btn-outline-danger ms-2', '');
+    botonEliminar.innerHTML = '<i class="bi bi-trash3"></i>';
+    botonEliminar.title = 'Eliminar turno';
+    botonEliminar.dataset.accion = 'eliminar-turno';
+    botonEliminar.dataset.id = turno.id;
+    
+    tarjeta.append(informacion, botonEliminar);
+    return tarjeta;
+  };
+
+  const turnosChequeo = turnos.filter(t => t.tipo === 'chequeo_medico');
+  if (turnosChequeo.length === 0) {
+    mostrarMensaje(contenedorChequeos, 'No hay turnos de chequeo médico.');
+  } else {
+    turnosChequeo
+      .sort((a, b) => new Date(`${a.fecha}T${a.hora}:00`) - new Date(`${b.fecha}T${b.hora}:00`))
+      .forEach((turno) => contenedorChequeos.append(crearTarjetaTurno(turno)));
+    contenedorChequeos.setAttribute('aria-busy', 'false');
   }
 
-  turnos
-    .slice()
-    .sort((a, b) => new Date(`${a.fecha}T${a.hora}:00`) - new Date(`${b.fecha}T${b.hora}:00`))
-    .forEach((turno) => {
-      const tarjeta = crearElemento('article', 'admin-card');
-      const informacion = crearElemento('div', 'admin-card-info');
-      const encabezado = crearElemento('div', 'd-flex align-items-center gap-2 mb-1 flex-wrap');
-      const tipo = crearElemento('h4', 'mb-0', tiposTurno[turno.tipo] || turno.tipo);
-      const estado = crearElemento('span', 'badge bg-success fs-12', 'Disponible');
-      const fecha = new Date(`${turno.fecha}T00:00:00`);
-
-      encabezado.append(tipo, estado);
-      informacion.append(
-        encabezado,
-        crearElemento(
-          'p',
-          'mb-0',
-          `${formatoFecha.format(fecha)} · ${turno.hora} · ${turno.duracionMin} min`,
-        ),
-      );
-      const botonEliminar = crearElemento(
-        'button',
-        'btn btn-sm btn-outline-danger ms-2',
-        'Eliminar',
-      );
-      botonEliminar.dataset.accion = 'eliminar-turno';
-      botonEliminar.dataset.id = turno.id;
-      tarjeta.append(informacion, botonEliminar);
-      contenedor.append(tarjeta);
-    });
-
-  contenedor.setAttribute('aria-busy', 'false');
+  const turnosNutricion = turnos.filter(t => t.tipo === 'nutricionista');
+  if (turnosNutricion.length === 0) {
+    mostrarMensaje(contenedorNutricion, 'No hay turnos de nutrición.');
+  } else {
+    turnosNutricion
+      .sort((a, b) => new Date(`${a.fecha}T${a.hora}:00`) - new Date(`${b.fecha}T${b.hora}:00`))
+      .forEach((turno) => contenedorNutricion.append(crearTarjetaTurno(turno)));
+    contenedorNutricion.setAttribute('aria-busy', 'false');
+  }
 };
 
 export const cargarYRenderizar = async (recurso, renderizar, idContenedor, idResumen) => {
