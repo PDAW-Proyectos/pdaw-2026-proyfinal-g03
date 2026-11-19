@@ -34,8 +34,8 @@
       "fecha": "2026-11-27",
       "hora": "15:32",
       "duracionMin": 30,
-      "disponible": true,
-      "miembroId": null
+      "disponible": false,
+      "miembroId": 44007760
     }
   ]
 }

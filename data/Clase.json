@@ -9,9 +9,10 @@
       "fechaHora": "2026-11-21T13:00:00.000Z",
       "duracionMin": 60,
       "cupo": 20,
-      "cuposDisponibles": 19,
+      "cuposDisponibles": 18,
       "inscriptosIds": [
-        46093529
+        46093529,
+        44007760
       ]
     },
     {
