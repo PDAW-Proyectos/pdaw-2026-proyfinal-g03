@@ -7,6 +7,18 @@ const crearElemento = (etiqueta, clases, texto) => {
   if (texto !== undefined) el.textContent = texto;
   return el;
 };
+// Variable global para mantener el estado del filtro
+let filtroTextoNombre = '';
+let filtroFecha = '';
+
+// Función auxiliar para formatear la fecha (para no repetir código)
+const formatearFechaHora = (fechaHoraISO) => {
+  if (!fechaHoraISO) return 'Fecha a confirmar';
+  const [fecha, horaCompleta] = fechaHoraISO.split('T');
+  const [anio, mes, dia] = fecha.split('-');
+  const hora = horaCompleta.slice(0, 5);
+  return `${dia}/${mes}/${anio} · ${hora} hs`;
+};
 
 // Crea un párrafo (<p>) que contiene un ícono de Bootstrap Icons seguido de un texto.
 const crearParrafoConIcono = (clases, iconoClases, texto) => {
@@ -423,10 +435,20 @@ const inicializarFiltroMes = (usuario) => {
     botonMesSiguiente.addEventListener('click', () => cambiarDeMes(1));
   }
 };
+const normalizarTextoBusqueda = (texto) => {
+  if (!texto) return '';
+  return texto
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLocaleLowerCase('es-AR')
+    .trim();
+};
+
 export const renderizarReservas = async (usuario) => {
   const contenedorDeReservas = document.getElementById('contenedorReservas');
   if (!contenedorDeReservas) return;
-  contenedorDeReservas.className = 'd-flex flex-column gap-3 mb-5';
+  
+  contenedorDeReservas.className = 'd-flex flex-column gap-4 mb-5';
   contenedorDeReservas.replaceChildren();
 
   const [listaDeClases, usuarioActual] = await Promise.all([
@@ -436,58 +458,181 @@ export const renderizarReservas = async (usuario) => {
 
   const listaFinalDeClases = Array.isArray(listaDeClases) ? listaDeClases : [];
   const datosDelUsuario = usuarioActual?.usuario || usuarioActual || usuario;
+  const fechaActual = new Date();
 
-  if (listaFinalDeClases.length === 0) {
-    mostrarMensaje(contenedorDeReservas, 'No hay clases disponibles en este momento.');
-    return;
-  }
+  const clasesVigentes = listaFinalDeClases.filter(clase => {
+    if (!clase.fechaHora) return false;
+    return new Date(clase.fechaHora) > fechaActual;
+  });
 
-  listaFinalDeClases.sort((a, b) => new Date(a.fechaHora) - new Date(b.fechaHora));
+  const misClasesReservadas = [];
+  const clasesDisponibles = [];
 
-  listaFinalDeClases.forEach((clase) => {
-    const tarjetaDeClase = crearElemento('div', 'user-card d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3');
-    const informacionDeClase = crearElemento('div', 'flex-grow-1');
-    const tituloDeClase = crearElemento('h4', 'text-white mb-1 fs-5', clase.titulo || 'Clase');
-
-    let textoFechaYHora = 'Fecha a confirmar';
-    if (clase.fechaHora) {
-      const [fecha, horaCompleta] = clase.fechaHora.split('T');
-      const [anio, mes, dia] = fecha.split('-');
-      const hora = horaCompleta.slice(0, 5);
-      textoFechaYHora = `${dia}/${mes}/${anio} · ${hora} hs`;
-    }
-
-    const parrafoDeFecha = crearParrafoConIcono('text-gray mb-1 fs-14', 'bi bi-calendar-event me-2 text-green', textoFechaYHora);
+  clasesVigentes.forEach(clase => {
     const listaDeInscriptos = Array.isArray(clase.inscriptosIds) ? clase.inscriptosIds : [];
     const yaEstaInscripto = datosDelUsuario?.id && listaDeInscriptos.map(String).includes(String(datosDelUsuario.id));
-
-    informacionDeClase.append(tituloDeClase, parrafoDeFecha);
-
-    const accionesDeClase = crearElemento('div', 'd-flex align-items-center gap-3');
-    const cupoMaximo = clase.cupo || clase.cupoMaximo || 0;
-    const lugaresDisponibles = clase.cuposDisponibles !== undefined ? clase.cuposDisponibles : cupoMaximo - listaDeInscriptos.length;
-
+    
     if (yaEstaInscripto) {
-      accionesDeClase.append(crearElemento('span', 'text-green fs-14 fw-bold', '✓ Ya estás inscripto'));
+      misClasesReservadas.push(clase);
+    } else {
+      clasesDisponibles.push(clase);
+    }
+  });
+
+  misClasesReservadas.sort((a, b) => new Date(a.fechaHora) - new Date(b.fechaHora));
+  clasesDisponibles.sort((a, b) => new Date(a.fechaHora) - new Date(b.fechaHora));
+
+  const seccionMisReservas = crearElemento('div', 'mb-4');
+  seccionMisReservas.append(crearElemento('h3', 'text-white mb-3 fs-15', 'MIS CLASES RESERVADAS'));
+
+  if (misClasesReservadas.length === 0) {
+    seccionMisReservas.append(crearElemento('p', 'text-gray fs-14', 'No tenés clases reservadas actualmente.'));
+  } else {
+    const listaMisReservas = crearElemento('div', 'd-flex flex-column gap-3');
+    misClasesReservadas.forEach((clase) => {
+      const tarjetaDeClase = crearElemento('div', 'user-card d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3');
+      const informacionDeClase = crearElemento('div', 'flex-grow-1');
+      
+      informacionDeClase.append(
+        crearElemento('h4', 'text-white mb-1 fs-5', clase.titulo || 'Clase'),
+        crearParrafoConIcono('text-gray mb-0 fs-14', 'bi bi-calendar-event me-2 text-green', formatearFechaHora(clase.fechaHora))
+      );
+
       const botonCancelar = crearElemento('button', 'btn user-btn-outline text-danger border-danger py-2 px-4 fs-14', 'CANCELAR');
       botonCancelar.dataset.accion = 'cancelar';
       botonCancelar.dataset.id = clase.id;
-      accionesDeClase.append(botonCancelar);
-    } else if (lugaresDisponibles > 0) {
-      accionesDeClase.append(crearElemento('span', 'text-green fs-14 fw-bold', `Quedan ${lugaresDisponibles} lugares`));
-      const botonReservar = crearElemento('button', 'btn btn-green py-2 px-4 fs-14', 'RESERVAR');
-      botonReservar.dataset.accion = 'reservar';
-      botonReservar.dataset.id = clase.id;
-      accionesDeClase.append(botonReservar);
-    } else {
-      accionesDeClase.append(crearElemento('span', 'text-danger fs-14 fw-bold', 'Sin cupo'));
-    }
 
-    tarjetaDeClase.append(informacionDeClase, accionesDeClase);
-    contenedorDeReservas.append(tarjetaDeClase);
+      tarjetaDeClase.append(informacionDeClase, botonCancelar);
+      listaMisReservas.append(tarjetaDeClase);
+    });
+    seccionMisReservas.append(listaMisReservas);
+  }
+  contenedorDeReservas.append(seccionMisReservas);
+
+  const seccionDisponibles = crearElemento('div', 'mt-2');
+  
+  seccionDisponibles.append(crearElemento('h3', 'text-white mb-3 fs-15', 'ACTIVIDADES DISPONIBLES'));
+
+  const barraFiltros = crearElemento('div', 'd-flex flex-column flex-md-row align-items-md-center gap-3 p-3 mb-4 rounded border border-secondary');
+  barraFiltros.style.backgroundColor = 'transparent';
+
+  const wrapperNombre = crearElemento('div', 'position-relative flex-grow-1');
+  
+  const iconoBusqueda = crearElemento('i', 'bi bi-search position-absolute text-gray');
+  iconoBusqueda.style.left = '15px';
+  iconoBusqueda.style.top = '50%';
+  iconoBusqueda.style.transform = 'translateY(-50%)';
+  iconoBusqueda.style.fontSize = '16px';
+  iconoBusqueda.style.pointerEvents = 'none';
+
+  const inputNombre = crearElemento('input', 'form-control bg-transparent text-white border-secondary');
+  inputNombre.type = 'text';
+  inputNombre.placeholder = 'Buscar por nombre...';
+  inputNombre.value = filtroTextoNombre;
+  inputNombre.style.paddingLeft = '45px';
+  
+  inputNombre.addEventListener('focus', () => inputNombre.style.borderColor = '#a3e635');
+  inputNombre.addEventListener('blur', () => inputNombre.style.borderColor = '#6c757d');
+
+  wrapperNombre.append(iconoBusqueda, inputNombre);
+
+  const wrapperFecha = crearElemento('div', 'position-relative');
+  wrapperFecha.style.minWidth = '220px';
+
+  const iconoCalendario = crearElemento('i', 'bi bi-calendar-event position-absolute text-gray');
+  iconoCalendario.style.left = '15px';
+  iconoCalendario.style.top = '50%';
+  iconoCalendario.style.transform = 'translateY(-50%)';
+  iconoCalendario.style.fontSize = '16px';
+  iconoCalendario.style.pointerEvents = 'none';
+
+  const inputFecha = crearElemento('input', 'form-control bg-transparent text-white border-secondary');
+  inputFecha.type = 'date';
+  inputFecha.value = filtroFecha;
+  inputFecha.style.paddingLeft = '45px';
+  inputFecha.style.colorScheme = 'dark'; 
+  
+  inputFecha.addEventListener('focus', () => inputFecha.style.borderColor = '#a3e635');
+  inputFecha.addEventListener('blur', () => inputFecha.style.borderColor = '#6c757d');
+
+  wrapperFecha.append(iconoCalendario, inputFecha);
+
+  inputNombre.addEventListener('input', (e) => {
+    filtroTextoNombre = e.target.value;
+    renderizarReservas(usuario); 
   });
-};
 
+  inputFecha.addEventListener('change', (e) => {
+    filtroFecha = e.target.value;
+    renderizarReservas(usuario);
+  });
+
+  barraFiltros.append(wrapperNombre, wrapperFecha);
+  seccionDisponibles.append(barraFiltros);
+
+  let clasesFiltradas = clasesDisponibles;
+
+  if (filtroTextoNombre && filtroTextoNombre.trim() !== '') {
+    const busquedaNormalizada = normalizarTextoBusqueda(filtroTextoNombre);
+    clasesFiltradas = clasesFiltradas.filter(c => 
+      normalizarTextoBusqueda(c.titulo || '').includes(busquedaNormalizada)
+    );
+  }
+
+  if (filtroFecha) {
+    clasesFiltradas = clasesFiltradas.filter(c => {
+      const fechaClase = c.fechaHora.split('T')[0];
+      return fechaClase === filtroFecha;
+    });
+  }
+  if (clasesFiltradas.length === 0) {
+    const hayFiltrosAplicados = (filtroTextoNombre && filtroTextoNombre.trim() !== '') || filtroFecha;
+    
+    const sinResultados = crearElemento('div', 'text-center py-5 rounded border border-secondary border-dashed');
+    sinResultados.style.backgroundColor = 'rgba(30, 30, 30, 0.5)';
+    
+    sinResultados.append(
+      crearElemento('h5', 'text-white mb-2', 'SIN RESULTADOS'),
+      crearElemento('p', 'text-gray mb-0', hayFiltrosAplicados 
+        ? 'No encontramos actividades con ese nombre o fecha.' 
+        : 'No hay actividades disponibles en este momento.')
+    );
+    
+    seccionDisponibles.append(sinResultados);
+  } else {
+    const listaDisponibles = crearElemento('div', 'd-flex flex-column gap-3');
+    clasesFiltradas.forEach((clase) => {
+      const tarjetaDeClase = crearElemento('div', 'user-card d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3');
+      const informacionDeClase = crearElemento('div', 'flex-grow-1');
+      
+      informacionDeClase.append(
+        crearElemento('h4', 'text-white mb-1 fs-5', clase.titulo || 'Clase'),
+        crearParrafoConIcono('text-gray mb-0 fs-14', 'bi bi-calendar-event me-2 text-green', formatearFechaHora(clase.fechaHora))
+      );
+
+      const accionesDeClase = crearElemento('div', 'd-flex align-items-center gap-3');
+      const cupoMaximo = clase.cupo || clase.cupoMaximo || 0;
+      const listaDeInscriptos = Array.isArray(clase.inscriptosIds) ? clase.inscriptosIds : [];
+      const lugaresDisponibles = clase.cuposDisponibles !== undefined ? clase.cuposDisponibles : cupoMaximo - listaDeInscriptos.length;
+
+      if (lugaresDisponibles > 0) {
+        accionesDeClase.append(crearElemento('span', 'text-green fs-14 fw-bold', `Quedan ${lugaresDisponibles} lugares`));
+        const botonReservar = crearElemento('button', 'btn btn-green py-2 px-4 fs-14', 'RESERVAR');
+        botonReservar.dataset.accion = 'reservar';
+        botonReservar.dataset.id = clase.id;
+        accionesDeClase.append(botonReservar);
+      } else {
+        accionesDeClase.append(crearElemento('span', 'text-danger fs-14 fw-bold', 'Sin cupo'));
+      }
+
+      tarjetaDeClase.append(informacionDeClase, accionesDeClase);
+      listaDisponibles.append(tarjetaDeClase);
+    });
+    seccionDisponibles.append(listaDisponibles);
+  }
+
+  contenedorDeReservas.append(seccionDisponibles);
+};
 export function inicializarAccionesReservas(usuario) {
   const contenedorDeReservas = document.getElementById('user-reservar');
   if (!contenedorDeReservas) return;
@@ -501,8 +646,8 @@ export function inicializarAccionesReservas(usuario) {
     if (!idDeLaClase) return;
 
     botonPresionado.disabled = true;
-    const textoOriginalDelBoton = botonPresionado.textContent;
-    botonPresionado.textContent = 'Procesando...';
+    const textoOriginal = botonPresionado.textContent;
+    botonPresionado.textContent = accionDelBoton === 'reservar' ? 'CANCELANDO...' : 'RESERVANDO...';
 
     try {
       const respuestaDelServidor = await fetch(`/api/clases/${idDeLaClase}/${accionDelBoton === 'reservar' ? 'inscribir' : 'desinscribir'}`, {
@@ -518,14 +663,16 @@ export function inicializarAccionesReservas(usuario) {
 
       await renderizarReservas(usuario);
       mostrarToast('Éxito', accionDelBoton === 'reservar' ? 'Reserva confirmada.' : 'Reserva cancelada.', 'success');
+
     } catch (error) {
       mostrarToast('Error al procesar reserva', error.message, 'error');
-    } finally {
       botonPresionado.disabled = false;
-      botonPresionado.textContent = textoOriginalDelBoton;
+      botonPresionado.textContent = textoOriginal;
     }
   });
 }
+let filtroTextoNombreTurnos = '';
+let filtroFechaTurnos = '';
 
 export const renderizarTurnos = async (usuario) => {
   const contenedorDeTurnos = document.getElementById('contenedorTurnos');
@@ -540,24 +687,32 @@ export const renderizarTurnos = async (usuario) => {
 
   const turnosDisponibles = Array.isArray(listaDeTurnosDisponibles) ? listaDeTurnosDisponibles : [];
   const turnosReservados = Array.isArray(listaDeTurnosMios) ? listaDeTurnosMios : [];
+  const fechaActual = new Date();
 
   const nombresDeTipos = {
-    chequeo_medico: 'Chequeo médico',
+    chequeo_medico: 'Chequeo Médico',
     nutricionista: 'Nutrición',
   };
 
-  const seccionDeMisTurnos = crearElemento('div', 'mb-5');
-  seccionDeMisTurnos.append(crearElemento('h3', 'text-white mb-3 fs-15', 'Mis turnos reservados'));
+  const obtenerNombreTurno = (turno) => nombresDeTipos[turno.tipo] || turno.tipo;
 
-  if (turnosReservados.length === 0) {
+  const obtenerFechaHoraTurno = (turno) => new Date(`${turno.fecha}T${turno.hora}`);
+
+  const turnosVigentes = turnosDisponibles.filter(turno => obtenerFechaHoraTurno(turno) > fechaActual);
+  const misTurnosVigentes = turnosReservados.filter(turno => obtenerFechaHoraTurno(turno) > fechaActual);
+
+  const seccionDeMisTurnos = crearElemento('div', 'mb-5');
+  seccionDeMisTurnos.append(crearElemento('h3', 'text-white mb-3 fs-15', 'MIS TURNOS RESERVADOS'));
+
+  if (misTurnosVigentes.length === 0) {
     seccionDeMisTurnos.append(crearElemento('p', 'text-gray fs-14', 'No tenés turnos reservados actualmente.'));
   } else {
     const listaFinalDeMisTurnos = crearElemento('div', 'd-flex flex-column gap-3');
-    turnosReservados.forEach((turno) => {
+    misTurnosVigentes.forEach((turno) => {
       const tarjetaDeTurno = crearElemento('div', 'user-card d-flex justify-content-between align-items-center flex-wrap gap-3');
       const informacionDelTurno = crearElemento('div');
       informacionDelTurno.append(
-        crearElemento('h4', 'text-white mb-1 fs-5', nombresDeTipos[turno.tipo] || turno.tipo),
+        crearElemento('h4', 'text-white mb-1 fs-5', obtenerNombreTurno(turno)),
         crearElemento('p', 'text-gray mb-0 fs-14', `${turno.fecha} · ${turno.hora} hs · ${turno.duracionMin} min`),
       );
       const botonCancelarTurno = crearElemento('button', 'btn user-btn-outline text-danger border-danger py-2 px-4 fs-14', 'CANCELAR');
@@ -570,20 +725,94 @@ export const renderizarTurnos = async (usuario) => {
   }
 
   const seccionDeTurnosDisponibles = crearElemento('div');
-  seccionDeTurnosDisponibles.append(crearElemento('h3', 'text-white mb-3 fs-15', 'Turnos disponibles'));
+  seccionDeTurnosDisponibles.append(crearElemento('h3', 'text-white mb-3 fs-15', 'TURNOS DISPONIBLES'));
 
-  if (turnosDisponibles.length === 0) {
-    seccionDeTurnosDisponibles.append(crearElemento('p', 'text-gray fs-14', 'No hay turnos médicos disponibles.'));
+  const barraFiltros = crearElemento('div', 'd-flex flex-column flex-md-row align-items-md-center gap-3 p-3 mb-4 rounded border border-secondary');
+  barraFiltros.style.backgroundColor = 'transparent';
+
+  const wrapperNombre = crearElemento('div', 'position-relative flex-grow-1');
+  const iconoBusqueda = crearElemento('i', 'bi bi-search position-absolute text-gray');
+  iconoBusqueda.style.left = '15px';
+  iconoBusqueda.style.top = '50%';
+  iconoBusqueda.style.transform = 'translateY(-50%)';
+  iconoBusqueda.style.fontSize = '16px';
+  iconoBusqueda.style.pointerEvents = 'none';
+
+  const inputNombre = crearElemento('input', 'form-control bg-transparent text-white border-secondary');
+  inputNombre.type = 'text';
+  inputNombre.placeholder = 'Buscar por especialidad...';
+  inputNombre.value = filtroTextoNombreTurnos;
+  inputNombre.style.paddingLeft = '45px';
+  
+  inputNombre.addEventListener('focus', () => inputNombre.style.borderColor = '#a3e635');
+  inputNombre.addEventListener('blur', () => inputNombre.style.borderColor = '#6c757d');
+  inputNombre.addEventListener('input', (e) => {
+    filtroTextoNombreTurnos = e.target.value;
+    renderizarTurnos(usuario); 
+  });
+
+  wrapperNombre.append(iconoBusqueda, inputNombre);
+
+  const wrapperFecha = crearElemento('div', 'position-relative');
+  wrapperFecha.style.minWidth = '220px';
+
+  const iconoCalendario = crearElemento('i', 'bi bi-calendar-event position-absolute text-gray');
+  iconoCalendario.style.left = '15px';
+  iconoCalendario.style.top = '50%';
+  iconoCalendario.style.transform = 'translateY(-50%)';
+  iconoCalendario.style.fontSize = '16px';
+  iconoCalendario.style.pointerEvents = 'none';
+
+  const inputFecha = crearElemento('input', 'form-control bg-transparent text-white border-secondary');
+  inputFecha.type = 'date';
+  inputFecha.value = filtroFechaTurnos;
+  inputFecha.style.paddingLeft = '45px';
+  inputFecha.style.colorScheme = 'dark'; 
+  
+  inputFecha.addEventListener('focus', () => inputFecha.style.borderColor = '#a3e635');
+  inputFecha.addEventListener('blur', () => inputFecha.style.borderColor = '#6c757d');
+  inputFecha.addEventListener('change', (e) => {
+    filtroFechaTurnos = e.target.value;
+    renderizarTurnos(usuario);
+  });
+
+  wrapperFecha.append(iconoCalendario, inputFecha);
+  barraFiltros.append(wrapperNombre, wrapperFecha);
+  seccionDeTurnosDisponibles.append(barraFiltros);
+
+  let turnosFiltrados = turnosVigentes;
+
+  if (filtroTextoNombreTurnos && filtroTextoNombreTurnos.trim() !== '') {
+    const busquedaNormalizada = normalizarTextoBusqueda(filtroTextoNombreTurnos);
+    turnosFiltrados = turnosFiltrados.filter(t => 
+      normalizarTextoBusqueda(obtenerNombreTurno(t)).includes(busquedaNormalizada)
+    );
+  }
+
+  if (filtroFechaTurnos) {
+    turnosFiltrados = turnosFiltrados.filter(t => t.fecha === filtroFechaTurnos);
+  }
+  if (turnosFiltrados.length === 0) {
+    const hayFiltrosAplicados = (filtroTextoNombreTurnos && filtroTextoNombreTurnos.trim() !== '') || filtroFechaTurnos;
+    const sinResultados = crearElemento('div', 'text-center py-5 rounded border border-secondary border-dashed');
+    sinResultados.style.backgroundColor = 'rgba(30, 30, 30, 0.5)';
+    sinResultados.append(
+      crearElemento('h5', 'text-white mb-2', 'SIN RESULTADOS'),
+      crearElemento('p', 'text-gray mb-0', hayFiltrosAplicados 
+        ? 'No encontramos turnos con esa especialidad o fecha.' 
+        : 'No hay turnos médicos disponibles en este momento.')
+    );
+    seccionDeTurnosDisponibles.append(sinResultados);
   } else {
     const listaFinalDeTurnosDisponibles = crearElemento('div', 'd-flex flex-column gap-3');
-    turnosDisponibles
+    turnosFiltrados
       .slice()
-      .sort((a, b) => new Date(`${a.fecha}T${a.hora}`) - new Date(`${b.fecha}T${b.hora}`))
+      .sort((a, b) => obtenerFechaHoraTurno(a) - obtenerFechaHoraTurno(b))
       .forEach((turno) => {
         const tarjetaDeTurno = crearElemento('div', 'user-card d-flex justify-content-between align-items-center flex-wrap gap-3');
         const informacionDelTurno = crearElemento('div');
         informacionDelTurno.append(
-          crearElemento('h4', 'text-white mb-1 fs-5', nombresDeTipos[turno.tipo] || turno.tipo),
+          crearElemento('h4', 'text-white mb-1 fs-5', obtenerNombreTurno(turno)),
           crearElemento('p', 'text-gray mb-0 fs-14', `${turno.fecha} · ${turno.hora} hs · ${turno.duracionMin} min`),
         );
         const botonReservarTurno = crearElemento('button', 'btn btn-green py-2 px-4 fs-14', 'RESERVAR');

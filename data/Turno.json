@@ -16,8 +16,8 @@
       "fecha": "2026-11-18",
       "hora": "09:59",
       "duracionMin": 45,
-      "disponible": true,
-      "miembroId": null
+      "disponible": false,
+      "miembroId": 46093529
     },
     {
       "id": 3,

@@ -22,6 +22,15 @@
       "objetivo": "perder_peso",
       "planMembresiaId": 1,
       "passwordHash": "$2b$12$nxiP5BvAMBqkeh6P1/yw3.HQ3bYwt3X/gf3bGNuNr4O/AvyFWhTre"
+    },
+    {
+      "id": "04052026",
+      "rol": "instructor",
+      "nombre": "Facundo",
+      "email": "facundojeda05@gmail.com",
+      "telefono": null,
+      "especialidad": "musculacion",
+      "passwordHash": "$2b$12$ZRWIK6QfNMFX417Q2iP2bOXXJTASC5pmTXLPOyAYGfk.wFBJbCi5O"
     }
   ]
 }
