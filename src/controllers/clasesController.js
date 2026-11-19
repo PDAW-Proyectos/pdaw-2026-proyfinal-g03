@@ -2,7 +2,7 @@
 // no decide reglas de negocio
 
 // Solo estos campos entran: el resto se ignora (y instructorId lo pone el servidor)
-const CAMPOS = ['titulo', 'descripcion', 'fechaHora', 'duracionMin', 'cupo'];
+const CAMPOS = ['titulo', 'descripcion', 'fechaHora', 'duracionMin', 'cupo', 'grupoId'];
 const filtrar = (body = {}) =>
   Object.fromEntries(CAMPOS.filter((c) => c in body).map((c) => [c, body[c]]));
 

@@ -1,12 +1,12 @@
 {
-  "ultimoId": 3,
+  "ultimoId": 12,
   "items": [
     {
-      "id": 1,
-      "titulo": "Running",
-      "descripcion": "Salida al parque de Mayo.",
-      "instructorId": 30000001,
-      "fechaHora": "2026-11-21T13:00:00.000Z",
+      "id": 10,
+      "titulo": "crossfit n",
+      "descripcion": "",
+      "instructorId": 12345679,
+      "fechaHora": "2026-11-28T23:00:00.000Z",
       "duracionMin": 60,
       "cupo": 20,
       "cuposDisponibles": 18,
@@ -16,14 +16,14 @@
       ]
     },
     {
-      "id": 2,
-      "titulo": "Funcional",
-      "descripcion": "Demostración de actividades.",
-      "instructorId": 30000001,
-      "fechaHora": "2026-11-16T21:00:00.000Z",
+      "id": 12,
+      "titulo": "crossfit mamamamamamma",
+      "descripcion": "",
+      "instructorId": 12345679,
+      "fechaHora": "2026-11-28T21:00:00.000Z",
       "duracionMin": 60,
-      "cupo": 10,
-      "cuposDisponibles": 9,
+      "cupo": 25,
+      "cuposDisponibles": 24,
       "inscriptosIds": [
         88888888
       ],

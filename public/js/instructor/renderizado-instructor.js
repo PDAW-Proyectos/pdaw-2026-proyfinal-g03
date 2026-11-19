@@ -1,3 +1,5 @@
+import { recargarActividades } from './gestionActividades.js';
+
 let actividadesInstructor = []
 let filtrosActividades = { nombre: '', dia: '', vigencia: '', estado: '' }
 
@@ -122,62 +124,39 @@ export const inicializarFiltrosActividades = () => {
     if (event.target.matches('select')) aplicar()
   })
 }
-// Realiza una petición HTTP para obtener una página de datos del backend.
-// Maneja respuestas en formato Array plano o en formato paginado { data, total, limit }.
-const obtenerPagina = async (recurso, pagina) => {
-  const respuesta = await fetch(`/api/${recurso}?page=${pagina}&limit=50`, {
-    credentials: 'include',
-  });
-  const resultado = await respuesta.json();
 
-  if (!respuesta.ok) {
-    throw new Error(resultado.error || `No se pudieron cargar ${recurso}.`);
-  }
-
-  // Si el backend devuelve un array directo, adaptamos la estructura
-  if (Array.isArray(resultado)) {
-    return { data: resultado, total: resultado.length, limit: 50 };
-  }
-
-  if (!Array.isArray(resultado.data)) {
-    throw new Error(`La respuesta de ${recurso} no tiene el formato esperado.`);
-  }
-
-  return {
-    data: resultado.data,
-    total: resultado.total || resultado.data.length,
-    limit: resultado.limit || 50,
-  };
-};
-
-// Renderiza la lista de actividades del instructor calculando el resumen superior
-// y dibujando cada tarjeta con su título, fecha, horario y cupos.
 export const renderizarActividades = (actividades) => {
   const contenedor = document.getElementById('instructor-actividades-lista');
   if (!contenedor) return;
-  contenedor.replaceChildren();
-  actividadesInstructor = actividades
 
-  // El estado de vigencia se toma del dato de la actividad; el estado temporal se deriva de la fecha.
-  const estados = actividades.map((actividad) => obtenerEstadoActividad(actividad))
-  const proximas = estados.filter((estado) => estado === 'proximas').length
-  const enCurso = estados.filter((estado) => estado === 'encurso').length
-  const finalizadas = estados.filter((estado) => estado === 'finalizadas').length
-  const activas = actividades.filter(actividadEstaActiva).length
+  contenedor.replaceChildren();
+  actividadesInstructor = actividades;
+
+  const estados = actividades.map((actividad) =>
+    obtenerEstadoActividad(actividad)
+  );
+
+  const proximas = estados.filter((e) => e === 'proximas').length;
+  const enCurso = estados.filter((e) => e === 'encurso').length;
+  const finalizadas = estados.filter((e) => e === 'finalizadas').length;
+  const activas = actividades.filter(actividadEstaActiva).length;
   const inactivas = actividades.length - activas;
+
   const totalInscriptos = actividades.reduce((total, actividad) => {
     const inscriptos = Array.isArray(actividad.inscriptosIds)
       ? actividad.inscriptosIds.length
       : actividad.inscriptos || 0;
+
     return total + inscriptos;
   }, 0);
 
-  const actividadesFiltradas = aplicarFiltrosActividades()
-  const hayFiltros = Object.values(filtrosActividades).some(Boolean)
+  const actividadesFiltradas = aplicarFiltrosActividades();
+  const hayFiltros = Object.values(filtrosActividades).some(Boolean);
+
   actualizarResumen(
     'instructor-actividades-resumen',
     `${actividades.length} actividades · ${activas} activas · ${inactivas} inactivas · ${proximas} próximas · ${enCurso} en curso · ${finalizadas} finalizadas · ${totalInscriptos} inscriptos totales${hayFiltros ? ` · mostrando ${actividadesFiltradas.length}` : ''}`,
-  )
+  );
 
   if (actividadesFiltradas.length === 0) {
     mostrarMensaje(
@@ -185,118 +164,126 @@ export const renderizarActividades = (actividades) => {
       hayFiltros
         ? 'No hay actividades que coincidan con los filtros seleccionados.'
         : 'No tenés actividades creadas todavía.',
-    )
+    );
     return;
   }
 
-  // Ordenamos las actividades por fecha antes de dibujarlas
-  actividadesFiltradas
-    .slice()
-    .sort((a, b) => {
-      const fechaA = a.fechaHora || '';
-      const fechaB = b.fechaHora || '';
-      return fechaA.localeCompare(fechaB);
-    })
-    .forEach((actividad) => {
-      const tarjeta = crearElemento(
-        'article',
-        'trainer-card d-flex justify-content-between align-items-center flex-wrap gap-3',
+  const grupos = agruparActividades(actividadesFiltradas);
+
+  grupos.forEach((grupo) => {
+    const clases = grupo.actividades;
+
+    // Las clases individuales conservan su tarjeta habitual.
+    if (!grupo.esGrupo || clases.length === 1) {
+      contenedor.append(crearTarjetaActividad(clases[0]));
+      return;
+    }
+
+    const tarjetaGrupo = crearElemento('article', 'trainer-card mb-3');
+
+    const fechas = clases.map(clase => new Date(clase.fechaHora));
+    const primeraFecha = formatoFecha.format(fechas[0]);
+    const ultimaFecha = formatoFecha.format(fechas[fechas.length - 1]);
+
+    // Obtenemos todos los IDs del grupo, no solamente los que coinciden
+    // con los filtros actuales.
+    const idsGrupo = actividadesInstructor
+      .filter(actividad => actividad.grupoId === grupo.grupoId)
+      .map(actividad => actividad.id);
+
+    const botonGrupo = crearElemento(
+      'button',
+      'btn btn-dark w-100 d-flex justify-content-between align-items-center text-start'
+    );
+
+    botonGrupo.type = 'button';
+    botonGrupo.setAttribute('aria-expanded', 'false');
+
+    const textoBoton = crearElemento('div', 'd-flex flex-column gap-1');
+
+    textoBoton.append(
+      crearElemento('div', 'text-white fw-bold', clases[0].titulo || 'Clase sin título'),
+      crearElemento(
+        'div',
+        'text-gray fs-13',
+        `${idsGrupo.length} clases · ${primeraFecha} al ${ultimaFecha}`
       )
+    );
 
-      const estadoTemporal = obtenerEstadoActividad(actividad)
-      const activa = actividadEstaActiva(actividad)
-      if (!activa || estadoTemporal === 'finalizadas') {
-        tarjeta.classList.add('opacity-50');
-        tarjeta.style.borderStyle = 'dashed';
-      }
+    const icono = crearElemento('span', 'text-white', '▼');
+    botonGrupo.append(textoBoton, icono);
 
-      const info = crearElemento('div', 'admin-card-info flex-grow-1');
-      const encabezado = crearElemento('div', 'd-flex align-items-center gap-2 mb-1 flex-wrap');
-      const titulo = crearElemento('h4', 'text-white mb-0', actividad.titulo || 'Clase sin título');
+    const contenidoGrupo = crearElemento('div', 'd-none mt-3');
 
-      const estadoVigencia = crearElemento(
-        'span',
-        activa ? 'badge badge-green fs-12' : 'badge bg-secondary text-white fs-12',
-        activa ? 'Activa' : 'Inactiva',
-      )
-      const estadoFecha = crearElemento(
-        'span',
-        estadoTemporal === 'finalizadas'
-          ? 'badge bg-secondary text-white fs-12'
-          : 'badge badge-green fs-12',
-        estadoTemporal === 'finalizadas'
-          ? 'Finalizada'
-          : estadoTemporal === 'encurso'
-            ? 'En curso'
-            : 'Próxima',
-      )
-      const tipo = crearElemento(
-        'span',
-        'badge bg-dark border border-secondary text-gray fs-12',
-        'Fecha Única',
-      )
+    botonGrupo.addEventListener('click', () => {
+      const cerrado = contenidoGrupo.classList.toggle('d-none');
+      botonGrupo.setAttribute('aria-expanded', String(!cerrado));
+      icono.textContent = cerrado ? '▼' : '▲';
+    });
 
-      encabezado.append(titulo, estadoVigencia, estadoFecha, tipo)
+    // Fechas individuales, sin botones de editar ni eliminar.
+    clases.forEach(clase => {
+      const fecha = new Date(clase.fechaHora);
+      const hora = fecha.toLocaleTimeString('es-AR', {
+        hour: '2-digit',
+        minute: '2-digit',
+        timeZone: 'America/Argentina/Buenos_Aires'
+      });
 
-      // Formateo de la fecha y hora (sumando la duración para calcular el fin)
-      let textoDias = 'Sin fecha';
-      let horaInicio = '--:--';
-      let horaFin = '--:--';
+      const inscriptos = Array.isArray(clase.inscriptosIds)
+        ? clase.inscriptosIds.length
+        : clase.inscriptos || 0;
 
-      if (actividad.fechaHora) {
-        const fechaObj = new Date(actividad.fechaHora);
-        textoDias = formatoFecha.format(fechaObj);
-        horaInicio = fechaObj.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
+      const cupo = clase.cupoMaximo || clase.cupo || 10;
 
-        if (actividad.duracionMin) {
-          const fechaFin = new Date(fechaObj.getTime() + actividad.duracionMin * 60000);
-          horaFin = fechaFin.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
-        }
-      }
-
-      const cupoMaximo = actividad.cupoMaximo || actividad.cupo || 10;
-      const detalle = crearElemento(
-        'p',
-        'text-gray mb-2 fs-13',
-        `${textoDias} · ${horaInicio} a ${horaFin} hs · Cupo: ${cupoMaximo}`,
+      const fila = crearElemento(
+        'div',
+        'd-flex justify-content-between align-items-center gap-2 p-2 mb-2 rounded border border-secondary'
       );
 
-      const inscriptos = Array.isArray(actividad.inscriptosIds)
-        ? actividad.inscriptosIds.length
-        : actividad.inscriptos || 0;
-      const cuposDisponibles = cupoMaximo - inscriptos;
-      const claseInscriptos = inscriptos === 0 ? 'text-gray' : 'text-green';
-
-      const infoInscriptos = crearElemento('div', 'd-flex align-items-center gap-2');
-      infoInscriptos.append(
+      fila.append(
         crearElemento(
           'span',
-          `${claseInscriptos} fs-13`,
-          ` ${inscriptos} inscriptos · ${cuposDisponibles} cupos disponibles`,
+          'text-white fs-14',
+          `${formatoFecha.format(fecha)} · ${hora} hs`
         ),
+        crearElemento(
+          'span',
+          'text-gray fs-13',
+          `${inscriptos}/${cupo} inscriptos`
+        )
       );
-      info.append(encabezado, detalle, infoInscriptos);
-      // Acciones disponibles para cada actividad.
-      const acciones = crearElemento('div', 'd-flex gap-2 flex-wrap');
 
-      const btnEditar = crearElemento('button', 'trainer-btn-icon', 'Editar');
-      btnEditar.type = 'button';
-      btnEditar.dataset.accion = 'editar-clase';
-      btnEditar.dataset.id = actividad.id;
-
-      const btnEliminar = crearElemento('button', 'trainer-btn-icon text-danger', 'Eliminar');
-      btnEliminar.type = 'button';
-      btnEliminar.dataset.accion = 'eliminar-clase';
-      btnEliminar.dataset.id = actividad.id;
-
-      acciones.append(btnEditar, btnEliminar);
-
-      tarjeta.append(info, acciones);
-      contenedor.append(tarjeta);
+      contenidoGrupo.append(fila);
     });
+
+    // Acciones únicas para todo el grupo.
+    const acciones = crearElemento('div', 'd-flex gap-2 flex-wrap mt-3');
+
+    const btnEditar = crearElemento('button', 'trainer-btn-icon', 'Editar grupo');
+    btnEditar.type = 'button';
+    btnEditar.dataset.accion = 'editar-grupo';
+    btnEditar.dataset.ids = JSON.stringify(idsGrupo);
+
+    const btnEliminar = crearElemento(
+      'button',
+      'trainer-btn-icon text-danger',
+      'Eliminar grupo'
+    );
+    btnEliminar.type = 'button';
+    btnEliminar.dataset.accion = 'eliminar-grupo';
+    btnEliminar.dataset.ids = JSON.stringify(idsGrupo);
+
+    acciones.append(btnEditar, btnEliminar);
+    contenidoGrupo.append(acciones);
+
+    tarjetaGrupo.append(botonGrupo, contenidoGrupo);
+    contenedor.append(tarjetaGrupo);
+  });
 
   contenedor.setAttribute('aria-busy', 'false');
 };
+
 // Renderiza los bloqueos de agenda (imprevistos) del instructor.
 export const renderizarBloqueos = (bloqueos) => {
   const contenedor = document.getElementById('instructor-bloqueos-lista');
@@ -439,56 +426,216 @@ export function inicializarRenderizadoInstructor(usuario) {
 export function inicializarCreacionClase(usuario) {
   const form = document.getElementById('formCrearClase');
   const mensaje = document.getElementById('mensajeCrearClase');
+  if (form.dataset.inicializado === 'true') return;
+  form.dataset.inicializado = 'true';
+
   if (!form || !mensaje) return;
+
+  const modo = document.getElementById('modoCreacionClase');
+  const contenedorFechaUnica = document.getElementById('contenedorFechaUnica');
+  const contenedorRepeticion = document.getElementById('contenedorRepeticion');
+
+  const fechaUnica = document.getElementById('claseFecha');
+  const fechaInicio = document.getElementById('claseFechaInicio');
+  const fechaFin = document.getElementById('claseFechaFin');
+
+  // Mostrar los campos correspondientes al modo elegido.
+  const actualizarModo = () => {
+    const recurrente = modo.value === 'recurrente';
+
+    contenedorFechaUnica.classList.toggle('d-none', recurrente);
+    contenedorRepeticion.classList.toggle('d-none', !recurrente);
+
+    fechaUnica.required = !recurrente;
+    fechaInicio.required = recurrente;
+    fechaFin.required = recurrente;
+
+    mensaje.textContent = '';
+  };
+
+  modo.addEventListener('change', actualizarModo);
+  actualizarModo();
+
+  // Convierte una fecha YYYY-MM-DD en un Date UTC.
+  const convertirFecha = (valor) => {
+    const [anio, mes, dia] = valor.split('-').map(Number);
+    return new Date(Date.UTC(anio, mes - 1, dia));
+  };
+
+  // Devuelve YYYY-MM-DD sin depender de la zona horaria del navegador.
+  const formatearFecha = (fecha) => {
+    return [
+      fecha.getUTCFullYear(),
+      String(fecha.getUTCMonth() + 1).padStart(2, '0'),
+      String(fecha.getUTCDate()).padStart(2, '0'),
+    ].join('-');
+  };
+
+  // Genera las fechas que coinciden con los días seleccionados.
+  const generarFechasRecurrentes = (inicio, fin, diasSeleccionados) => {
+    const fechas = [];
+    const actual = convertirFecha(inicio);
+    const limite = convertirFecha(fin);
+
+    while (actual <= limite) {
+      if (diasSeleccionados.includes(actual.getUTCDay())) {
+        fechas.push(formatearFecha(actual));
+      }
+
+      actual.setUTCDate(actual.getUTCDate() + 1);
+    }
+
+    return fechas;
+  };
 
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
     mensaje.textContent = '';
 
     const titulo = document.getElementById('claseTitulo').value.trim();
-    const fecha = document.getElementById('claseFecha').value;
     const hora = document.getElementById('claseHora').value;
     const cupo = Number(document.getElementById('claseCupo').value);
 
-    if (!titulo || !fecha || !hora || !cupo) {
+    if (!titulo || !hora || !cupo) {
       mensaje.textContent = 'Completá todos los campos.';
       return;
     }
 
-    const fechaHora = new Date(`${fecha}T${hora}:00`).toISOString();
+    if (!Number.isInteger(cupo) || cupo < 1 || cupo > 200) {
+      mensaje.textContent = 'El cupo debe ser un número entero entre 1 y 200.';
+      return;
+    }
 
-    const body = {
-      titulo,
-      descripcion: '',
-      fechaHora,
-      duracionMin: 60, // valor por defecto
-      cupo,
-    };
+    let fechas;
+
+    if (modo.value === 'unica') {
+      if (!fechaUnica.value) {
+        mensaje.textContent = 'Seleccioná la fecha de la actividad.';
+        return;
+      }
+
+      fechas = [fechaUnica.value];
+    } else {
+      const inicio = fechaInicio.value;
+      const fin = fechaFin.value;
+
+      if (!inicio || !fin) {
+        mensaje.textContent = 'Seleccioná la fecha de inicio y finalización.';
+        return;
+      }
+
+      if (inicio > fin) {
+        mensaje.textContent = 'La fecha de inicio no puede ser posterior a la fecha de finalización.';
+        return;
+      }
+
+      const diasSeleccionados = Array.from(
+        form.querySelectorAll('input[name="diasRepeticion"]:checked')
+      ).map((checkbox) => Number(checkbox.value));
+
+      if (diasSeleccionados.length === 0) {
+        mensaje.textContent = 'Seleccioná al menos un día de repetición.';
+        return;
+      }
+
+      fechas = generarFechasRecurrentes(
+        inicio,
+        fin,
+        diasSeleccionados
+      );
+
+      if (fechas.length === 0) {
+        mensaje.textContent = 'No hay fechas que coincidan con los días seleccionados.';
+        return;
+      }
+
+      // Límite para evitar crear accidentalmente demasiadas clases.
+      if (fechas.length > 100) {
+        mensaje.textContent = 'No podés generar más de 100 clases en una sola operación.';
+        return;
+      }
+    }
 
     const boton = form.querySelector('button[type="submit"]');
     const textoOriginal = boton.textContent;
+
     boton.textContent = 'Creando...';
     boton.disabled = true;
 
+    let creadas = 0;
+    const grupoId = modo.value === 'recurrente'
+      ? crypto.randomUUID()
+      : null;
+    console.log('GRUPO CREADO:', grupoId);
     try {
-      const respuesta = await fetch('/api/clases', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify(body),
-      });
+      for (const fecha of fechas) {
+        const fechaHora = new Date(
+          `${fecha}T${hora}:00-03:00`
+        ).toISOString();
 
-      const datos = await respuesta.json();
 
-      if (!respuesta.ok) {
-        throw new Error(datos.error || datos.detail || 'No se pudo crear la clase.');
+        const body = {
+          titulo,
+          descripcion: '',
+          fechaHora,
+          duracionMin: 60,
+          cupo,
+          grupoId,
+        };
+        console.log('GRUPO ENVIADO:', body.grupoId);
+        const respuesta = await fetch('/api/clases', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+          body: JSON.stringify(body),
+        });
+
+        let datos = {};
+
+        try {
+          datos = await respuesta.json();
+        } catch {
+          // La respuesta puede no contener JSON.
+        }
+
+        if (!respuesta.ok) {
+          throw new Error(
+            datos.error ||
+            datos.detail ||
+            datos.mensaje ||
+            `No se pudo crear la actividad del ${fecha}.`
+          );
+        }
+
+        creadas++;
       }
 
       form.reset();
+      actualizarModo();
 
       await recargarActividades(usuario);
+
+      mensaje.classList.remove('text-danger');
+      mensaje.classList.add('text-success');
+
+      mensaje.textContent =
+        creadas === 1
+          ? 'La actividad se creó correctamente.'
+          : `Se crearon ${creadas} actividades correctamente.`;
+
     } catch (error) {
-      mensaje.textContent = error.message;
+      mensaje.classList.remove('text-success');
+      mensaje.classList.add('text-danger');
+
+      mensaje.textContent = creadas > 0
+        ? `Se crearon ${creadas} de ${fechas.length} actividades. Error: ${error.message}`
+        : error.message;
+
+      if (creadas > 0) {
+        await recargarActividades(usuario);
+      }
     } finally {
       boton.textContent = textoOriginal;
       boton.disabled = false;
@@ -496,20 +643,134 @@ export function inicializarCreacionClase(usuario) {
   });
 }
 
-// fn auxiliar para recargar las actividades
-async function recargarActividades(usuario) {
-  const contenedor = document.getElementById('instructor-actividades-lista');
-  if (!contenedor) return;
-  mostrarCargando(contenedor);
-  try {
-    const respuesta = await fetch(`/api/clases?instructor=${usuario.id}&limit=50`, {
-      credentials: 'include',
-    });
-    const datos = await respuesta.json();
-    if (!respuesta.ok) throw new Error(datos.error || 'No se pudieron cargar las actividades.');
-    const lista = Array.isArray(datos.data) ? datos.data : datos;
-    renderizarActividades(lista);
-  } catch (error) {
-    mostrarMensaje(contenedor, error.message, 'text-danger');
+const agruparActividades = (actividades) => {
+  const grupos = new Map();
+
+  actividades.forEach((actividad) => {
+    const clave = actividad.grupoId
+      ? `grupo-${actividad.grupoId}`
+      : `clase-${actividad.id}`;
+
+    if (!grupos.has(clave)) {
+      grupos.set(clave, []);
+    }
+
+    grupos.get(clave).push(actividad);
+  });
+
+  return Array.from(grupos.values()).map((grupo) => ({
+    esGrupo: Boolean(grupo[0].grupoId),
+    grupoId: grupo[0].grupoId,
+    actividades: grupo.sort(
+      (a, b) => new Date(a.fechaHora) - new Date(b.fechaHora)
+    ),
+  }));
+};
+
+const crearTarjetaActividad = (actividad) => {
+  const tarjeta = crearElemento(
+    'article',
+    'trainer-card d-flex justify-content-between align-items-center flex-wrap gap-3',
+  );
+
+  const estadoTemporal = obtenerEstadoActividad(actividad);
+  const activa = actividadEstaActiva(actividad);
+
+  if (!activa || estadoTemporal === 'finalizadas') {
+    tarjeta.classList.add('opacity-50');
+    tarjeta.style.borderStyle = 'dashed';
   }
-}
+
+  const info = crearElemento('div', 'admin-card-info flex-grow-1');
+  const encabezado = crearElemento('div', 'd-flex align-items-center gap-2 mb-1 flex-wrap');
+
+  encabezado.append(
+    crearElemento('h4', 'text-white mb-0', actividad.titulo || 'Clase sin título'),
+    crearElemento(
+      'span',
+      activa ? 'badge badge-green fs-12' : 'badge bg-secondary text-white fs-12',
+      activa ? 'Activa' : 'Inactiva',
+    ),
+    crearElemento(
+      'span',
+      estadoTemporal === 'finalizadas'
+        ? 'badge bg-secondary text-white fs-12'
+        : 'badge badge-green fs-12',
+      estadoTemporal === 'finalizadas'
+        ? 'Finalizada'
+        : estadoTemporal === 'encurso'
+          ? 'En curso'
+          : 'Próxima',
+    ),
+  );
+
+  const fechaObj = new Date(actividad.fechaHora);
+  const textoFecha = Number.isNaN(fechaObj.getTime())
+    ? 'Sin fecha'
+    : formatoFecha.format(fechaObj);
+
+  const horaInicio = Number.isNaN(fechaObj.getTime())
+    ? '--:--'
+    : fechaObj.toLocaleTimeString('es-AR', {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+
+  const fechaFin = new Date(
+    fechaObj.getTime() + (Number(actividad.duracionMin) || 0) * 60000,
+  );
+
+  const horaFin = Number.isNaN(fechaFin.getTime())
+    ? '--:--'
+    : fechaFin.toLocaleTimeString('es-AR', {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+
+  const cupoMaximo = actividad.cupoMaximo || actividad.cupo || 10;
+
+  const detalle = crearElemento(
+    'p',
+    'text-gray mb-2 fs-13',
+    `${textoFecha} · ${horaInicio} a ${horaFin} hs · Cupo: ${cupoMaximo}`,
+  );
+
+  const inscriptos = Array.isArray(actividad.inscriptosIds)
+    ? actividad.inscriptosIds.length
+    : actividad.inscriptos || 0;
+
+  const infoInscriptos = crearElemento('div', 'd-flex align-items-center gap-2');
+
+  infoInscriptos.append(
+    crearElemento(
+      'span',
+      `${inscriptos === 0 ? 'text-gray' : 'text-green'} fs-13`,
+      `${inscriptos} inscriptos · ${cupoMaximo - inscriptos} cupos disponibles`,
+    ),
+  );
+
+  info.append(encabezado, detalle, infoInscriptos);
+
+  const acciones = crearElemento('div', 'd-flex gap-2 flex-wrap');
+
+  const btnEditar = crearElemento('button', 'trainer-btn-icon', 'Editar');
+  btnEditar.type = 'button';
+  btnEditar.dataset.accion = 'editar-clase';
+  btnEditar.dataset.id = actividad.id;
+
+  const btnEliminar = crearElemento(
+    'button',
+    'trainer-btn-icon text-danger',
+    'Eliminar',
+  );
+  btnEliminar.type = 'button';
+  btnEliminar.dataset.accion = 'eliminar-clase';
+  btnEliminar.dataset.id = actividad.id;
+
+  acciones.append(btnEditar, btnEliminar);
+  tarjeta.append(info, acciones);
+
+  return tarjeta;
+};
+
+

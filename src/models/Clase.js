@@ -13,6 +13,7 @@ class Clase {
     duracionMin,
     cupo,
     inscriptosIds = [],
+    grupoId = null,
     destacada = false
   }) {
     this.id = id;
@@ -22,6 +23,7 @@ class Clase {
     this.fechaHora = v.fechaHora(fechaHora, 'fechaHora');
     this.duracionMin = v.numero(duracionMin, 'duracionMin', { min: 15, max: 240, entero: true });
     this.cupo = v.numero(cupo, 'cupo', { min: 1, max: 200, entero: true });
+    this.grupoId = grupoId;
     if (typeof destacada !== 'boolean') {
       throw new ErrorValidacion('destacada debe ser un booleano');
     }
@@ -81,6 +83,7 @@ class Clase {
       cupo: this.cupo,
       cuposDisponibles: this.cuposDisponibles,
       inscriptosIds: this.inscriptosIds,
+      grupoId: this.grupoId,
       destacada: this.destacada
     };
   }

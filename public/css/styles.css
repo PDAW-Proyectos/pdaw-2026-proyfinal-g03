@@ -1473,59 +1473,175 @@ footer {
 #modalConfirmarMembresia .btn-close:hover {
   opacity: 1;
 }
-/* Panel de Horarios */
-.panel-horarios {
-  /* Un borde más oscuro que el secondary de bootstrap */
-  border-color: #2a2a2a !important; 
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+
+
+/* =========================================
+   MODALES
+   ========================================= */
+
+#modalEliminarCuenta .modal-content,
+#modalConfirmarEliminarClase .modal-content,
+#modalEditarClase .modal-content,
+#modalCambiarPassword .modal-content {
+  background-color: #111;
+  color: #e5e5e5;
+  border: 1px solid #292929;
+  border-radius: 6px;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.6);
 }
 
-/* Línea conectora punteada */
-.linea-conectora {
-  border-bottom: 1px dashed #3a3a3a;
-  height: 1px;
-  margin-top: 10px;
+/* Encabezado y pie */
+#modalEliminarCuenta .modal-header,
+#modalConfirmarEliminarClase .modal-header,
+#modalEditarClase .modal-header,
+#modalCambiarPassword .modal-header,
+#modalEliminarCuenta .modal-footer,
+#modalConfirmarEliminarClase .modal-footer,
+#modalEditarClase .modal-footer,
+#modalCambiarPassword .modal-footer {
+  background-color: #151515;
+  border-color: #292929;
+  padding: 18px 24px;
 }
 
-/* Fila de horario */
-.fila-horario {
-  transition: background-color 0.2s ease;
-  padding: 12px 10px;
-  border-radius: 8px;
+/* Títulos */
+#modalEliminarCuenta .modal-title,
+#modalConfirmarEliminarClase .modal-title,
+#modalEditarClase .modal-title,
+#modalCambiarPassword .modal-title {
+  color: #fff;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
-.fila-horario:hover {
-  background-color: rgba(255, 255, 255, 0.03);
+/* Cuerpo */
+#modalEliminarCuenta .modal-body,
+#modalConfirmarEliminarClase .modal-body,
+#modalEditarClase .modal-body,
+#modalCambiarPassword .modal-body {
+  padding: 24px;
+  color: #e5e5e5;
 }
 
-/* Botones de acción (tacho de basura) */
-.btn-accion {
-  color: #6c757d;
-  transition: color 0.2s ease, transform 0.2s ease;
-  text-decoration: none;
-  background: transparent;
-  border: none;
-  padding: 0;
+/* Botón cerrar */
+#modalEliminarCuenta .btn-close,
+#modalConfirmarEliminarClase .btn-close,
+#modalEditarClase .btn-close,
+#modalCambiarPassword .btn-close {
+  filter: invert(1);
+  opacity: 0.7;
 }
 
-.btn-accion:hover {
-  color: #dc3545;
-  transform: scale(1.1);
+#modalEliminarCuenta .btn-close:hover,
+#modalConfirmarEliminarClase .btn-close:hover,
+#modalEditarClase .btn-close:hover,
+#modalCambiarPassword .btn-close:hover {
+  opacity: 1;
 }
 
-/* SWITCH VERDE */
-.form-check-input {
-  background-color: #2a2a2a; /* Fondo apagado */
-  border-color: #444;
-  cursor: pointer;
-  width: 2.5em !important;
-  height: 1.25em !important;
+/* Etiquetas */
+#modalEditarClase .form-label {
+  color: #bdbdbd;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
 }
-.form-check-input:checked {
-  background-color: #a3e635 !important; /* Verde Iron Temple */
-  border-color: #a3e635 !important;
+
+/* Inputs */
+#modalEditarClase .form-control,
+#modalCambiarPassword .form-control,
+#modalEliminarCuenta .form-control,
+#modalConfirmarEliminarClase .form-control {
+  background-color: #1b1b1b;
+  color: #f2f2f2;
+  border: 1px solid #383838;
+  border-radius: 4px;
+  padding: 10px 12px;
 }
-.form-check-input:focus {
-  box-shadow: 0 0 0 0.25rem rgba(163, 230, 53, 0.25);
-  border-color: #a3e635;
+
+#modalEditarClase .form-control:focus,
+#modalCambiarPassword .form-control:focus,
+#modalEliminarCuenta .form-control:focus {
+  background-color: #1b1b1b;
+  color: #fff;
+  border-color: var(--pulso-green);
+  box-shadow: 0 0 0 0.2rem rgba(180, 255, 57, 0.15);
+}
+
+#modalEditarClase .form-control::placeholder,
+#modalCambiarPassword .form-control::placeholder {
+  color: #777;
+}
+
+/* Botón secundario */
+#modalEliminarCuenta .btn-secondary,
+#modalConfirmarEliminarClase .btn-secondary,
+#modalEditarClase .btn-secondary,
+#modalCambiarPassword .btn-secondary {
+  background-color: #292929;
+  border: 1px solid #383838;
+  color: #ccc;
+  border-radius: 4px;
+  padding: 9px 18px;
+  font-family: 'Oswald', sans-serif;
+  text-transform: uppercase;
+}
+
+#modalEliminarCuenta .btn-secondary:hover,
+#modalConfirmarEliminarClase .btn-secondary:hover,
+#modalEditarClase .btn-secondary:hover,
+#modalCambiarPassword .btn-secondary:hover {
+  background-color: #383838;
+  color: #fff;
+}
+
+/* Botón principal */
+#modalEditarClase .btn-green,
+#modalCambiarPassword .btn-green {
+  background-color: var(--pulso-green);
+  border: 1px solid var(--pulso-green);
+  color: #111;
+  border-radius: 4px;
+  font-weight: 700;
+  font-family: 'Oswald', sans-serif;
+  text-transform: uppercase;
+}
+
+#modalEditarClase .btn-green:hover,
+#modalCambiarPassword .btn-green:hover {
+  background-color: #9ce62e;
+  border-color: #9ce62e;
+}
+
+/* Acciones destructivas */
+#modalEliminarCuenta .btn-danger,
+#modalConfirmarEliminarClase .btn-danger {
+  background-color: transparent;
+  border: 1px solid #dc3545;
+  color: #ff6b6b;
+  border-radius: 4px;
+  padding: 9px 18px;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+#modalEliminarCuenta .btn-danger:hover,
+#modalConfirmarEliminarClase .btn-danger:hover {
+  background-color: #dc3545;
+  border-color: #dc3545;
+  color: #fff;
+}
+
+/* Texto secundario de confirmación */
+#modalEliminarCuenta .text-muted,
+#modalConfirmarEliminarClase .text-gray {
+  color: #999 !important;
+}
+
+/* Fondo detrás del modal */
+.modal-backdrop.show {
+  opacity: 0.8;
 }
