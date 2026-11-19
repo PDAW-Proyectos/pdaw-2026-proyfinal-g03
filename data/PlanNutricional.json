@@ -1,5 +1,5 @@
 {
-  "ultimoId": 4,
+  "ultimoId": 5,
   "items": [
     {
       "id": 1,
@@ -155,6 +155,45 @@
       "origen": "ia",
       "idExterno": null,
       "creadoEn": "2026-11-18T23:04:52.940Z"
+    },
+    {
+      "id": 5,
+      "miembroId": 44007760,
+      "nombre": "Plan de Aumento Muscular Moderado para Jóvenes",
+      "objetivo": "ganar_musculo",
+      "caloriasDiarias": 1800,
+      "descripcion": "Un plan nutricional general, sencillo y adecuado para apoyar el crecimiento y desarrollo saludable en jóvenes, enfocado en ganar masa muscular de forma segura.",
+      "comidas": [
+        {
+          "momento": "Desayuno",
+          "ejemplo": "Tostadas de pan integral con queso fresco y un vaso de leche o bebida vegetal."
+        },
+        {
+          "momento": "Media Mañana",
+          "ejemplo": "Una fruta fresca y un puñado pequeño de frutos secos."
+        },
+        {
+          "momento": "Almuerzo",
+          "ejemplo": "Arroz con pollo a la plancha y una porción de verduras cocidas."
+        },
+        {
+          "momento": "Merienda",
+          "ejemplo": "Yogur natural con un poco de avena."
+        },
+        {
+          "momento": "Cena",
+          "ejemplo": "Pescado al horno con puré de patatas y ensalada simple."
+        }
+      ],
+      "recomendaciones": [
+        "Mantente bien hidratado tomando agua durante todo el día.",
+        "Realiza actividad física de manera moderada y evita sobrecargas.",
+        "Duerme entre 8 y 9 horas diarias para favorecer la recuperación.",
+        "Es muy importante consultar con un médico o el nutricionista del gimnasio antes de empezar cualquier cambio en la alimentación o rutina."
+      ],
+      "origen": "ia",
+      "idExterno": null,
+      "creadoEn": "2026-11-19T14:24:36.706Z"
     }
   ]
 }
