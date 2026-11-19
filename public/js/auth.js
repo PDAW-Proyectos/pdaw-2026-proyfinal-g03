@@ -17,7 +17,7 @@ export async function iniciarSesion(email, password, signal) {
   });
   const datos = await respuesta.json();
   if (!respuesta.ok) {
-    throw new Error(datos.mensaje || datos.detail || 'Error al iniciar sesión');
+    throw new Error(datos.mensaje || datos.error || datos.detail || 'Error al iniciar sesión');
   }
   const panel = PANEL_POR_ROL[datos.usuario.rol];
   if (!panel) {

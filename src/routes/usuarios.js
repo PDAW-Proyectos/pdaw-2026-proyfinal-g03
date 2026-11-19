@@ -98,7 +98,6 @@ module.exports = function rutasUsuarios({ servicioUsuarios }) {
     }
   });
 
-  // Eliminar la propia cuenta
   // Eliminar cuenta propia
   router.delete(
     '/perfil',

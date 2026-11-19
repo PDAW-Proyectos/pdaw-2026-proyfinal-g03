@@ -65,6 +65,11 @@
                 </button>
               </li>
               <li class="nav-item">
+                <button class="admin-nav-link nav-link w-100 text-start" data-seccion="admin-membresias">
+                  <i class="bi bi-people"></i> Membresias
+                </button>
+              </li>
+              <li class="nav-item">
                 <button class="admin-nav-link nav-link w-100 text-start" data-seccion="admin-medicos">
                   <i class="bi bi-heart-pulse"></i> Disponibilidad médica
                 </button>
@@ -96,13 +101,13 @@
       <!-- Contenido Dinámico -->
       <div class="col-12 col-lg-10 admin-content-area">
         <!-- ==============================================
-                     CONTENIDO DE ADMIN
-                     ============================================== -->
+          CONTENIDO DE ADMIN
+        ============================================== -->
         <div id="admin-usuarios" class="seccion-contenido">
           <div class="admin-header-action mb-4">
             <h2 class="admin-page-title m-0">GESTIÓN DE USUARIOS</h2>
             <button class="btn btn-green" id="nuevoUsuario">
-              <i class="bi bi-person-plus"></i> NUEVO USUARIO / ALUMNO
+              <i class="bi bi-person-plus"></i> NUEVO MIEMBRO O INSTRUCTOR
             </button>
           </div>
           <p class="text-gray mb-4">Administrá cuentas, roles, vencimientos y suspensiones.</p>
@@ -120,6 +125,33 @@
               <div id="admin-instructores-lista" class="d-flex flex-column gap-3" aria-live="polite" aria-busy="true">
                 <div class="admin-card">Cargando instructores...</div>
               </div>
+            </div>
+          </div>
+        </div>
+        <div id="admin-membresias" class="seccion-contenido d-none">
+          <h2 class="admin-page-title">GESTIÓN DE MEMBRESÍAS</h2>
+
+          <p class="text-gray mb-4">
+            Administrá las solicitudes, renovaciones y vencimientos de los miembros.
+          </p>
+
+          <div class="mb-5">
+            <h4 class="text-white mb-3 fs-15">
+              <i class="bi bi-inbox me-2 text-green"></i>
+              Solicitudes pendientes
+            </h4>
+            <div id="admin-solicitudes-membresia" class="d-flex flex-column gap-3">
+              <div class="admin-card">Cargando solicitudes...</div>
+            </div>
+          </div>
+
+          <div class="mb-5">
+            <h4 class="text-white mb-3 fs-15">
+              <i class="bi bi-calendar-check me-2 text-green"></i>
+              Membresías por vencer
+            </h4>
+            <div id="admin-membresias-vencer" class="d-flex flex-column gap-3">
+              <div class="admin-card">Cargando vencimientos...</div>
             </div>
           </div>
         </div>
@@ -145,7 +177,6 @@
               <i class="bi bi-plus-lg"></i> AGREGAR HORARIO
             </button>
           </div>
-          <div class="admin-card text-gray mb-5"></div>
           <h4 class="text-white mb-3 fs-15">Horarios de Apertura y Cierre</h4>
           <p id="admin-horarios-resumen" class="text-gray mb-3" aria-live="polite">
             Cargando resumen...
@@ -404,6 +435,32 @@
             </button>
           </div>
         </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modalConfirmarMembresia" tabindex="-1" aria-labelledby="tituloConfirmarMembresia"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content membresia-modal">
+        <div class="modal-header">
+          <h5 class="modal-title" id="tituloConfirmarMembresia">
+            CONFIRMAR OPERACIÓN
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+
+        <div class="modal-body">
+          <p id="textoConfirmarMembresia" class="text-gray mb-0">
+            ¿Querés continuar?
+          </p>
+          <p id="errorConfirmarMembresia" class="text-danger fs-13 mt-3 mb-0 d-none" role="alert"></p>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-custom" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-green" id="btnEjecutarConfirmacionMembresia">CONFIRMAR</button>
+        </div>
       </div>
     </div>
   </div>

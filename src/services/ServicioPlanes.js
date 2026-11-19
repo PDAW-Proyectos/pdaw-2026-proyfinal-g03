@@ -123,6 +123,20 @@ class ServicioPlanes {
       .sort((a, b) => new Date(b.creadoEn) - new Date(a.creadoEn));
     return paginar(filtrados, { page, limit });
   }
+  async modificarEntrenamiento({ planId, miembro, dias }) {
+    const actual = await this.repoPlanesEntrenamiento.obtenerPorId(planId);
+
+    this.#verificarDueno(actual, miembro);
+
+    const actualizado = new PlanEntrenamiento({
+      ...actual.toJSON(),
+      id: actual.id,
+      miembroId: actual.miembroId,
+      dias,
+    });
+
+    return this.repoPlanesEntrenamiento.actualizar(actualizado);
+  }
 }
 
 module.exports = ServicioPlanes;

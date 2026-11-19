@@ -14,6 +14,7 @@ const RepositorioTurnos = require('./repositories/RepositorioTurnos');
 const RepositorioMembresias = require('./repositories/RepositorioMembresias');
 const RepositorioHorarios = require('./repositories/RepositorioHorarios');
 const RepositorioSeguimientoProgreso = require('./repositories/RepositorioSeguimientoProgreso');
+const RepositorioSolicitudesMembresia = require('./repositories/RepositorioSolicitudesMembresia');
 
 // CLIENTE DE SERVICIO EXTERNO GEMINI
 const ClienteGemini = require('./services/gemini/ClienteGemini');
@@ -29,6 +30,7 @@ const ServicioTurnos = require('./services/ServicioTurnos');
 const ServicioMembresias = require('./services/ServicioMembresias');
 const ServicioHorarios = require('./services/ServicioHorarios');
 const ServicioSeguimientoProgreso = require('./services/servicioSeguimientoProgreso');
+const ServicioSolicitudesMembresia = require('./services/ServicioSolicitudesMembresia');
 
 const repos = {
   repoClases: new RepositorioClases(),
@@ -39,6 +41,7 @@ const repos = {
   repoSeguimientos: new RepositorioSeguimientos(),
   repoTurnos: new RepositorioTurnos(),
   repoMembresias: new RepositorioMembresias(),
+  repoSolicitudesMembresia: new RepositorioSolicitudesMembresia(),
   repoHorarios: new RepositorioHorarios(),
   repoRegistros: new RepositorioSeguimientoProgreso(),
 };
@@ -68,6 +71,11 @@ const servicios = {
   servicioSeguimientoProgreso: new ServicioSeguimientoProgreso({
     repoRegistros: repos.repoRegistros,
     repoUsuarios: repos.repoUsuarios,
+  }),
+  servicioSolicitudesMembresia: new ServicioSolicitudesMembresia({
+    repoSolicitudesMembresia: repos.repoSolicitudesMembresia,
+    repoUsuarios: repos.repoUsuarios,
+    repoMembresias: repos.repoMembresias,
   }),
 };
 

@@ -3,6 +3,7 @@
 
 const { Router } = require('express');
 const { exigirPermiso } = require('../middlewares/permisos');
+const exigirMembresiaActiva = require('../middlewares/membresiaActiva');
 const crearControladorSeguimientoProgreso = require('../controllers/seguimientoProgresoController');
 
 module.exports = function rutasSeguimientoProgreso({ servicioSeguimientoProgreso }) {
@@ -10,7 +11,7 @@ module.exports = function rutasSeguimientoProgreso({ servicioSeguimientoProgreso
     const router = Router();
 
     router.get('/', controlador.listar);
-    router.post('/', exigirPermiso('registrarPeso'), controlador.publicar);
+    router.post('/', exigirPermiso('registrarPeso'), exigirMembresiaActiva, controlador.publicar);
 
     return router;
 };

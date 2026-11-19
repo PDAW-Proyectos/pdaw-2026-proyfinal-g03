@@ -5,17 +5,14 @@ const { OBJETIVOS } = require('../utils/constantes');
 const { ErrorValidacion } = require('../utils/errores');
 
 const PERMISOS = new Set([
-  'inscribirseAClase',
-  'solicitarTurno',
-  'llevarSeguimiento',
-  'generarPlan',
-  'registrarPeso',
-  'modificarPerfil',
-  'eliminarCuenta'
+  'inscribirseAClase', 'solicitarTurno',
+  'llevarSeguimiento', 'generarPlan',
+  'registrarPeso', 'modificarPerfil',
+  'eliminarCuenta', 'solicitarMembresia'
 ]);
 
 class Miembro extends Usuario {
-  constructor({ peso, pesoMeta, altura, edad, objetivo, planMembresiaId = null, ...base }) {
+  constructor({ peso, pesoMeta, altura, edad, objetivo, planMembresiaId = null, fechaUltimaRenovacion = null, fechaVencimiento = null, planMembresiaPendienteId = null, bajaMembresiaPendiente = false, ...base }) {
     super(base);
     this.peso = v.numero(peso, 'peso (kg)', { min: 20, max: 400 });
     this.objetivo = v.opcion(objetivo, 'objetivo', OBJETIVOS);
@@ -23,6 +20,10 @@ class Miembro extends Usuario {
     this.altura = v.numero(altura, 'altura (cm)', { min: 80, max: 250 });
     this.edad = v.numero(edad, 'edad', { min: 14, max: 110, entero: true });
     this.planMembresiaId = v.idOpcional(planMembresiaId, 'planMembresiaId');
+    this.fechaUltimaRenovacion = fechaUltimaRenovacion;
+    this.fechaVencimiento = fechaVencimiento;
+    this.planMembresiaPendienteId = v.idOpcional(planMembresiaPendienteId, 'planMembresiaPendienteId');
+    this.bajaMembresiaPendiente = bajaMembresiaPendiente;
   }
 
   _validarPesoMeta(pesoMeta) {
@@ -83,6 +84,10 @@ class Miembro extends Usuario {
       edad: this.edad,
       objetivo: this.objetivo,
       planMembresiaId: this.planMembresiaId,
+      fechaUltimaRenovacion: this.fechaUltimaRenovacion,
+      fechaVencimiento: this.fechaVencimiento,
+      planMembresiaPendienteId: this.planMembresiaPendienteId,
+      bajaMembresiaPendiente: this.bajaMembresiaPendiente,
     };
   }
 }
