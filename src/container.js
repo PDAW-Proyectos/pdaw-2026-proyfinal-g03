@@ -18,6 +18,7 @@ const RepositorioSolicitudesMembresia = require('./repositories/RepositorioSolic
 
 // CLIENTE DE SERVICIO EXTERNO GEMINI
 const ClienteGemini = require('./services/gemini/ClienteGemini');
+const ClienteGeminiMock = require('./services/gemini/ClienteGeminiMock');
 
 // SERVICIOS
 const ServicioClases = require('./services/ServicioClases');
@@ -46,7 +47,9 @@ const repos = {
   repoRegistros: new RepositorioSeguimientoProgreso(),
 };
 
-const clienteGemini = new ClienteGemini(config.gemini); // *crea el cliente
+// para crear el cliente con la API real o con el mock
+const usarMock = process.env.USE_GEMINI_MOCK === 'true';
+const clienteGemini = usarMock ? new ClienteGeminiMock() : new ClienteGemini(config.gemini);
 
 // Cada servicio recibe solo los repositorios que necesita
 const servicios = {
