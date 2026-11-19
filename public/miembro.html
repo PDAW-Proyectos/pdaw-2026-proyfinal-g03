@@ -282,42 +282,41 @@
                 Generá un plan nutricional personalizado con inteligencia artificial.
               </p>
 
-                <div class="user-card mb-5">
-                  <h4 class="mb-3 text-white">
-                    <i class="bi bi-magic text-green me-2"></i> Generar nuevo plan
-                  </h4>
-                  <form id="formGenerarPlanNutricional">
-                    <div class="row g-3 align-items-end">
-                      <div class="col-md-12">
-                        <label class="text-gray mb-2 fs-14" for="nutricionObjetivo">Tu objetivo</label>
-                        <select class="user-form-control w-100" id="nutricionObjetivo" required>
-                          <option value="">Seleccionar objetivo...</option>
-                          <option value="perder_peso">Perder peso (Déficit Calórico)</option>
-                          <option value="ganar_musculo">Ganar masa muscular</option>
-                          <option value="mantener">Mantener peso</option>
-                          <option value="resistencia">Mejorar resistencia</option>
-                        </select>
-                      </div>
-                    </div>
+              <div class="user-card mb-5">
+                <h4 class="mb-3 text-white">
+                  <i class="bi bi-magic text-green me-2"></i> Generar nuevo plan
+                </h4>
+                <form id="formGenerarPlanNutricional">
+                  <div class="row g-3 align-items-end">
                     <div class="col-md-12">
-                      <label class="text-gray mb-2 fs-14" for="nutricionDias">Días de la semana</label>
-                      <select class="user-form-control w-100" id="nutricionDias" required>
-                        <option value="">Seleccionar...</option>
-                        <option value="2">2 días</option>
-                        <option value="3">3 días</option>
-                        <option value="4">4 días</option>
-                        <option value="5">5 días</option>
-                        <option value="6">6 días</option>
-                        <option value="7">7 días</option>
+                      <label class="text-gray mb-2 fs-14" for="nutricionObjetivo">Tu objetivo</label>
+                      <select class="user-form-control w-100" id="nutricionObjetivo" required>
+                        <option value="">Seleccionar objetivo...</option>
+                        <option value="perder_peso">Perder peso (Déficit Calórico)</option>
+                        <option value="ganar_musculo">Ganar masa muscular</option>
+                        <option value="mantener">Mantener peso</option>
+                        <option value="resistencia">Mejorar resistencia</option>
                       </select>
                     </div>
-                </div>
-                <div class="mt-3">
-                  <button type="submit" class="btn btn-green w-100 py-2 fs-14" id="btnGenerarPlanNutricional">
-                    GENERAR PLAN CON IA
-                  </button>
-                </div>
-                <div id="mensajePlanNutricional" class="text-danger fs-14 mt-2 text-center"></div>
+                  </div>
+                  <div class="col-md-12">
+                    <label class="text-gray mb-2 fs-14" for="nutricionDias">Días de la semana</label>
+                    <select class="user-form-control w-100" id="nutricionDias" required>
+                      <option value="">Seleccionar...</option>
+                      <option value="2">2 días</option>
+                      <option value="3">3 días</option>
+                      <option value="4">4 días</option>
+                      <option value="5">5 días</option>
+                      <option value="6">6 días</option>
+                      <option value="7">7 días</option>
+                    </select>
+                  </div>
+                  <div class="mt-3">
+                    <button type="submit" class="btn btn-green w-100 py-2 fs-14" id="btnGenerarPlanNutricional">
+                      GENERAR PLAN CON IA
+                    </button>
+                  </div>
+                  <div id="mensajePlanNutricional" class="text-danger fs-14 mt-2 text-center"></div>
                 </form>
               </div>
             </div>
@@ -443,16 +442,6 @@
               <i class="bi bi-info-circle me-1"></i>
             </p>
           </div>
-          <div class="user-card">
-            <h4 class="mb-2">Eliminar cuenta</h4>
-            <p class="text-gray mb-4 fs-14">
-              Esta acción cierra tu sesión y desvincula tu acceso permanentemente.
-            </p>
-            <button class="user-btn-outline" id="eliminar-cuenta" data-bs-toggle="modal"
-              data-bs-target="#modalEliminarCuenta">
-              <i class="bi bi-trash"></i> ELIMINAR CUENTA
-            </button>
-          </div>
 
           <div class="user-card">
             <h4 class="mb-2">Eliminar cuenta</h4>
@@ -468,33 +457,42 @@
       </div>
     </div>
   </div>
-  </div>
+
+  <!-- Modal cambiar plan -->
 
   <!-- Modal cambiar plan -->
   <div class="modal fade" id="modalCambiarPlan" tabindex="-1" aria-labelledby="tituloModalCambiarPlan"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content bg-pulso-darker border border-secondary">
+
         <div class="modal-header border-secondary">
           <h5 class="modal-title text-white" id="tituloModalCambiarPlan">
-            <i class="bi bi-arrow-left-right text-green me-2"></i> Cambiar plan de membresía
+            <i class="bi bi-arrow-left-right text-green me-2"></i>
+            Cambiar plan de membresía
           </h5>
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
         </div>
+
         <div class="modal-body">
           <p class="text-gray fs-14">
-            Seleccioná el plan al que querés cambiarte. La modificación se aplicará al finalizar
-            tu período abonado, una vez confirmado el pago por administración.
+            Seleccioná el plan al que querés cambiarte. La modificación se
+            aplicará al finalizar tu período abonado, una vez confirmado
+            el pago por administración.
           </p>
 
           <div class="mb-3">
-            <label for="selectNuevoPlan" class="text-gray mb-2 fs-14"> Nuevo plan </label>
+            <label for="selectNuevoPlan" class="text-gray mb-2 fs-14">
+              Nuevo plan
+            </label>
             <select id="selectNuevoPlan" class="user-form-control w-100" required>
               <option value="">Cargando planes...</option>
             </select>
           </div>
+
           <p id="mensajeCambioPlan" class="fs-14 mb-0"></p>
         </div>
+
         <div class="modal-footer border-secondary">
           <button type="button" class="user-btn-outline py-2 px-3" data-bs-dismiss="modal">
             Cancelar
@@ -503,16 +501,11 @@
             Solicitar cambio
           </button>
         </div>
-        <p id="mensajeSolicitud" class="fs-14 mb-0"></p>
-      </div>
-      <div class="modal-footer border-secondary">
-        <button type="button" class="user-btn-outline py-2 px-3" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-green py-2 px-3" id="confirmarCambioPlan">
-          Solicitar cambio
-        </button>
+
       </div>
     </div>
   </div>
+
   <!-- Modal solicitar baja -->
   <div class="modal fade" id="modalSolicitarBaja" tabindex="-1" aria-labelledby="tituloModalBaja" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
