@@ -35,6 +35,7 @@ class ServicioClases {
       id: actual.id,
       instructorId: actual.instructorId,
       inscriptosIds: actual.inscriptosIds, // si el nuevo cupo es menor, el modelo lo rechaza
+      grupoId: actual.grupoId,
     });
     return this.repoClases.actualizar(nueva);
   }

@@ -13,6 +13,7 @@ class Clase {
     duracionMin,
     cupo,
     inscriptosIds = [],
+    grupoId = null,
   }) {
     this.id = id;
     this.titulo = v.texto(titulo, 'titulo', { max: 100 });
@@ -21,6 +22,7 @@ class Clase {
     this.fechaHora = v.fechaHora(fechaHora, 'fechaHora');
     this.duracionMin = v.numero(duracionMin, 'duracionMin', { min: 15, max: 240, entero: true });
     this.cupo = v.numero(cupo, 'cupo', { min: 1, max: 200, entero: true });
+    this.grupoId = grupoId;
 
     if (!Array.isArray(inscriptosIds))
       throw new ErrorValidacion('inscriptosIds debe ser un arreglo');
@@ -68,6 +70,7 @@ class Clase {
       cupo: this.cupo,
       cuposDisponibles: this.cuposDisponibles,
       inscriptosIds: this.inscriptosIds,
+      grupoId: this.grupoId,
     };
   }
 
