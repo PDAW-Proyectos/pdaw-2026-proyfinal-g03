@@ -418,7 +418,7 @@ export function inicializarGeneracionPlan() {
 
       // el backend devuelve el plan con todos sus días y ejercicios
       renderizarPlan(datos);
-    } catch (error) {
+    } catch {
       mensaje.textContent = '';
 
       mostrarMensaje(

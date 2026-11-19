@@ -1,9 +1,8 @@
 import { verificarSesion, cerrarSesion } from '../auth.js';
-import { 
+import {
   inicializarFiltrosActividades,
-  inicializarRenderizadoInstructor 
+  inicializarRenderizadoInstructor
 } from './renderizado-instructor.js'
-import { inicializarRenderizadoInstructor } from './renderizado-instructor.js';
 import { inicializarEdicionPerfil } from '../perfil/editarPerfil.js';
 import { modificarEspecialidad } from '../perfil/servicioPerfil.js';
 import {

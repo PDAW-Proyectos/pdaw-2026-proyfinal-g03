@@ -121,7 +121,7 @@ export function inicializarGeneracionPlanNutricional() {
       }
 
       renderizarPlanNutricional(datos);
-    } catch (error) {
+    } catch {
       mensaje.textContent = '';
 
       mostrarMensaje(

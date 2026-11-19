@@ -150,23 +150,6 @@ const obtenerPagina = async (recurso, pagina) => {
   };
 };
 
-// Trae todos los registros de un recurso, iterando sobre todas las páginas si es necesario.
-// Hace las peticiones en paralelo para mayor velocidad.
-const obtenerDatos = async (recurso) => {
-  const primeraPagina = await obtenerPagina(recurso, 1);
-  const paginasRestantes = Math.ceil(primeraPagina.total / primeraPagina.limit) - 1;
-
-  if (paginasRestantes <= 0) {
-    return primeraPagina.data;
-  }
-
-  const respuestas = await Promise.all(
-    Array.from({ length: paginasRestantes }, (_, indice) => obtenerPagina(recurso, indice + 2)),
-  );
-
-  // Juntamos los datos de todas las páginas en un solo array
-  return primeraPagina.data.concat(...respuestas.map((respuesta) => respuesta.data));
-};
 // Renderiza la lista de actividades del instructor calculando el resumen superior
 // y dibujando cada tarjeta con su título, fecha, horario y cupos.
 export const renderizarActividades = (actividades) => {
