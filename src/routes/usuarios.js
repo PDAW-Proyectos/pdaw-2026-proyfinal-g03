@@ -115,5 +115,21 @@ module.exports = function rutasUsuarios({ servicioUsuarios }) {
     }
   );
 
+    // Eliminar a un miembro o instructor (Solo para administradores)
+  router.delete(
+    '/:id',
+    exigirPermiso('crearUsuario'), // Usamos este permiso porque es el que usa el admin para gestionar usuarios
+    async (req, res, next) => {
+      try {
+        await servicioUsuarios.eliminarCuenta(req.params.id);
+
+        res.json({
+          mensaje: 'Usuario eliminado correctamente'
+        });
+      } catch (error) {
+        next(error);
+      }
+    }
+  );  
   return router;
 };

@@ -5,12 +5,13 @@ const { ErrorValidacion, ErrorConflicto, ErrorProhibido } = require('../utils/er
 class Turno {
   #miembroId; // null = disponible
 
-  constructor({ id = null, fecha, hora, miembroId = null }) {
+  constructor({ id = null, fecha, hora, miembroId = null,medico=null }) {
     if (new.target === Turno) throw new TypeError('Turno es abstracta');
     this.id = id;
     this.fecha = v.fechaISO(fecha, 'fecha');
     this.hora = v.hora(hora, 'hora');
     this.#miembroId = v.idOpcional(miembroId, 'miembroId');
+    this.medico = medico; 
   }
 
   get tipo() {
@@ -52,6 +53,7 @@ class Turno {
       duracionMin: this.duracionMin,
       disponible: this.disponible,
       miembroId: this.#miembroId,
+      medico: this.medico,
     };
   }
 

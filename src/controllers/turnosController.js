@@ -4,7 +4,7 @@
 const { filtrar, conNextTodos } = require('../utils/http');
 
 // miembroId no entra: el turno se publica libre y se reserva por su propia ruta
-const CAMPOS = ['tipo', 'fecha', 'hora'];
+const CAMPOS = ['tipo', 'fecha', 'hora','medico'];
 
 module.exports = function crearControladorTurnos(servicio) {
   return conNextTodos({

@@ -162,12 +162,41 @@
               <i class="bi bi-plus-lg"></i> PUBLICAR TURNO
             </button>
           </div>
-          <p class="text-gray mb-4">Turnos disponibles para chequeos médicos y nutrición.</p>
-          <p id="admin-turnos-resumen" class="text-gray mb-3" aria-live="polite">
-            Cargando resumen...
-          </p>
-          <div id="admin-turnos-disponibles" class="d-flex flex-column gap-3" aria-live="polite" aria-busy="true">
-            <div class="admin-card">Cargando disponibilidad...</div>
+          <div id="admin-turnos-disponibles">
+            <div
+              class="d-flex flex-column flex-md-row align-items-md-center gap-3 p-3 mb-4 rounded border border-secondary"
+              style="background-color: transparent;">
+              <div class="position-relative flex-grow-1"><i class="bi bi-search position-absolute text-gray"
+                  style="left: 15px; top: 50%; transform: translateY(-50%); font-size: 16px; pointer-events: none;">
+                </i><input id="filtroNombreTurno" class="form-control bg-transparent text-white border-secondary"
+                  type="text" placeholder=" Buscar por nombre del médico..." style=" padding-left: 45px;">
+              </div>
+              <div class="position-relative" style="min-width: 220px;">
+                <i class="bi bi-calendar-event position-absolute text-gray"
+                  style="left: 15px; top: 50%; transform: translateY(-50%); font-size: 16px; pointer-events: none;"></i>
+                <input id="filtroFechaTurno" class="form-control bg-transparent text-white border-secondary" type="date"
+                  style="padding-left: 45px; color-scheme: dark;">
+              </div>
+            </div>
+            <p class="text-gray mb-4">Turnos disponibles para chequeos médicos y nutrición.</p>
+            <p id="admin-turnos-resumen" class="text-gray mb-3" aria-live="polite">
+              Cargando resumen...
+            </p>
+
+            <div class="row g-4">
+              <div class="col-lg-6">
+                <h4 class="text-white mb-3 fs-15">Chequeos Médicos</h4>
+                <div id="admin-turnos-chequeos" class="d-flex flex-column gap-3" aria-live="polite" aria-busy="true">
+                  <div class="admin-card">Cargando chequeos...</div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <h4 class="text-white mb-3 fs-15">Nutrición</h4>
+                <div id="admin-turnos-nutricion" class="d-flex flex-column gap-3" aria-live="polite" aria-busy="true">
+                  <div class="admin-card">Cargando nutrición...</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <div id="admin-local" class="seccion-contenido d-none">
@@ -177,12 +206,28 @@
               <i class="bi bi-plus-lg"></i> AGREGAR HORARIO
             </button>
           </div>
+
           <h4 class="text-white mb-3 fs-15">Horarios de Apertura y Cierre</h4>
-          <p id="admin-horarios-resumen" class="text-gray mb-3" aria-live="polite">
+          <p id="admin-horarios-resumen" class="text-gray mb-4" aria-live="polite">
             Cargando resumen...
           </p>
-          <div id="admin-horarios-lista" class="d-flex flex-column gap-3" aria-live="polite" aria-busy="true">
-            <div class="admin-card">Cargando horarios...</div>
+          <div class="panel-horarios p-3 p-md-4 rounded border border-secondary" style="background-color: #121212;">
+            <div
+              class="d-flex justify-content-end align-items-center mb-4 flex-wrap gap-3 border-bottom border-secondary pb-3">
+              <div class="form-check form-switch d-flex align-items-center gap-2 m-0">
+                <input class="form-check-input" type="checkbox" role="switch" id="switchAgrupar"
+                  style="cursor: pointer;">
+                <label class="form-check-label text-gray fw-bold text-uppercase" for="switchAgrupar"
+                  style="font-size: 11px; letter-spacing: 0.5px; cursor: pointer;">
+                  Agrupar días iguales
+                </label>
+              </div>
+            </div>
+            <!-- Acá se inyectarán los horarios dinámicamente -->
+            <div id="admin-horarios-lista" class="d-flex flex-column" aria-live="polite" aria-busy="true">
+              <div class="admin-card">Cargando horarios...</div>
+            </div>
+
           </div>
         </div>
         <div id="admin-planes" class="seccion-contenido d-none">
@@ -225,15 +270,31 @@
                 </form>
               </div>
             </div>
-            <div class="col-lg-8">
-              <h4 class="text-white mb-3 fs-15">Planes Existentes</h4>
-              <p id="admin-membresias-resumen" class="text-gray mb-3" aria-live="polite">
-                Cargando resumen...
-              </p>
-              <div id="admin-membresias-lista" class="d-flex flex-column gap-3" aria-live="polite" aria-busy="true">
-                <div class="admin-card">Cargando planes...</div>
-              </div>
-            </div>
+            <!-- ... tu formulario de la izquierda queda igual ... -->
+            
+<div class="col-lg-8">
+  <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+    <h4 class="text-white m-0 fs-15">Planes Existentes</h4>
+    
+    <select id="filtroEstadoPlanes" class="form-select bg-dark text-white border-secondary w-auto" style="font-size: 13px;">
+      <option value="todos">Todos los planes</option>
+      <option value="activos">Solo Activos</option>
+      <option value="inactivos">Solo Inactivos</option>
+    </select>
+  </div>
+
+  <p id="admin-membresias-resumen" class="text-gray mb-3" aria-live="polite">
+    Cargando resumen...
+  </p>
+  
+  <div id="admin-membresias-lista" class="d-flex flex-column gap-3 mb-4" aria-live="polite" aria-busy="true">
+    <div class="admin-card">Cargando planes...</div>
+  </div>
+
+  <div id="paginado-planes" class="d-flex justify-content-center align-items-center gap-3">
+    <!-- Se llena dinámicamente por JS -->
+  </div>
+</div>
           </div>
         </div>
         <div id="admin-actividades" class="seccion-contenido d-none">
@@ -301,33 +362,38 @@
   <!-- modal para Nuevo Turno -->
   <div class="modal fade" id="modalTurno" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Publicar Nuevo Turno</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      <div class="modal-content bg-pulso-darker border border-secondary">
+        <div class="modal-header border-secondary">
+          <h5 class="modal-title text-white">Publicar Nuevo Turno</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
         </div>
         <form id="formTurno">
           <div class="modal-body">
             <div class="mb-3">
-              <label for="turnoTipo" class="form-label">Tipo de turno</label>
-              <select class="form-select" id="turnoTipo" required>
+              <label for="turnoTipo" class="form-label text-gray fs-14">Tipo de turno</label>
+              <select class="form-select bg-dark text-white border-secondary" id="turnoTipo" required>
                 <option value="">Seleccionar tipo...</option>
                 <option value="chequeo_medico">Chequeo Médico (30 min)</option>
                 <option value="nutricionista">Nutricionista (45 min)</option>
               </select>
             </div>
             <div class="mb-3">
-              <label for="turnoFecha" class="form-label">Fecha</label>
-              <input type="date" class="form-control" id="turnoFecha" required />
+              <label for="turnoMedico" class="form-label text-gray fs-14">Nombre del Médico / Nutricionista</label>
+              <input type="text" class="form-control bg-dark text-white border-secondary" id="turnoMedico"
+                placeholder="Ej: Dr. Pérez" required />
             </div>
             <div class="mb-3">
-              <label for="turnoHora" class="form-label">Hora</label>
-              <input type="time" class="form-control" id="turnoHora" required />
+              <label for="turnoFecha" class="form-label text-gray fs-14">Fecha</label>
+              <input type="date" class="form-control bg-dark text-white border-secondary" id="turnoFecha" required />
+            </div>
+            <div class="mb-3">
+              <label for="turnoHora" class="form-label text-gray fs-14">Hora</label>
+              <input type="time" class="form-control bg-dark text-white border-secondary" id="turnoHora" required />
             </div>
             <div id="mensajeTurno" class="text-danger fs-14 mt-2"></div>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          <div class="modal-footer border-secondary">
+            <button type="button" class="btn btn-outline-custom" data-bs-dismiss="modal">
               Cancelar
             </button>
             <button type="submit" class="btn btn-green">Publicar Turno</button>
@@ -340,16 +406,21 @@
   <!-- modal para Nuevo Horario -->
   <div class="modal fade" id="modalHorario" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Agregar Horario de Apertura</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      <!-- 1. Agregamos las clases de fondo oscuro y borde -->
+      <div class="modal-content bg-pulso-darker border border-secondary">
+        <div class="modal-header border-secondary">
+          <h5 class="modal-title text-white">Agregar Horario de Apertura</h5>
+          <!-- 2. Botón de cerrar en blanco -->
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
         </div>
+
         <form id="formHorario">
           <div class="modal-body">
             <div class="mb-3">
-              <label for="horarioDia" class="form-label">Día</label>
-              <select class="form-select" id="horarioDia" required>
+              <!-- 3. Textos en gris claro y selectores oscuros -->
+              <label for="horarioDia" class="form-label text-gray fs-14 mb-2">Día</label>
+              <select class="form-select bg-dark text-white border-secondary" id="horarioDia"
+                style="color-scheme: dark;" required>
                 <option value="">Seleccionar día...</option>
                 <option value="lunes">Lunes</option>
                 <option value="martes">Martes</option>
@@ -362,15 +433,17 @@
             </div>
             <div class="row g-3">
               <div class="col-6">
-                <label for="horarioApertura" class="form-label">Apertura</label>
-                <input type="time" class="form-control" id="horarioApertura" required />
+                <label for="horarioApertura" class="form-label text-gray fs-14 mb-2">Apertura</label>
+                <!-- 4. Inputs oscuros con el ícono del reloj en blanco -->
+                <input type="time" class="form-control bg-dark text-white border-secondary" id="horarioApertura"
+                  style="color-scheme: dark;" required />
               </div>
               <div class="col-6">
-                <label for="horarioCierre" class="form-label">Cierre</label>
-                <input type="time" class="form-control" id="horarioCierre" required />
+                <label for="horarioCierre" class="form-label text-gray fs-14 mb-2">Cierre</label>
+                <input type="time" class="form-control bg-dark text-white border-secondary" id="horarioCierre"
+                  style="color-scheme: dark;" required />
               </div>
             </div>
-            <div id="mensajeHorario" class="text-danger fs-14 mt-2"></div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
@@ -464,7 +537,77 @@
       </div>
     </div>
   </div>
+  <!--modal para eliminar cuenta-->
+  <div class="modal fade" id="modalEliminarUsuario" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content bg-pulso-darker border border-secondary" style="border-radius: 12px;">
 
+        <div class="modal-body p-4">
+          <div class="d-flex align-items-center gap-2 mb-4">
+            <div class="d-flex align-items-center justify-content-center border border-danger rounded"
+              style="width: 40px; height: 40px;">
+              <i class="bi bi-exclamation-triangle text-danger fs-5"></i>
+            </div>
+            <span class="text-danger fw-bold fs-14" style="letter-spacing: 0.5px;">ACCIÓN IRREVERSIBLE</span>
+          </div>
+          <h3 class="text-white fw-bold mb-4"
+            style="font-family: 'Oswald', sans-serif; font-size: 2rem; line-height: 1.1;">
+            ¿ELIMINAR A <br> <span id="nombreUsuarioEliminar" class="text-green">NOMBRE</span>?
+          </h3>
+
+          <div class="d-flex gap-3 mb-4">
+            <button type="button" class="btn btn-outline-custom w-50 py-2 fw-bold fs-14" data-bs-dismiss="modal">
+              CANCELAR
+            </button>
+            <button type="button"
+              class="btn btn-danger w-50 py-2 fw-bold fs-14 d-flex align-items-center justify-content-center gap-2"
+              id="btnConfirmarEliminar">
+              <i class="bi bi-trash3"></i> SÍ, ELIMINAR
+            </button>
+          </div>
+          <div class="d-flex justify-content-end align-items-center gap-2 text-gray fs-13">
+            <span class="border border-secondary rounded px-1 py-0" style="font-size: 11px;">Esc</span> cancela
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!-- Modal Genérico de Confirmación -->
+  <div class="modal fade" id="modalConfirmacion" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content bg-pulso-darker border border-secondary" style="border-radius: 12px;">
+
+        <div class="modal-body p-4">
+          <div class="d-flex align-items-center gap-2 mb-4">
+            <div class="d-flex align-items-center justify-content-center border border-danger rounded"
+              style="width: 40px; height: 40px;">
+              <i class="bi bi-exclamation-triangle text-danger fs-5"></i>
+            </div>
+            <span class="text-danger fw-bold fs-14" style="letter-spacing: 0.5px;">CONFIRMACIÓN</span>
+          </div>
+          <h3 class="text-white fw-bold mb-4"
+            style="font-family: 'Oswald', sans-serif; font-size: 1.8rem; line-height: 1.1;">
+            <span id="textoConfirmacionModal">¿Estás seguro?</span>
+          </h3>
+          <div class="d-flex gap-3 mb-4">
+            <button type="button" class="btn btn-outline-custom w-50 py-2 fw-bold fs-14" data-bs-dismiss="modal">
+              CANCELAR
+            </button>
+            <button type="button"
+              class="btn btn-danger w-50 py-2 fw-bold fs-14 d-flex align-items-center justify-content-center gap-2"
+              id="btnAceptarConfirmacion">
+              <i class="bi bi-check-lg"></i> ACEPTAR
+            </button>
+          </div>
+          <div class="d-flex justify-content-end align-items-center gap-2 text-gray fs-13">
+            <span class="border border-secondary rounded px-1 py-0" style="font-size: 11px;">Esc</span> cancela
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
   <!-- Toast de notificaciones -->
   <div class="toast-container position-fixed bottom-0 end-0 p-3" id="toast-container">
     <div id="miToast" class="toast align-items-center text-bg-dark border-0" role="alert" aria-live="assertive"
@@ -482,6 +625,7 @@
       </div>
     </div>
   </div>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script type="module" src="js/admin/admin.js"></script>
 </body>

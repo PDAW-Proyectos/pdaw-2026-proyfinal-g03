@@ -10,6 +10,11 @@ class ServicioClases {
     this.repoClases = repoClases;
   }
 
+  async listarDestacadas({ page, limit } = {}) {
+    const clases = await this.repoClases.listarPorDestacadas();
+    return paginar(clases, { page, limit });
+  }
+
   async listar({ instructor, page, limit } = {}) {
     const clases =
       instructor === undefined
@@ -62,6 +67,14 @@ class ServicioClases {
     if (String(clase.instructorId) !== String(instructor.id))
       throw new ErrorProhibido('La clase es de otro instructor');
     return clase;
+  }
+
+  async destacar({ claseId }) {
+    const clase = await this.repoClases.obtenerPorId(claseId);
+
+    clase.destacar();
+
+    return this.repoClases.actualizar(clase);
   }
 }
 

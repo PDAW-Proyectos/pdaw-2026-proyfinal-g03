@@ -62,11 +62,12 @@ function crearApp({
   );
 
   // Rutas públicas de autenticación
+  app.use('/api/publico', rutasCatalogoPublico(servicios));
+
   app.use(
     '/api/auth',
     rutasAuth({ servicioAuth: servicios.servicioAuth, repoUsuarios: repos.repoUsuarios }),
   );
-  app.use('/api/publico', rutasCatalogoPublico(servicios));
 
   // Desde aquí, las rutas de la API requieren una sesión válida.
   app.use('/api', autenticacion({ repoUsuarios: repos.repoUsuarios }));
