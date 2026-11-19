@@ -1,10 +1,25 @@
-// Crea un elemento HTML de forma segura .
+import { mostrarToast } from '../componentes/toast.js';
+
+// Crea un elemento HTML de forma segura.
 const crearElemento = (etiqueta, clases, texto) => {
   const el = document.createElement(etiqueta);
   if (clases) el.className = clases;
   if (texto !== undefined) el.textContent = texto;
   return el;
 };
+// Variable global para mantener el estado del filtro
+let filtroTextoNombre = '';
+let filtroFecha = '';
+
+// Función auxiliar para formatear la fecha (para no repetir código)
+const formatearFechaHora = (fechaHoraISO) => {
+  if (!fechaHoraISO) return 'Fecha a confirmar';
+  const [fecha, horaCompleta] = fechaHoraISO.split('T');
+  const [anio, mes, dia] = fecha.split('-');
+  const hora = horaCompleta.slice(0, 5);
+  return `${dia}/${mes}/${anio} · ${hora} hs`;
+};
+
 // Crea un párrafo (<p>) que contiene un ícono de Bootstrap Icons seguido de un texto.
 const crearParrafoConIcono = (clases, iconoClases, texto) => {
   const p = crearElemento('p', clases);
@@ -13,14 +28,7 @@ const crearParrafoConIcono = (clases, iconoClases, texto) => {
   return p;
 };
 
-// Muestra un mensaje centrado dentro de un contenedor (ideal para estados vacíos o de error).
-const mostrarMensaje = (contenedor, mensaje, clase = 'text-gray') => {
-  contenedor.replaceChildren(crearElemento('div', `user-card text-center py-4 ${clase}`, mensaje));
-  contenedor.setAttribute('aria-busy', 'false');
-};
-
 // Petición fetch "segura" que maneja errores y adapta la respuesta a un array.
-// Dependiendo de cómo responda el backend, extrae los datos de "json.data" o "json.items".
 const fetchSeguro = async (url) => {
   try {
     const res = await fetch(url, { credentials: 'include' });
@@ -34,477 +42,826 @@ const fetchSeguro = async (url) => {
     return null;
   }
 };
-// Dibuja un gráfico de líneas usando SVG nativo, sin librerías externas.
-// Recibe un array con los registros de peso para graficar la evolución.
-const dibujarGrafico = (registros) => {
-  const contenedor = document.getElementById('contenedor-grafico');
-  if (!contenedor) return;
-
-  // Validación: se necesitan al menos 2 pesajes para trazar una línea
-  if (registros.length < 2) {
-    contenedor.replaceChildren(
-      crearElemento(
-        'div',
-        'text-gray text-center w-100 py-5',
-        'Registrá al menos 2 pesajes para ver tu gráfico de evolución.',
-      ),
+const dibujarGrafico = (listaDePesajes, pesoInicialDelPerfil) => {
+  const contenedorGrafico = document.getElementById('contenedor-grafico');
+  if (!contenedorGrafico) return;
+  if (!Array.isArray(listaDePesajes) || listaDePesajes.length === 0) {
+    contenedorGrafico.replaceChildren(
+      crearElemento('div', 'text-gray text-center w-100 py-5', 'No hay pesajes guardados en este mes.'),
     );
+    contenedorGrafico.style.height = 'auto';
+    contenedorGrafico.style.minHeight = '150px';
     return;
   }
+  const datosParaGrafico = [...listaDePesajes];
+  if (pesoInicialDelPerfil > 0) {
+    const primerPesaje = datosParaGrafico[0];
+    if (Number(primerPesaje.peso) !== Number(pesoInicialDelPerfil)) {
+      const fechaDelPrimerPesaje = new Date(primerPesaje.fecha);
+      fechaDelPrimerPesaje.setDate(fechaDelPrimerPesaje.getDate() - 1);
 
-  // Limpieza y preparación del contenedor
-  contenedor.replaceChildren();
-  contenedor.style.borderStyle = 'solid';
-  contenedor.style.backgroundColor = '#1e1e1e';
+      datosParaGrafico.unshift({
+        fecha: fechaDelPrimerPesaje.toISOString(),
+        peso: pesoInicialDelPerfil
+      });
+    }
+  }
+  if (datosParaGrafico.length < 2) {
+    contenedorGrafico.replaceChildren(
+      crearElemento('div', 'text-gray text-center w-100 py-5', 'Registrá al menos un pesaje para ver tu gráfico de evolución.'),
+    );
+    contenedorGrafico.style.height = 'auto';
+    contenedorGrafico.style.minHeight = '150px';
+    return;
+  }
+  contenedorGrafico.replaceChildren();
+  contenedorGrafico.style.borderStyle = 'solid';
+  contenedorGrafico.style.backgroundColor = '#1e1e1e';
+  contenedorGrafico.style.height = 'auto';
+  contenedorGrafico.style.minHeight = '200px';
 
-  // Separación de datos para los ejes X e Y
-  const datos = registros.map((r) => Number(r.peso));
-  const etiquetas = registros.map((r) => {
-    const d = new Date(r.fecha);
-    return `${d.getDate()}/${d.getMonth() + 1}`;
+  const valoresDePeso = datosParaGrafico.map((registro) => Number(registro.peso || registro.pesoActual));
+  const etiquetasDeFechas = datosParaGrafico.map((registro) => {
+    const fecha = new Date(registro.fecha);
+    return `${fecha.getDate().toString().padStart(2, '0')}/${(fecha.getMonth() + 1).toString().padStart(2, '0')}`;
   });
 
-  // Configuración de dimensiones del gráfico
-  const width = 700,
-    height = 280,
-    paddingLeft = 50,
-    paddingBottom = 40,
-    paddingTop = 30,
-    paddingRight = 30;
-  const chartWidth = width - paddingLeft - paddingRight;
-  const chartHeight = height - paddingTop - paddingBottom;
-  const maxPeso = Math.max(...datos) + 5;
-  const minPeso = Math.min(...datos) - 5;
-  const rangoPeso = maxPeso - minPeso || 1;
+  const ancho = 700, alto = 280, margenIzquierdo = 50, margenInferior = 40, margenSuperior = 30, margenDerecho = 30;
+  const anchoDelArea = ancho - margenIzquierdo - margenDerecho;
+  const altoDelArea = alto - margenSuperior - margenInferior;
+  const pesoMaximo = Math.max(...valoresDePeso) + 2;
+  const pesoMinimo = Math.min(...valoresDePeso) - 2;
+  const rangoDePeso = pesoMaximo - pesoMinimo || 1;
 
-  // Creación del lienzo SVG
-  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-  svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
-  svg.setAttribute('width', '100%');
-  svg.setAttribute('height', '100%');
+  const elementoLienzo = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  elementoLienzo.setAttribute('viewBox', `0 0 ${ancho} ${alto}`);
+  elementoLienzo.setAttribute('width', '100%');
+  elementoLienzo.setAttribute('height', '100%');
+  elementoLienzo.style.display = 'block';
 
-  // Dibujo de la cuadrícula y textos del eje Y (peso)
-  for (let i = 0; i <= 4; i++) {
-    const y = paddingTop + i * (chartHeight / 4);
-    const valorY = maxPeso - i * (rangoPeso / 4);
-    const linea = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-    linea.setAttribute('x1', paddingLeft);
-    linea.setAttribute('y1', y);
-    linea.setAttribute('x2', width - paddingRight);
-    linea.setAttribute('y2', y);
-    linea.setAttribute('stroke', '#333');
-    svg.appendChild(linea);
+  for (let indice = 0; indice <= 4; indice++) {
+    const coordenadaY = margenSuperior + indice * (altoDelArea / 4);
+    const valorDelEjeY = pesoMaximo - indice * (rangoDePeso / 4);
 
-    const textoY = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    textoY.setAttribute('x', paddingLeft - 10);
-    textoY.setAttribute('y', y + 4);
-    textoY.setAttribute('fill', '#888');
-    textoY.setAttribute('font-size', '12');
-    textoY.setAttribute('text-anchor', 'end');
-    textoY.textContent = valorY.toFixed(0);
-    svg.appendChild(textoY);
+    const lineaDeCuadricula = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    lineaDeCuadricula.setAttribute('x1', margenIzquierdo);
+    lineaDeCuadricula.setAttribute('y1', coordenadaY);
+    lineaDeCuadricula.setAttribute('x2', ancho - margenDerecho);
+    lineaDeCuadricula.setAttribute('y2', coordenadaY);
+    lineaDeCuadricula.setAttribute('stroke', '#333');
+    elementoLienzo.appendChild(lineaDeCuadricula);
+
+    const textoDelEjeY = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    textoDelEjeY.setAttribute('x', margenIzquierdo - 10);
+    textoDelEjeY.setAttribute('y', coordenadaY + 4);
+    textoDelEjeY.setAttribute('fill', '#888');
+    textoDelEjeY.setAttribute('font-size', '12');
+    textoDelEjeY.setAttribute('text-anchor', 'end');
+    textoDelEjeY.textContent = valorDelEjeY.toFixed(1);
+    elementoLienzo.appendChild(textoDelEjeY);
   }
 
-  // Cálculo de las coordenadas (x, y) de cada punto
-  const puntos = datos.map((peso, index) => {
-    const x = paddingLeft + index * (chartWidth / (datos.length - 1));
-    const y = height - paddingBottom - ((peso - minPeso) / rangoPeso) * chartHeight;
-    return { x, y, peso, etiqueta: etiquetas[index] };
+  const puntosDelGrafico = valoresDePeso.map((peso, indice) => {
+    const coordenadaX = margenIzquierdo + indice * (anchoDelArea / (valoresDePeso.length - 1));
+    const coordenadaY = alto - margenInferior - ((peso - pesoMinimo) / rangoDePeso) * altoDelArea;
+    return { x: coordenadaX, y: coordenadaY, peso: peso, etiqueta: etiquetasDeFechas[indice] };
   });
 
-  // Dibujo de la línea que une los puntos
-  const polyline = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
-  polyline.setAttribute('points', puntos.map((p) => `${p.x},${p.y}`).join(' '));
-  polyline.setAttribute('fill', 'none');
-  polyline.setAttribute('stroke', '#3b82f6');
-  polyline.setAttribute('stroke-width', '3');
-  svg.appendChild(polyline);
+  const lineaDelGrafico = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+  lineaDelGrafico.setAttribute('points', puntosDelGrafico.map((punto) => `${punto.x},${punto.y}`).join(' '));
+  lineaDelGrafico.setAttribute('fill', 'none');
+  lineaDelGrafico.setAttribute('stroke', '#3b82f6');
+  lineaDelGrafico.setAttribute('stroke-width', '3');
+  elementoLienzo.appendChild(lineaDelGrafico);
 
-  // Dibujo de los círculos (puntos), el peso arriba y la fecha abajo
-  puntos.forEach((p) => {
-    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-    circle.setAttribute('cx', p.x);
-    circle.setAttribute('cy', p.y);
-    circle.setAttribute('r', '5');
-    circle.setAttribute('fill', '#1e1e1e');
-    circle.setAttribute('stroke', '#3b82f6');
-    circle.setAttribute('stroke-width', '2');
-    svg.appendChild(circle);
+  puntosDelGrafico.forEach((punto) => {
+    const circuloDelPunto = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    circuloDelPunto.setAttribute('cx', punto.x);
+    circuloDelPunto.setAttribute('cy', punto.y);
+    circuloDelPunto.setAttribute('r', '5');
+    circuloDelPunto.setAttribute('fill', '#1e1e1e');
+    circuloDelPunto.setAttribute('stroke', '#3b82f6');
+    circuloDelPunto.setAttribute('stroke-width', '2');
+    elementoLienzo.appendChild(circuloDelPunto);
 
-    const textoPeso = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    textoPeso.setAttribute('x', p.x);
-    textoPeso.setAttribute('y', p.y - 12);
-    textoPeso.setAttribute('fill', '#3b82f6');
-    textoPeso.setAttribute('font-size', '12');
-    textoPeso.setAttribute('text-anchor', 'middle');
-    textoPeso.textContent = p.peso;
-    svg.appendChild(textoPeso);
+    const textoDelPeso = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    textoDelPeso.setAttribute('x', punto.x);
+    textoDelPeso.setAttribute('y', punto.y - 12);
+    textoDelPeso.setAttribute('fill', '#3b82f6');
+    textoDelPeso.setAttribute('font-size', '12');
+    textoDelPeso.setAttribute('font-weight', 'bold');
+    textoDelPeso.setAttribute('text-anchor', 'middle');
+    textoDelPeso.textContent = `${punto.peso} kg`;
+    elementoLienzo.appendChild(textoDelPeso);
 
-    const textoX = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    textoX.setAttribute('x', p.x);
-    textoX.setAttribute('y', height - paddingBottom + 20);
-    textoX.setAttribute('fill', '#ccc');
-    textoX.setAttribute('font-size', '12');
-    textoX.setAttribute('text-anchor', 'middle');
-    textoX.textContent = p.etiqueta;
-    svg.appendChild(textoX);
+    const textoDeLaFecha = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    textoDeLaFecha.setAttribute('x', punto.x);
+    textoDeLaFecha.setAttribute('y', alto - margenInferior + 20);
+    textoDeLaFecha.setAttribute('fill', '#ccc');
+    textoDeLaFecha.setAttribute('font-size', '12');
+    textoDeLaFecha.setAttribute('text-anchor', 'middle');
+    textoDeLaFecha.textContent = punto.etiqueta;
+    elementoLienzo.appendChild(textoDeLaFecha);
   });
 
-  contenedor.appendChild(svg);
+  contenedorGrafico.appendChild(elementoLienzo);
 };
+let mesSeleccionadoGrafico = null;
 
-// Renderiza las tarjetas superiores del historial (IMC, Meta, Peso actual),
-// el resumen de progreso (Peso inicial, Diferencia) y arma la tabla de registros.
-const renderizarHistorialYGrafico = (usuario) => {
-  const seccion = document.getElementById('user-historial');
-  if (!seccion) return;
+export const renderizarHistorialYGrafico = (usuario) => {
+  const seccionHistorial = document.getElementById('user-historial');
+  if (!seccionHistorial) return;
 
-  // Se busca el historial en el JSON. Si no hay, se usa un array vacío.
-  const registros = Array.isArray(usuario.historialPesos) ? [...usuario.historialPesos] : [];
+  const listaDePesajes = Array.isArray(usuario.historialPesos) ? [...usuario.historialPesos] : [];
+  listaDePesajes.sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
 
-  // Ordenamos el historial del más antiguo al más nuevo
-  registros.sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
+  const mesesUnicos = new Set();
+  listaDePesajes.forEach((registro) => {
+    const fecha = new Date(registro.fecha);
+    mesesUnicos.add(`${fecha.getFullYear()}-${String(fecha.getMonth() + 1).padStart(2, '0')}`);
+  });
 
-  const pesoDelUsuario = Number(usuario.peso || 0);
-  const pesoInicial = registros.length > 0 ? Number(registros[0].peso) : pesoDelUsuario;
-  const pesoMeta = Number(usuario.pesoMeta || 0);
+  const textoDelMes = document.getElementById('mesActualGrafico');
+  const botonMesAnterior = document.getElementById('btnMesAnterior');
+  const botonMesSiguiente = document.getElementById('btnMesSiguiente');
+  const nombresDeLosMeses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 
-  let imc = '-',
-    diferencia = '-',
-    pesoActualTxt = '-',
-    pesoInicialTxt = '-',
-    claseDif = 'text-gray';
+  if (textoDelMes && botonMesAnterior && botonMesSiguiente) {
+    if (mesSeleccionadoGrafico === null) {
+      const fechaDeHoy = new Date();
+      mesSeleccionadoGrafico = `${fechaDeHoy.getFullYear()}-${String(fechaDeHoy.getMonth() + 1).padStart(2, '0')}`;
+    }
 
-  // Si hay altura y peso, calculamos el IMC y la diferencia
-  if (pesoDelUsuario > 0 && usuario.altura) {
-    const alturaM = usuario.altura / 100;
-    imc = (pesoDelUsuario / (alturaM * alturaM)).toFixed(1);
-    pesoActualTxt = `${pesoDelUsuario} kg`;
-    pesoInicialTxt = `${pesoInicial} kg`;
+    if (mesSeleccionadoGrafico) {
+      const [anio, mes] = mesSeleccionadoGrafico.split('-');
+      textoDelMes.textContent = `${nombresDeLosMeses[parseInt(mes) - 1]} ${anio}`;
 
-    const difNum = pesoDelUsuario - pesoInicial;
-    diferencia = `${difNum > 0 ? '+' : ''}${difNum.toFixed(1)} kg`;
-    claseDif = difNum <= 0 ? 'text-green' : 'text-danger';
+      const fechaDeHoy = new Date();
+      const mesActualFormateado = `${fechaDeHoy.getFullYear()}-${String(fechaDeHoy.getMonth() + 1).padStart(2, '0')}`;
 
-    // Renderizado de la tabla de progreso
-    const tbody = document.querySelector('#user-progreso tbody');
-    if (tbody) {
-      tbody.replaceChildren();
-      if (registros.length === 0) {
-        // Si no hay historial, mostramos una única fila con el peso actual
-        const tr = crearElemento('tr');
-        tr.append(
-          crearElemento('td', 'py-3 px-4 text-white', new Date().toLocaleDateString('es-AR')),
-          crearElemento('td', 'py-3 px-4 text-white', `${pesoDelUsuario} kg`),
-          crearElemento('td', 'py-3 px-4 text-end text-gray', '-'),
+      botonMesSiguiente.disabled = (mesSeleccionadoGrafico >= mesActualFormateado);
+      botonMesAnterior.disabled = false;
+    }
+  }
+  let pesajesFiltrados = listaDePesajes;
+  if (mesSeleccionadoGrafico) {
+    pesajesFiltrados = listaDePesajes.filter((registro) => {
+      const fecha = new Date(registro.fecha);
+      const mesDelRegistro = `${fecha.getFullYear()}-${String(fecha.getMonth() + 1).padStart(2, '0')}`;
+      return mesDelRegistro === mesSeleccionadoGrafico;
+    });
+  }
+  const ultimoPesoRegistrado = listaDePesajes.length > 0
+    ? Number(listaDePesajes[listaDePesajes.length - 1].peso)
+    : Number(usuario.peso || 0);
+  const pesoInicialDelPerfil = Number(usuario.peso || 0);
+
+  const metaDePeso = usuario.pesoMeta !== null && usuario.pesoMeta !== undefined ? Number(usuario.pesoMeta) : 0;
+
+  let calculoIMC = '-', textoDiferenciaTotal = '-', textoPesoActual = '-', textoPesoInicial = '-';
+  const claseDeDiferencia = 'text-white';
+
+  if (ultimoPesoRegistrado > 0) {
+    textoPesoActual = `${ultimoPesoRegistrado} kg`;
+    textoPesoInicial = `${pesoInicialDelPerfil} kg`;
+    const diferenciaNumerica = ultimoPesoRegistrado - pesoInicialDelPerfil;
+    textoDiferenciaTotal = `${diferenciaNumerica > 0 ? '+' : ''}${diferenciaNumerica.toFixed(1)} kg`;
+
+    if (usuario.altura) {
+      const alturaEnMetros = usuario.altura / 100;
+      calculoIMC = (ultimoPesoRegistrado / (alturaEnMetros * alturaEnMetros)).toFixed(1);
+    }
+  }
+
+  const cuerpoDeTabla = document.querySelector('#user-progreso tbody');
+  if (cuerpoDeTabla) {
+    cuerpoDeTabla.replaceChildren();
+    const pesajesParaLaTabla = pesajesFiltrados;
+
+    if (pesajesParaLaTabla.length === 0) {
+      const filaVacia = crearElemento('tr');
+      filaVacia.append(
+        crearElemento('td', 'py-3 px-4 text-white', '-'),
+        crearElemento('td', 'py-3 px-4 text-white', '-'),
+        crearElemento('td', 'py-3 px-4 text-end text-gray', '-'),
+      );
+      cuerpoDeTabla.append(filaVacia);
+    } else {
+      const ultimosPesajesDeLaTabla = [...pesajesParaLaTabla].reverse().slice(0, 10);
+
+      ultimosPesajesDeLaTabla.forEach((registro, indice) => {
+        const filaDeTabla = crearElemento('tr');
+        const fechaDelRegistro = new Date(registro.fecha);
+        const registroAnterior = ultimosPesajesDeLaTabla[indice + 1];
+
+        const pesoDeEstaFila = Number(registro.peso);
+        const pesoDeLaFilaAnterior = registroAnterior ? Number(registroAnterior.peso) : null;
+
+        let textoDeLaDiferencia = '-';
+        if (pesoDeLaFilaAnterior !== null) {
+          const calculoDeDiferencia = pesoDeEstaFila - pesoDeLaFilaAnterior;
+          if (calculoDeDiferencia !== 0) {
+            const signo = calculoDeDiferencia > 0 ? '+' : '';
+            textoDeLaDiferencia = `${signo}${calculoDeDiferencia.toFixed(1)} kg`;
+          }
+        }
+
+        filaDeTabla.append(
+          crearElemento('td', 'py-3 px-4 text-white', fechaDelRegistro.toLocaleDateString('es-AR')),
+          crearElemento('td', 'py-3 px-4 text-white', `${pesoDeEstaFila} kg`),
+          crearElemento('td', `py-3 px-4 text-end text-white`, textoDeLaDiferencia),
         );
-        tbody.append(tr);
-      } else {
-        // Si hay historial, mostramos las últimas 5 filas
-        const ultimos = [...registros].reverse().slice(0, 5);
-        ultimos.forEach((reg, index) => {
-          const tr = crearElemento('tr');
-          const fecha = new Date(reg.fecha);
-          const anterior = ultimos[index + 1];
-          const difReg = anterior ? reg.peso - anterior.peso : 0;
-          const difTxt = difReg === 0 ? '-' : `${difReg > 0 ? '+' : ''}${difReg.toFixed(1)} kg`;
-          const claseReg = difReg < 0 ? 'text-green' : difReg > 0 ? 'text-danger' : 'text-gray';
+        cuerpoDeTabla.append(filaDeTabla);
+      });
+    }
+  }
 
-          tr.append(
-            crearElemento('td', 'py-3 px-4 text-white', fecha.toLocaleDateString('es-AR')),
-            crearElemento('td', 'py-3 px-4 text-white', `${reg.peso} kg`),
-            crearElemento('td', `py-3 px-4 text-end ${claseReg}`, difTxt),
-          );
-          tbody.append(tr);
-        });
+  dibujarGrafico(pesajesFiltrados, pesoInicialDelPerfil);
+  const tarjetasDeHistorial = seccionHistorial.querySelectorAll('.user-card h3');
+  if (tarjetasDeHistorial.length >= 3) {
+    tarjetasDeHistorial[0].textContent = calculoIMC !== '-' ? calculoIMC : '-';
+    tarjetasDeHistorial[1].textContent = metaDePeso > 0 ? `${metaDePeso} kg` : '-';
+    tarjetasDeHistorial[2].textContent = textoPesoActual;
+  }
+
+  const subtitulosDeHistorial = seccionHistorial.querySelectorAll('.user-card h4');
+  if (subtitulosDeHistorial.length >= 2) {
+    subtitulosDeHistorial[0].textContent = textoPesoInicial;
+    subtitulosDeHistorial[1].textContent = textoDiferenciaTotal;
+    subtitulosDeHistorial[1].className = claseDeDiferencia;
+  }
+  const tarjetaProgresoPesoInicial = document.getElementById('progresoPesoInicial');
+  const tarjetaProgresoPesoActual = document.getElementById('progresoPesoActual');
+
+  if (tarjetaProgresoPesoInicial) {
+    tarjetaProgresoPesoInicial.textContent = pesoInicialDelPerfil > 0 ? `${pesoInicialDelPerfil} kg` : '-';
+  }
+
+  if (tarjetaProgresoPesoActual) {
+    tarjetaProgresoPesoActual.textContent = ultimoPesoRegistrado > 0 ? `${ultimoPesoRegistrado} kg` : '-';
+  }
+};
+const cargarHistorialPesos = async (usuario) => {
+  try {
+    const respuestaDelServidor = await fetch('/api/seguimientoProgreso', { credentials: 'include' });
+    if (respuestaDelServidor.ok) {
+      const datosDelServidor = await respuestaDelServidor.json();
+      if (datosDelServidor.pesajes && Array.isArray(datosDelServidor.pesajes)) {
+        usuario.historialPesos = datosDelServidor.pesajes.map((pesaje) => ({
+          fecha: pesaje.fecha,
+          peso: pesaje.peso
+        }));
       }
     }
-    // Llamamos a la función que dibuja el gráfico
-    dibujarGrafico(registros);
-  }
-
-  // Actualización de los textos de las tarjetas superiores
-  const tarjetas = seccion.querySelectorAll('.user-card h3');
-  if (tarjetas.length >= 3) {
-    tarjetas[0].textContent = imc;
-    tarjetas[1].textContent = pesoMeta > 0 ? `${pesoMeta} kg` : '-';
-    tarjetas[2].textContent = pesoActualTxt;
-  }
-
-  const h4s = seccion.querySelectorAll('.user-card h4');
-  if (h4s.length >= 2) {
-    h4s[0].textContent = pesoInicialTxt;
-    h4s[1].textContent = diferencia;
-    h4s[1].className = claseDif;
+  } catch (error) {
+    console.warn('No se pudo cargar el historial de pesos:', error);
   }
 };
 
-// Obtiene las clases disponibles y las renderiza con su estado de inscripcion
-// Muestra el botón "RESERVAR" solo si hay cupos disponibles.
-// si el usuario ya está inscripto, muestra un btn para desinscribirse
-export const renderizarReservas = async (usuario) => {
-  const contenedor = document.getElementById('contenedorReservas');
-  if (!contenedor) return;
-  contenedor.className = 'd-flex flex-column gap-3 mb-5';
-  contenedor.replaceChildren();
+const inicializarRegistroPeso = (usuario) => {
+  const botonRegistrar = document.getElementById('btnRegistrarPeso');
+  const inputDelPeso = document.getElementById('inputPesoActual');
 
-  // se piden las clases y a la vez al usuario actual para saber sus inscripciones
-  const [clases, usuarioActual] = await Promise.all([
+  if (!botonRegistrar || !inputDelPeso) return;
+
+  inputDelPeso.disabled = false;
+  botonRegistrar.disabled = false;
+
+  if (botonRegistrar.dataset.registroInicializado === 'true') return;
+  botonRegistrar.dataset.registroInicializado = 'true';
+
+  botonRegistrar.addEventListener('click', async () => {
+    const pesoIngresado = parseFloat(inputDelPeso.value);
+
+    if (isNaN(pesoIngresado) || pesoIngresado <= 0) {
+      mostrarToast('Error', 'Por favor, ingresa un peso válido.', 'error');
+      return;
+    }
+
+    if (pesoIngresado < 20 || pesoIngresado > 400) {
+      mostrarToast('Error', 'El peso debe estar entre 20 kg y 400 kg.', 'error');
+      return;
+    }
+
+    const fechaDeHoyFormateada = new Date().toISOString().split('T')[0];
+    const listaDePesajesDelUsuario = usuario.historialPesos || [];
+
+    const indiceDelPesajeDeHoy = listaDePesajesDelUsuario.findIndex((registro) => {
+      const fechaDelRegistro = new Date(registro.fecha);
+      return fechaDelRegistro.toISOString().split('T')[0] === fechaDeHoyFormateada;
+    });
+
+    const esUnaActualizacion = indiceDelPesajeDeHoy !== -1;
+
+    botonRegistrar.disabled = true;
+    const textoOriginalDelBoton = botonRegistrar.textContent;
+    botonRegistrar.textContent = 'GUARDANDO...';
+
+    try {
+      const respuestaDelServidor = await fetch('/api/seguimientoProgreso', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ peso: pesoIngresado }),
+      });
+
+      if (!respuestaDelServidor.ok) {
+        const datosDelError = await respuestaDelServidor.json().catch(() => ({}));
+        if (respuestaDelServidor.status === 403) {
+          throw new Error('No tenés permisos para registrar el peso.');
+        }
+        throw new Error(datosDelError.detail || datosDelError.error || 'Error al registrar el peso.');
+      }
+
+      if (!Array.isArray(usuario.historialPesos)) usuario.historialPesos = [];
+
+      if (esUnaActualizacion) {
+        usuario.historialPesos[indiceDelPesajeDeHoy].peso = pesoIngresado;
+      } else {
+        usuario.historialPesos.push({
+          fecha: new Date().toISOString(),
+          peso: pesoIngresado
+        });
+      }
+
+      inputDelPeso.value = '';
+
+      const fechaDeHoy = new Date();
+      mesSeleccionadoGrafico = `${fechaDeHoy.getFullYear()}-${String(fechaDeHoy.getMonth() + 1).padStart(2, '0')}`;
+
+      renderizarHistorialYGrafico(usuario);
+
+      if (esUnaActualizacion) {
+        mostrarToast('Peso actualizado', 'El peso de hoy se guardó correctamente. Tu progreso ya está al día.', 'success');
+      } else {
+        mostrarToast('Peso registrado', 'Tu nuevo peso se ha guardado con éxito en tu historial.', 'success');
+      }
+
+    } catch (error) {
+      console.error(error);
+      mostrarToast('Error', error.message, 'error');
+    } finally {
+      botonRegistrar.disabled = false;
+      botonRegistrar.textContent = textoOriginalDelBoton;
+    }
+  });
+};
+
+const inicializarFiltroMes = (usuario) => {
+  const botonMesAnterior = document.getElementById('btnMesAnterior');
+  const botonMesSiguiente = document.getElementById('btnMesSiguiente');
+
+  if (botonMesAnterior && botonMesSiguiente && botonMesAnterior.dataset.inicializado !== 'true') {
+    botonMesAnterior.dataset.inicializado = 'true';
+    botonMesSiguiente.dataset.inicializado = 'true';
+
+    const cambiarDeMes = (direccion) => {
+      if (!mesSeleccionadoGrafico) return;
+      let [anio, mes] = mesSeleccionadoGrafico.split('-').map(Number);
+      mes += direccion;
+      if (mes > 12) { mes = 1; anio++; }
+      if (mes < 1) { mes = 12; anio--; }
+      mesSeleccionadoGrafico = `${anio}-${String(mes).padStart(2, '0')}`;
+      renderizarHistorialYGrafico(usuario);
+    };
+
+    botonMesAnterior.addEventListener('click', () => cambiarDeMes(-1));
+    botonMesSiguiente.addEventListener('click', () => cambiarDeMes(1));
+  }
+};
+const normalizarTextoBusqueda = (texto) => {
+  if (!texto) return '';
+  return texto
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLocaleLowerCase('es-AR')
+    .trim();
+};
+
+export const renderizarReservas = async (usuario) => {
+  const contenedorDeReservas = document.getElementById('contenedorReservas');
+  if (!contenedorDeReservas) return;
+
+  contenedorDeReservas.className = 'd-flex flex-column gap-4 mb-5';
+  contenedorDeReservas.replaceChildren();
+
+  const [listaDeClases, usuarioActual] = await Promise.all([
     fetchSeguro('/api/clases'),
     fetchSeguro('/api/auth/me'),
   ]);
 
-  const lista = Array.isArray(clases) ? clases : [];
-  const usuarioData = usuarioActual?.usuario || usuarioActual || usuario;
+  const listaFinalDeClases = Array.isArray(listaDeClases) ? listaDeClases : [];
+  const datosDelUsuario = usuarioActual?.usuario || usuarioActual || usuario;
+  const fechaActual = new Date();
 
-  if (lista.length === 0) {
-    mostrarMensaje(contenedor, 'No hay clases disponibles en este momento.');
-    return;
-  }
+  const clasesVigentes = listaFinalDeClases.filter(clase => {
+    if (!clase.fechaHora) return false;
+    return new Date(clase.fechaHora) > fechaActual;
+  });
 
-  lista.sort((a, b) => new Date(a.fechaHora) - new Date(b.fechaHora));
+  const misClasesReservadas = [];
+  const clasesDisponibles = [];
 
-  lista.forEach((clase) => {
-    const card = crearElemento(
-      'div',
-      'user-card d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3',
-    );
-    const info = crearElemento('div', 'flex-grow-1');
-    const titulo = crearElemento('h4', 'text-white mb-1 fs-5', clase.titulo || 'Clase');
+  clasesVigentes.forEach(clase => {
+    const listaDeInscriptos = Array.isArray(clase.inscriptosIds) ? clase.inscriptosIds : [];
+    const yaEstaInscripto = datosDelUsuario?.id && listaDeInscriptos.map(String).includes(String(datosDelUsuario.id));
 
-    let textoFechaHora = 'Fecha a confirmar';
-    if (clase.fechaHora) {
-      const [fecha, horaCompleta] = clase.fechaHora.split('T');
-      const [anio, mes, dia] = fecha.split('-');
-      const hora = horaCompleta.slice(0, 5);
-      textoFechaHora = `${dia}/${mes}/${anio} · ${hora} hs`;
-    }
-
-    const pFecha = crearParrafoConIcono(
-      'text-gray mb-1 fs-14',
-      'bi bi-calendar-event me-2 text-green',
-      textoFechaHora,
-    );
-
-    // para saber si el usuario ya esta inscripto se ve si su ID ya está en inscriptosIds
-    const inscriptos = Array.isArray(clase.inscriptosIds) ? clase.inscriptosIds : [];
-    const yaInscripto = usuarioData?.id && inscriptos.map(String).includes(String(usuarioData.id));
-
-    info.append(titulo, pFecha);
-
-    const acciones = crearElemento('div', 'd-flex align-items-center gap-3');
-    const cupo = clase.cupo || clase.cupoMaximo || 0;
-    const disponibles =
-      clase.cuposDisponibles !== undefined ? clase.cuposDisponibles : cupo - inscriptos.length;
-
-    if (yaInscripto) {
-      acciones.append(crearElemento('span', 'text-green fs-14 fw-bold', '✓ Ya estás inscripto'));
-      const btnCancelar = crearElemento(
-        'button',
-        'btn user-btn-outline text-danger border-danger py-2 px-4 fs-14',
-        'CANCELAR',
-      );
-      btnCancelar.dataset.accion = 'cancelar';
-      btnCancelar.dataset.id = clase.id;
-      acciones.append(btnCancelar);
-    } else if (disponibles > 0) {
-      acciones.append(
-        crearElemento('span', 'text-green fs-14 fw-bold', `Quedan ${disponibles} lugares`),
-      );
-      const btnReservar = crearElemento('button', 'btn btn-green py-2 px-4 fs-14', 'RESERVAR');
-      btnReservar.dataset.accion = 'reservar';
-      btnReservar.dataset.id = clase.id;
-      acciones.append(btnReservar);
+    if (yaEstaInscripto) {
+      misClasesReservadas.push(clase);
     } else {
-      acciones.append(crearElemento('span', 'text-danger fs-14 fw-bold', 'Sin cupo'));
-    }
-
-    card.append(info, acciones);
-    contenedor.append(card);
-  });
-};
-
-// se inicializan los listeners de reservar o cancelar
-export function inicializarAccionesReservas(usuario) {
-  const contenedor = document.getElementById('user-reservar');
-  if (!contenedor) return;
-
-  contenedor.addEventListener('click', async (event) => {
-    const boton = event.target.closest('[data-accion]');
-    if (!boton) return;
-
-    const accion = boton.dataset.accion;
-    const claseId = boton.dataset.id;
-    if (!claseId) return;
-
-    boton.disabled = true;
-    const textoOriginal = boton.textContent;
-    boton.textContent = 'Procesando...';
-
-    try {
-      const respuesta = await fetch(
-        `/api/clases/${claseId}/${accion === 'reservar' ? 'inscribir' : 'desinscribir'}`,
-        {
-          method: 'POST',
-          credentials: 'include',
-        },
-      );
-
-      const datos = await respuesta.json();
-
-      if (!respuesta.ok) {
-        throw new Error(datos.error || datos.detail || 'No se pudo procesar la solicitud.');
-      }
-
-      await renderizarReservas(usuario);
-    } catch (error) {
-      alert(error.message);
-    } finally {
-      boton.disabled = false;
-      boton.textContent = textoOriginal;
+      clasesDisponibles.push(clase);
     }
   });
-}
 
-// Obtiene y renderiza los turnos médicos disponibles desde el backend.
-// se agrega el renderizado de los turnos disponibles y los que el usuario ya reservó
-export const renderizarTurnos = async (usuario) => {
-  const contenedor = document.getElementById('contenedorTurnos');
-  if (!contenedor) return;
+  misClasesReservadas.sort((a, b) => new Date(a.fechaHora) - new Date(b.fechaHora));
+  clasesDisponibles.sort((a, b) => new Date(a.fechaHora) - new Date(b.fechaHora));
 
-  contenedor.replaceChildren();
+  const seccionMisReservas = crearElemento('div', 'mb-4');
+  seccionMisReservas.append(crearElemento('h3', 'text-white mb-3 fs-15', 'MIS CLASES RESERVADAS'));
 
-  const [turnosDisponibles, turnosMios] = await Promise.all([
-    fetchSeguro('/api/turnos'),
-    fetchSeguro('/api/turnos/mios'),
-  ]);
-
-  const disponibles = Array.isArray(turnosDisponibles) ? turnosDisponibles : [];
-  const mios = Array.isArray(turnosMios) ? turnosMios : [];
-
-  const etiquetasTipo = {
-    chequeo_medico: 'Chequeo médico',
-    nutricionista: 'Nutrición',
-  };
-
-  // turnos reservados
-  const seccionMios = crearElemento('div', 'mb-5');
-  seccionMios.append(crearElemento('h3', 'text-white mb-3 fs-15', 'Mis turnos reservados'));
-
-  if (mios.length === 0) {
-    seccionMios.append(
-      crearElemento('p', 'text-gray fs-14', 'No tenés turnos reservados actualmente.'),
-    );
+  if (misClasesReservadas.length === 0) {
+    seccionMisReservas.append(crearElemento('p', 'text-gray fs-14', 'No tenés clases reservadas actualmente.'));
   } else {
-    const listaMios = crearElemento('div', 'd-flex flex-column gap-3');
-    mios.forEach((turno) => {
-      const card = crearElemento(
-        'div',
-        'user-card d-flex justify-content-between align-items-center flex-wrap gap-3',
+    const listaMisReservas = crearElemento('div', 'd-flex flex-column gap-3');
+    misClasesReservadas.forEach((clase) => {
+      const tarjetaDeClase = crearElemento('div', 'user-card d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3');
+      const informacionDeClase = crearElemento('div', 'flex-grow-1');
+
+      informacionDeClase.append(
+        crearElemento('h4', 'text-white mb-1 fs-5', clase.titulo || 'Clase'),
+        crearParrafoConIcono('text-gray mb-0 fs-14', 'bi bi-calendar-event me-2 text-green', formatearFechaHora(clase.fechaHora))
       );
-      const info = crearElemento('div');
-      info.append(
-        crearElemento('h4', 'text-white mb-1 fs-5', etiquetasTipo[turno.tipo] || turno.tipo),
-        crearElemento(
-          'p',
-          'text-gray mb-0 fs-14',
-          `${turno.fecha} · ${turno.hora} hs · ${turno.duracionMin} min`,
-        ),
-      );
-      const btnCancelar = crearElemento(
-        'button',
-        'btn user-btn-outline text-danger border-danger py-2 px-4 fs-14',
-        'CANCELAR',
-      );
-      btnCancelar.dataset.accion = 'cancelar-turno';
-      btnCancelar.dataset.id = turno.id;
-      card.append(info, btnCancelar);
-      listaMios.append(card);
+
+      const botonCancelar = crearElemento('button', 'btn user-btn-outline text-danger border-danger py-2 px-4 fs-14', 'CANCELAR');
+      botonCancelar.dataset.accion = 'cancelar';
+      botonCancelar.dataset.id = clase.id;
+
+      tarjetaDeClase.append(informacionDeClase, botonCancelar);
+      listaMisReservas.append(tarjetaDeClase);
     });
-    seccionMios.append(listaMios);
+    seccionMisReservas.append(listaMisReservas);
+  }
+  contenedorDeReservas.append(seccionMisReservas);
+
+  const seccionDisponibles = crearElemento('div', 'mt-2');
+
+  seccionDisponibles.append(crearElemento('h3', 'text-white mb-3 fs-15', 'ACTIVIDADES DISPONIBLES'));
+
+  const barraFiltros = crearElemento('div', 'd-flex flex-column flex-md-row align-items-md-center gap-3 p-3 mb-4 rounded border border-secondary');
+  barraFiltros.style.backgroundColor = 'transparent';
+
+  const wrapperNombre = crearElemento('div', 'position-relative flex-grow-1');
+
+  const iconoBusqueda = crearElemento('i', 'bi bi-search position-absolute text-gray');
+  iconoBusqueda.style.left = '15px';
+  iconoBusqueda.style.top = '50%';
+  iconoBusqueda.style.transform = 'translateY(-50%)';
+  iconoBusqueda.style.fontSize = '16px';
+  iconoBusqueda.style.pointerEvents = 'none';
+
+  const inputNombre = crearElemento('input', 'form-control bg-transparent text-white border-secondary');
+  inputNombre.type = 'text';
+  inputNombre.placeholder = 'Buscar por nombre...';
+  inputNombre.value = filtroTextoNombre;
+  inputNombre.style.paddingLeft = '45px';
+
+  inputNombre.addEventListener('focus', () => inputNombre.style.borderColor = '#a3e635');
+  inputNombre.addEventListener('blur', () => inputNombre.style.borderColor = '#6c757d');
+
+  wrapperNombre.append(iconoBusqueda, inputNombre);
+
+  const wrapperFecha = crearElemento('div', 'position-relative');
+  wrapperFecha.style.minWidth = '220px';
+
+  const iconoCalendario = crearElemento('i', 'bi bi-calendar-event position-absolute text-gray');
+  iconoCalendario.style.left = '15px';
+  iconoCalendario.style.top = '50%';
+  iconoCalendario.style.transform = 'translateY(-50%)';
+  iconoCalendario.style.fontSize = '16px';
+  iconoCalendario.style.pointerEvents = 'none';
+
+  const inputFecha = crearElemento('input', 'form-control bg-transparent text-white border-secondary');
+  inputFecha.type = 'date';
+  inputFecha.value = filtroFecha;
+  inputFecha.style.paddingLeft = '45px';
+  inputFecha.style.colorScheme = 'dark';
+
+  inputFecha.addEventListener('focus', () => inputFecha.style.borderColor = '#a3e635');
+  inputFecha.addEventListener('blur', () => inputFecha.style.borderColor = '#6c757d');
+
+  wrapperFecha.append(iconoCalendario, inputFecha);
+
+  inputNombre.addEventListener('input', (e) => {
+    filtroTextoNombre = e.target.value;
+    renderizarReservas(usuario);
+  });
+
+  inputFecha.addEventListener('change', (e) => {
+    filtroFecha = e.target.value;
+    renderizarReservas(usuario);
+  });
+
+  barraFiltros.append(wrapperNombre, wrapperFecha);
+  seccionDisponibles.append(barraFiltros);
+
+  let clasesFiltradas = clasesDisponibles;
+
+  if (filtroTextoNombre && filtroTextoNombre.trim() !== '') {
+    const busquedaNormalizada = normalizarTextoBusqueda(filtroTextoNombre);
+    clasesFiltradas = clasesFiltradas.filter(c =>
+      normalizarTextoBusqueda(c.titulo || '').includes(busquedaNormalizada)
+    );
   }
 
-  // turnos disponibles
-  const seccionDisponibles = crearElemento('div');
-  seccionDisponibles.append(crearElemento('h3', 'text-white mb-3 fs-15', 'Turnos disponibles'));
+  if (filtroFecha) {
+    clasesFiltradas = clasesFiltradas.filter(c => {
+      const fechaClase = c.fechaHora.split('T')[0];
+      return fechaClase === filtroFecha;
+    });
+  }
+  if (clasesFiltradas.length === 0) {
+    const hayFiltrosAplicados = (filtroTextoNombre && filtroTextoNombre.trim() !== '') || filtroFecha;
 
-  if (disponibles.length === 0) {
-    seccionDisponibles.append(
-      crearElemento('p', 'text-gray fs-14', 'No hay turnos médicos disponibles.'),
+    const sinResultados = crearElemento('div', 'text-center py-5 rounded border border-secondary border-dashed');
+    sinResultados.style.backgroundColor = 'rgba(30, 30, 30, 0.5)';
+
+    sinResultados.append(
+      crearElemento('h5', 'text-white mb-2', 'SIN RESULTADOS'),
+      crearElemento('p', 'text-gray mb-0', hayFiltrosAplicados
+        ? 'No encontramos actividades con ese nombre o fecha.'
+        : 'No hay actividades disponibles en este momento.')
     );
+
+    seccionDisponibles.append(sinResultados);
   } else {
     const listaDisponibles = crearElemento('div', 'd-flex flex-column gap-3');
-    disponibles
-      .slice()
-      .sort((a, b) => new Date(`${a.fecha}T${a.hora}`) - new Date(`${b.fecha}T${b.hora}`))
-      .forEach((turno) => {
-        const card = crearElemento(
-          'div',
-          'user-card d-flex justify-content-between align-items-center flex-wrap gap-3',
-        );
-        const info = crearElemento('div');
-        info.append(
-          crearElemento('h4', 'text-white mb-1 fs-5', etiquetasTipo[turno.tipo] || turno.tipo),
-          crearElemento(
-            'p',
-            'text-gray mb-0 fs-14',
-            `${turno.fecha} · ${turno.hora} hs · ${turno.duracionMin} min`,
-          ),
-        );
-        const btnReservar = crearElemento('button', 'btn btn-green py-2 px-4 fs-14', 'RESERVAR');
-        btnReservar.dataset.accion = 'reservar-turno';
-        btnReservar.dataset.id = turno.id;
-        card.append(info, btnReservar);
-        listaDisponibles.append(card);
-      });
+    clasesFiltradas.forEach((clase) => {
+      const tarjetaDeClase = crearElemento('div', 'user-card d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3');
+      const informacionDeClase = crearElemento('div', 'flex-grow-1');
+
+      informacionDeClase.append(
+        crearElemento('h4', 'text-white mb-1 fs-5', clase.titulo || 'Clase'),
+        crearParrafoConIcono('text-gray mb-0 fs-14', 'bi bi-calendar-event me-2 text-green', formatearFechaHora(clase.fechaHora))
+      );
+
+      const accionesDeClase = crearElemento('div', 'd-flex align-items-center gap-3');
+      const cupoMaximo = clase.cupo || clase.cupoMaximo || 0;
+      const listaDeInscriptos = Array.isArray(clase.inscriptosIds) ? clase.inscriptosIds : [];
+      const lugaresDisponibles = clase.cuposDisponibles !== undefined ? clase.cuposDisponibles : cupoMaximo - listaDeInscriptos.length;
+
+      if (lugaresDisponibles > 0) {
+        accionesDeClase.append(crearElemento('span', 'text-green fs-14 fw-bold', `Quedan ${lugaresDisponibles} lugares`));
+        const botonReservar = crearElemento('button', 'btn btn-green py-2 px-4 fs-14', 'RESERVAR');
+        botonReservar.dataset.accion = 'reservar';
+        botonReservar.dataset.id = clase.id;
+        accionesDeClase.append(botonReservar);
+      } else {
+        accionesDeClase.append(crearElemento('span', 'text-danger fs-14 fw-bold', 'Sin cupo'));
+      }
+
+      tarjetaDeClase.append(informacionDeClase, accionesDeClase);
+      listaDisponibles.append(tarjetaDeClase);
+    });
     seccionDisponibles.append(listaDisponibles);
   }
 
-  contenedor.append(seccionMios, seccionDisponibles);
+  contenedorDeReservas.append(seccionDisponibles);
 };
+export function inicializarAccionesReservas(usuario) {
+  const contenedorDeReservas = document.getElementById('user-reservar');
+  if (!contenedorDeReservas) return;
 
-// se inicializa los listeners de reservar/cancelar turnos
-export function inicializarAccionesTurnos(usuario) {
-  const contenedor = document.getElementById('user-turnos');
-  if (!contenedor) return;
+  contenedorDeReservas.addEventListener('click', async (evento) => {
+    const botonPresionado = evento.target.closest('[data-accion]');
+    if (!botonPresionado) return;
 
-  contenedor.addEventListener('click', async (event) => {
-    const boton = event.target.closest('[data-accion]');
-    if (!boton) return;
+    const accionDelBoton = botonPresionado.dataset.accion;
+    const idDeLaClase = botonPresionado.dataset.id;
+    if (!idDeLaClase) return;
 
-    const accion = boton.dataset.accion;
-    const turnoId = boton.dataset.id;
-    if (!turnoId) return;
-
-    const endpoint = accion === 'reservar-turno' ? 'reservar' : 'cancelar';
-
-    boton.disabled = true;
-    const textoOriginal = boton.textContent;
-    boton.textContent = 'Procesando...';
+    botonPresionado.disabled = true;
+    const textoOriginal = botonPresionado.textContent;
+    botonPresionado.textContent = accionDelBoton === 'reservar' ? 'CANCELANDO...' : 'RESERVANDO...';
 
     try {
-      const respuesta = await fetch(`/api/turnos/${turnoId}/${endpoint}`, {
+      const respuestaDelServidor = await fetch(`/api/clases/${idDeLaClase}/${accionDelBoton === 'reservar' ? 'inscribir' : 'desinscribir'}`, {
         method: 'POST',
         credentials: 'include',
       });
 
-      const datos = await respuesta.json();
+      const datosDeLaRespuesta = await respuestaDelServidor.json();
 
-      if (!respuesta.ok) {
-        throw new Error(datos.error || datos.detail || 'No se pudo procesar la solicitud.');
+      if (!respuestaDelServidor.ok) {
+        throw new Error(datosDeLaRespuesta.error || datosDeLaRespuesta.detail || 'No se pudo procesar la solicitud.');
       }
 
-      await renderizarTurnos(usuario);
+      await renderizarReservas(usuario);
+      mostrarToast('Éxito', accionDelBoton === 'reservar' ? 'Reserva confirmada.' : 'Reserva cancelada.', 'success');
+
     } catch (error) {
-      alert(error.message);
-    } finally {
-      boton.disabled = false;
-      boton.textContent = textoOriginal;
+      mostrarToast('Error al procesar reserva', error.message, 'error');
+      botonPresionado.disabled = false;
+      botonPresionado.textContent = textoOriginal;
     }
   });
 }
-// Llena los inputs del perfil con los datos reales del usuario logueado.
-const renderizarPerfil = (usuario) => {
+let filtroTextoNombreTurnos = '';
+let filtroFechaTurnos = '';
+
+export const renderizarTurnos = async (usuario) => {
+  const contenedorDeTurnos = document.getElementById('contenedorTurnos');
+  if (!contenedorDeTurnos) return;
+
+  contenedorDeTurnos.replaceChildren();
+
+  const [listaDeTurnosDisponibles, listaDeTurnosMios] = await Promise.all([
+    fetchSeguro('/api/turnos'),
+    fetchSeguro('/api/turnos/mios'),
+  ]);
+
+  const turnosDisponibles = Array.isArray(listaDeTurnosDisponibles) ? listaDeTurnosDisponibles : [];
+  const turnosReservados = Array.isArray(listaDeTurnosMios) ? listaDeTurnosMios : [];
+  const fechaActual = new Date();
+
+  const nombresDeTipos = {
+    chequeo_medico: 'Chequeo Médico',
+    nutricionista: 'Nutrición',
+  };
+
+  const obtenerNombreTurno = (turno) => nombresDeTipos[turno.tipo] || turno.tipo;
+
+  const obtenerFechaHoraTurno = (turno) => new Date(`${turno.fecha}T${turno.hora}`);
+
+  const turnosVigentes = turnosDisponibles.filter(turno => obtenerFechaHoraTurno(turno) > fechaActual);
+  const misTurnosVigentes = turnosReservados.filter(turno => obtenerFechaHoraTurno(turno) > fechaActual);
+
+  const seccionDeMisTurnos = crearElemento('div', 'mb-5');
+  seccionDeMisTurnos.append(crearElemento('h3', 'text-white mb-3 fs-15', 'MIS TURNOS RESERVADOS'));
+
+  if (misTurnosVigentes.length === 0) {
+    seccionDeMisTurnos.append(crearElemento('p', 'text-gray fs-14', 'No tenés turnos reservados actualmente.'));
+  } else {
+    const listaFinalDeMisTurnos = crearElemento('div', 'd-flex flex-column gap-3');
+    misTurnosVigentes.forEach((turno) => {
+      const tarjetaDeTurno = crearElemento('div', 'user-card d-flex justify-content-between align-items-center flex-wrap gap-3');
+      const informacionDelTurno = crearElemento('div');
+      informacionDelTurno.append(
+        crearElemento('h4', 'text-white mb-1 fs-5', obtenerNombreTurno(turno)),
+        crearElemento('p', 'text-gray mb-0 fs-14', `${turno.fecha} · ${turno.hora} hs · ${turno.duracionMin} min`),
+      );
+      const botonCancelarTurno = crearElemento('button', 'btn user-btn-outline text-danger border-danger py-2 px-4 fs-14', 'CANCELAR');
+      botonCancelarTurno.dataset.accion = 'cancelar-turno';
+      botonCancelarTurno.dataset.id = turno.id;
+      tarjetaDeTurno.append(informacionDelTurno, botonCancelarTurno);
+      listaFinalDeMisTurnos.append(tarjetaDeTurno);
+    });
+    seccionDeMisTurnos.append(listaFinalDeMisTurnos);
+  }
+
+  const seccionDeTurnosDisponibles = crearElemento('div');
+  seccionDeTurnosDisponibles.append(crearElemento('h3', 'text-white mb-3 fs-15', 'TURNOS DISPONIBLES'));
+
+  const barraFiltros = crearElemento('div', 'd-flex flex-column flex-md-row align-items-md-center gap-3 p-3 mb-4 rounded border border-secondary');
+  barraFiltros.style.backgroundColor = 'transparent';
+
+  const wrapperNombre = crearElemento('div', 'position-relative flex-grow-1');
+  const iconoBusqueda = crearElemento('i', 'bi bi-search position-absolute text-gray');
+  iconoBusqueda.style.left = '15px';
+  iconoBusqueda.style.top = '50%';
+  iconoBusqueda.style.transform = 'translateY(-50%)';
+  iconoBusqueda.style.fontSize = '16px';
+  iconoBusqueda.style.pointerEvents = 'none';
+
+  const inputNombre = crearElemento('input', 'form-control bg-transparent text-white border-secondary');
+  inputNombre.type = 'text';
+  inputNombre.placeholder = 'Buscar por especialidad...';
+  inputNombre.value = filtroTextoNombreTurnos;
+  inputNombre.style.paddingLeft = '45px';
+
+  inputNombre.addEventListener('focus', () => inputNombre.style.borderColor = '#a3e635');
+  inputNombre.addEventListener('blur', () => inputNombre.style.borderColor = '#6c757d');
+  inputNombre.addEventListener('input', (e) => {
+    filtroTextoNombreTurnos = e.target.value;
+    renderizarTurnos(usuario);
+  });
+
+  wrapperNombre.append(iconoBusqueda, inputNombre);
+
+  const wrapperFecha = crearElemento('div', 'position-relative');
+  wrapperFecha.style.minWidth = '220px';
+
+  const iconoCalendario = crearElemento('i', 'bi bi-calendar-event position-absolute text-gray');
+  iconoCalendario.style.left = '15px';
+  iconoCalendario.style.top = '50%';
+  iconoCalendario.style.transform = 'translateY(-50%)';
+  iconoCalendario.style.fontSize = '16px';
+  iconoCalendario.style.pointerEvents = 'none';
+
+  const inputFecha = crearElemento('input', 'form-control bg-transparent text-white border-secondary');
+  inputFecha.type = 'date';
+  inputFecha.value = filtroFechaTurnos;
+  inputFecha.style.paddingLeft = '45px';
+  inputFecha.style.colorScheme = 'dark';
+
+  inputFecha.addEventListener('focus', () => inputFecha.style.borderColor = '#a3e635');
+  inputFecha.addEventListener('blur', () => inputFecha.style.borderColor = '#6c757d');
+  inputFecha.addEventListener('change', (e) => {
+    filtroFechaTurnos = e.target.value;
+    renderizarTurnos(usuario);
+  });
+
+  wrapperFecha.append(iconoCalendario, inputFecha);
+  barraFiltros.append(wrapperNombre, wrapperFecha);
+  seccionDeTurnosDisponibles.append(barraFiltros);
+
+  let turnosFiltrados = turnosVigentes;
+
+  if (filtroTextoNombreTurnos && filtroTextoNombreTurnos.trim() !== '') {
+    const busquedaNormalizada = normalizarTextoBusqueda(filtroTextoNombreTurnos);
+    turnosFiltrados = turnosFiltrados.filter(t =>
+      normalizarTextoBusqueda(obtenerNombreTurno(t)).includes(busquedaNormalizada)
+    );
+  }
+
+  if (filtroFechaTurnos) {
+    turnosFiltrados = turnosFiltrados.filter(t => t.fecha === filtroFechaTurnos);
+  }
+  if (turnosFiltrados.length === 0) {
+    const hayFiltrosAplicados = (filtroTextoNombreTurnos && filtroTextoNombreTurnos.trim() !== '') || filtroFechaTurnos;
+    const sinResultados = crearElemento('div', 'text-center py-5 rounded border border-secondary border-dashed');
+    sinResultados.style.backgroundColor = 'rgba(30, 30, 30, 0.5)';
+    sinResultados.append(
+      crearElemento('h5', 'text-white mb-2', 'SIN RESULTADOS'),
+      crearElemento('p', 'text-gray mb-0', hayFiltrosAplicados
+        ? 'No encontramos turnos con esa especialidad o fecha.'
+        : 'No hay turnos médicos disponibles en este momento.')
+    );
+    seccionDeTurnosDisponibles.append(sinResultados);
+  } else {
+    const listaFinalDeTurnosDisponibles = crearElemento('div', 'd-flex flex-column gap-3');
+    turnosFiltrados
+      .slice()
+      .sort((a, b) => obtenerFechaHoraTurno(a) - obtenerFechaHoraTurno(b))
+      .forEach((turno) => {
+        const tarjetaDeTurno = crearElemento('div', 'user-card d-flex justify-content-between align-items-center flex-wrap gap-3');
+        const informacionDelTurno = crearElemento('div');
+        informacionDelTurno.append(
+          crearElemento('h4', 'text-white mb-1 fs-5', obtenerNombreTurno(turno)),
+          crearElemento('p', 'text-gray mb-0 fs-14', `${turno.fecha} · ${turno.hora} hs · ${turno.duracionMin} min`),
+        );
+        const botonReservarTurno = crearElemento('button', 'btn btn-green py-2 px-4 fs-14', 'RESERVAR');
+        botonReservarTurno.dataset.accion = 'reservar-turno';
+        botonReservarTurno.dataset.id = turno.id;
+        tarjetaDeTurno.append(informacionDelTurno, botonReservarTurno);
+        listaFinalDeTurnosDisponibles.append(tarjetaDeTurno);
+      });
+    seccionDeTurnosDisponibles.append(listaFinalDeTurnosDisponibles);
+  }
+
+  contenedorDeTurnos.append(seccionDeMisTurnos, seccionDeTurnosDisponibles);
+};
+
+export function inicializarAccionesTurnos(usuario) {
+  const contenedorDeTurnos = document.getElementById('user-turnos');
+  if (!contenedorDeTurnos) return;
+
+  contenedorDeTurnos.addEventListener('click', async (evento) => {
+    const botonPresionado = evento.target.closest('[data-accion]');
+    if (!botonPresionado) return;
+
+    const accionDelBoton = botonPresionado.dataset.accion;
+    const idDelTurno = botonPresionado.dataset.id;
+    if (!idDelTurno) return;
+
+    const endpointDeLaAccion = accionDelBoton === 'reservar-turno' ? 'reservar' : 'cancelar';
+
+    botonPresionado.disabled = true;
+    const textoOriginalDelBoton = botonPresionado.textContent;
+    botonPresionado.textContent = 'Procesando...';
+
+    try {
+      const respuestaDelServidor = await fetch(`/api/turnos/${idDelTurno}/${endpointDeLaAccion}`, {
+        method: 'POST',
+        credentials: 'include',
+      });
+
+      const datosDeLaRespuesta = await respuestaDelServidor.json();
+
+      if (!respuestaDelServidor.ok) {
+        throw new Error(datosDeLaRespuesta.error || datosDeLaRespuesta.detail || 'No se pudo procesar la solicitud.');
+      }
+
+      await renderizarTurnos(usuario);
+      mostrarToast('Éxito', accionDelBoton === 'reservar-turno' ? 'Turno reservado.' : 'Turno cancelado.', 'success');
+    } catch (error) {
+      mostrarToast('Error al procesar turno', error.message, 'error');
+    } finally {
+      botonPresionado.disabled = false;
+      botonPresionado.textContent = textoOriginalDelBoton;
+    }
+  });
+}
+export const renderizarPerfil = (usuario) => {
   const asignarValor = (id, valor) => {
     const input = document.getElementById(id);
     if (input) input.value = valor !== undefined && valor !== null ? valor : '';
@@ -515,67 +872,90 @@ const renderizarPerfil = (usuario) => {
   asignarValor('perfil-email', usuario.email);
   asignarValor('perfil-telefono', usuario.telefono);
   asignarValor('perfil-altura', usuario.altura);
+  asignarValor('perfil-edad', usuario.edad);
   asignarValor('perfil-peso-inicial', usuario.peso);
   asignarValor('perfil-peso-meta', usuario.pesoMeta);
 
-  // Traduce los valores del JSON ("perder_peso") a los values del HTML ("deficit")
   const selectObjetivo = document.getElementById('selectObjetivo');
-  if (selectObjetivo && usuario.objetivo) {
-    let valorSelect = usuario.objetivo;
-    if (usuario.objetivo === 'perder_peso') valorSelect = 'deficit';
-    if (usuario.objetivo === 'ganar_musculo') valorSelect = 'volumen';
-    selectObjetivo.value = valorSelect;
+  if (selectObjetivo) {
+    selectObjetivo.value = usuario.objetivo || '';
   }
 };
-// Renderiza las notificaciones del miembro.
-// Si el backend no envía notificaciones, muestra un mensaje por defecto.
-const renderizarNotificaciones = async (usuario) => {
-  const contenedor = document.querySelector('#user-notificaciones .d-flex.flex-column.gap-3');
-  if (!contenedor) return;
-  contenedor.replaceChildren();
-
-  const lista = usuario.notificaciones;
-
-  if (!Array.isArray(lista) || lista.length === 0) {
-    mostrarMensaje(contenedor, 'No tenés notificaciones nuevas.');
-    return;
-  }
-
-  lista.forEach((n) => {
-    const titulo = n.titulo || 'Aviso';
-    const texto = n.texto || n.mensaje || '';
-    const fecha = n.fecha ? new Date(n.fecha).toLocaleDateString('es-AR') : 'Reciente';
-    const leida = n.leida || false;
-    const icono = n.icono || 'bi-bell';
-
-    const card = crearElemento(
-      'div',
-      `user-card d-flex align-items-start gap-3 ${leida ? 'opacity-50' : 'border-start-green'}`,
-    );
-
-    const iconDiv = crearElemento('div', 'p-3 rounded bg-pulso-darker');
-    const iconTag = crearElemento('i', `bi ${icono} ${leida ? 'text-gray' : 'text-green'} fs-4`);
-    iconDiv.append(iconTag);
-
-    const info = crearElemento('div', 'flex-grow-1');
-    const header = crearElemento('div', 'd-flex justify-content-between align-items-start');
-    header.append(
-      crearElemento('h5', 'text-white mb-1', titulo),
-      crearElemento('span', 'badge bg-dark border border-secondary text-gray fs-12', fecha),
-    );
-    info.append(header, crearElemento('p', 'text-gray mb-0 fs-14', texto));
-
-    card.append(iconDiv, info);
-    contenedor.append(card);
-  });
-};
-// Función principal que llama a todos los renderizadores para armar el panel.
 export async function inicializarRenderizadoMiembro(usuario) {
   renderizarPerfil(usuario);
+  await cargarHistorialPesos(usuario);
   renderizarHistorialYGrafico(usuario);
+  inicializarFiltroMes(usuario);
+  inicializarRegistroPeso(usuario);
   await renderizarReservas(usuario);
   inicializarAccionesReservas(usuario);
   await renderizarTurnos(usuario);
   inicializarAccionesTurnos(usuario);
-  await renderizarNotificaciones(usuario);
+  await renderizarMembresia(usuario);
+}
+
+export async function renderizarMembresia(usuario) {
+  const nombrePlan = document.getElementById('perfil-plan-nombre');
+  const vencimiento = document.getElementById('perfil-fecha-vencimiento');
+  const estado = document.getElementById('perfil-estado-membresia');
+
+  if (!nombrePlan || !vencimiento || !estado) return;
+
+  if (!usuario.planMembresiaId) {
+    nombrePlan.textContent = 'Sin membresía';
+    vencimiento.textContent = '-';
+    estado.textContent = 'Inactiva';
+    return;
+  }
+
+  try {
+    const respuesta = await fetch('/api/membresias', {
+      credentials: 'include'
+    });
+
+    if (!respuesta.ok) {
+      throw new Error('No se pudieron cargar los planes.');
+    }
+
+    const datos = await respuesta.json();
+    const planes = datos.data ?? [];
+
+    const plan = planes.find(
+      p => String(p.id) === String(usuario.planMembresiaId)
+    );
+
+    nombrePlan.textContent = plan?.nombre ?? 'Plan no encontrado';
+
+    if (usuario.fechaVencimiento) {
+      vencimiento.textContent = new Date(
+        usuario.fechaVencimiento
+      ).toLocaleDateString('es-AR');
+    } else {
+      vencimiento.textContent = '-';
+    }
+
+    const fechaVencimiento = usuario.fechaVencimiento
+      ? new Date(usuario.fechaVencimiento)
+      : null;
+
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0);
+
+    const vencida = !fechaVencimiento ||
+      new Date(fechaVencimiento.getFullYear(),
+        fechaVencimiento.getMonth(),
+        fechaVencimiento.getDate()) < hoy;
+
+    estado.textContent = usuario.bajaMembresiaPendiente
+      ? 'Baja programada'
+      : vencida
+        ? 'Inactiva'
+        : 'Activa';
+
+  } catch (error) {
+    console.error('Error al renderizar membresía:', error);
+    nombrePlan.textContent = 'No disponible';
+    vencimiento.textContent = '-';
+    estado.textContent = 'No disponible';
+  }
 }

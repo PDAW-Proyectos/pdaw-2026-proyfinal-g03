@@ -334,7 +334,7 @@ export function inicializarRenderizadoAdmin(usuario) {
   document.getElementById('perfil-nombre').value = usuario.nombre;
   document.getElementById('perfil-dni').value = usuario.id;
   document.getElementById('perfil-email').value = usuario.email;
-  document.getElementById('perfil-telefono').value = usuario.telefono || 'No registrado';
+  document.getElementById('perfil-telefono').value = usuario.telefono || '';
 
   cargarYRenderizar('clases', renderizarClases, 'admin-clases-lista', 'admin-clases-resumen');
   cargarYRenderizar('usuarios/miembros', renderizarMiembros, 'admin-miembros-lista', null);

@@ -3,6 +3,7 @@
 
 const { Router } = require('express');
 const { exigirPermiso } = require('../middlewares/permisos');
+const exigirMembresiaActiva = require('../middlewares/membresiaActiva');
 const crearControladorClases = require('../controllers/clasesController');
 
 module.exports = function rutasClases({ servicioClases }) {
@@ -14,8 +15,8 @@ module.exports = function rutasClases({ servicioClases }) {
   router.post('/', exigirPermiso('publicarClase'), controlador.publicar);
   router.put('/:id', exigirPermiso('publicarClase'), controlador.modificar);
   router.delete('/:id', exigirPermiso('publicarClase'), controlador.eliminar);
-  router.post('/:id/inscribir', exigirPermiso('inscribirseAClase'), controlador.inscribir);
-  router.post('/:id/desinscribir', exigirPermiso('inscribirseAClase'), controlador.desinscribir);
+  router.post('/:id/inscribir', exigirPermiso('inscribirseAClase'), exigirMembresiaActiva, controlador.inscribir);
+  router.post('/:id/desinscribir', exigirPermiso('inscribirseAClase'), exigirMembresiaActiva, controlador.desinscribir);
 
   return router;
 };

@@ -22,6 +22,8 @@ const rutasTurnos = require('./routes/turnos');
 const rutasMembresias = require('./routes/membresias');
 const rutasHorarios = require('./routes/horarios');
 const rutasCatalogoPublico = require('./routes/catalogoPublico');
+const rutasSeguimientoProgreso = require('./routes/seguimientoProgreso');
+const rutasSolicitudesMembresia = require('./routes/solicitudesMembresias');
 
 function crearApp({
   repos,
@@ -77,6 +79,8 @@ function crearApp({
   app.use('/api/turnos', rutasTurnos(servicios));
   app.use('/api/membresias', rutasMembresias(servicios));
   app.use('/api/horarios', rutasHorarios(servicios));
+  app.use('/api/seguimientoProgreso', rutasSeguimientoProgreso({ servicioSeguimientoProgreso: servicios.servicioSeguimientoProgreso }));
+  app.use('/api/solicitudesMembresia', rutasSolicitudesMembresia({ servicioSolicitudesMembresia: servicios.servicioSolicitudesMembresia }));
 
   app.use(notFound);
   app.use(manejadorErrores(logger, { exposeStack: env === 'development' }));

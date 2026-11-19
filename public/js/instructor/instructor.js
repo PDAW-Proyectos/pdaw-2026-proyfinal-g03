@@ -1,5 +1,7 @@
 import { verificarSesion, cerrarSesion } from '../auth.js';
 import { inicializarRenderizadoInstructor } from './renderizado-instructor.js';
+import { inicializarEdicionPerfil } from '../perfil/editarPerfil.js';
+import { modificarEspecialidad } from '../perfil/servicioPerfil.js';
 import {
   inicializarGestionActividades,
   inicializarFormularioEdicion,
@@ -51,6 +53,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     inicializarRenderizadoInstructor(usuario);
     inicializarGestionActividades(usuario);
     inicializarFormularioEdicion(usuario);
+    inicializarEdicionPerfil(usuario, {
+      campos: {
+        nombre: 'perfil-nombre',
+        email: 'perfil-email',
+        telefono: 'perfil-telefono'
+      },
+      camposAdicionales: {
+        especialidad: 'perfil-especialidad'
+      },
+      modificarAdicional: modificarEspecialidad
+    });
   } catch (error) {
     console.error('Error al inicializar el panel:', error);
   }

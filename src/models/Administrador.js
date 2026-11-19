@@ -8,6 +8,7 @@ const PERMISOS = new Set([
   'gestionarMembresias',
   'definirHorarios',
   'crearUsuario',
+  'modificarPerfil'
 ]);
 
 class Administrador extends Usuario {

@@ -41,5 +41,79 @@ module.exports = function rutasUsuarios({ servicioUsuarios }) {
     }
   });
 
+  // Modificar datos personales
+  router.put('/perfil', exigirPermiso('modificarPerfil'), async (req, res, next) => {
+    try {
+      const usuario = await servicioUsuarios.modificarDatosPersonales(
+        req.usuario.id,
+        req.body ?? {}
+      );
+
+      res.json({ usuario });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  // Modificar datos físicos del miembro
+  router.put('/perfil/miembro', exigirPermiso('modificarPerfil'), async (req, res, next) => {
+    try {
+      const usuario = await servicioUsuarios.modificarDatosMiembro(
+        req.usuario.id,
+        req.body ?? {}
+      );
+
+      res.json({ usuario });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  // Modificar especialidad del instructor
+  router.put('/perfil/instructor', exigirPermiso('modificarPerfil'), async (req, res, next) => {
+    try {
+      const usuario = await servicioUsuarios.modificarEspecialidad(
+        req.usuario.id,
+        req.body?.especialidad
+      );
+
+      res.json({ usuario });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  // Cambiar contraseña
+  router.put('/perfil/password', exigirPermiso('modificarPerfil'), async (req, res, next) => {
+    try {
+      await servicioUsuarios.cambiarPassword(
+        req.usuario.id,
+        req.body?.passwordActual,
+        req.body?.passwordNueva
+      );
+
+      res.json({ mensaje: 'Contraseña modificada correctamente' });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  // Eliminar cuenta propia
+  router.delete(
+    '/perfil',
+    exigirPermiso('eliminarCuenta'),
+    async (req, res, next) => {
+      try {
+        await servicioUsuarios.eliminarCuenta(req.usuario.id);
+
+        res.json({
+          mensaje: 'Cuenta eliminada correctamente'
+        });
+      } catch (error) {
+        next(error);
+      }
+    }
+  );
+
   return router;
 };
