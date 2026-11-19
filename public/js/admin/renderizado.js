@@ -1,3 +1,4 @@
+import { mostrarToast } from '../componentes/toast.js';
 const diasOrdenados = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
 let turnosDisponibles = [];
 const tiposTurno = {
@@ -96,6 +97,12 @@ const renderizarClases = (clases) => {
       const informacion = crearElemento('div', 'admin-card-info');
       const encabezado = crearElemento('div', 'd-flex align-items-center gap-2 mb-1 flex-wrap');
       const titulo = crearElemento('h4', 'mb-0', clase.titulo);
+      const estadoDestacada = crearElemento('span',
+        clase.destacada
+          ? 'badge bg-warning text-dark fs-12'
+          : 'badge bg-secondary fs-12',
+        clase.destacada ? '★ Destacada' : 'No destacada',
+      );
       const fecha = new Date(clase.fechaHora);
       const detalle = crearElemento(
         'p',
@@ -110,18 +117,68 @@ const renderizarClases = (clases) => {
         `Cupo: ${clase.cupo} · ${inscriptos} inscriptos · ${cuposDisponibles} disponibles`,
       );
 
-      encabezado.append(titulo);
+      encabezado.append(titulo, estadoDestacada);
       informacion.append(encabezado, detalle, cupo);
 
       if (clase.descripcion) {
         informacion.append(crearElemento('p', 'text-gray mb-0 mt-2', clase.descripcion));
       }
+      const botonDestacar = crearElemento(
+        'button',
+        clase.destacada
+          ? 'btn btn-sm btn-outline-warning'
+          : 'btn btn-sm btn-outline-success',
+        clase.destacada ? '★ Quitar destacada' : '☆ Destacar',
+      );
 
-      tarjeta.append(informacion);
+      botonDestacar.type = 'button';
+      botonDestacar.dataset.accion = 'destacar-clase';
+      botonDestacar.dataset.id = clase.id;
+      tarjeta.append(informacion, botonDestacar);
       contenedor.append(tarjeta);
     });
 
   contenedor.setAttribute('aria-busy', 'false');
+};
+
+const destacarClase = async (claseId, boton) => {
+  const textoOriginal = boton.textContent;
+
+  boton.disabled = true;
+  boton.textContent = 'Actualizando...';
+
+  try {
+    const respuesta = await fetch(`/api/clases/${claseId}/destacar`, {
+      method: 'POST',
+      credentials: 'include',
+    });
+
+    const datos = await respuesta.json();
+
+    if (!respuesta.ok) {
+      throw new Error(datos.detail || datos.error || 'No se pudo actualizar la clase.');
+    }
+
+    mostrarToast(
+      'Clase actualizada',
+      datos.destacada
+        ? 'La clase ahora está destacada.'
+        : 'La clase ya no está destacada.',
+      'success',
+    );
+
+    await cargarYRenderizar(
+      'clases',
+      renderizarClases,
+      'admin-clases-lista',
+      'admin-clases-resumen',
+    );
+
+  } catch (error) {
+    mostrarToast('Error', error.message, 'error');
+    boton.disabled = false;
+    boton.textContent = textoOriginal;
+  }
 };
 
 export const renderizarMiembros = (miembros) => {
@@ -256,13 +313,13 @@ let agruparDiasIguales = false;
 export const renderizarHorarios = (horarios) => {
   const contenedor = document.getElementById('admin-horarios-lista');
   contenedor.replaceChildren();
-  
+
   const minutosSemanales = horarios.reduce((total, horario) => {
     const [horaApertura, minutoApertura] = horario.apertura.split(':').map(Number);
     const [horaCierre, minutoCierre] = horario.cierre.split(':').map(Number);
     return total + (horaCierre * 60 + minutoCierre) - (horaApertura * 60 + minutoApertura);
   }, 0);
-  
+
   actualizarResumen(
     'admin-horarios-resumen',
     `${horarios.length} horarios · ${Math.floor(minutosSemanales / 60)} h ${minutosSemanales % 60} min por semana`,
@@ -279,7 +336,7 @@ export const renderizarHorarios = (horarios) => {
   const contieneHoy = (diasArray) => diasArray.includes(hoy);
 
   let elementosAMostrar = [];
-  
+
   if (agruparDiasIguales) {
     const agrupados = {};
     horarios.forEach(h => {
@@ -290,7 +347,7 @@ export const renderizarHorarios = (horarios) => {
       agrupados[clave].dias.push(h.dia);
       agrupados[clave].ids.push(h.id);
     });
-    elementosAMostrar = Object.values(agrupados).sort((a, b) => 
+    elementosAMostrar = Object.values(agrupados).sort((a, b) =>
       diasOrdenados.indexOf(a.dias[0]) - diasOrdenados.indexOf(b.dias[0])
     );
   } else {
@@ -304,13 +361,13 @@ export const renderizarHorarios = (horarios) => {
     const esGrupoHoy = contieneHoy(grupo.dias);
 
     const fila = crearElemento('div', `fila-horario d-flex align-items-center justify-content-between position-relative ${!esUltimo ? 'border-bottom border-secondary' : ''}`);
-    
+
     const contenedorDia = crearElemento('div', 'd-flex flex-column');
     const tituloDiaDiv = crearElemento('div', 'd-flex align-items-center gap-2');
-    
+
     let textoDia = grupo.dias[0].substring(0, 3).toUpperCase();
     let subtexto = grupo.dias[0].charAt(0).toUpperCase() + grupo.dias[0].slice(1);
-    
+
     if (grupo.dias.length > 1) {
       const primerDia = grupo.dias[0].substring(0, 3).toUpperCase();
       const ultimoDia = grupo.dias[grupo.dias.length - 1].substring(0, 3).toUpperCase();
@@ -322,7 +379,7 @@ export const renderizarHorarios = (horarios) => {
     const tituloDia = crearElemento('span', 'text-white fw-bold fs-5', textoDia);
     tituloDia.style.fontFamily = "'Oswald', sans-serif";
     tituloDia.style.letterSpacing = '1px';
-    
+
     tituloDiaDiv.append(tituloDia);
 
     if (esGrupoHoy) {
@@ -357,7 +414,7 @@ export const renderizarHorarios = (horarios) => {
       btnEliminar.title = 'Eliminar horario';
       btnEliminar.dataset.accion = 'eliminar-horario';
       btnEliminar.dataset.id = grupo.ids[0];
-      
+
       contenedorDerecha.append(btnEliminar);
     }
 
@@ -489,6 +546,20 @@ export function inicializarRenderizadoAdmin(usuario) {
   inputFechaTurno?.addEventListener('change', () => {
     renderizarTurnos(turnosDisponibles);
   });
+
+  const contenedorClases = document.getElementById('admin-clases-lista');
+
+  if (contenedorClases && contenedorClases.dataset.eventos !== 'true') {
+    contenedorClases.dataset.eventos = 'true';
+
+    contenedorClases.addEventListener('click', (event) => {
+      const boton = event.target.closest('[data-accion="destacar-clase"]');
+
+      if (!boton) return;
+
+      destacarClase(boton.dataset.id, boton);
+    });
+  }
 
   cargarYRenderizar('clases', renderizarClases, 'admin-clases-lista', 'admin-clases-resumen');
   cargarYRenderizar('usuarios/miembros', renderizarMiembros, 'admin-miembros-lista', null);
