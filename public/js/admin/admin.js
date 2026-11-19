@@ -1,6 +1,6 @@
 import { verificarSesion, cerrarSesion } from '../auth.js';
 import { inicializarRegistroUsuarios } from './registroUsuarios.js';
-import { inicializarRenderizadoAdmin, cargarYRenderizar, renderizarMiembros, renderizarInstructores } from './renderizado.js';
+import { inicializarRenderizadoAdmin, cargarYRenderizar, renderizarMiembros, renderizarInstructores, renderizarHorarios } from './renderizado.js';
 import { inicializarEdicionPerfil } from '../perfil/editarPerfil.js';
 import { inicializarGestionMembresias } from './gestionMembresias.js';
 import { cargarGestionMembresias } from './renderizado-membresias.js';
@@ -11,7 +11,7 @@ import {
   inicializarEliminarHorarios,
 } from './gestion.js';
 import { inicializarGestionPlanes } from './gestionPlanes.js';
-import { mostrarToast } from '../componentes/toast.js'; 
+import { mostrarToast } from '../componentes/toast.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   try {
@@ -51,6 +51,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error('Error al cerrar sesión:', error);
       }
     });
+
+    // --- LÓGICA PARA EL SWITCH DE AGRUPAR HORARIOS ---
+    const switchAgrupar = document.getElementById('switchAgrupar');
+    if (switchAgrupar) {
+      switchAgrupar.addEventListener('change', (e) => {
+        if (window.setAgruparDias) {
+          window.setAgruparDias(e.target.checked);
+        }
+        cargarYRenderizar('horarios', renderizarHorarios, 'admin-horarios-lista', 'admin-horarios-resumen');
+      });
+    }
 
     let usuarioAEliminarId = null;
     let usuarioAEliminarTipo = null;
@@ -124,7 +135,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
       });
     }
-   try {
+
+    try {
       inicializarRegistroUsuarios();
       inicializarGestionTurnos();
       inicializarGestionHorarios();
@@ -142,6 +154,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.error('Error general al inicializar el panel:', error);
   }
 });
+
 export function mostrarConfirmacion(mensaje, callbackAceptar) {
   const modalEl = document.getElementById('modalConfirmacion');
   const textoEl = document.getElementById('textoConfirmacionModal');
