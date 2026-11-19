@@ -262,7 +262,6 @@ export const renderizarInstructores = (instructores) => {
 
   contenedor.setAttribute('aria-busy', 'false');
 };
-// --- VARIABLES GLOBALES PARA PLANES ---
 let paginaActualPlanes = 1;
 const planesPorPagina = 2;
 let filtroEstadoPlanes = 'todos';
@@ -274,28 +273,25 @@ export const renderizarMembresias = (membresias) => {
   
   contenedor.replaceChildren();
   contenedorPaginado.replaceChildren();
-
-  // 1. Configurar el filtro
+o
   if (selectFiltro) {
     selectFiltro.value = filtroEstadoPlanes;
     if (!selectFiltro.dataset.listener) {
       selectFiltro.addEventListener('change', (e) => {
         filtroEstadoPlanes = e.target.value;
-        paginaActualPlanes = 1; // Resetear a la primera página
+        paginaActualPlanes = 1;
         renderizarMembresias(membresias);
       });
       selectFiltro.dataset.listener = 'true';
     }
   }
 
-  // 2. Resumen General
   const activas = membresias.filter((m) => m.activo).length;
   actualizarResumen(
     'admin-membresias-resumen',
     `${membresias.length} planes · ${activas} activos · ${membresias.length - activas} inactivos`,
   );
 
-  // 3. Filtrar datos
   let planesFiltrados = membresias;
   if (filtroEstadoPlanes === 'activos') planesFiltrados = membresias.filter(m => m.activo);
   if (filtroEstadoPlanes === 'inactivos') planesFiltrados = membresias.filter(m => !m.activo);
@@ -306,7 +302,6 @@ export const renderizarMembresias = (membresias) => {
     return;
   }
 
-  // 4. Paginación
   const totalPaginas = Math.ceil(planesFiltrados.length / planesPorPagina);
   if (paginaActualPlanes > totalPaginas) paginaActualPlanes = totalPaginas;
   
@@ -314,7 +309,6 @@ export const renderizarMembresias = (membresias) => {
   const fin = inicio + planesPorPagina;
   const planesAMostrar = planesFiltrados.slice(inicio, fin);
 
-  // 5. Renderizar Tarjetas
   planesAMostrar.forEach((membresia) => {
     const tarjeta = crearElemento('article', 'admin-card d-flex justify-content-between align-items-center flex-wrap gap-3');
     const informacion = crearElemento('div', 'admin-card-info flex-grow-1');
@@ -335,24 +329,20 @@ export const renderizarMembresias = (membresias) => {
       informacion.append(crearElemento('p', 'mb-0 fs-13 text-gray', membresia.descripcion));
     }
 
-       // --- BOTONES ---
     const divAcciones = crearElemento('div', 'd-flex gap-2');
     
-    // Botón Habilitar/Deshabilitar
-    // 1. Creamos el botón vacío (sin el tercer parámetro)
+    
     const btnToggle = crearElemento('button', `btn btn-sm ${membresia.activo ? 'btn-outline-warning' : 'btn-outline-success'}`);
-    // 2. Le inyectamos el HTML del ícono
+    
     btnToggle.innerHTML = membresia.activo ? '<i class="bi bi-pause-circle"></i>' : '<i class="bi bi-play-circle"></i>';
     btnToggle.title = membresia.activo ? 'Deshabilitar' : 'Habilitar';
     btnToggle.dataset.accion = 'toggle-plan';
     btnToggle.dataset.id = membresia.id;
     btnToggle.dataset.activo = membresia.activo;
-    // El PUT del backend reemplaza el plan completo, así que el toggle necesita todos los datos
     btnToggle.dataset.nombre = membresia.nombre;
     btnToggle.dataset.precio = membresia.precioMensual;
     btnToggle.dataset.descripcion = membresia.descripcion || '';
 
-    // Botón Editar
     const btnEditar = crearElemento('button', 'btn btn-sm btn-outline-light');
     btnEditar.innerHTML = '<i class="bi bi-pencil"></i>';
     btnEditar.title = 'Editar plan';
@@ -363,7 +353,6 @@ export const renderizarMembresias = (membresias) => {
     btnEditar.dataset.descripcion = membresia.descripcion || '';
     btnEditar.dataset.activo = membresia.activo;
 
-    // Botón Eliminar
     const btnEliminar = crearElemento('button', 'btn btn-sm btn-outline-danger');
     btnEliminar.innerHTML = '<i class="bi bi-trash3"></i>';
     btnEliminar.title = 'Eliminar plan';
@@ -376,9 +365,7 @@ export const renderizarMembresias = (membresias) => {
     contenedor.append(tarjeta);
   });
 
-  // 6. Renderizar paginado
   if (totalPaginas > 1) {
-    // Botón Anterior
     const btnPrev = crearElemento('button', 'btn btn-sm btn-outline-secondary');
     btnPrev.innerHTML = '<i class="bi bi-chevron-left"></i>'; // Usamos innerHTML
     btnPrev.disabled = paginaActualPlanes === 1;
@@ -389,7 +376,6 @@ export const renderizarMembresias = (membresias) => {
 
     const textoPag = crearElemento('span', 'text-gray fs-14', `Página ${paginaActualPlanes} de ${totalPaginas}`);
 
-    // Botón Siguiente
     const btnNext = crearElemento('button', 'btn btn-sm btn-outline-secondary');
     btnNext.innerHTML = '<i class="bi bi-chevron-right"></i>'; // Usamos innerHTML
     btnNext.disabled = paginaActualPlanes === totalPaginas;
