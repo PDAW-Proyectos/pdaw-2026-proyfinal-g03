@@ -1,280 +1,362 @@
 <!doctype html>
 <html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Iron Temple - Mi Panel</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Oswald:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="./img/pesa.png" />
+    <link rel="stylesheet" href="./css/styles.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Iron Temple - Mi Panel</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Oswald:wght@500;700&display=swap"
-    rel="stylesheet" />
-  <link rel="icon" href="./img/pesa.png" />
-  <link rel="stylesheet" href="./css/styles.css" />
-</head>
-
-<body data-rol="miembro" class="admin-body">
-  <header class="admin-header">
-    <a class="navbar-brand m-0" href="index.html">
-      <span class="text-green"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-          class="lucide lucide-dumbbell preview-icon">
-          <path
-            d="M17.596 12.768a2 2 0 1 0 2.829-2.829l-1.768-1.767a2 2 0 0 0 2.828-2.829l-2.828-2.828a2 2 0 0 0-2.829 2.828l-1.767-1.768a2 2 0 1 0-2.829 2.829z" />
-          <path d="m2.5 21.5 1.4-1.4" />
-          <path d="m20.1 3.9 1.4-1.4" />
-          <path
-            d="M5.343 21.485a2 2 0 1 0 2.829-2.828l1.767 1.768a2 2 0 1 0 2.829-2.829l-6.364-6.364a2 2 0 1 0-2.829 2.829l1.768 1.767a2 2 0 0 0-2.828 2.829z" />
-          <path d="m9.6 14.4 4.8-4.8" />
-        </svg></span>
-      IRON TEMPLE<span class="text-green">.</span>
-    </a>
-    <div class="admin-user-info">
-      <span class="text-green fw-bold" id="nombreUsuarioHeader">Cargando...</span>
-      <button class="btn btn-outline-custom d-lg-none py-1 px-2 ms-2" type="button" data-bs-toggle="offcanvas"
-        data-bs-target="#menuLateral" aria-controls="menuLateral" style="border-color: #444">
-        <i class="bi bi-list fs-5"></i>
-      </button>
-      <a href="#" id="btnCerrarSesion"><i class="bi bi-box-arrow-right"></i> Salir</a>
-    </div>
-  </header>
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-12 col-lg-2 admin-sidebar">
-        <div class="offcanvas-lg offcanvas-start bg-pulso-darker" tabindex="-1" id="menuLateral"
-          aria-labelledby="menuLateralLabel">
-          <div class="offcanvas-header d-lg-none border-bottom border-secondary">
-            <h5 class="offcanvas-title text-white" id="menuLateralLabel">Opciones</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
-              data-bs-target="#menuLateral" aria-label="Close"></button>
-          </div>
-          <div class="offcanvas-body d-lg-block p-0">
-            <ul class="admin-nav nav flex-lg-column flex-row flex-wrap" id="mainTabs" role="tablist">
-              <li class="nav-item">
-                <button class="admin-nav-link nav-link active w-100 text-start" data-seccion="user-historial">
-                  <i class="bi bi-graph-up"></i> Historial
-                </button>
-              </li>
-              <li class="nav-item">
-                <button class="admin-nav-link nav-link w-100 text-start" data-seccion="user-progreso">
-                  <i class="bi bi-clipboard-data"></i> Seguimiento de Peso
-                </button>
-              </li>
-              <li class="nav-item">
-                <button class="admin-nav-link nav-link w-100 text-start" data-seccion="user-rutinas">
-                  <i class="bi bi-activity"></i> Tus rutinas
-                </button>
-              </li>
-              <li class="nav-item">
-                <button class="admin-nav-link nav-link w-100 text-start" data-seccion="user-reservar">
-                  <i class="bi bi-calendar-plus"></i> Reservar Clases
-                </button>
-              </li>
-              <li class="nav-item">
-                <button class="admin-nav-link nav-link w-100 text-start" data-seccion="user-nutricion">
-                  <i class="bi bi-apple"></i> Nutrición
-                </button>
-              </li>
-              <li class="nav-item">
-                <button class="admin-nav-link nav-link w-100 text-start" data-seccion="user-turnos">
-                  <i class="bi bi-heart-pulse"></i> Turnos médicos
-                </button>
-              </li>
-              <li class="nav-item">
-                <button class="admin-nav-link nav-link w-100 text-start" data-seccion="user-perfil">
-                  <i class="bi bi-person-circle"></i> Perfil
-                </button>
-              </li>
-            </ul>
-          </div>
-        </div>
+  <body data-rol="miembro" class="admin-body">
+    <header class="admin-header">
+      <a class="navbar-brand m-0" href="index.html">
+        <span class="text-green"
+          ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="lucide lucide-dumbbell preview-icon"
+          >
+            <path
+              d="M17.596 12.768a2 2 0 1 0 2.829-2.829l-1.768-1.767a2 2 0 0 0 2.828-2.829l-2.828-2.828a2 2 0 0 0-2.829 2.828l-1.767-1.768a2 2 0 1 0-2.829 2.829z"
+            />
+            <path d="m2.5 21.5 1.4-1.4" />
+            <path d="m20.1 3.9 1.4-1.4" />
+            <path
+              d="M5.343 21.485a2 2 0 1 0 2.829-2.828l1.767 1.768a2 2 0 1 0 2.829-2.829l-6.364-6.364a2 2 0 1 0-2.829 2.829l1.768 1.767a2 2 0 0 0-2.828 2.829z"
+            />
+            <path d="m9.6 14.4 4.8-4.8" /></svg
+        ></span>
+        IRON TEMPLE<span class="text-green">.</span>
+      </a>
+      <div class="admin-user-info">
+        <span class="text-green fw-bold" id="nombreUsuarioHeader">Cargando...</span>
+        <button
+          class="btn btn-outline-custom d-lg-none py-1 px-2 ms-2"
+          type="button"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#menuLateral"
+          aria-controls="menuLateral"
+          style="border-color: #444"
+        >
+          <i class="bi bi-list fs-5"></i>
+        </button>
+        <a href="#" id="btnCerrarSesion"><i class="bi bi-box-arrow-right"></i> Salir</a>
       </div>
-      <div class="col-12 col-lg-10 admin-content-area">
-        <div id="user-historial" class="seccion-contenido">
-          <h2 class="user-page-title">HISTORIAL</h2>
-
-          <div class="row g-4 mb-4">
-            <div class="col-md-4">
-              <div class="user-card text-center">
-                <p class="text-gray mb-2 fs-14">IMC</p>
-                <h3 class="text-white mb-0">-</h3>
-              </div>
+    </header>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12 col-lg-2 admin-sidebar">
+          <div
+            class="offcanvas-lg offcanvas-start bg-pulso-darker"
+            tabindex="-1"
+            id="menuLateral"
+            aria-labelledby="menuLateralLabel"
+          >
+            <div class="offcanvas-header d-lg-none border-bottom border-secondary">
+              <h5 class="offcanvas-title text-white" id="menuLateralLabel">Opciones</h5>
+              <button
+                type="button"
+                class="btn-close btn-close-white"
+                data-bs-dismiss="offcanvas"
+                data-bs-target="#menuLateral"
+                aria-label="Close"
+              ></button>
             </div>
-            <div class="col-md-4">
-              <div class="user-card text-center">
-                <p class="text-gray mb-2 fs-14">Meta</p>
-                <h3 class="text-white mb-0">-</h3>
-              </div>
+            <div class="offcanvas-body d-lg-block p-0">
+              <ul
+                class="admin-nav nav flex-lg-column flex-row flex-wrap"
+                id="mainTabs"
+                role="tablist"
+              >
+                <li class="nav-item">
+                  <button
+                    class="admin-nav-link nav-link active w-100 text-start"
+                    data-seccion="user-historial"
+                  >
+                    <i class="bi bi-graph-up"></i> Historial
+                  </button>
+                </li>
+                <li class="nav-item">
+                  <button
+                    class="admin-nav-link nav-link w-100 text-start"
+                    data-seccion="user-progreso"
+                  >
+                    <i class="bi bi-clipboard-data"></i> Seguimiento de Peso
+                  </button>
+                </li>
+                <li class="nav-item">
+                  <button
+                    class="admin-nav-link nav-link w-100 text-start"
+                    data-seccion="user-rutinas"
+                  >
+                    <i class="bi bi-activity"></i> Tus rutinas
+                  </button>
+                </li>
+                <li class="nav-item">
+                  <button
+                    class="admin-nav-link nav-link w-100 text-start"
+                    data-seccion="user-reservar"
+                  >
+                    <i class="bi bi-calendar-plus"></i> Reservar Clases
+                  </button>
+                </li>
+                <li class="nav-item">
+                  <button
+                    class="admin-nav-link nav-link w-100 text-start"
+                    data-seccion="user-nutricion"
+                  >
+                    <i class="bi bi-apple"></i> Nutrición
+                  </button>
+                </li>
+                <li class="nav-item">
+                  <button
+                    class="admin-nav-link nav-link w-100 text-start"
+                    data-seccion="user-turnos"
+                  >
+                    <i class="bi bi-heart-pulse"></i> Turnos médicos
+                  </button>
+                </li>
+                <li class="nav-item">
+                  <button
+                    class="admin-nav-link nav-link w-100 text-start"
+                    data-seccion="user-perfil"
+                  >
+                    <i class="bi bi-person-circle"></i> Perfil
+                  </button>
+                </li>
+              </ul>
             </div>
-            <div class="col-md-4">
-              <div class="user-card text-center">
-                <p class="text-gray mb-2 fs-14">Valor Actual</p>
-                <h3 class="text-white mb-0">-</h3>
-              </div>
-            </div>
-          </div>
-          <div class="user-card">
-            <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
-              <div>
-                <p class="text-gray mb-1 fs-14">Peso Inicial</p>
-                <h4 class="text-white">-</h4>
-              </div>
-              <div class="d-flex align-items-center gap-3">
-                <button id="btnMesAnterior" class="btn btn-link text-white p-0 text-decoration-none"
-                  style="font-size: 1.2rem;" aria-label="Mes anterior">
-                  <i class="bi bi-chevron-left"></i>
-                </button>
-
-                <span id="mesActualGrafico" class="text-white fw-bold" style="min-width: 120px; text-align: center;">
-                  Cargando...
-                </span>
-
-                <button id="btnMesSiguiente" class="btn btn-link text-white p-0 text-decoration-none"
-                  style="font-size: 1.2rem;" aria-label="Mes siguiente">
-                  <i class="bi bi-chevron-right"></i>
-                </button>
-              </div>
-              <div class="text-end">
-                <p class="text-gray mb-1 fs-14">Progreso total</p>
-                <h4 class="text-white">-</h4>
-              </div>
-
-            </div>
-            <div id="contenedor-grafico" class="bg-dark rounded border border-secondary"
-              style="min-height: 200px; border-style: dashed !important"></div>
           </div>
         </div>
-        <div id="user-progreso" class="seccion-contenido d-none">
-          <h2 class="user-page-title">Mi seguimiento de peso</h2>
+        <div class="col-12 col-lg-10 admin-content-area">
+          <div id="user-historial" class="seccion-contenido">
+            <h2 class="user-page-title">HISTORIAL</h2>
 
-          <p class="text-gray mb-4">
-            Registrá tu peso actual para llevar un seguimiento de tu evolución.
-          </p>
-          <div class="row g-4 mb-4">
-            <div class="col-md-6">
-              <div class="user-card text-center">
-                <p class="text-gray mb-2 fs-14">Peso Inicial</p>
-                <h3 id="progresoPesoInicial" class="text-white mb-0">-</h3>
+            <div class="row g-4 mb-4">
+              <div class="col-md-4">
+                <div class="user-card text-center">
+                  <p class="text-gray mb-2 fs-14">IMC</p>
+                  <h3 class="text-white mb-0">-</h3>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="user-card text-center">
+                  <p class="text-gray mb-2 fs-14">Meta</p>
+                  <h3 class="text-white mb-0">-</h3>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="user-card text-center">
+                  <p class="text-gray mb-2 fs-14">Valor Actual</p>
+                  <h3 class="text-white mb-0">-</h3>
+                </div>
               </div>
             </div>
-            <div class="col-md-6">
-              <div class="user-card text-center">
-                <p class="text-gray mb-2 fs-14">Peso Actual</p>
-                <h3 id="progresoPesoActual" class="text-white mb-0">-</h3>
+            <div class="user-card">
+              <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+                <div>
+                  <p class="text-gray mb-1 fs-14">Peso Inicial</p>
+                  <h4 class="text-white">-</h4>
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                  <button
+                    id="btnMesAnterior"
+                    class="btn btn-link text-white p-0 text-decoration-none"
+                    style="font-size: 1.2rem"
+                    aria-label="Mes anterior"
+                  >
+                    <i class="bi bi-chevron-left"></i>
+                  </button>
+
+                  <span
+                    id="mesActualGrafico"
+                    class="text-white fw-bold"
+                    style="min-width: 120px; text-align: center"
+                  >
+                    Cargando...
+                  </span>
+
+                  <button
+                    id="btnMesSiguiente"
+                    class="btn btn-link text-white p-0 text-decoration-none"
+                    style="font-size: 1.2rem"
+                    aria-label="Mes siguiente"
+                  >
+                    <i class="bi bi-chevron-right"></i>
+                  </button>
+                </div>
+                <div class="text-end">
+                  <p class="text-gray mb-1 fs-14">Progreso total</p>
+                  <h4 class="text-white">-</h4>
+                </div>
               </div>
+              <div
+                id="contenedor-grafico"
+                class="bg-dark rounded border border-secondary"
+                style="min-height: 200px; border-style: dashed !important"
+              ></div>
             </div>
           </div>
-          <div class="user-card mb-5">
-            <div class="row g-3 align-items-end">
+          <div id="user-progreso" class="seccion-contenido d-none">
+            <h2 class="user-page-title">Mi seguimiento de peso</h2>
+
+            <p class="text-gray mb-4">
+              Registrá tu peso actual para llevar un seguimiento de tu evolución.
+            </p>
+            <div class="row g-4 mb-4">
               <div class="col-md-6">
-                <label class="text-gray mb-2 fs-14" for="inputPesoActual">Peso actual (kg)</label>
-                <input type="number" id="inputPesoActual" class="user-form-control w-100" placeholder="Ej: 75.5" />
+                <div class="user-card text-center">
+                  <p class="text-gray mb-2 fs-14">Peso Inicial</p>
+                  <h3 id="progresoPesoInicial" class="text-white mb-0">-</h3>
+                </div>
               </div>
               <div class="col-md-6">
-                <button class="btn btn-green w-100 py-2 fs-14" id="btnRegistrarPeso" style="height: 48px">
-                  REGISTRAR PESO
-                </button>
+                <div class="user-card text-center">
+                  <p class="text-gray mb-2 fs-14">Peso Actual</p>
+                  <h3 id="progresoPesoActual" class="text-white mb-0">-</h3>
+                </div>
               </div>
             </div>
-          </div>
-
-          <p class="text-gray mb-5 fs-13">
-            <i class="bi bi-info-circle me-1"></i> Tu meta y altura ya fueron registradas en tu
-            perfil. Una vez que cargues al menos dos pesajes, podrás ver tu gráfico de evolución
-            en la pestaña de "Historial".
-          </p>
-
-          <h3 class="text-white mb-3 fs-15">
-            TUS REGISTROS
-          </h3>
-          <div class="table-responsive user-card p-0 overflow-hidden">
-            <table class="table table-dark table-hover mb-0 table-dark-custom">
-              <thead class="border-bottom border-secondary">
-                <tr>
-                  <th scope="col" class="text-gray py-3 px-4 fw-normal">Fecha</th>
-                  <th scope="col" class="text-gray py-3 px-4 fw-normal">Peso (kg)</th>
-                  <th scope="col" class="text-gray py-3 px-4 text-end fw-normal">Diferencia</th>
-                </tr>
-              </thead>
-              <tbody>
-                <!-- Aquí se inyectarán las filas con JS -->
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div id="user-rutinas" class="seccion-contenido d-none">
-          <h2 class="user-page-title">TUS RUTINAS</h2>
-
-          <div class="row g-4">
-            <div class="col-12">
-              <p class="text-gray mb-4">
-                Generá un plan de entrenamiento personalizado con inteligencia artificial.
-                Contanos tu nivel y cuántos días querés entrenar.
-              </p>
-              <p class="text-gray mb-4">
-                Ante cualquier duda, podés consultar con nuestros entrenadores para ajustar tu
-                rutina a tus necesidades.
-              </p>
-
-              <div class="user-card mb-5">
-                <h4 class="mb-3 text-white">
-                  <i class="bi bi-magic text-green me-2"></i> Generar nuevo plan
-                </h4>
-                <form id="formGenerarPlan">
-                  <div class="row g-3 align-items-end">
-                    <div class="col-md-12">
-                      <label class="text-gray mb-2 fs-14" for="planNivel">Tu nivel</label>
-                      <select class="user-form-control w-100" id="planNivel" required>
-                        <option value="">Seleccionar...</option>
-                        <option value="principiante">Principiante</option>
-                        <option value="intermedio">Intermedio</option>
-                        <option value="avanzado">Avanzado</option>
-                      </select>
-                    </div>
-                    <div class="col-md-12">
-                      <label class="text-gray mb-2 fs-14" for="planDias">Días por semana</label>
-                      <select class="user-form-control w-100" id="planDias" required>
-                        <option value="">Seleccionar...</option>
-                        <option value="2">2 días</option>
-                        <option value="3">3 días</option>
-                        <option value="4">4 días</option>
-                        <option value="5">5 días</option>
-                        <option value="6">6 días</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="mt-3">
-                    <button type="submit" class="btn btn-green w-100 py-2 fs-14" id="btnGenerarPlan">
-                      GENERAR PLAN CON IA
-                    </button>
-                  </div>
-                  <div id="mensajePlanIA" class="text-danger fs-14 mt-2 text-center"></div>
-                </form>
+            <div class="user-card mb-5">
+              <div class="row g-3 align-items-end">
+                <div class="col-md-6">
+                  <label class="text-gray mb-2 fs-14" for="inputPesoActual">Peso actual (kg)</label>
+                  <input
+                    type="number"
+                    id="inputPesoActual"
+                    class="user-form-control w-100"
+                    placeholder="Ej: 75.5"
+                  />
+                </div>
+                <div class="col-md-6">
+                  <button
+                    class="btn btn-green w-100 py-2 fs-14"
+                    id="btnRegistrarPeso"
+                    style="height: 48px"
+                  >
+                    REGISTRAR PESO
+                  </button>
+                </div>
               </div>
+            </div>
 
-              <div id="contenedorPlanEntrenamiento">
-                <div class="user-card text-center py-5">
-                  <i class="bi bi-activity text-gray fs-1 mb-3 d-block"></i>
-                  <h5 class="text-white mb-2">Todavía no tenés un plan generado</h5>
-                  <p class="text-gray mb-0 fs-14">
-                    Usá el formulario de arriba para crear tu primera rutina personalizada.
-                  </p>
+            <p class="text-gray mb-5 fs-13">
+              <i class="bi bi-info-circle me-1"></i> Tu meta y altura ya fueron registradas en tu
+              perfil. Una vez que cargues al menos dos pesajes, podrás ver tu gráfico de evolución
+              en la pestaña de "Historial".
+            </p>
+
+            <h3 class="text-white mb-3 fs-15">TUS REGISTROS</h3>
+            <div class="table-responsive user-card p-0 overflow-hidden">
+              <table class="table table-dark table-hover mb-0 table-dark-custom">
+                <thead class="border-bottom border-secondary">
+                  <tr>
+                    <th scope="col" class="text-gray py-3 px-4 fw-normal">Fecha</th>
+                    <th scope="col" class="text-gray py-3 px-4 fw-normal">Peso (kg)</th>
+                    <th scope="col" class="text-gray py-3 px-4 text-end fw-normal">Diferencia</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Aquí se inyectarán las filas con JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div id="user-rutinas" class="seccion-contenido d-none">
+            <h2 class="user-page-title">TUS RUTINAS</h2>
+
+            <div class="row g-4">
+              <div class="col-12">
+                <p class="text-gray mb-4">
+                  Generá un plan de entrenamiento personalizado con inteligencia artificial.
+                  Contanos tu nivel y cuántos días querés entrenar.
+                </p>
+                <p class="text-gray mb-4">
+                  Ante cualquier duda, podés consultar con nuestros entrenadores para ajustar tu
+                  rutina a tus necesidades.
+                </p>
+
+                <div class="user-card mb-5">
+                  <h4 class="mb-3 text-white">
+                    <i class="bi bi-magic text-green me-2"></i> Generar nuevo plan
+                  </h4>
+                  <form id="formGenerarPlan">
+                    <div class="row g-3 align-items-end">
+                      <div class="col-md-12">
+                        <label class="text-gray mb-2 fs-14" for="planNivel">Tu nivel</label>
+                        <select class="user-form-control w-100" id="planNivel" required>
+                          <option value="">Seleccionar...</option>
+                          <option value="principiante">Principiante</option>
+                          <option value="intermedio">Intermedio</option>
+                          <option value="avanzado">Avanzado</option>
+                        </select>
+                      </div>
+                      <div class="col-md-12">
+                        <label class="text-gray mb-2 fs-14" for="planDias">Días por semana</label>
+                        <select class="user-form-control w-100" id="planDias" required>
+                          <option value="">Seleccionar...</option>
+                          <option value="2">2 días</option>
+                          <option value="3">3 días</option>
+                          <option value="4">4 días</option>
+                          <option value="5">5 días</option>
+                          <option value="6">6 días</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="mt-3">
+                      <button
+                        type="submit"
+                        class="btn btn-green w-100 py-2 fs-14"
+                        id="btnGenerarPlan"
+                      >
+                        GENERAR PLAN CON IA
+                      </button>
+                    </div>
+                    <div id="mensajePlanIA" class="text-danger fs-14 mt-2 text-center"></div>
+                  </form>
+                </div>
+
+                <div id="contenedorPlanEntrenamiento">
+                  <div class="user-card text-center py-5">
+                    <i class="bi bi-activity text-gray fs-1 mb-3 d-block"></i>
+                    <h5 class="text-white mb-2">Todavía no tenés un plan generado</h5>
+                    <p class="text-gray mb-0 fs-14">
+                      Usá el formulario de arriba para crear tu primera rutina personalizada.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div id="user-reservar" class="seccion-contenido d-none">
-          <h2 class="user-page-title">RESERVAR CLASES</h2>
-          <p class="text-gray mb-4">
-            Elegí tus actividades y asegurá tu lugar.
-          </p>
-          <div class="row g-4 mb-5" id="contenedorReservas">
-            <div class="user-card text-center py-4">
-              <p class="text-gray mb-0">Cargando actividades...</p>
+          <div id="user-reservar" class="seccion-contenido d-none">
+            <h2 class="user-page-title">RESERVAR CLASES</h2>
+            <p class="text-gray mb-4">Elegí tus actividades y asegurá tu lugar.</p>
+            <div class="row g-4 mb-5" id="contenedorReservas">
+              <div class="user-card text-center py-4">
+                <p class="text-gray mb-0">Cargando actividades...</p>
+              </div>
             </div>
           </div>
         </div>
@@ -336,111 +418,155 @@
               </p>
             </div>
           </div>
-        </div>
-        <div id="user-turnos" class="seccion-contenido d-none">
-          <h2 class="user-page-title">TURNOS MÉDICOS</h2>
-          <p class="text-gray mb-4">
-            Reservá un turno con los profesionales que tienen convenio con el gimnasio.
-          </p>
-          <div id="contenedorTurnos">
-            <div class="user-card text-center py-4">
-              <p class="text-gray mb-0">Cargando turnos...</p>
+          <div id="user-turnos" class="seccion-contenido d-none">
+            <h2 class="user-page-title">TURNOS MÉDICOS</h2>
+            <p class="text-gray mb-4">
+              Reservá un turno con los profesionales que tienen convenio con el gimnasio.
+            </p>
+            <div id="contenedorTurnos">
+              <div class="user-card text-center py-4">
+                <p class="text-gray mb-0">Cargando turnos...</p>
+              </div>
             </div>
           </div>
-        </div>
-        <div id="user-perfil" class="seccion-contenido d-none">
-          <h2 class="user-page-title">PERFIL</h2>
-          <div class="user-card mb-4">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-              <h4 class="mb-0">Datos Personales</h4>
-              <button type="button" class="user-btn-outline py-1 px-3 fs-13" data-bs-toggle="modal"
-                data-bs-target="#modalCambiarPassword">
-                <i class="bi bi-key-fill"></i> Cambiar contraseña
+          <div id="user-perfil" class="seccion-contenido d-none">
+            <h2 class="user-page-title">PERFIL</h2>
+            <div class="user-card mb-4">
+              <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="mb-0">Datos Personales</h4>
+                <button
+                  type="button"
+                  class="user-btn-outline py-1 px-3 fs-13"
+                  data-bs-toggle="modal"
+                  data-bs-target="#modalCambiarPassword"
+                >
+                  <i class="bi bi-key-fill"></i> Cambiar contraseña
+                </button>
+              </div>
+              <div class="row g-3">
+                <div class="col-md-3">
+                  <label class="text-gray mb-2 fs-14 d-block" for="perfil-nombre"
+                    >Nombre completo</label
+                  >
+                  <input type="text" id="perfil-nombre" class="user-form-control w-100" />
+                </div>
+                <div class="col-md-3">
+                  <label class="text-gray mb-2 fs-14 d-block" for="perfil-dni">DNI</label>
+                  <input
+                    type="text"
+                    id="perfil-dni"
+                    class="user-form-control w-100"
+                    disabled
+                    style="cursor: not-allowed; opacity: 0.6"
+                  />
+                </div>
+                <div class="col-md-3">
+                  <label class="text-gray mb-2 fs-14 d-block" for="perfil-email">Email</label>
+                  <input type="email" id="perfil-email" class="user-form-control w-100" />
+                </div>
+                <div class="col-md-3">
+                  <label class="text-gray mb-2 fs-14 d-block" for="perfil-telefono">Teléfono</label>
+                  <input type="tel" id="perfil-telefono" class="user-form-control w-100" />
+                </div>
+              </div>
+              <button
+                id="guardar-datos-personales"
+                type="button"
+                class="user-btn-outline d-block ms-auto mt-3 py-1 px-3 fs-13 d-none"
+              >
+                <i class="bi bi-check-lg"></i> Guardar cambios
               </button>
             </div>
-            <div class="row g-3">
-              <div class="col-md-3">
-                <label class="text-gray mb-2 fs-14 d-block" for="perfil-nombre">Nombre completo</label>
-                <input type="text" id="perfil-nombre" class="user-form-control w-100" />
+            <div class="user-card mb-4">
+              <h4 class="mb-4">Datos Físicos Base</h4>
+              <div class="row g-3 mb-3">
+                <div class="col-md-4">
+                  <label class="text-gray mb-2 fs-14" for="perfil-altura">Altura (cm)</label>
+                  <input type="number" id="perfil-altura" class="user-form-control w-100" />
+                </div>
+                <div class="col-md-4">
+                  <label class="text-gray mb-2 fs-14" for="perfil-edad">Edad</label>
+                  <input type="number" id="perfil-edad" class="user-form-control w-100" />
+                </div>
+                <div class="col-md-4">
+                  <label class="text-gray mb-2 fs-14" for="perfil-peso-inicial"
+                    >Peso Inicial (kg)</label
+                  >
+                  <input type="number" id="perfil-peso-inicial" class="user-form-control w-100" />
+                </div>
               </div>
-              <div class="col-md-3">
-                <label class="text-gray mb-2 fs-14 d-block" for="perfil-dni">DNI</label>
-                <input type="text" id="perfil-dni" class="user-form-control w-100" disabled
-                  style="cursor: not-allowed; opacity: 0.6" />
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="text-gray mb-2 fs-14" for="perfil-peso-meta">Peso Meta (kg)</label>
+                  <input type="number" id="perfil-peso-meta" class="user-form-control w-100" />
+                </div>
+                <div class="col-md-6">
+                  <label class="text-gray mb-2 fs-14" for="selectObjetivo">Mi Objetivo</label>
+                  <select class="user-form-control w-100" id="selectObjetivo">
+                    <option value="perder_peso">Déficit Calórico (Bajar Grasa)</option>
+                    <option value="ganar_musculo">Volumen (Ganar Músculo)</option>
+                    <option value="mantener">Mantenimiento (Mantener Peso)</option>
+                    <option value="resistencia">Mejorar Resistencia</option>
+                  </select>
+                </div>
               </div>
-              <div class="col-md-3">
-                <label class="text-gray mb-2 fs-14 d-block" for="perfil-email">Email</label>
-                <input type="email" id="perfil-email" class="user-form-control w-100" />
-              </div>
-              <div class="col-md-3">
-                <label class="text-gray mb-2 fs-14 d-block" for="perfil-telefono">Teléfono</label>
-                <input type="tel" id="perfil-telefono" class="user-form-control w-100" />
-              </div>
+              <button
+                id="guardar-datos-fisicos"
+                type="button"
+                class="user-btn-outline d-block ms-auto mt-3 py-1 px-3 fs-13 d-none"
+              >
+                <i class="bi bi-check-lg"></i> Guardar cambios
+              </button>
             </div>
-            <button id="guardar-datos-personales" type="button"
-              class="user-btn-outline d-block ms-auto mt-3 py-1 px-3 fs-13 d-none">
-              <i class="bi bi-check-lg"></i> Guardar cambios
-            </button>
-          </div>
-          <div class="user-card mb-4">
-            <h4 class="mb-4">Datos Físicos Base</h4>
-            <div class="row g-3 mb-3">
-              <div class="col-md-4">
-                <label class="text-gray mb-2 fs-14" for="perfil-altura">Altura (cm)</label>
-                <input type="number" id="perfil-altura" class="user-form-control w-100" />
-              </div>
-              <div class="col-md-4">
-                <label class="text-gray mb-2 fs-14" for="perfil-edad">Edad</label>
-                <input type="number" id="perfil-edad" class="user-form-control w-100" />
-              </div>
-              <div class="col-md-4">
-                <label class="text-gray mb-2 fs-14" for="perfil-peso-inicial">Peso Inicial (kg)</label>
-                <input type="number" id="perfil-peso-inicial" class="user-form-control w-100" />
-              </div>
-            </div>
-            <div class="row g-3">
-              <div class="col-md-6">
-                <label class="text-gray mb-2 fs-14" for="perfil-peso-meta">Peso Meta (kg)</label>
-                <input type="number" id="perfil-peso-meta" class="user-form-control w-100" />
-              </div>
-              <div class="col-md-6">
-                <label class="text-gray mb-2 fs-14" for="selectObjetivo">Mi Objetivo</label>
-                <select class="user-form-control w-100" id="selectObjetivo">
-                  <option value="perder_peso">Déficit Calórico (Bajar Grasa)</option>
-                  <option value="ganar_musculo">Volumen (Ganar Músculo)</option>
-                  <option value="mantener">Mantenimiento (Mantener Peso)</option>
-                  <option value="resistencia">Mejorar Resistencia</option>
-                </select>
-              </div>
-            </div>
-            <button id="guardar-datos-fisicos" type="button"
-              class="user-btn-outline d-block ms-auto mt-3 py-1 px-3 fs-13 d-none">
-              <i class="bi bi-check-lg"></i> Guardar cambios
-            </button>
-          </div>
 
-          <!-- Tu Plan Actual -->
-          <div class="user-card mb-4" style="border-color: var(--pulso-green)">
-            <div class="d-flex justify-content-between align-items-start mb-3">
-              <div>
-                <h4 class="mb-1 text-white">
-                  Tu Plan Actual: <span class="text-green" id="perfil-plan-nombre">-</span>
-                </h4>
-                <p class="text-gray mb-0 fs-14">
-                  <i class="bi bi-calendar-check me-2"></i>
-                  Vence el <span id="perfil-fecha-vencimiento">-</span>
-                </p>
+            <!-- Tu Plan Actual -->
+            <div class="user-card mb-4" style="border-color: var(--pulso-green)">
+              <div class="d-flex justify-content-between align-items-start mb-3">
+                <div>
+                  <h4 class="mb-1 text-white">
+                    Tu Plan Actual: <span class="text-green" id="perfil-plan-nombre">-</span>
+                  </h4>
+                  <p class="text-gray mb-0 fs-14">
+                    <i class="bi bi-calendar-check me-2"></i>
+                    Vence el <span id="perfil-fecha-vencimiento">-</span>
+                  </p>
+                </div>
+                <span class="badge badge-green fs-12" id="perfil-estado-membresia">Activo</span>
               </div>
-              <span class="badge badge-green fs-12" id="perfil-estado-membresia">Activo</span>
+              <div class="d-flex gap-2 mb-3">
+                <button
+                  class="btn btn-green py-2 px-4 fs-14"
+                  id="btnCambiarPlan"
+                  data-bs-toggle="modal"
+                  data-bs-target="#modalCambiarPlan"
+                >
+                  <i class="bi bi-arrow-left-right me-1"></i> CAMBIAR PLAN
+                </button>
+                <button
+                  class="user-btn-outline text-danger border-danger fs-14"
+                  id="btnSolicitarBaja"
+                  data-bs-toggle="modal"
+                  data-bs-target="#modalSolicitarBaja"
+                >
+                  DAR DE BAJA
+                </button>
+              </div>
+              <p id="mensajeSolicitud" class="text-gray fs-13 mb-0">
+                <i class="bi bi-info-circle me-1"></i>
+              </p>
             </div>
-            <div class="d-flex gap-2 mb-3">
-              <button class="btn btn-green py-2 px-4 fs-14" id="btnCambiarPlan" data-bs-toggle="modal"
-                data-bs-target="#modalCambiarPlan">
-                <i class="bi bi-arrow-left-right me-1"></i> CAMBIAR PLAN
-              </button>
-              <button class="user-btn-outline text-danger border-danger fs-14" id="btnSolicitarBaja"
-                data-bs-toggle="modal" data-bs-target="#modalSolicitarBaja">
-                DAR DE BAJA
+            <div class="user-card">
+              <h4 class="mb-2">Eliminar cuenta</h4>
+              <p class="text-gray mb-4 fs-14">
+                Esta acción cierra tu sesión y desvincula tu acceso permanentemente.
+              </p>
+              <button
+                class="user-btn-outline"
+                id="eliminar-cuenta"
+                data-bs-toggle="modal"
+                data-bs-target="#modalEliminarCuenta"
+              >
+                <i class="bi bi-trash"></i> ELIMINAR CUENTA
               </button>
             </div>
           </div>
@@ -457,33 +583,49 @@
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- Modal cambiar plan -->
-  <div class="modal fade" id="modalCambiarPlan" tabindex="-1" aria-labelledby="tituloModalCambiarPlan"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content bg-pulso-darker border border-secondary">
-        <div class="modal-header border-secondary">
-          <h5 class="modal-title text-white" id="tituloModalCambiarPlan">
-            <i class="bi bi-arrow-left-right text-green me-2"></i> Cambiar plan de membresía
-          </h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-        </div>
-        <div class="modal-body">
-          <p class="text-gray fs-14">
-            Seleccioná el plan al que querés cambiarte.
-            La modificación se aplicará al finalizar tu período abonado,
-            una vez confirmado el pago por administración.
-          </p>
+    <!-- Modal cambiar plan -->
+    <div
+      class="modal fade"
+      id="modalCambiarPlan"
+      tabindex="-1"
+      aria-labelledby="tituloModalCambiarPlan"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-pulso-darker border border-secondary">
+          <div class="modal-header border-secondary">
+            <h5 class="modal-title text-white" id="tituloModalCambiarPlan">
+              <i class="bi bi-arrow-left-right text-green me-2"></i> Cambiar plan de membresía
+            </h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+              aria-label="Cerrar"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p class="text-gray fs-14">
+              Seleccioná el plan al que querés cambiarte. La modificación se aplicará al finalizar
+              tu período abonado, una vez confirmado el pago por administración.
+            </p>
 
-          <div class="mb-3">
-            <label for="selectNuevoPlan" class="text-gray mb-2 fs-14">
-              Nuevo plan
-            </label>
-            <select id="selectNuevoPlan" class="user-form-control w-100" required>
-              <option value="">Cargando planes...</option>
-            </select>
+            <div class="mb-3">
+              <label for="selectNuevoPlan" class="text-gray mb-2 fs-14"> Nuevo plan </label>
+              <select id="selectNuevoPlan" class="user-form-control w-100" required>
+                <option value="">Cargando planes...</option>
+              </select>
+            </div>
+            <p id="mensajeCambioPlan" class="fs-14 mb-0"></p>
+          </div>
+          <div class="modal-footer border-secondary">
+            <button type="button" class="user-btn-outline py-2 px-3" data-bs-dismiss="modal">
+              Cancelar
+            </button>
+            <button type="button" class="btn btn-green py-2 px-3" id="confirmarCambioPlan">
+              Solicitar cambio
+            </button>
           </div>
           <p id="mensajeSolicitud" class="fs-14 mb-0"></p>
         </div>
@@ -495,143 +637,188 @@
         </div>
       </div>
     </div>
-  </div>
-  <!-- Modal solicitar baja -->
-  <div class="modal fade" id="modalSolicitarBaja" tabindex="-1" aria-labelledby="tituloModalBaja" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content bg-pulso-darker border border-secondary">
-        <div class="modal-header border-secondary">
-          <h5 class="modal-title text-white" id="tituloModalBaja">
-            <i class="bi bi-exclamation-circle text-danger me-2"></i>
-            Solicitar baja
-          </h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-        </div>
+    <!-- Modal solicitar baja -->
+    <div
+      class="modal fade"
+      id="modalSolicitarBaja"
+      tabindex="-1"
+      aria-labelledby="tituloModalBaja"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-pulso-darker border border-secondary">
+          <div class="modal-header border-secondary">
+            <h5 class="modal-title text-white" id="tituloModalBaja">
+              <i class="bi bi-exclamation-circle text-danger me-2"></i>
+              Solicitar baja
+            </h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+              aria-label="Cerrar"
+            ></button>
+          </div>
 
-        <div class="modal-body">
-          <p class="text-white">¿Estás seguro de que querés solicitar la baja de tu membresía?</p>
-          <p class="text-gray fs-14 mb-0">
-            Vas a conservar el acceso al gimnasio hasta la fecha de vencimiento
-            de tu período abonado. La solicitud deberá ser gestionada por administración.
-          </p>
-        </div>
-
-        <div class="modal-footer border-secondary">
-          <button type="button" class="user-btn-outline py-2 px-3" data-bs-dismiss="modal">Cancelar</button>
-          <button type="button" class="btn btn-danger py-2 px-3" id="confirmarSolicitudBaja">
-            Confirmar baja
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!--confirmar eliminar cuenta-->
-  <div class="modal fade" id="modalEliminarCuenta" tabindex="-1" aria-labelledby="tituloEliminarCuenta"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title text-danger" id="tituloEliminarCuenta">
-            Eliminar cuenta
-          </h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-        </div>
-
-        <div class="modal-body">
-          <p class="text-black">
-            ¿Estás seguro de que querés eliminar tu cuenta?
-          </p>
-          <p class="text-muted mb-0">
-            Esta acción es permanente y no podrás volver a acceder con esta cuenta.
-          </p>
-        </div>
-
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-            Cancelar
-          </button>
-          <button type="button" class="btn btn-danger" id="confirmar-eliminar-cuenta">
-            Eliminar cuenta
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- Modal cambiar contraseña -->
-  <div class="modal fade" id="modalCambiarPassword" tabindex="-1" aria-labelledby="tituloModalPassword"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content bg-pulso-darker border border-secondary">
-
-        <div class="modal-header border-secondary">
-          <h5 class="modal-title text-white" id="tituloModalPassword">
-            <i class="bi bi-shield-lock text-green me-2"></i>
-            Cambiar contraseña
-          </h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-        </div>
-
-        <form id="formCambiarPassword">
           <div class="modal-body">
-
-            <div class="mb-3">
-              <label for="passwordActual" class="text-gray mb-2 fs-14">
-                Contraseña actual
-              </label>
-              <input type="password" id="passwordActual" class="user-form-control w-100"
-                placeholder="Ingresá tu contraseña actual" required />
-            </div>
-
-            <div class="mb-3">
-              <label for="passwordNueva" class="text-gray mb-2 fs-14">
-                Nueva contraseña
-              </label>
-              <input type="password" id="passwordNueva" class="user-form-control w-100"
-                placeholder="Ingresá la nueva contraseña" minlength="8" required />
-            </div>
-
-            <div class="mb-2">
-              <label for="passwordConfirmacion" class="text-gray mb-2 fs-14">
-                Confirmar nueva contraseña
-              </label>
-              <input type="password" id="passwordConfirmacion" class="user-form-control w-100"
-                placeholder="Repetí la nueva contraseña" minlength="8" required />
-            </div>
-
+            <p class="text-white">¿Estás seguro de que querés solicitar la baja de tu membresía?</p>
+            <p class="text-gray fs-14 mb-0">
+              Vas a conservar el acceso al gimnasio hasta la fecha de vencimiento de tu período
+              abonado. La solicitud deberá ser gestionada por administración.
+            </p>
           </div>
 
           <div class="modal-footer border-secondary">
             <button type="button" class="user-btn-outline py-2 px-3" data-bs-dismiss="modal">
               Cancelar
             </button>
-            <button type="submit" id="btnGuardarPassword" class="btn btn-green py-2 px-3">
-              <i class="bi bi-check-lg me-1"></i>
-              Guardar contraseña
+            <button type="button" class="btn btn-danger py-2 px-3" id="confirmarSolicitudBaja">
+              Confirmar baja
             </button>
           </div>
-        </form>
-
+        </div>
       </div>
     </div>
-  </div>
-  <div class="toast-container position-fixed bottom-0 end-0 p-3" id="toast-container">
-    <div id="miToast" class="toast align-items-center text-bg-dark border-0" role="alert" aria-live="assertive"
-      aria-atomic="true">
-      <div class="d-flex">
-        <div class="toast-body d-flex align-items-center gap-2">
-          <i id="toast-icono" class="bi bi-check-circle-fill text-success fs-5"></i>
-          <div>
-            <strong id="toast-titulo" class="d-block">Título</strong>
-            <span id="toast-mensaje" class="fs-14 text-gray">Mensaje</span>
+    <!--confirmar eliminar cuenta-->
+    <div
+      class="modal fade"
+      id="modalEliminarCuenta"
+      tabindex="-1"
+      aria-labelledby="tituloEliminarCuenta"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title text-danger" id="tituloEliminarCuenta">Eliminar cuenta</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Cerrar"
+            ></button>
+          </div>
+
+          <div class="modal-body">
+            <p class="text-black">¿Estás seguro de que querés eliminar tu cuenta?</p>
+            <p class="text-muted mb-0">
+              Esta acción es permanente y no podrás volver a acceder con esta cuenta.
+            </p>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+              Cancelar
+            </button>
+            <button type="button" class="btn btn-danger" id="confirmar-eliminar-cuenta">
+              Eliminar cuenta
+            </button>
           </div>
         </div>
-        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
-          aria-label="Close"></button>
       </div>
     </div>
-  </div>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <script type="module" src="./js/miembro/miembro.js"></script>
-</body>
+    <!-- Modal cambiar contraseña -->
+    <div
+      class="modal fade"
+      id="modalCambiarPassword"
+      tabindex="-1"
+      aria-labelledby="tituloModalPassword"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-pulso-darker border border-secondary">
+          <div class="modal-header border-secondary">
+            <h5 class="modal-title text-white" id="tituloModalPassword">
+              <i class="bi bi-shield-lock text-green me-2"></i>
+              Cambiar contraseña
+            </h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+              aria-label="Cerrar"
+            ></button>
+          </div>
 
+          <form id="formCambiarPassword">
+            <div class="modal-body">
+              <div class="mb-3">
+                <label for="passwordActual" class="text-gray mb-2 fs-14"> Contraseña actual </label>
+                <input
+                  type="password"
+                  id="passwordActual"
+                  class="user-form-control w-100"
+                  placeholder="Ingresá tu contraseña actual"
+                  required
+                />
+              </div>
+
+              <div class="mb-3">
+                <label for="passwordNueva" class="text-gray mb-2 fs-14"> Nueva contraseña </label>
+                <input
+                  type="password"
+                  id="passwordNueva"
+                  class="user-form-control w-100"
+                  placeholder="Ingresá la nueva contraseña"
+                  minlength="8"
+                  required
+                />
+              </div>
+
+              <div class="mb-2">
+                <label for="passwordConfirmacion" class="text-gray mb-2 fs-14">
+                  Confirmar nueva contraseña
+                </label>
+                <input
+                  type="password"
+                  id="passwordConfirmacion"
+                  class="user-form-control w-100"
+                  placeholder="Repetí la nueva contraseña"
+                  minlength="8"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="modal-footer border-secondary">
+              <button type="button" class="user-btn-outline py-2 px-3" data-bs-dismiss="modal">
+                Cancelar
+              </button>
+              <button type="submit" id="btnGuardarPassword" class="btn btn-green py-2 px-3">
+                <i class="bi bi-check-lg me-1"></i>
+                Guardar contraseña
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" id="toast-container">
+      <div
+        id="miToast"
+        class="toast align-items-center text-bg-dark border-0"
+        role="alert"
+        aria-live="assertive"
+        aria-atomic="true"
+      >
+        <div class="d-flex">
+          <div class="toast-body d-flex align-items-center gap-2">
+            <i id="toast-icono" class="bi bi-check-circle-fill text-success fs-5"></i>
+            <div>
+              <strong id="toast-titulo" class="d-block">Título</strong>
+              <span id="toast-mensaje" class="fs-14 text-gray">Mensaje</span>
+            </div>
+          </div>
+          <button
+            type="button"
+            class="btn-close btn-close-white me-2 m-auto"
+            data-bs-dismiss="toast"
+            aria-label="Close"
+          ></button>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="./js/miembro/miembro.js"></script>
+  </body>
 </html>

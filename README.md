@@ -66,6 +66,23 @@ npm start
 
 El servidor va a estar escuchando en http://localhost:3000.
 
+Modo de prueba con IA simulada:
+Si querés probar la aplicación sin consumir la cuota de Gemini o sin conexión a internet, podés iniciar el servidor con el cliente falso:
+
+En Linux/Mac:
+
+```bash
+USE_GEMINI_MOCK=true npm start
+```
+
+En Windows (PowerShell):
+
+```bash
+$env:USE_GEMINI_MOCK="true"; npm start
+```
+
+Esto permite generar planes de entrenamiento y nutrición con respuestas predefinidas.
+
 ## Cómo ejecutar las pruebas
 
 El proyecto usa Jest para las pruebas unitarias.

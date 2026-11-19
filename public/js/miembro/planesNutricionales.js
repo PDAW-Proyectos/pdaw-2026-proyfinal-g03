@@ -124,15 +124,13 @@ export function inicializarGeneracionPlanNutricional() {
     } catch {
       mensaje.textContent = '';
 
-      mostrarMensaje(
-        contenedor,
-        `<div class="d-flex flex-column align-items-center py-4">
-           <i class="bi bi-robot text-warning fs-1 mb-3"></i>
+      contenedor.innerHTML = `
+        <div class="user-card text-center py-4 border border-warning">
+           <i class="bi bi-robot text-warning fs-1 mb-3 d-block"></i>
            <h5 class="text-white mb-2">Servicio temporalmente ocupado</h5>
-           <p class="text-gray mb-0 text-center">El generador de planes con IA está tardando más de lo habitual. <br>Por favor, intentá de nuevo en unos minutos o consultá con nuestro personal.</p>
-         </div>`,
-        'text-danger',
-      );
+           <p class="text-gray mb-0">El generador de planes con IA está tardando más de lo habitual. <br>Por favor, intentá de nuevo en unos minutos o consultá con nuestros entrenadores.</p>
+        </div>
+      `;
     } finally {
       // se restaura el btn para que el usuario pueda reintentar
       btn.innerHTML = textoOriginal;
