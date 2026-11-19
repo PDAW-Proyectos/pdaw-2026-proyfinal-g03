@@ -19,6 +19,12 @@ class RepositorioClases extends RepositorioJSON {
       (clase) => clase.fechaHora.toISOString().slice(0, 10) === fechaValidada,
     );
   }
+
+  async listarPorDestacadas() {
+    return (await this.listar()).filter(
+      (clase) => clase.destacada === true,
+    );
+  }
 }
 
 module.exports = RepositorioClases;

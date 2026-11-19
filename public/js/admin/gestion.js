@@ -1,6 +1,8 @@
 // gestion de Turnos y Horarios
 
 import { cargarYRenderizar, renderizarTurnos, renderizarHorarios } from './renderizado.js';
+import { mostrarToast } from '../componentes/toast.js';
+import { mostrarConfirmacion } from './admin.js';
 
 export function inicializarGestionTurnos() {
   const btnNuevoTurno = document.getElementById('btnNuevoTurno');
@@ -23,6 +25,7 @@ export function inicializarGestionTurnos() {
     mensaje.textContent = '';
 
     const tipo = document.getElementById('turnoTipo').value;
+    const medico = document.getElementById('turnoMedico').value;
     const fecha = document.getElementById('turnoFecha').value;
     const hora = document.getElementById('turnoHora').value;
 
@@ -31,7 +34,7 @@ export function inicializarGestionTurnos() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify({ tipo, fecha, hora }),
+        body: JSON.stringify({ tipo, medico, fecha, hora }),
       });
 
       const datos = await respuesta.json();
@@ -41,14 +44,17 @@ export function inicializarGestionTurnos() {
       }
 
       modal.hide();
+
+      mostrarToast('Turno publicado', 'El turno se agendó correctamente.', 'success');
+
       await cargarYRenderizar(
         'turnos',
         renderizarTurnos,
-        'admin-turnos-disponibles',
+        'admin-turnos-chequeos',
         'admin-turnos-resumen',
       );
     } catch (error) {
-      mensaje.textContent = error.message;
+      mostrarToast('Error', error.message, 'error');
     }
   });
 }
@@ -65,7 +71,7 @@ export function inicializarGestionHorarios() {
 
   btnNuevoHorario.addEventListener('click', () => {
     formHorario.reset();
-    mensaje.textContent = '';
+    if (mensaje) mensaje.textContent = '';
     modal.show();
   });
 
@@ -92,6 +98,9 @@ export function inicializarGestionHorarios() {
       }
 
       modal.hide();
+
+      mostrarToast('Horario creado', 'El horario se guardó correctamente.', 'success');
+
       await cargarYRenderizar(
         'horarios',
         renderizarHorarios,
@@ -99,75 +108,88 @@ export function inicializarGestionHorarios() {
         'admin-horarios-resumen',
       );
     } catch (error) {
-      mensaje.textContent = error.message;
+      mostrarToast('Error', error.message, 'error');
     }
   });
 }
 
 export function inicializarEliminarTurnos() {
-  const contenedor = document.getElementById('admin-turnos-disponibles');
-  if (!contenedor) return;
+  const contenedorChequeos = document.getElementById('admin-turnos-chequeos');
+  const contenedorNutricion = document.getElementById('admin-turnos-nutricion');
 
-  contenedor.addEventListener('click', async (event) => {
+  if (!contenedorChequeos || !contenedorNutricion) return;
+
+  const manejarEliminarTurno = (event) => {
     const botonEliminar = event.target.closest('[data-accion="eliminar-turno"]');
     if (!botonEliminar) return;
 
     const turnoId = botonEliminar.dataset.id;
-    if (!confirm(`¿Eliminar el turno ${turnoId}?`)) return;
 
-    try {
-      const respuesta = await fetch(`/api/turnos/${turnoId}`, {
-        method: 'DELETE',
-        credentials: 'include',
-      });
+    mostrarConfirmacion('¿Estás seguro que querés eliminar este turno?', async () => {
 
-      if (!respuesta.ok) {
-        const datos = await respuesta.json();
-        throw new Error(datos.error || datos.detail || 'No se pudo eliminar el turno');
+      try {
+        const respuesta = await fetch(`/api/turnos/${turnoId}`, {
+          method: 'DELETE',
+          credentials: 'include',
+        });
+
+        if (!respuesta.ok) {
+          const datos = await respuesta.json();
+          throw new Error(datos.error || datos.detail || 'No se pudo eliminar el turno');
+        }
+
+        mostrarToast('Turno eliminado', 'El turno se eliminó correctamente.', 'success');
+
+        await cargarYRenderizar(
+          'turnos',
+          renderizarTurnos,
+          'admin-turnos-chequeos',
+          'admin-turnos-resumen',
+        );
+      } catch (error) {
+        mostrarToast('Error', error.message, 'error');
       }
+    });
+  };
 
-      await cargarYRenderizar(
-        'turnos',
-        renderizarTurnos,
-        'admin-turnos-disponibles',
-        'admin-turnos-resumen',
-      );
-    } catch (error) {
-      alert(error.message);
-    }
-  });
+  contenedorChequeos.addEventListener('click', manejarEliminarTurno);
+  contenedorNutricion.addEventListener('click', manejarEliminarTurno);
 }
 
 export function inicializarEliminarHorarios() {
   const contenedor = document.getElementById('admin-horarios-lista');
   if (!contenedor) return;
 
-  contenedor.addEventListener('click', async (event) => {
+  contenedor.addEventListener('click', (event) => {
     const botonEliminar = event.target.closest('[data-accion="eliminar-horario"]');
     if (!botonEliminar) return;
 
     const horarioId = botonEliminar.dataset.id;
-    if (!confirm(`¿Eliminar el horario ${horarioId}?`)) return;
 
-    try {
-      const respuesta = await fetch(`/api/horarios/${horarioId}`, {
-        method: 'DELETE',
-        credentials: 'include',
-      });
+    mostrarConfirmacion('¿Estás seguro que querés eliminar este horario?', async () => {
 
-      if (!respuesta.ok) {
-        const datos = await respuesta.json();
-        throw new Error(datos.error || datos.detail || 'No se pudo eliminar el horario');
+      try {
+        const respuesta = await fetch(`/api/horarios/${horarioId}`, {
+          method: 'DELETE',
+          credentials: 'include',
+        });
+
+        if (!respuesta.ok) {
+          const datos = await respuesta.json();
+          throw new Error(datos.error || datos.detail || 'No se pudo eliminar el horario');
+        }
+
+        mostrarToast('Horario eliminado', 'El horario se eliminó correctamente.', 'success');
+
+        await cargarYRenderizar(
+          'horarios',
+          renderizarHorarios,
+          'admin-horarios-lista',
+          'admin-horarios-resumen',
+        );
+      } catch (error) {
+        mostrarToast('Error', error.message, 'error');
       }
-
-      await cargarYRenderizar(
-        'horarios',
-        renderizarHorarios,
-        'admin-horarios-lista',
-        'admin-horarios-resumen',
-      );
-    } catch (error) {
-      alert(error.message);
-    }
+    });
   });
 }

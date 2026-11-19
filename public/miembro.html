@@ -124,16 +124,16 @@
               </div>
               <div class="d-flex align-items-center gap-3">
                 <button id="btnMesAnterior" class="btn btn-link text-white p-0 text-decoration-none"
-                  style="font-size: 1.2rem;" aria-label="Mes anterior">
+                  style="font-size: 1.2rem" aria-label="Mes anterior">
                   <i class="bi bi-chevron-left"></i>
                 </button>
 
-                <span id="mesActualGrafico" class="text-white fw-bold" style="min-width: 120px; text-align: center;">
+                <span id="mesActualGrafico" class="text-white fw-bold" style="min-width: 120px; text-align: center">
                   Cargando...
                 </span>
 
                 <button id="btnMesSiguiente" class="btn btn-link text-white p-0 text-decoration-none"
-                  style="font-size: 1.2rem;" aria-label="Mes siguiente">
+                  style="font-size: 1.2rem" aria-label="Mes siguiente">
                   <i class="bi bi-chevron-right"></i>
                 </button>
               </div>
@@ -141,7 +141,6 @@
                 <p class="text-gray mb-1 fs-14">Progreso total</p>
                 <h4 class="text-white">-</h4>
               </div>
-
             </div>
             <div id="contenedor-grafico" class="bg-dark rounded border border-secondary"
               style="min-height: 200px; border-style: dashed !important"></div>
@@ -187,9 +186,7 @@
             en la pestaña de "Historial".
           </p>
 
-          <h3 class="text-white mb-3 fs-15">
-            TUS REGISTROS
-          </h3>
+          <h3 class="text-white mb-3 fs-15">TUS REGISTROS</h3>
           <div class="table-responsive user-card p-0 overflow-hidden">
             <table class="table table-dark table-hover mb-0 table-dark-custom">
               <thead class="border-bottom border-secondary">
@@ -269,22 +266,21 @@
         </div>
         <div id="user-reservar" class="seccion-contenido d-none">
           <h2 class="user-page-title">RESERVAR CLASES</h2>
-          <p class="text-gray mb-4">
-            Elegí tus actividades y asegurá tu lugar.
-          </p>
+          <p class="text-gray mb-4">Elegí tus actividades y asegurá tu lugar.</p>
           <div class="row g-4 mb-5" id="contenedorReservas">
             <div class="user-card text-center py-4">
               <p class="text-gray mb-0">Cargando actividades...</p>
             </div>
           </div>
-          <div id="user-nutricion" class="seccion-contenido d-none">
-            <h2 class="user-page-title">NUTRICIÓN</h2>
+        </div>
+        <div id="user-nutricion" class="seccion-contenido d-none">
+          <h2 class="user-page-title">NUTRICIÓN</h2>
 
-            <div class="row g-4 align-items-start">
-              <div class="col-lg-8">
-                <p class="text-gray mb-4">
-                  Generá un plan nutricional personalizado con inteligencia artificial.
-                </p>
+          <div class="row g-4 align-items-start">
+            <div class="col-12">
+              <p class="text-gray mb-4">
+                Generá un plan nutricional personalizado con inteligencia artificial.
+              </p>
 
                 <div class="user-card mb-5">
                   <h4 class="mb-3 text-white">
@@ -303,7 +299,7 @@
                         </select>
                       </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                       <label class="text-gray mb-2 fs-14" for="nutricionDias">Días de la semana</label>
                       <select class="user-form-control w-100" id="nutricionDias" required>
                         <option value="">Seleccionar...</option>
@@ -324,16 +320,16 @@
                 <div id="mensajePlanNutricional" class="text-danger fs-14 mt-2 text-center"></div>
                 </form>
               </div>
+            </div>
+          </div>
 
-              <div id="contenedorPlanNutricional">
-                <div class="user-card text-center py-5">
-                  <i class="bi bi-apple text-gray fs-1 mb-3 d-block"></i>
-                  <h5 class="text-white mb-2">Todavía no tenés un plan nutricional</h5>
-                  <p class="text-gray mb-0 fs-14">
-                    Usá el formulario de arriba para crear tu primer plan personalizado.
-                  </p>
-                </div>
-              </div>
+          <div id="contenedorPlanNutricional">
+            <div class="user-card text-center py-5">
+              <i class="bi bi-apple text-gray fs-1 mb-3 d-block"></i>
+              <h5 class="text-white mb-2">Todavía no tenés un plan nutricional</h5>
+              <p class="text-gray mb-0 fs-14">
+                Usá el formulario de arriba para crear tu primer plan personalizado.
+              </p>
             </div>
           </div>
         </div>
@@ -457,9 +453,21 @@
               <i class="bi bi-trash"></i> ELIMINAR CUENTA
             </button>
           </div>
+
+          <div class="user-card">
+            <h4 class="mb-2">Eliminar cuenta</h4>
+            <p class="text-gray mb-4 fs-14">
+              Esta acción cierra tu sesión y desvincula tu acceso permanentemente.
+            </p>
+            <button class="user-btn-outline" id="eliminar-cuenta" data-bs-toggle="modal"
+              data-bs-target="#modalEliminarCuenta">
+              <i class="bi bi-trash"></i> ELIMINAR CUENTA
+            </button>
+          </div>
         </div>
       </div>
     </div>
+  </div>
   </div>
 
   <!-- Modal cambiar plan -->
@@ -475,15 +483,12 @@
         </div>
         <div class="modal-body">
           <p class="text-gray fs-14">
-            Seleccioná el plan al que querés cambiarte.
-            La modificación se aplicará al finalizar tu período abonado,
-            una vez confirmado el pago por administración.
+            Seleccioná el plan al que querés cambiarte. La modificación se aplicará al finalizar
+            tu período abonado, una vez confirmado el pago por administración.
           </p>
 
           <div class="mb-3">
-            <label for="selectNuevoPlan" class="text-gray mb-2 fs-14">
-              Nuevo plan
-            </label>
+            <label for="selectNuevoPlan" class="text-gray mb-2 fs-14"> Nuevo plan </label>
             <select id="selectNuevoPlan" class="user-form-control w-100" required>
               <option value="">Cargando planes...</option>
             </select>
@@ -491,11 +496,20 @@
           <p id="mensajeCambioPlan" class="fs-14 mb-0"></p>
         </div>
         <div class="modal-footer border-secondary">
-          <button type="button" class="user-btn-outline py-2 px-3" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="user-btn-outline py-2 px-3" data-bs-dismiss="modal">
+            Cancelar
+          </button>
           <button type="button" class="btn btn-green py-2 px-3" id="confirmarCambioPlan">
             Solicitar cambio
           </button>
         </div>
+        <p id="mensajeSolicitud" class="fs-14 mb-0"></p>
+      </div>
+      <div class="modal-footer border-secondary">
+        <button type="button" class="user-btn-outline py-2 px-3" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-green py-2 px-3" id="confirmarCambioPlan">
+          Solicitar cambio
+        </button>
       </div>
     </div>
   </div>
@@ -514,13 +528,15 @@
         <div class="modal-body">
           <p class="text-white">¿Estás seguro de que querés solicitar la baja de tu membresía?</p>
           <p class="text-gray fs-14 mb-0">
-            Vas a conservar el acceso al gimnasio hasta la fecha de vencimiento
-            de tu período abonado. La solicitud deberá ser gestionada por administración.
+            Vas a conservar el acceso al gimnasio hasta la fecha de vencimiento de tu período
+            abonado. La solicitud deberá ser gestionada por administración.
           </p>
         </div>
 
         <div class="modal-footer border-secondary">
-          <button type="button" class="user-btn-outline py-2 px-3" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="user-btn-outline py-2 px-3" data-bs-dismiss="modal">
+            Cancelar
+          </button>
           <button type="button" class="btn btn-danger py-2 px-3" id="confirmarSolicitudBaja">
             Confirmar baja
           </button>
@@ -534,9 +550,7 @@
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title text-danger" id="tituloEliminarCuenta">
-            Eliminar cuenta
-          </h5>
+          <h5 class="modal-title text-danger" id="tituloEliminarCuenta">Eliminar cuenta</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
         </div>
 
@@ -565,7 +579,6 @@
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content bg-pulso-darker border border-secondary">
-
         <div class="modal-header border-secondary">
           <h5 class="modal-title text-white" id="tituloModalPassword">
             <i class="bi bi-shield-lock text-green me-2"></i>
@@ -576,19 +589,14 @@
 
         <form id="formCambiarPassword">
           <div class="modal-body">
-
             <div class="mb-3">
-              <label for="passwordActual" class="text-gray mb-2 fs-14">
-                Contraseña actual
-              </label>
+              <label for="passwordActual" class="text-gray mb-2 fs-14"> Contraseña actual </label>
               <input type="password" id="passwordActual" class="user-form-control w-100"
                 placeholder="Ingresá tu contraseña actual" required />
             </div>
 
             <div class="mb-3">
-              <label for="passwordNueva" class="text-gray mb-2 fs-14">
-                Nueva contraseña
-              </label>
+              <label for="passwordNueva" class="text-gray mb-2 fs-14"> Nueva contraseña </label>
               <input type="password" id="passwordNueva" class="user-form-control w-100"
                 placeholder="Ingresá la nueva contraseña" minlength="8" required />
             </div>
@@ -600,7 +608,6 @@
               <input type="password" id="passwordConfirmacion" class="user-form-control w-100"
                 placeholder="Repetí la nueva contraseña" minlength="8" required />
             </div>
-
           </div>
 
           <div class="modal-footer border-secondary">
@@ -613,7 +620,6 @@
             </button>
           </div>
         </form>
-
       </div>
     </div>
   </div>

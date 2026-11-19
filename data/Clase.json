@@ -9,23 +9,11 @@
       "fechaHora": "2026-11-28T23:00:00.000Z",
       "duracionMin": 60,
       "cupo": 20,
-      "cuposDisponibles": 20,
-      "inscriptosIds": [],
-      "grupoId": null
-    },
-    {
-      "id": 11,
-      "titulo": "crossfit mamamamamamma",
-      "descripcion": "",
-      "instructorId": 12345679,
-      "fechaHora": "2026-11-25T21:00:00.000Z",
-      "duracionMin": 60,
-      "cupo": 25,
-      "cuposDisponibles": 24,
+      "cuposDisponibles": 18,
       "inscriptosIds": [
+        46093529,
         44007760
-      ],
-      "grupoId": "e138604f-a2a8-4ab3-88a3-81c220f4fe29"
+      ]
     },
     {
       "id": 12,
@@ -37,9 +25,9 @@
       "cupo": 25,
       "cuposDisponibles": 24,
       "inscriptosIds": [
-        44007760
+        88888888
       ],
-      "grupoId": "e138604f-a2a8-4ab3-88a3-81c220f4fe29"
+      "destacada": false
     }
   ]
 }

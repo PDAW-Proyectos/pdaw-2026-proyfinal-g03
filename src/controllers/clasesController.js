@@ -52,5 +52,11 @@ module.exports = function crearControladorClases(servicio) {
     desinscribir: async (req, res) => {
       res.json(await servicio.desinscribir({ claseId: req.params.id, miembro: req.usuario }));
     },
+
+    // POST /api/clases/:id/destacar
+    destacar: async (req, res) => {
+      const clase = await servicio.destacar({ claseId: req.params.id, });
+      res.json(clase);
+    },
   });
 };

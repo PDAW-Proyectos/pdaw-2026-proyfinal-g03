@@ -20,9 +20,15 @@ const crearModalEdicion = () => {
   modalDiv.setAttribute('aria-hidden', 'true');
   modalDiv.style.backgroundColor = 'rgba(0,0,0,0.8)';
 
-  const dialog = crearElemento('div', 'modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable');
+  const dialog = crearElemento(
+    'div',
+    'modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable',
+  );
 
-  const content = crearElemento('div', 'modal-content bg-dark text-white border border-secondary rounded-3');
+  const content = crearElemento(
+    'div',
+    'modal-content bg-dark text-white border border-secondary rounded-3',
+  );
   content.style.backgroundColor = '#121212';
 
   const header = crearElemento('div', 'modal-header border-0 pb-0');
@@ -48,13 +54,20 @@ const crearModalEdicion = () => {
   header.append(headerTitleContainer, btnClose);
 
   const body = crearElemento('div', 'modal-body pt-4');
-  const seccionTitulo = crearElemento('div', 'd-flex justify-content-between align-items-center mb-3 border-bottom border-secondary pb-2');
+  const seccionTitulo = crearElemento(
+    'div',
+    'd-flex justify-content-between align-items-center mb-3 border-bottom border-secondary pb-2',
+  );
   const tituloEjercicios = crearElemento('h4', 'fw-bold text-uppercase mb-0', 'Ejercicios');
   tituloEjercicios.style.fontFamily = "'Oswald', sans-serif";
 
-  const btnAnadir = crearElemento('button', 'btn btn-link text-white text-decoration-none p-0 d-flex align-items-center gap-2');
+  const btnAnadir = crearElemento(
+    'button',
+    'btn btn-link text-white text-decoration-none p-0 d-flex align-items-center gap-2',
+  );
   btnAnadir.id = 'btnAnadirEjercicio';
-  btnAnadir.innerHTML = '<i class="bi bi-plus-circle fs-5"></i> <span class="fs-14">Añadir ejercicio</span>'; // Uso innerHTML solo para el icono
+  btnAnadir.innerHTML =
+    '<i class="bi bi-plus-circle fs-5"></i> <span class="fs-14">Añadir ejercicio</span>'; // Uso innerHTML solo para el icono
 
   seccionTitulo.append(tituloEjercicios, btnAnadir);
 
@@ -65,7 +78,7 @@ const crearModalEdicion = () => {
     crearElemento('div', 'col-2', 'Series'),
     crearElemento('div', 'col-2', 'Reps'),
     crearElemento('div', 'col-2', 'Descanso'),
-    crearElemento('div', 'col-1')
+    crearElemento('div', 'col-1'),
   );
 
   const listaEjercicios = crearElemento('div', 'd-flex flex-column gap-2');
@@ -75,10 +88,13 @@ const crearModalEdicion = () => {
   mensajeValidacion.id = 'mensajeValidacionRutina';
   body.append(seccionTitulo, rowHeaders, mensajeValidacion, listaEjercicios);
 
-
   const footer = crearElemento('div', 'modal-footer border-top border-secondary pt-3');
 
-  const btnCancelar = crearElemento('button', 'btn btn-outline-light text-white px-4 py-2 rounded-1', 'Cancelar');
+  const btnCancelar = crearElemento(
+    'button',
+    'btn btn-outline-light text-white px-4 py-2 rounded-1',
+    'Cancelar',
+  );
   btnCancelar.type = 'button';
   btnCancelar.setAttribute('data-bs-dismiss', 'modal');
   btnCancelar.style.backgroundColor = 'transparent';
@@ -107,7 +123,10 @@ const renderizarFilasModal = (ejercicios) => {
     const fila = crearElemento('div', 'row gx-2 align-items-center');
 
     const colNombre = crearElemento('div', 'col-5');
-    const inputNombre = crearElemento('input', 'form-control bg-transparent text-white border-secondary fs-14 py-2');
+    const inputNombre = crearElemento(
+      'input',
+      'form-control bg-transparent text-white border-secondary fs-14 py-2',
+    );
     inputNombre.type = 'text';
     inputNombre.value = ej.nombre || '';
     inputNombre.placeholder = 'Nombre del ejercicio';
@@ -116,7 +135,10 @@ const renderizarFilasModal = (ejercicios) => {
     colNombre.append(inputNombre);
 
     const colSeries = crearElemento('div', 'col-2');
-    const inputSeries = crearElemento('input', 'form-control bg-transparent text-white border-secondary fs-14 py-2 text-center');
+    const inputSeries = crearElemento(
+      'input',
+      'form-control bg-transparent text-white border-secondary fs-14 py-2 text-center',
+    );
     inputSeries.type = 'number';
     inputSeries.value = ej.series || '';
     inputSeries.placeholder = '0';
@@ -125,7 +147,10 @@ const renderizarFilasModal = (ejercicios) => {
     colSeries.append(inputSeries);
 
     const colReps = crearElemento('div', 'col-2');
-    const inputReps = crearElemento('input', 'form-control bg-transparent text-white border-secondary fs-14 py-2 text-center');
+    const inputReps = crearElemento(
+      'input',
+      'form-control bg-transparent text-white border-secondary fs-14 py-2 text-center',
+    );
     inputReps.type = 'number';
     inputReps.value = ej.repeticiones || '';
     inputReps.placeholder = '0';
@@ -136,19 +161,29 @@ const renderizarFilasModal = (ejercicios) => {
     const colDescanso = crearElemento('div', 'col-2');
     const grupoDescanso = crearElemento('div', 'input-group');
 
-    const inputDescanso = crearElemento('input', 'form-control bg-transparent text-white border-secondary fs-14 py-2 text-center');
+    const inputDescanso = crearElemento(
+      'input',
+      'form-control bg-transparent text-white border-secondary fs-14 py-2 text-center',
+    );
     inputDescanso.type = 'number';
     inputDescanso.value = ej.descansoSeg ?? 60;
     inputDescanso.placeholder = '0';
     inputDescanso.dataset.field = 'descansoSeg';
     inputDescanso.dataset.index = index;
 
-    const spanS = crearElemento('span', 'input-group-text bg-transparent text-gray border-secondary fs-14 px-2', 's');
+    const spanS = crearElemento(
+      'span',
+      'input-group-text bg-transparent text-gray border-secondary fs-14 px-2',
+      's',
+    );
     grupoDescanso.append(inputDescanso, spanS);
     colDescanso.append(grupoDescanso);
 
     const colEliminar = crearElemento('div', 'col-1 text-center');
-    const btnEliminar = crearElemento('button', 'btn btn-link text-gray p-0 text-decoration-none btn-eliminar-fila');
+    const btnEliminar = crearElemento(
+      'button',
+      'btn btn-link text-gray p-0 text-decoration-none btn-eliminar-fila',
+    );
     btnEliminar.type = 'button';
     btnEliminar.dataset.index = index;
     btnEliminar.innerHTML = '<i class="bi bi-trash fs-5"></i>';
@@ -157,14 +192,14 @@ const renderizarFilasModal = (ejercicios) => {
     fila.append(colNombre, colSeries, colReps, colDescanso, colEliminar);
     contenedor.append(fila);
   });
-  contenedor.querySelectorAll('input').forEach(input => {
+  contenedor.querySelectorAll('input').forEach((input) => {
     input.addEventListener('input', (e) => {
       const index = Number(e.target.dataset.index);
       const field = e.target.dataset.field;
       diaEnEdicion.ejercicios[index][field] = e.target.value;
     });
   });
-  contenedor.querySelectorAll('.btn-eliminar-fila').forEach(btn => {
+  contenedor.querySelectorAll('.btn-eliminar-fila').forEach((btn) => {
     btn.addEventListener('click', (e) => {
       const index = Number(e.currentTarget.dataset.index);
       diaEnEdicion.ejercicios.splice(index, 1);
@@ -191,15 +226,23 @@ const validarEjercicios = (ejercicios) => {
       return 'Las series deben estar entre 1 y 20.';
     }
 
-    if (!Number.isInteger(Number(ej.repeticiones)) || Number(ej.repeticiones) < 1 || Number(ej.repeticiones) > 200) {
+    if (
+      !Number.isInteger(Number(ej.repeticiones)) ||
+      Number(ej.repeticiones) < 1 ||
+      Number(ej.repeticiones) > 200
+    ) {
       return 'Las repeticiones deben estar entre 1 y 200.';
     }
 
-    if (!Number.isInteger(Number(ej.descansoSeg)) || Number(ej.descansoSeg) < 0 || Number(ej.descansoSeg) > 600) {
+    if (
+      !Number.isInteger(Number(ej.descansoSeg)) ||
+      Number(ej.descansoSeg) < 0 ||
+      Number(ej.descansoSeg) > 600
+    ) {
       return 'El descanso debe estar entre 0 y 600 segundos.';
     }
 
-    if (planEnEdicion.dias.some(dia => dia.ejercicios.length === 0)) {
+    if (planEnEdicion.dias.some((dia) => dia.ejercicios.length === 0)) {
       return 'Cada día debe tener al menos un ejercicio.';
     }
   }
@@ -232,9 +275,7 @@ const abrirModalEdicion = (dia, plan) => {
     const boton = document.getElementById('btnGuardarCambiosModal');
     const textoOriginal = boton.innerHTML;
 
-    const error = validarEjercicios(
-      planEnEdicion.dias.flatMap(dia => dia.ejercicios)
-    );
+    const error = validarEjercicios(planEnEdicion.dias.flatMap((dia) => dia.ejercicios));
 
     const mensaje = document.getElementById('mensajeValidacionRutina');
 
@@ -254,9 +295,9 @@ const abrirModalEdicion = (dia, plan) => {
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
         body: JSON.stringify({
-          dias: planEnEdicion.dias.map(dia => ({
+          dias: planEnEdicion.dias.map((dia) => ({
             ...dia,
-            ejercicios: dia.ejercicios.map(ej => ({
+            ejercicios: dia.ejercicios.map((ej) => ({
               ...ej,
               nombre: ej.nombre.trim(),
               series: Number(ej.series),
@@ -275,7 +316,6 @@ const abrirModalEdicion = (dia, plan) => {
 
       renderizarPlan(datos);
       modal.hide();
-
     } catch (error) {
       mostrarMensaje(contenedor, error.message, 'text-danger');
     } finally {
@@ -328,7 +368,10 @@ const renderizarPlan = (plan) => {
   plan.dias.forEach((dia, index) => {
     const item = crearElemento('div', 'user-card');
 
-    const headerDia = crearElemento('div', 'd-flex justify-content-between align-items-center w-100');
+    const headerDia = crearElemento(
+      'div',
+      'd-flex justify-content-between align-items-center w-100',
+    );
 
     const infoDia = crearElemento('div');
     infoDia.innerHTML = `
@@ -361,9 +404,16 @@ const renderizarPlan = (plan) => {
 
     const listaEjercicios = crearElemento('ul', 'list-unstyled mb-0');
     dia.ejercicios.forEach((ej) => {
-      const li = crearElemento('li', 'd-flex justify-content-between align-items-center py-2 border-bottom border-secondary');
+      const li = crearElemento(
+        'li',
+        'd-flex justify-content-between align-items-center py-2 border-bottom border-secondary',
+      );
       const nombre = crearElemento('span', 'text-white fs-14', ej.nombre);
-      const detalle = crearElemento('span', 'text-gray fs-13', `${ej.series} series × ${ej.repeticiones} reps · ${ej.descansoSeg}s descanso`);
+      const detalle = crearElemento(
+        'span',
+        'text-gray fs-13',
+        `${ej.series} series × ${ej.repeticiones} reps · ${ej.descansoSeg}s descanso`,
+      );
       li.append(nombre, detalle);
       listaEjercicios.append(li);
     });
@@ -421,15 +471,13 @@ export function inicializarGeneracionPlan() {
     } catch {
       mensaje.textContent = '';
 
-      mostrarMensaje(
-        contenedor,
-        `<div class="d-flex flex-column align-items-center py-4">
-           <i class="bi bi-robot text-warning fs-1 mb-3"></i>
+      contenedor.innerHTML = `
+        <div class="user-card text-center py-4 border border-warning">
+           <i class="bi bi-robot text-warning fs-1 mb-3 d-block"></i>
            <h5 class="text-white mb-2">Servicio temporalmente ocupado</h5>
-           <p class="text-gray mb-0 text-center">El generador de planes con IA está tardando más de lo habitual. <br>Por favor, intentá de nuevo en unos minutos o consultá con nuestros entrenadores.</p>
-         </div>`,
-        'text-danger',
-      );
+           <p class="text-gray mb-0">El generador de planes con IA está tardando más de lo habitual. <br>Por favor, intentá de nuevo en unos minutos o consultá con nuestros entrenadores.</p>
+        </div>
+      `;
     } finally {
       // se restaura el btn para que el usuario pueda reintentar
       btn.innerHTML = textoOriginal;
