@@ -118,15 +118,16 @@ El PR no se puede mergear si alguno de estos pasos falla. Asegurate de correr np
 
 ## Documentación
 
-- Diagramas y wireframes: [`docs/`](docs/)
-- Acuerdos de trabajo y convenciones: [`CONTRIBUTING.md`](docs/Contributing.md)
-- Riesgos: [`docs/riesgos.md`](docs/riesgos.md)
+Toda la documentación detallada del proyecto se encuentra en la carpeta docs/:
+
+- Arquitectura del proyecto: Diagramas y wireframes. [`docs/ARQUITECTURA.MD`](docs/ARQUITECTURA.MD)
+- Acuerdos de trabajo y convenciones: [`docs/CONTRIBUTING.md`](docs/Contributing.md)
 - Mapa de la API y uso de aplicación Bruno: [`docs/README_API.md`](docs/README_API.md)
+- Documentación de la API Externa (Google Gemini): [`docs/IAGEMINI_DOC.md`](docs/IAGEMINI_DOC.md)
+- Guía de uso, instrucciones paso a paso para usuarios finales: [`docs/GUIA_DE_USO.md`](docs/GUIA_DE_USO.md)
+- Decisiones de Arquitectura (ADR): Registro de decisiones significativas del proyecto [`docs/ADR.md`](docs/ADR.md)
+- Retrospectiva: Lecciones aprendidas y acciones de mejora. [`docs/RETROSPECTIVA.md`](docs/RETROSPECTIVA.md)
 
 ## Uso de herramientas de IA
 
-| Fecha         | Herramienta        | Tarea         | Qué se adoptó y por qué                         |
-| ------------- | ------------------ | ------------- | ----------------------------------------------- |
-| Semana 1      | Lovable y DeepSeek | Maquetado     | Primer estructura para maquetado y estilización |
-| Semanas 2 y 3 | DeepSeek           | Armado de     | Se usó asistencia para redactar y asegurar que  |
-|               |                    | documentación | esté toda la información correspondiente        |
+Todas las herramientas utilizadas, los prompts y cómo se verificaron las respuestas están documentados en el archivo [`docs/DECLARACION_IA.md`](docs/DECLARACION_IA.md).
