@@ -1,3 +1,5 @@
+import { mostrarToast } from './componentes/toast.js';
+
 const actividadesDestacadas = document.getElementById('actividades-destacadas');
 const membresiasInicio = document.getElementById('membresias-inicio');
 const horariosInicio = document.getElementById('horarios-inicio');
@@ -149,6 +151,28 @@ const cargarMembresias = async () => {
   }
 };
 
+const cargarContacto = async () => {
+  const telefono = document.getElementById('contactoTelefono');
+  const email = document.getElementById('contactoEmail');
+
+  try {
+    const respuesta = await fetch('/api/publico/contacto');
+
+    const resultado = await respuesta.json();
+    if (!respuesta.ok) {
+      throw new Error(resultado.error || 'No se pudo cargar el contacto.');
+    }
+
+    telefono.textContent = resultado.data.telefono || 'No disponible';
+    email.textContent = resultado.data.email || 'No disponible';
+
+  } catch (error) {
+    console.error('ERROR AL CARGAR CONTACTO:', error);
+    telefono.textContent = 'No disponible';
+    email.textContent = 'No disponible';
+  }
+};
+
 const cargarHorarios = async () => {
   try {
     const horarios = await obtenerDatos('horarios');
@@ -165,3 +189,22 @@ const cargarHorarios = async () => {
 cargarActividades();
 cargarMembresias();
 cargarHorarios();
+cargarContacto();
+
+const inicializarFormularioContacto = () => {
+  const formulario = document.getElementById('formContacto');
+
+  console.log('FORMULARIO:', formulario);
+
+  if (!formulario) return;
+
+  formulario.addEventListener('submit', (evento) => {
+    evento.preventDefault();
+
+    mostrarToast('¡Tu mensaje fue enviado correctamente!', "Te contactaremos pronto", 'success');
+
+    formulario.reset();
+  });
+};
+
+inicializarFormularioContacto();

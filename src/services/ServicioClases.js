@@ -10,6 +10,11 @@ class ServicioClases {
     this.repoClases = repoClases;
   }
 
+  async listarDestacadas({ page, limit } = {}) {
+    const clases = await this.repoClases.listarPorDestacadas();
+    return paginar(clases, { page, limit });
+  }
+
   async listar({ instructor, page, limit } = {}) {
     const clases =
       instructor === undefined

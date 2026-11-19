@@ -56,6 +56,21 @@ class ServicioUsuarios {
     return this._crearUsuario(Instructor, datos);
   }
 
+  async obtenerContactoAdministrador() {
+    const usuarios = await this.repoUsuarios.listarPorRol('administrador');
+
+    const administrador = usuarios[0];
+
+    if (!administrador) {
+      return null;
+    }
+
+    return {
+      telefono: administrador.telefono,
+      email: administrador.email,
+    };
+  }
+
   async listarMiembros() {
     return this.repoUsuarios.listarPorRol('miembro');
   }
