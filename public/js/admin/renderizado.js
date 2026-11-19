@@ -270,10 +270,9 @@ export const renderizarMembresias = (membresias) => {
   const contenedor = document.getElementById('admin-membresias-lista');
   const contenedorPaginado = document.getElementById('paginado-planes');
   const selectFiltro = document.getElementById('filtroEstadoPlanes');
-  
+
   contenedor.replaceChildren();
   contenedorPaginado.replaceChildren();
-o
   if (selectFiltro) {
     selectFiltro.value = filtroEstadoPlanes;
     if (!selectFiltro.dataset.listener) {
@@ -304,7 +303,7 @@ o
 
   const totalPaginas = Math.ceil(planesFiltrados.length / planesPorPagina);
   if (paginaActualPlanes > totalPaginas) paginaActualPlanes = totalPaginas;
-  
+
   const inicio = (paginaActualPlanes - 1) * planesPorPagina;
   const fin = inicio + planesPorPagina;
   const planesAMostrar = planesFiltrados.slice(inicio, fin);
@@ -312,7 +311,7 @@ o
   planesAMostrar.forEach((membresia) => {
     const tarjeta = crearElemento('article', 'admin-card d-flex justify-content-between align-items-center flex-wrap gap-3');
     const informacion = crearElemento('div', 'admin-card-info flex-grow-1');
-    
+
     const encabezado = crearElemento('div', 'd-flex align-items-center gap-2 mb-1 flex-wrap');
     const nombre = crearElemento('h4', 'mb-0', membresia.nombre);
     const estado = crearElemento(
@@ -330,10 +329,10 @@ o
     }
 
     const divAcciones = crearElemento('div', 'd-flex gap-2');
-    
-    
+
+
     const btnToggle = crearElemento('button', `btn btn-sm ${membresia.activo ? 'btn-outline-warning' : 'btn-outline-success'}`);
-    
+
     btnToggle.innerHTML = membresia.activo ? '<i class="bi bi-pause-circle"></i>' : '<i class="bi bi-play-circle"></i>';
     btnToggle.title = membresia.activo ? 'Deshabilitar' : 'Habilitar';
     btnToggle.dataset.accion = 'toggle-plan';
