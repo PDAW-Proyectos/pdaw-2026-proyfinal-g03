@@ -21,6 +21,10 @@
       "edad": 25,
       "objetivo": "perder_peso",
       "planMembresiaId": 1,
+      "fechaUltimaRenovacion": null,
+      "fechaVencimiento": null,
+      "planMembresiaPendienteId": null,
+      "bajaMembresiaPendiente": false,
       "passwordHash": "$2b$12$nxiP5BvAMBqkeh6P1/yw3.HQ3bYwt3X/gf3bGNuNr4O/AvyFWhTre"
     },
     {
@@ -30,10 +34,6 @@
       "email": "facundojeda05@gmail.com",
       "telefono": null,
       "especialidad": "musculacion",
-      "fechaUltimaRenovacion": "2026-10-20T19:28:15.592Z",
-      "fechaVencimiento": "2026-11-20T12:00:00.000Z",
-      "planMembresiaPendienteId": null,
-      "bajaMembresiaPendiente": false,
       "passwordHash": "hashPrueba"
     },
     {
@@ -107,6 +107,15 @@
       "planMembresiaPendienteId": null,
       "bajaMembresiaPendiente": false,
       "passwordHash": "$2b$12$etz7I9a4u6Pl25bwXkhrKOlwiExXMPhN5b7k2PsyIjLS/7BfdLFua"
+    },
+    {
+      "id": "12345679",
+      "rol": "instructor",
+      "nombre": "mate",
+      "email": "mate@gmail.com",
+      "telefono": "02923514447",
+      "especialidad": "crossfit",
+      "passwordHash": "$2b$12$u7iSRrQAXTisxO2l6j5kF./mxPMf.F.5V9IoN7yyocmfbZymzoxhK"
     }
   ]
 }

@@ -1,7 +1,8 @@
 import { verificarSesion, cerrarSesion } from '../auth.js';
 import {
   inicializarFiltrosActividades,
-  inicializarRenderizadoInstructor
+  inicializarRenderizadoInstructor,
+  inicializarCreacionClase
 } from './renderizado-instructor.js'
 import { inicializarEdicionPerfil } from '../perfil/editarPerfil.js';
 import { modificarEspecialidad } from '../perfil/servicioPerfil.js';
@@ -45,7 +46,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const botonCerrarSesion = document.getElementById('btnCerrarSesion');
 
-    botonCerrarSesion?.addEventListener('click', async () => {
+    botonCerrarSesion?.addEventListener('click', async (event) => {
       event.preventDefault();
       try {
         await cerrarSesion();
@@ -57,6 +58,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     inicializarRenderizadoInstructor(usuario);
     inicializarGestionActividades(usuario);
     inicializarFormularioEdicion(usuario);
+    inicializarCreacionClase(usuario);
     inicializarEdicionPerfil(usuario, {
       campos: {
         nombre: 'perfil-nombre',

@@ -1,3 +1,5 @@
+import { recargarActividades } from './gestionActividades.js';
+
 let actividadesInstructor = []
 let filtrosActividades = { nombre: '', dia: '', vigencia: '', estado: '' }
 
@@ -439,56 +441,216 @@ export function inicializarRenderizadoInstructor(usuario) {
 export function inicializarCreacionClase(usuario) {
   const form = document.getElementById('formCrearClase');
   const mensaje = document.getElementById('mensajeCrearClase');
+  if (form.dataset.inicializado === 'true') return;
+  form.dataset.inicializado = 'true';
+
   if (!form || !mensaje) return;
+
+  const modo = document.getElementById('modoCreacionClase');
+  const contenedorFechaUnica = document.getElementById('contenedorFechaUnica');
+  const contenedorRepeticion = document.getElementById('contenedorRepeticion');
+
+  const fechaUnica = document.getElementById('claseFecha');
+  const fechaInicio = document.getElementById('claseFechaInicio');
+  const fechaFin = document.getElementById('claseFechaFin');
+
+  // Mostrar los campos correspondientes al modo elegido.
+  const actualizarModo = () => {
+    const recurrente = modo.value === 'recurrente';
+
+    contenedorFechaUnica.classList.toggle('d-none', recurrente);
+    contenedorRepeticion.classList.toggle('d-none', !recurrente);
+
+    fechaUnica.required = !recurrente;
+    fechaInicio.required = recurrente;
+    fechaFin.required = recurrente;
+
+    mensaje.textContent = '';
+  };
+
+  modo.addEventListener('change', actualizarModo);
+  actualizarModo();
+
+  // Convierte una fecha YYYY-MM-DD en un Date UTC.
+  const convertirFecha = (valor) => {
+    const [anio, mes, dia] = valor.split('-').map(Number);
+    return new Date(Date.UTC(anio, mes - 1, dia));
+  };
+
+  // Devuelve YYYY-MM-DD sin depender de la zona horaria del navegador.
+  const formatearFecha = (fecha) => {
+    return [
+      fecha.getUTCFullYear(),
+      String(fecha.getUTCMonth() + 1).padStart(2, '0'),
+      String(fecha.getUTCDate()).padStart(2, '0'),
+    ].join('-');
+  };
+
+  // Genera las fechas que coinciden con los días seleccionados.
+  const generarFechasRecurrentes = (inicio, fin, diasSeleccionados) => {
+    const fechas = [];
+    const actual = convertirFecha(inicio);
+    const limite = convertirFecha(fin);
+
+    while (actual <= limite) {
+      if (diasSeleccionados.includes(actual.getUTCDay())) {
+        fechas.push(formatearFecha(actual));
+      }
+
+      actual.setUTCDate(actual.getUTCDate() + 1);
+    }
+
+    return fechas;
+  };
 
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
     mensaje.textContent = '';
 
     const titulo = document.getElementById('claseTitulo').value.trim();
-    const fecha = document.getElementById('claseFecha').value;
     const hora = document.getElementById('claseHora').value;
     const cupo = Number(document.getElementById('claseCupo').value);
 
-    if (!titulo || !fecha || !hora || !cupo) {
+    if (!titulo || !hora || !cupo) {
       mensaje.textContent = 'Completá todos los campos.';
       return;
     }
 
-    const fechaHora = new Date(`${fecha}T${hora}:00`).toISOString();
+    if (!Number.isInteger(cupo) || cupo < 1 || cupo > 200) {
+      mensaje.textContent = 'El cupo debe ser un número entero entre 1 y 200.';
+      return;
+    }
 
-    const body = {
-      titulo,
-      descripcion: '',
-      fechaHora,
-      duracionMin: 60, // valor por defecto
-      cupo,
-    };
+    let fechas = [];
+
+    if (modo.value === 'unica') {
+      if (!fechaUnica.value) {
+        mensaje.textContent = 'Seleccioná la fecha de la actividad.';
+        return;
+      }
+
+      fechas = [fechaUnica.value];
+    } else {
+      const inicio = fechaInicio.value;
+      const fin = fechaFin.value;
+
+      if (!inicio || !fin) {
+        mensaje.textContent = 'Seleccioná la fecha de inicio y finalización.';
+        return;
+      }
+
+      if (inicio > fin) {
+        mensaje.textContent = 'La fecha de inicio no puede ser posterior a la fecha de finalización.';
+        return;
+      }
+
+      const diasSeleccionados = Array.from(
+        form.querySelectorAll('input[name="diasRepeticion"]:checked')
+      ).map((checkbox) => Number(checkbox.value));
+
+      if (diasSeleccionados.length === 0) {
+        mensaje.textContent = 'Seleccioná al menos un día de repetición.';
+        return;
+      }
+
+      fechas = generarFechasRecurrentes(
+        inicio,
+        fin,
+        diasSeleccionados
+      );
+
+      if (fechas.length === 0) {
+        mensaje.textContent = 'No hay fechas que coincidan con los días seleccionados.';
+        return;
+      }
+
+      // Límite para evitar crear accidentalmente demasiadas clases.
+      if (fechas.length > 100) {
+        mensaje.textContent = 'No podés generar más de 100 clases en una sola operación.';
+        return;
+      }
+    }
 
     const boton = form.querySelector('button[type="submit"]');
     const textoOriginal = boton.textContent;
+
     boton.textContent = 'Creando...';
     boton.disabled = true;
 
+    let creadas = 0;
+    const grupoId = modo.value === 'recurrente'
+      ? crypto.randomUUID()
+      : null;
+    console.log('GRUPO CREADO:', grupoId);
     try {
-      const respuesta = await fetch('/api/clases', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify(body),
-      });
+      for (const fecha of fechas) {
+        const fechaHora = new Date(
+          `${fecha}T${hora}:00-03:00`
+        ).toISOString();
 
-      const datos = await respuesta.json();
 
-      if (!respuesta.ok) {
-        throw new Error(datos.error || datos.detail || 'No se pudo crear la clase.');
+        const body = {
+          titulo,
+          descripcion: '',
+          fechaHora,
+          duracionMin: 60,
+          cupo,
+          grupoId,
+        };
+        console.log('GRUPO ENVIADO:', body.grupoId);
+        const respuesta = await fetch('/api/clases', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+          body: JSON.stringify(body),
+        });
+
+        let datos = {};
+
+        try {
+          datos = await respuesta.json();
+        } catch {
+          // La respuesta puede no contener JSON.
+        }
+
+        if (!respuesta.ok) {
+          throw new Error(
+            datos.error ||
+            datos.detail ||
+            datos.mensaje ||
+            `No se pudo crear la actividad del ${fecha}.`
+          );
+        }
+
+        creadas++;
       }
 
       form.reset();
+      actualizarModo();
 
       await recargarActividades(usuario);
+
+      mensaje.classList.remove('text-danger');
+      mensaje.classList.add('text-success');
+
+      mensaje.textContent =
+        creadas === 1
+          ? 'La actividad se creó correctamente.'
+          : `Se crearon ${creadas} actividades correctamente.`;
+
     } catch (error) {
-      mensaje.textContent = error.message;
+      mensaje.classList.remove('text-success');
+      mensaje.classList.add('text-danger');
+
+      mensaje.textContent = creadas > 0
+        ? `Se crearon ${creadas} de ${fechas.length} actividades. Error: ${error.message}`
+        : error.message;
+
+      if (creadas > 0) {
+        await recargarActividades(usuario);
+      }
     } finally {
       boton.textContent = textoOriginal;
       boton.disabled = false;
@@ -496,20 +658,26 @@ export function inicializarCreacionClase(usuario) {
   });
 }
 
-// fn auxiliar para recargar las actividades
-async function recargarActividades(usuario) {
-  const contenedor = document.getElementById('instructor-actividades-lista');
-  if (!contenedor) return;
-  mostrarCargando(contenedor);
-  try {
-    const respuesta = await fetch(`/api/clases?instructor=${usuario.id}&limit=50`, {
-      credentials: 'include',
-    });
-    const datos = await respuesta.json();
-    if (!respuesta.ok) throw new Error(datos.error || 'No se pudieron cargar las actividades.');
-    const lista = Array.isArray(datos.data) ? datos.data : datos;
-    renderizarActividades(lista);
-  } catch (error) {
-    mostrarMensaje(contenedor, error.message, 'text-danger');
-  }
-}
+const agruparActividades = (actividades) => {
+  const grupos = new Map();
+
+  actividades.forEach((actividad) => {
+    const clave = actividad.grupoId
+      ? `grupo-${actividad.grupoId}`
+      : `clase-${actividad.id}`;
+
+    if (!grupos.has(clave)) {
+      grupos.set(clave, []);
+    }
+
+    grupos.get(clave).push(actividad);
+  });
+
+  return Array.from(grupos.values()).map((grupo) => ({
+    esGrupo: Boolean(grupo[0].grupoId),
+    grupoId: grupo[0].grupoId,
+    actividades: grupo.sort(
+      (a, b) => new Date(a.fechaHora) - new Date(b.fechaHora)
+    ),
+  }));
+};
