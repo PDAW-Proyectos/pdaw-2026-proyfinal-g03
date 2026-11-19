@@ -4,11 +4,9 @@ const PlanMembresia = require('./PlanMembresia');
 const HorarioGimnasio = require('./HorarioGimnasio');
 
 const PERMISOS = new Set([
-  'publicarTurno',
-  'gestionarMembresias',
-  'definirHorarios',
-  'crearUsuario',
-  'modificarPerfil'
+  'publicarTurno', 'gestionarMembresias',
+  'definirHorarios', 'crearUsuario',
+  'modificarPerfil', 'destacarActividades'
 ]);
 
 class Administrador extends Usuario {

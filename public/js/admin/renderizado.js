@@ -149,10 +149,10 @@ export const renderizarMiembros = (miembros) => {
     const botonEliminar = crearElemento(
       'button',
       'btn btn-sm btn-outline-danger ms-2',
-      '' 
+      ''
     );
     botonEliminar.innerHTML = '<i class="bi bi-trash3"></i>';
-    botonEliminar.title = 'Eliminar miembro'; 
+    botonEliminar.title = 'Eliminar miembro';
     botonEliminar.dataset.accion = 'eliminar-usuario';
     botonEliminar.dataset.id = miembro.id;
     botonEliminar.dataset.tipo = 'miembro';
@@ -197,7 +197,7 @@ export const renderizarInstructores = (instructores) => {
     botonEliminar.dataset.accion = 'eliminar-usuario';
     botonEliminar.dataset.id = instructor.id;
     botonEliminar.dataset.tipo = 'instructor';
-     botonEliminar.dataset.nombre = instructor.nombre; 
+    botonEliminar.dataset.nombre = instructor.nombre;
     tarjeta.append(informacion, botonEliminar);
     contenedor.append(tarjeta);
   });
@@ -297,9 +297,9 @@ export const renderizarHorarios = (horarios) => {
 export const renderizarTurnos = (turnos) => {
   const contenedorChequeos = document.getElementById('admin-turnos-chequeos');
   const contenedorNutricion = document.getElementById('admin-turnos-nutricion');
-  
+
   if (!contenedorChequeos || !contenedorNutricion) return;
-  
+
   contenedorChequeos.replaceChildren();
   contenedorNutricion.replaceChildren();
 
@@ -326,13 +326,13 @@ export const renderizarTurnos = (turnos) => {
     }
 
     informacion.append(crearElemento('p', 'mb-0 text-gray fs-13', detalleTexto));
-    
+
     const botonEliminar = crearElemento('button', 'btn btn-sm btn-outline-danger ms-2', '');
     botonEliminar.innerHTML = '<i class="bi bi-trash3"></i>';
     botonEliminar.title = 'Eliminar turno';
     botonEliminar.dataset.accion = 'eliminar-turno';
     botonEliminar.dataset.id = turno.id;
-    
+
     tarjeta.append(informacion, botonEliminar);
     return tarjeta;
   };
